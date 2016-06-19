@@ -1,3 +1,5 @@
+/// <reference path="../ng2-tag-input.d.ts"/>
+
 import {
     Component,
     Provider,
@@ -19,7 +21,6 @@ import {
 import {NG_VALUE_ACCESSOR} from "@angular/common";
 import {Tag} from '../tag/tag.component';
 import {TagInputAccessor} from './tag-input-accessor';
-import {TagInputComponent} from './tag-input.component.d.ts';
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(NG_VALUE_ACCESSOR, {
     useExisting: forwardRef(() => TagInput),

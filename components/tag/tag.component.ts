@@ -1,5 +1,6 @@
+/// <reference path="../ng2-tag-input.d.ts"/>
+
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {TagComponent} from './tag.component.d.ts';
 
 @Component({
     selector: 'tag',

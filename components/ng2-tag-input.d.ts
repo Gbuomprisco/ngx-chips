@@ -1,4 +1,8 @@
-export interface TagInputComponent {
+interface TagComponent {
+    remove(): void;
+}
+
+interface TagInputComponent {
     selectedTag: string;
     model: {
         value: string;
@@ -16,3 +20,5 @@ export interface TagInputComponent {
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
 }
+
+declare module "ng2-tag-input" {}

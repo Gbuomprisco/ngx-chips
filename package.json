@@ -11,6 +11,10 @@
     "start": "npm run server",
     "test:unit": "karma start karma.conf.js"
   },
+  "author": {
+    "name": "Giancarlo Buomprisco",
+    "email": "giancarlopsk@gmail.com"
+  },
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
@@ -48,13 +52,14 @@
     "rxjs": "5.0.0-beta.6",
     "zone.js": "~0.6.12"
   },
-  "keywords": [],
+  "keywords": ["angular 2", "angular 2 tag input", "tag input component"],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Gbuomprisco/ng2-tag-input"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Gbuomprisco/ng2-tag-input/issues"
   },
-  "homepage": ""
+  "homepage": "https://github.com/Gbuomprisco/ng2-tag-input",
+  "main": "index.ts"
 }
