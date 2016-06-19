@@ -4,9 +4,9 @@ var path = require('path');
 // Webpack Config
 var webpackConfig = {
   entry: {
-    'polyfills': './src/polyfills.ts',
-    'vendor':    './src/vendor.ts',
-    'app':       './src/app.ts'
+    'polyfills': './demo/polyfills.ts',
+    'vendor':    './demo/vendor.ts',
+    'app':       './demo/app.ts'
   },
 
   output: {
@@ -14,9 +14,15 @@ var webpackConfig = {
   },
 
   plugins: [
-    //new webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'polyfills', 'app'], minChunks: Infinity })
+    new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'vendor', 'polyfills'], minChunks: Infinity })
   ],
-  
+
+  tslint: {
+    emitErrors: false,
+    failOnHint: false,
+    resourcePath: 'demo'
+  },
+
   module: {
     loaders: [
       // .ts files for TypeScript
@@ -73,7 +79,7 @@ var defaultConfig = {
   },
 
   resolve: {
-    root: [ path.join(__dirname, 'src') ],
+    root: [ path.join(__dirname, 'demo') ],
     extensions: ['', '.ts', '.js'],
     alias: {
       'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),

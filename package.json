@@ -7,7 +7,7 @@
     "postinstall": "npm run typings-install",
     "build": "webpack --inline --colors --progress --display-error-details --display-cached",
     "watch": "npm run build -- --watch",
-    "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src",
+    "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base demo",
     "start": "npm run server",
     "test:unit": "karma start karma.conf.js"
   },

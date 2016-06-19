@@ -25,6 +25,6 @@ testing.setBaseTestProviders(
 );
 
 
-var context = require.context('./src/components', true, /\.spec\.ts$/);
+var context = require.context('./components', true, /\.spec\.ts$/);
 context.keys().forEach(context);
 module.exports = context;

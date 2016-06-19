@@ -1,12 +1,10 @@
 import {Component} from '@angular/core';
-import {TagInput} from '../components/tag-input/tag-input.component';
+import {TagInput} from '../../components/tag-input/tag-input.component';
 
 @Component({
     selector: 'app',
-    providers: [],
-    pipes: [],
     directives: [TagInput],
-    template: require('./app.html')
+    template: require('./home.html')
 })
 
 export class App {

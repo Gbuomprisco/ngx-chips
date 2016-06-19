@@ -9,6 +9,13 @@
     "experimentalDecorators": true,
     "moduleResolution": "node"
   },
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true
+  },
+  "files": [
+    "ng2-tag-input.ts",
+    "typings/index.d.ts"
+  ],
   "exclude": [
     "typings/main.d.ts",
     "typings/main",

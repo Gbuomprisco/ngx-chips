@@ -11,7 +11,7 @@ import {By} from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import {TagInput} from './tag-input.component';
-import {Tag} from './tag/tag.component';
+import {Tag} from '../tag/tag.component';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 describe('TagInput', () => {

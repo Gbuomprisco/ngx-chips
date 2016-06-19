@@ -1,1 +1,1 @@
-$ ng2 Tag Input
+# ng2 Tag Input
