@@ -1,0 +1,36 @@
+.tag-input {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  padding: 0.2em;
+  border-bottom: 1px solid #efefef;
+}
+
+.tag-input.tag-input--focused {
+  border-bottom: 2px solid #ddd;
+}
+
+.tag-input form {
+  line-height: 2;
+}
+
+.tag-input__text-input {
+  border: none;
+  display: inline;
+  padding: 0 0.5em;
+  font-size: 13px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.tag-input__text-input:focus {
+  outline: 0;
+}
+
+tag {
+  height: 40px;
+}
+
+tag:focus {
+  outline: 0;
+}

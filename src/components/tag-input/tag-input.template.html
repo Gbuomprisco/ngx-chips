@@ -1,0 +1,23 @@
+<div class="tag-input" [class.tag-input--focused]="input.isFocused">
+    <tag *ngFor="let item of value; trackBy: item; let i = index"
+         (onRemove)="remove($event)"
+         (click)="selectedTag = item"
+         (keydown)="handleKeydown($event, item)"
+         [tabindex]="i"
+         [isSelected]="selectedTag === item"
+         [readonly]="readonly"
+         [item]="item">
+    </tag>
+
+    <form (submit)="add()" *ngIf="input.isVisible.call(this)">
+        <input type="text"
+               (focus)="input.focus()"
+               (blur)="input.isFocused = false"
+               (keyup)="fireEvents('keyup', $event)"
+               [(ngModel)]="model.value"
+               [tabindex]="value.length"
+               placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
+               class="tag-input__text-input"
+        />
+    </form>
+</div>

@@ -1,0 +1,29 @@
+.tag {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0.2rem;
+  background: #eee;
+  color: #444;
+  padding: 0.6rem;
+  border-radius: 16px;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  letter-spacing: 0.03em;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tag--selected {
+  background: #2196F3;
+  color: #fff;
+}
+
+.tag__remove-button {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.tag__remove-button img {
+  width: 16px;
+  vertical-align: sub;
+}

@@ -1,0 +1,17 @@
+.tag-input-container {
+    width: 50%;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 0;
+}
+
+.options label {
+    margin-right: 1em;
+}
+
+.home-container {
+    padding: 2em;
+}

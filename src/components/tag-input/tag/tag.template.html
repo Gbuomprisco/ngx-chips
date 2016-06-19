@@ -1,0 +1,8 @@
+<div class="tag" [class.tag--selected]="isSelected">
+    <span class="tag__name">
+        {{ item }}
+    </span>
+    <span class="tag__remove-button" (click)="remove()" *ngIf="!readonly">
+        <img src="./delete.png" />
+    </span>
+</div>

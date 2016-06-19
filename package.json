@@ -1,0 +1,60 @@
+{
+  "name": "ng2-tag-input",
+  "version": "0.0.1",
+  "description": "Ng2TagInput: simple tag input component for Angular 2",
+  "scripts": {
+    "typings-install": "typings install",
+    "postinstall": "npm run typings-install",
+    "build": "webpack --inline --colors --progress --display-error-details --display-cached",
+    "watch": "npm run build -- --watch",
+    "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src",
+    "start": "npm run server",
+    "test:unit": "karma start karma.conf.js"
+  },
+  "contributors": [],
+  "license": "MIT",
+  "devDependencies": {
+    "awesome-typescript-loader": "~0.16.2",
+    "es6-promise": "3.0.2",
+    "es6-shim": "0.35.0",
+    "jasmine": "^2.4.1",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-jasmine": "^0.3.8",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "1.7.0",
+    "protractor": "^3.3.0",
+    "reflect-metadata": "0.1.2",
+    "source-map-loader": "^0.1.5",
+    "ts-helpers": "1.1.1",
+    "ts-node": "^0.7.3",
+    "tslint": "^3.5.0",
+    "typescript": "~1.8.9",
+    "typings": "~1.0.3",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0",
+    "webpack-merge": "^0.8.4"
+  },
+  "dependencies": {
+    "@angular/http": "2.0.0-rc.1",
+    "@angular/common": "2.0.0-rc.1",
+    "@angular/compiler": "2.0.0-rc.1",
+    "@angular/core": "2.0.0-rc.1",
+    "@angular/platform-browser": "2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.1",
+    "@angular/platform-server": "2.0.0-rc.1",
+    "@angular/router": "2.0.0-rc.1",
+    "core-js": "^2.2.0",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "~0.6.12"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "homepage": ""
+}
