@@ -32,6 +32,7 @@
     "node-sass": "^3.8.0",
     "protractor": "^3.3.0",
     "reflect-metadata": "0.1.2",
+    "sass-loader": "^3.2.1",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "ts-helpers": "1.1.1",
@@ -40,7 +41,7 @@
     "typescript": "~1.8.9",
     "typings": "~1.0.3",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9",
+    "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.0",
     "webpack-merge": "^0.8.4"
   },
