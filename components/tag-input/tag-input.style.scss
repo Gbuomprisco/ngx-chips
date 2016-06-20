@@ -21,18 +21,9 @@
   padding: 0 0.5rem;
   font-size: 13px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  vertical-align: text-top;
-  line-height: 1.8;
+  vertical-align: sub;
 }
 
 .tag-input__text-input:focus {
-  outline: 0;
-}
-
-tag {
-  height: 40px;
-}
-
-tag:focus {
   outline: 0;
 }

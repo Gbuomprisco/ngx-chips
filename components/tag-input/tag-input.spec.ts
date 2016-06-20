@@ -102,7 +102,9 @@ describe('TagInput', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.remove('Typescript');
+                const tagName = 'Typescript';
+                const tag = component.tags.toArray().filter(item => item.item === tagName)[0];
+                component.remove(tag);
 
                 fixture.detectChanges();
 
@@ -115,13 +117,15 @@ describe('TagInput', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+                const tagName = 'Typescript';
+                const tag = component.tags.toArray().filter(item => item.item === tagName)[0];
 
                 component.onRemove.subscribe(item => {
-                    expect(item).toEqual('Typescript');
+                    expect(item).toEqual(tagName);
                     done();
                 });
 
-                component.remove('Typescript');
+                component.remove(tag);
             });
         });
 
@@ -129,8 +133,8 @@ describe('TagInput', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                const tag = 'Typescript';
-                component.selectedTag = tag;
+                const tagName = 'Typescript';
+                const tag = component.tags.toArray().filter(item => item.item === tagName)[0];
 
                 fixture.detectChanges();
 
