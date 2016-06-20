@@ -29,6 +29,7 @@
     "karma-jasmine": "^0.3.8",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "1.7.0",
+    "node-sass": "^3.8.0",
     "protractor": "^3.3.0",
     "reflect-metadata": "0.1.2",
     "source-map-loader": "^0.1.5",
