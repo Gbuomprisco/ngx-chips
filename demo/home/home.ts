@@ -24,6 +24,18 @@ export class App {
         console.log(item + ' removed');
     }
 
+    public onSelect(item) {
+        console.log(item + ' selected');
+    }
+
+    public toUpperCase(item: string) {
+        if (item === 'Typescript') {
+            return item.toUpperCase();
+        }
+
+        return false;
+    }
+
     ngOnInit() {
 
     }

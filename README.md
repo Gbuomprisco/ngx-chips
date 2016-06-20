@@ -27,15 +27,18 @@ Once installed, import the TagInput component and use it in your container compo
 ## API
 
 Properties:
-- placeholder (string): The placeholder of the input for entering new terms.
-- secondaryPlaceholder (string): The placeholder of the input for entering new terms when there are 0 items entered.
-- maxItems (number): the maximum number of items it is possible to enter.
-- readonly (boolean): sets the tag input static, not allowing deletion/addition of the items entered.
-- separatorKeys (string[]): array of keyboard keys with which is possible to define the key for separating terms. By default. only Enter is the defined key.
+- placeholder <string>: The placeholder of the input for entering new terms.
+- secondaryPlaceholder <string>: The placeholder of the input for entering new terms when there are 0 items entered.
+- maxItems <number>: the maximum number of items it is possible to enter.
+- readonly <boolean>: sets the tag input static, not allowing deletion/addition of the items entered.
+- separatorKeys <string[]>: array of keyboard keys with which is possible to define the key for separating terms. By default. only Enter is the defined key.
+- transform (item: string) => string: a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
+
 
 Events:
 - onAdd(item: string): event fired when an item has been added
 - onRemove(item: string): event fired when an item has been removed
+- onSelect(item: string): event fired when an item has been selected
 
 Examples:
 

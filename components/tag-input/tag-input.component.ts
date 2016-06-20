@@ -77,6 +77,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     @Input() readonly: boolean = undefined;
 
     /**
+     * @name transform
+     * @desc function passed to the component to transform the value of the items, or reject them instead
+     */
+    @Input() transform: (item: string) => string = (item) => item;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -89,6 +95,13 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @type {EventEmitter<string>}
      */
     @Output() onRemove = new EventEmitter<string>();
+
+    /**
+     * @name onSelect
+     * @desc event emitted when selecting an item
+     * @type {EventEmitter<string>}
+     */
+    @Output() onSelect = new EventEmitter<string>();
 
     // Component private/public properties
 
@@ -176,16 +189,32 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @desc adds the current text model to the items array
      */
     public add(): void {
-        const item = this.model.value,
+        const transform = this.transform,
+            itemValue = this.model.value,
+            item = transform(itemValue),
             isDupe = this.value.indexOf(item) !== -1;
 
+        // check validity
         if (!this.input.isVisible() || !item || isDupe) {
             return;
         }
 
+        // append item to the ngModel list
         this.value.push(item);
+
+        // reset input and emit event
         this.model.reset();
         this.onAdd.emit(item);
+    }
+
+    /**
+     * @name select
+     * @desc selects item passed as parameter as the selected tag
+     * @param item
+     */
+    public select(item: string): void {
+        this.selectedTag = item;
+        this.onSelect.emit(item);
     }
 
     /**
@@ -219,7 +248,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
 
         function switchPrev() {
             if (itemIndex > 0) {
-                vm.selectedTag = vm.value[itemIndex - 1];
+                vm.select(vm.value[itemIndex - 1]);
                 vm.renderer.invokeElementMethod(tagElements[itemIndex - 1], 'focus', []);
             } else {
                 vm.input.focus();
@@ -228,7 +257,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
 
         function switchNext() {
             if (itemIndex < vm.value.length - 1) {
-                vm.selectedTag = vm.value[itemIndex + 1];
+                vm.select(vm.value[itemIndex + 1]);
                 vm.renderer.invokeElementMethod(tagElements[itemIndex + 1], 'focus', []);
             } else {
                 vm.input.focus();
@@ -258,26 +287,28 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @desc sets up listeners for additional separator keys and the backspace key for selecting the last item
      */
     private setupAdditionalKeysEvents(): void {
+        const vm = this;
+
         const listener = ($event) => {
-            if (this.separatorKeys.indexOf($event.keyCode) >= 0) {
+            if (vm.separatorKeys.indexOf($event.keyCode) >= 0) {
                 $event.preventDefault();
-                this.add();
+                vm.add();
             }
         };
 
         const backSpaceListener = ($event) => {
-            const itemsLength = this.value.length;
+            const itemsLength = vm.value.length;
             if ($event.keyCode === 37 || $event.keyCode === 8 && itemsLength) {
-                this.selectedTag = this.value[itemsLength - 1];
-                this.renderer.invokeElementMethod(this.getTagElements()[itemsLength - 1], 'focus', []);
+                vm.select(vm.value[itemsLength - 1]);
+                vm.renderer.invokeElementMethod(vm.getTagElements()[itemsLength - 1], 'focus', []);
             }
         };
 
-        if (this.separatorKeys.length) {
-            this.listeners.keyup.push(listener);
+        if (vm.separatorKeys.length) {
+            vm.listeners.keyup.push(listener);
         }
 
-        this.listeners.keyup.push(backSpaceListener);
+        vm.listeners.keyup.push(backSpaceListener);
     }
 
     ngOnInit() {

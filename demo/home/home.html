@@ -16,6 +16,7 @@
 
 		<div class="tag-input-container">
 			<tag-input [(ngModel)]="items"
+					   (onSelect)="onSelect($event)"
 					   (onAdd)="onAdd($event)"
 					   (onRemove)="onRemove($event)"
 					   [readonly]="options.readonly"
