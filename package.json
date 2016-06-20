@@ -9,7 +9,7 @@
     "watch": "npm run build -- --watch",
     "server": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base demo",
     "start": "npm run server",
-    "test": "karma start --single-run karma.conf.js"
+    "test": "karma start karma.conf.js --single-run"
   },
   "author": {
     "name": "Giancarlo Buomprisco",
@@ -24,8 +24,9 @@
     "es6-shim": "0.35.0",
     "html-loader": "^0.4.3",
     "jasmine": "^2.4.1",
-    "karma": "^0.13.15",
+    "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.3",
+    "karma-coverage": "^1.0.0",
     "karma-jasmine": "^0.3.8",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "1.7.0",
