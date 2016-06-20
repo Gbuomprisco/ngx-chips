@@ -1,4 +1,4 @@
-/// <reference path="../ng2-tag-input.d.ts"/>
+/// <reference path='../ng2-tag-input.d.ts'/>
 
 import {
     Component,
@@ -8,8 +8,9 @@ import {
     Output,
     ElementRef,
     ChangeDetectionStrategy,
-    EventEmitter
-} from "@angular/core";
+    EventEmitter,
+    Renderer
+} from '@angular/core';
 
 import {
     PLACEHOLDER,
@@ -18,7 +19,7 @@ import {
     KEY_PRESS_ACTIONS
 } from './tag-input.constants';
 
-import {NG_VALUE_ACCESSOR} from "@angular/common";
+import {NG_VALUE_ACCESSOR} from '@angular/common';
 import {Tag} from '../tag/tag.component';
 import {TagInputAccessor} from './tag-input-accessor';
 
@@ -113,7 +114,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     /**
      * @name input
      * @desc object representing utilities for managing the input text element
-     * @type {{element: HTMLElement, isFocused: boolean, isVisible: (function(): boolean), focus: (function(): undefined)}}
      */
     public input = {
         element: <HTMLElement>undefined,
@@ -122,9 +122,9 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             const maxItemsReached = this.maxItems !== undefined && this.value.length === this.maxItems;
             return !this.readonly && !maxItemsReached;
         },
-        focus:() => {
+        focus: () => {
             this.input.isFocused = true;
-            this.input.element.focus();
+            this.renderer.invokeElementMethod(this.input.element, 'focus', []);
             this.selectedTag = undefined;
         }
     };
@@ -144,11 +144,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @type []
      */
     private listeners = {
-        keyup: <{(any): any}[]>[],
-        change: <{(any): any}[]>[]
+        keyup: <{(fun): any}[]>[],
+        change: <{(fun): any}[]>[]
     };
 
-    constructor(private element: ElementRef) {
+    constructor(private element: ElementRef,
+                private renderer: Renderer) {
         super();
     }
 
@@ -204,34 +205,48 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @param item
      */
     public handleKeydown($event, item: string): void {
-        const KEY = $event.keyCode,
+        const vm = this,
+            KEY = $event.keyCode,
             ACTION = KEY_PRESS_ACTIONS[KEY],
             itemIndex = this.value.indexOf(item),
             tagElements = this.getTagElements();
 
-        $event.target.blur();
+        function deleteSelectedTag() {
+            if (vm.selectedTag) {
+                vm.remove(item);
+            }
+        }
+
+        function switchPrev() {
+            if (itemIndex > 0) {
+                vm.selectedTag = vm.value[itemIndex - 1];
+                vm.renderer.invokeElementMethod(tagElements[itemIndex - 1], 'focus', []);
+            } else {
+                vm.input.focus();
+            }
+        }
+
+        function switchNext() {
+            if (itemIndex < vm.value.length - 1) {
+                vm.selectedTag = vm.value[itemIndex + 1];
+                vm.renderer.invokeElementMethod(tagElements[itemIndex + 1], 'focus', []);
+            } else {
+                vm.input.focus();
+            }
+        }
 
         switch (ACTION) {
             case ACTIONS.DELETE:
-                if (this.selectedTag) {
-                    this.remove(item);
-                }
+                deleteSelectedTag();
                 break;
             case ACTIONS.SWITCH_PREV:
-                if (itemIndex > 0) {
-                    this.selectedTag = this.value[itemIndex - 1];
-                    tagElements[itemIndex - 1].focus();
-                } else {
-                    $event.target.focus();
-                }
+                switchPrev();
                 break;
             case ACTIONS.SWITCH_NEXT:
-                if (itemIndex < this.value.length - 1) {
-                    this.selectedTag = this.value[itemIndex + 1];
-                    tagElements[itemIndex + 1].focus();
-                } else {
-                    $event.target.focus();
-                }
+                switchNext();
+                break;
+            case ACTIONS.TAB:
+                switchNext();
                 break;
         }
 
@@ -254,7 +269,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             const itemsLength = this.value.length;
             if ($event.keyCode === 37 || $event.keyCode === 8 && itemsLength) {
                 this.selectedTag = this.value[itemsLength - 1];
-                this.getTagElements()[itemsLength - 1].focus();
+                this.renderer.invokeElementMethod(this.getTagElements()[itemsLength - 1], 'focus', []);
             }
         };
 

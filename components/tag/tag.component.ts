@@ -12,7 +12,7 @@ export class Tag implements TagComponent {
     @Input() readonly: boolean;
     @Input() isSelected: boolean;
     @Output() onRemove = new EventEmitter<string>();
-    
+
     public remove(): void {
         this.onRemove.emit(this.item);
     }
