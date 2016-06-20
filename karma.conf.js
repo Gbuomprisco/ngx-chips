@@ -1,7 +1,7 @@
 module.exports = function(config) {
     var testWebpackConfig = require('./webpack.test.js');
 
-    config.set({
+    var options = {
 
         // base path that will be used to resolve all patterns (e.g. files, exclude)
         basePath: '',
@@ -30,13 +30,19 @@ module.exports = function(config) {
          * preprocess matching files before serving them to the browser
          * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
          */
-        preprocessors: { './spec-bundle.js': ['webpack', 'sourcemap'] },
+        preprocessors: { './spec-bundle.js': ['webpack', 'sourcemap', 'coverage'] },
 
         // Webpack Config at ./webpack.test.js
         webpack: testWebpackConfig,
 
         coverageReporter: {
-
+            type : 'html',
+            dir : 'coverage/',
+            instrumenterOptions: {
+                istanbul: {
+                    noCompact: true
+                }
+            }
         },
 
         // Webpack please don't spam the console when running in karma!
@@ -48,7 +54,7 @@ module.exports = function(config) {
          * possible values: 'dots', 'progress'
          * available reporters: https://npmjs.org/browse/keyword/karma-reporter
          */
-        reporters: [ ],
+        reporters: ['progress', 'coverage'],
 
         // web server port
         port: 9876,
@@ -73,11 +79,25 @@ module.exports = function(config) {
             'Chrome'
         ],
 
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+
         /*
          * Continuous Integration mode
          * if true, Karma captures browsers, runs the tests and exits
          */
         singleRun: false
-    });
+    };
+
+    if (process.env.TRAVIS) {
+        options.browsers = ['Chrome_travis_ci'];
+        options.singleRun = true;
+    }
+
+    config.set(options);
 
 };

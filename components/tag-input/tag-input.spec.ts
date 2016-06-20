@@ -2,8 +2,8 @@ import {
     describe,
     inject,
     it,
-    fakeAsync,
-    tick
+    expect,
+    beforeEach
 } from '@angular/core/testing';
 
 import { Component } from '@angular/core';
@@ -11,15 +11,13 @@ import {By} from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import {TagInput} from './tag-input.component';
-import {Tag} from './tag/tag.component';
+import {Tag} from '../tag/tag.component';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 describe('TagInput', () => {
     let builder: TestComponentBuilder;
 
-    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder): void => {
-        builder = tcb;
-    }));
+    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
 
     it('should have 2 tags set by ngModel',  (done: () => void) => {
         builder.createAsync(TestApp).then(fixture => {
@@ -40,13 +38,13 @@ describe('TagInput', () => {
         });
     });
 
-    describe("when a new item is added", function() {
+    describe('when a new item is added', function() {
         it('should be added to the list of items and update its parent\'s model', () => {
             const template = `<tag-input [(ngModel)]="items"></tag-input>`;
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.model.value = "New Item";
+                component.model.value = 'New Item';
                 component.add();
 
                 expect(component.model.value).toEqual('');
@@ -62,7 +60,7 @@ describe('TagInput', () => {
             const template = `<tag-input [(ngModel)]="items" [maxItems]="2"></tag-input>`;
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.model.value = "New Item";
+                component.model.value = 'New Item';
                 component.add();
 
                 fixture.detectChanges();
@@ -72,10 +70,10 @@ describe('TagInput', () => {
             });
         });
 
-        it("emits the event onAdd", (done) => {
+        it('emits the event onAdd', (done) => {
             builder.createAsync(TestApp).then(fixture => {
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                const itemName = "New Item";
+                const itemName = 'New Item';
 
                 component.model.value = itemName;
 
@@ -88,46 +86,46 @@ describe('TagInput', () => {
             });
         });
 
-        it("does not allow dupes", () => {
+        it('does not allow dupes', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.model.value = "Javascript";
+                component.model.value = 'Javascript';
                 component.add();
                 expect(component.value.length).toEqual(2);
             });
         });
     });
 
-    describe("when an item is removed", () => {
-        it("is removed from the list", () => {
+    describe('when an item is removed', () => {
+        it('is removed from the list', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.remove("Typescript");
+                component.remove('Typescript');
 
                 fixture.detectChanges();
 
-                expect(component.value).toEqual(["Javascript"]);
+                expect(component.value).toEqual(['Javascript']);
                 expect(component.input.isFocused).toEqual(true);
             });
         });
 
-        it("emits the event onRemove", done => {
+        it('emits the event onRemove', done => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
 
                 component.onRemove.subscribe(item => {
-                    expect(item).toEqual("Typescript");
+                    expect(item).toEqual('Typescript');
                     done();
                 });
 
-                component.remove("Typescript");
+                component.remove('Typescript');
             });
         });
 
-        it("is sets current selected item as undefined", () => {
+        it('is sets current selected item as undefined', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;

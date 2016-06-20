@@ -1,12 +1,10 @@
 import {Component} from '@angular/core';
-import {TagInput} from '../components/tag-input/tag-input.component';
+import {TagInput} from '../../components/tag-input/tag-input.component';
 
 @Component({
     selector: 'app',
-    providers: [],
-    pipes: [],
     directives: [TagInput],
-    template: require('./app.html')
+    template: require('./home.html')
 })
 
 export class App {
@@ -24,6 +22,18 @@ export class App {
 
     public onRemove(item) {
         console.log(item + ' removed');
+    }
+
+    public onSelect(item) {
+        console.log(item + ' selected');
+    }
+
+    public toUpperCase(item: string) {
+        if (item === 'Typescript') {
+            return item.toUpperCase();
+        }
+
+        return false;
     }
 
     ngOnInit() {

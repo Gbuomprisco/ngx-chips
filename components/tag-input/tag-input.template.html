@@ -1,7 +1,7 @@
 <div class="tag-input" [class.tag-input--focused]="input.isFocused">
     <tag *ngFor="let item of value; trackBy: item; let i = index"
          (onRemove)="remove($event)"
-         (click)="selectedTag = item"
+         (click)="select(item)"
          (keydown)="handleKeydown($event, item)"
          [tabindex]="i"
          [isSelected]="selectedTag === item"
