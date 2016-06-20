@@ -1,7 +1,7 @@
 module.exports = function(config) {
     var testWebpackConfig = require('./webpack.test.js');
 
-    config.set({
+    var options = {
 
         // base path that will be used to resolve all patterns (e.g. files, exclude)
         basePath: '',
@@ -70,14 +70,27 @@ module.exports = function(config) {
          * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
          */
         browsers: [
-            'Chrome'
+            'Chrome', 'ChromeCanary'
         ],
+
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
 
         /*
          * Continuous Integration mode
          * if true, Karma captures browsers, runs the tests and exits
          */
         singleRun: false
-    });
+    };
+
+    if (process.env.TRAVIS) {
+        options.browsers = ['Chrome_travis_ci'];
+    }
+
+    config.set(options);
 
 };

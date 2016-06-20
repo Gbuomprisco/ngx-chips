@@ -84,7 +84,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     @Output() onAdd = new EventEmitter<string>();
 
     /**
-     * @name onAdd
+     * @name onRemove
      * @desc event emitted when removing an existing item
      * @type {EventEmitter<string>}
      */
