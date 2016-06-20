@@ -1,4 +1,5 @@
 # ng2 Tag Input
+Tag Input component for Angular 2. Blandly inspired by Angular Material's md-chips.
 
 ## Install
 
@@ -29,6 +30,10 @@ Properties:
 - maxItems (number): the maximum number of items it is possible to enter.
 - readonly (boolean): sets the tag input static, not allowing deletion/addition of the items entered.
 - separatorKeys (string[]): array of keyboard keys with which is possible to define the key for separating terms. By default. only Enter is the defined key.
+
+Events:
+- onAdd(item: string): event fired when an item has been added
+- onRemove(item: string): event fired when an item has been removed
 
 Examples:
 
@@ -67,8 +72,4 @@ Examples:
                (onRemove)="onItemRemoved($event)"
                (onAdd)="onItemAdded($event)">
     </tag-input>
-
-Events:
-- onAdd(item: string): event fired when an item has been added
-- onRemove(item: string): event fired when an item has been removed
 
