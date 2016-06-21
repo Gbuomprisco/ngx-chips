@@ -1,7 +1,7 @@
-.tag {
+tag {
   display: flex;
   flex-direction: row;
-  margin: 0 0.2rem;
+  margin: 0.2rem;
   background: #efefef;
   color: #222;
   padding: 0.6rem;
@@ -14,10 +14,11 @@
   border: 1px solid #eee;
 }
 
-.tag--selected {
+tag:focus {
   background: #2196F3;
   color: #fff;
   border-color: darken(#2196F3, 5%);
+  outline: 0;
 }
 
 .tag__remove-button {

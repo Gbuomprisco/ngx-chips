@@ -9,7 +9,9 @@ import {
     ElementRef,
     ChangeDetectionStrategy,
     EventEmitter,
-    Renderer
+    Renderer,
+    ViewChildren,
+    QueryList
 } from '@angular/core';
 
 import {
@@ -103,6 +105,13 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      */
     @Output() onSelect = new EventEmitter<string>();
 
+    /**
+     * @name tags
+     * @desc array representing the tag components
+     * @type {QueryList<Tag>}
+     */
+    @ViewChildren(Tag) private tags: QueryList<Tag>;
+
     // Component private/public properties
 
     /**
@@ -118,13 +127,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     };
 
     /**
-     * @name selectedTag
-     * @desc string representing the current tag selected
-     * @type {undefined}
-     */
-    public selectedTag: string = undefined;
-
-    /**
      * @name input
      * @desc object representing utilities for managing the input text element
      */
@@ -138,18 +140,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         focus: () => {
             this.input.isFocused = true;
             this.renderer.invokeElementMethod(this.input.element, 'focus', []);
-            this.selectedTag = undefined;
+
+            if (this.selectedTag) {
+                this.selectedTag.unselect();
+            }
         }
     };
-
-    /**
-     * @name getTagElements
-     * @desc gets list of <tag> elements
-     * @returns {any[]|NodeListOf<Element>}
-     */
-    private getTagElements(): HTMLElement[] {
-        return this.element.nativeElement.querySelectorAll('tag');
-    }
 
     /**
      * @name listeners
@@ -168,20 +164,20 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
 
     /**
      * @name removes an item from the array of the model
-     * @param item {string}
+     * @param tag {TagComponent}
      */
-    public remove(item: string): void {
-        this.value = this.value.filter(_item => _item !== item);
+    public remove(tag: TagComponent): void {
+        this.value = this.value.filter(_item => _item !== tag.item);
 
-        if (this.selectedTag === item) {
-            this.selectedTag = undefined;
+        if (this.selectedTag && this.selectedTag.item === tag.item) {
+            this.selectedTag.unselect();
         }
 
         // focus input right after removing an item
         this.input.focus.call(this);
 
         // emit remove event
-        this.onRemove.emit(item);
+        this.onRemove.emit(tag.item);
     }
 
     /**
@@ -213,7 +209,17 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @param item
      */
     public select(item: string): void {
-        this.selectedTag = item;
+        const tags: Tag[] = this.tags.toArray();
+
+        // deselect tag
+        if (this.selectedTag) {
+            this.selectedTag.unselect();
+        }
+
+        // activate selected tag
+        tags.filter(_tag => _tag.item === item)[0].select();
+
+        // emit event
         this.onSelect.emit(item);
     }
 
@@ -238,29 +244,29 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             KEY = $event.keyCode,
             ACTION = KEY_PRESS_ACTIONS[KEY],
             itemIndex = this.value.indexOf(item),
-            tagElements = this.getTagElements();
+            tags = this.tags.toArray();
 
         function deleteSelectedTag() {
             if (vm.selectedTag) {
-                vm.remove(item);
+                vm.remove(vm.selectedTag);
             }
         }
 
         function switchPrev() {
             if (itemIndex > 0) {
                 vm.select(vm.value[itemIndex - 1]);
-                vm.renderer.invokeElementMethod(tagElements[itemIndex - 1], 'focus', []);
+                tags[itemIndex - 1].focus();
             } else {
-                vm.input.focus();
+                vm.input.focus.call(vm);
             }
         }
 
         function switchNext() {
             if (itemIndex < vm.value.length - 1) {
                 vm.select(vm.value[itemIndex + 1]);
-                vm.renderer.invokeElementMethod(tagElements[itemIndex + 1], 'focus', []);
+                tags[itemIndex + 1].focus();
             } else {
-                vm.input.focus();
+                vm.input.focus.call(vm);
             }
         }
 
@@ -283,6 +289,15 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     }
 
     /**
+     * @name selectedTag
+     * @desc string representing the current tag selected
+     * @type {Tag}
+     */
+    private get selectedTag(): Tag {
+        return this.tags.toArray().filter(_tag => _tag.isSelected)[0];
+    }
+
+    /**
      * @name setupAdditionalKeysEvents
      * @desc sets up listeners for additional separator keys and the backspace key for selecting the last item
      */
@@ -300,7 +315,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             const itemsLength = vm.value.length;
             if ($event.keyCode === 37 || $event.keyCode === 8 && itemsLength) {
                 vm.select(vm.value[itemsLength - 1]);
-                vm.renderer.invokeElementMethod(vm.getTagElements()[itemsLength - 1], 'focus', []);
+                this.tags.last.focus();
             }
         };
 
@@ -323,7 +338,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         }
      }
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         this.input.element = this.element.nativeElement.querySelector('input');
     }
 }

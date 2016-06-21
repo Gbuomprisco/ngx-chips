@@ -1,9 +1,5 @@
-interface TagComponent {
-    remove(): void;
-}
 
 interface TagInputComponent {
-    selectedTag: string;
     model: {
         value: string;
         reset();
@@ -15,11 +11,24 @@ interface TagInputComponent {
         isVisible(): void;
         focus(): void;
     };
-    select(item: string);
-    remove(item: string): void;
+    remove(item: TagComponent): void;
     add(): void;
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
+}
+
+interface TagComponent {
+    item: string;
+    readonly: boolean;
+    isSelected: boolean;
+    remove(): void;
+    select(): void;
+    unselect(): void;
+    focus(): void;
+}
+
+interface TagTemplateComponent {
+
 }
 
 declare module 'ng2-tag-input' {}
