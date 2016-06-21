@@ -15,6 +15,13 @@ import {
 } from '@angular/core';
 
 import {
+    Validators,
+    Control,
+    ControlGroup,
+    FormBuilder
+} from '@angular/common';
+
+import {
     PLACEHOLDER,
     SECONDARY_PLACEHOLDER,
     ACTIONS,
@@ -48,62 +55,67 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @desc keyboard keys with which a user can separate items
      * @type {Array}
      */
-    @Input() separatorKeys: number[] = [];
+    @Input() public separatorKeys: number[] = [];
 
     /**
      * @name placeholder
      * @desc the placeholder of the input text
      * @type {string}
      */
-    @Input() placeholder: string = PLACEHOLDER;
+    @Input() public placeholder: string = PLACEHOLDER;
 
     /**
      * @name secondaryPlaceholder
      * @desc placeholder to appear when the input is empty
      * @type {string}
      */
-    @Input() secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
+    @Input() public secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
 
     /**
      * @name maxItems
      * @desc maximum number of items that can be added
      * @type {number}
      */
-    @Input() maxItems: number = undefined;
+    @Input() public maxItems: number = undefined;
 
     /**
      * @name readonly
      * @desc if set to true, the user cannot remove/add new items
      * @type {boolean}
      */
-    @Input() readonly: boolean = undefined;
+    @Input() public readonly: boolean = undefined;
 
     /**
      * @name transform
      * @desc function passed to the component to transform the value of the items, or reject them instead
      */
-    @Input() transform: (item: string) => string = (item) => item;
+    @Input() public transform: (item: string) => string = (item) => item;
+
+    /**
+     *
+     */
+    @Input() public validators = [];
 
     /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
      */
-    @Output() onAdd = new EventEmitter<string>();
+    @Output() public onAdd = new EventEmitter<string>();
 
     /**
      * @name onRemove
      * @desc event emitted when removing an existing item
      * @type {EventEmitter<string>}
      */
-    @Output() onRemove = new EventEmitter<string>();
+    @Output() public onRemove = new EventEmitter<string>();
 
     /**
      * @name onSelect
      * @desc event emitted when selecting an item
      * @type {EventEmitter<string>}
      */
-    @Output() onSelect = new EventEmitter<string>();
+    @Output() public onSelect = new EventEmitter<string>();
 
     /**
      * @name tags
@@ -115,16 +127,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     // Component private/public properties
 
     /**
-     * @name model
-     * @desc value of the input text
-     * @type {{value: string, reset: (function(): undefined)}}
+     * @name form
+     * @type {Form}
+     * @desc ngForm
      */
-    public model = {
-        value: <string>undefined,
-        reset() {
-            this.value = '';
-        }
-    };
+
+    public form: ControlGroup;
 
     /**
      * @name input
@@ -158,6 +166,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     };
 
     constructor(private element: ElementRef,
+                private builder: FormBuilder,
                 private renderer: Renderer) {
         super();
     }
@@ -185,22 +194,26 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @desc adds the current text model to the items array
      */
     public add(): void {
-        const transform = this.transform,
-            itemValue = this.model.value,
-            item = transform(itemValue),
-            isDupe = this.value.indexOf(item) !== -1;
+        const vm = this,
+            item = vm.transform(vm.form.value.item),
+            control = <Control>vm.form.find('item');
+
+        vm.form.updateValueAndValidity(item);
+        const isDupe = vm.value.indexOf(item) !== -1;
 
         // check validity
-        if (!this.input.isVisible() || !item || isDupe) {
+        if (!vm.input.isVisible() || !vm.form.valid || isDupe) {
             return;
         }
 
         // append item to the ngModel list
-        this.value.push(item);
+        vm.value.push(item);
 
-        // reset input and emit event
-        this.model.reset();
-        this.onAdd.emit(item);
+        // reset control
+        control.updateValue('');
+
+        //  and emit event
+        vm.onAdd.emit(item);
     }
 
     /**
@@ -313,7 +326,9 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
 
         const backSpaceListener = ($event) => {
             const itemsLength = vm.value.length;
-            if ($event.keyCode === 37 || $event.keyCode === 8 && itemsLength) {
+            const inputValue = vm.form.find('item').value;
+            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+            if (isCorrectKey && itemsLength && !inputValue) {
                 vm.select(vm.value[itemsLength - 1]);
                 this.tags.last.focus();
             }
@@ -336,6 +351,10 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             this.maxItems = this.value.length;
             console.warn('The number of items specified was greater than the property max-items.');
         }
+
+        this.form = this.builder.group({
+            item: new Control('', Validators.compose(this.validators))
+        });
      }
 
     ngAfterViewChecked() {

@@ -7,8 +7,12 @@
   border-bottom: 1px solid #efefef;
 }
 
-.tag-input:focus {
+.tag-input--focused {
   border-bottom: 2px solid #2196F3;
+}
+
+.tag-input--invalid {
+  border-bottom: 2px solid red;
 }
 
 .tag-input form {
