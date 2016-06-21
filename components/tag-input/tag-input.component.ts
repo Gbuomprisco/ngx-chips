@@ -198,7 +198,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             item = vm.transform(vm.form.value.item),
             control = <Control>vm.form.find('item');
 
-        vm.form.updateValueAndValidity(item);
+        control.updateValue(item);
         const isDupe = vm.value.indexOf(item) !== -1;
 
         // check validity
@@ -325,9 +325,10 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         };
 
         const backSpaceListener = ($event) => {
-            const itemsLength = vm.value.length;
-            const inputValue = vm.form.find('item').value;
-            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+            const itemsLength = vm.value.length,
+                inputValue = vm.form.find('item').value,
+                isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+
             if (isCorrectKey && itemsLength && !inputValue) {
                 vm.select(vm.value[itemsLength - 1]);
                 this.tags.last.focus();

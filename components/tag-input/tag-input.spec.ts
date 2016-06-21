@@ -14,6 +14,11 @@ import {TagInput} from './tag-input.component';
 import {Tag} from '../tag/tag.component';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
+import {
+    Validators,
+    Control
+} from '@angular/common';
+
 describe('TagInput', () => {
     let builder: TestComponentBuilder;
 
@@ -43,11 +48,16 @@ describe('TagInput', () => {
             const template = `<tag-input [(ngModel)]="items"></tag-input>`;
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
+
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.model.value = 'New Item';
+
+                component.form.find('item').updateValue('New Item');
+                expect(component.form.valid).toEqual(true);
+
                 component.add();
 
-                expect(component.model.value).toEqual('');
+                expect(component.form.valid).toEqual(false);
+                expect(component.form.controls.item.value).toEqual('');
 
                 fixture.detectChanges();
 
@@ -58,9 +68,13 @@ describe('TagInput', () => {
 
         it('should not be allowed if max-items is set up', () => {
             const template = `<tag-input [(ngModel)]="items" [maxItems]="2"></tag-input>`;
+
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
+                fixture.detectChanges();
+
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.model.value = 'New Item';
+
+                component.form.find('item').updateValue('New Item');
                 component.add();
 
                 fixture.detectChanges();
@@ -72,10 +86,12 @@ describe('TagInput', () => {
 
         it('emits the event onAdd', (done) => {
             builder.createAsync(TestApp).then(fixture => {
+                fixture.detectChanges();
+
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
                 const itemName = 'New Item';
 
-                component.model.value = itemName;
+                component.form.find('item').updateValue(itemName);
 
                 component.onAdd.subscribe(item => {
                     expect(item).toEqual(itemName);
@@ -90,7 +106,7 @@ describe('TagInput', () => {
             builder.createAsync(TestApp).then(fixture => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-                component.model.value = 'Javascript';
+                component.form.find('item').updateValue('Javascript');
                 component.add();
                 expect(component.value.length).toEqual(2);
             });
@@ -143,6 +159,85 @@ describe('TagInput', () => {
             });
         });
     });
+
+    describe('testing validators', () => {
+        it('injects minLength validator and validates correctly', function() {
+            const template = `<tag-input 
+                                    [validators]="[validators.minLength]" 
+                                    [(ngModel)]="items"></tag-input>`;
+
+            builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
+                fixture.detectChanges();
+
+                const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+
+                component.form.find('item').updateValue('Ab');
+                expect(component.form.valid).toBe(false);
+
+                component.add();
+                expect(component.value.length).toEqual(2);
+
+
+                // add element with > 3 chars
+                component.form.find('item').updateValue('Abcde');
+                expect(component.form.valid).toBe(true);
+                component.add();
+
+                expect(component.value.length).toEqual(3);
+            });
+        });
+
+        it('injects minLength validator and custom validator and validates correctly', function() {
+            const template = `<tag-input 
+                                    [validators]="[validators.minLength, validators.startsWith]" 
+                                    [(ngModel)]="items"></tag-input>`;
+
+            builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
+                fixture.detectChanges();
+
+                const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+
+                component.form.find('item').updateValue('Javacript');
+                expect(component.form.valid).toBe(false);
+                component.add();
+                expect(component.value.length).toEqual(2);
+
+
+                component.form.find('item').updateValue('@J');
+                expect(component.form.valid).toBe(false);
+                component.add();
+                expect(component.value.length).toEqual(2);
+
+
+                // add element with > 3 chars AND @
+                component.form.find('item').updateValue('@Javacript');
+                expect(component.form.valid).toBe(true);
+                component.add();
+
+                expect(component.value.length).toEqual(3);
+            });
+        });
+
+        it('validates transformed values', function() {
+            const template = `<tag-input 
+                                    [transform]="addPrefix"
+                                    [validators]="[validators.minLength]" 
+                                    [(ngModel)]="items">
+                             </tag-input>`;
+
+            builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
+                fixture.detectChanges();
+
+                const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+
+                component.form.find('item').updateValue('@');
+                component.add();
+
+                expect(component.value[2]).toEqual('prefix: @');
+                expect(component.value.length).toEqual(3);
+            });
+        });
+    });
 });
 
 @Component({
@@ -163,6 +258,22 @@ class TestApp {
 
     onRemove(item) {
 
+    }
+
+    validators = {
+        minLength: Validators.minLength(3),
+        startsWith: (control: Control) => {
+            if (control.value.charAt(0) !== '@') {
+                return {
+                    'startsWithAt@': true
+                };
+            }
+            return null;
+        }
+    };
+
+    addPrefix(item: string) {
+        return `prefix: ${item}`;
     }
 
     ngOnInit() {

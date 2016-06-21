@@ -33,12 +33,8 @@ export class App {
         console.log(item + ' selected');
     }
 
-    public toUpperCase(item: string): string {
-        if (item === 'Typescript') {
-            return item.toUpperCase();
-        }
-
-        return undefined;
+    public transform(item: string): string {
+        return `@${item}`;
     }
 
     private startsWithAt(control: Control) {
