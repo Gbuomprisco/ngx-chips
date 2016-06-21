@@ -124,14 +124,15 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      */
     @ViewChildren(Tag) private tags: QueryList<Tag>;
 
+
+
     // Component private/public properties
 
     /**
      * @name form
-     * @type {Form}
-     * @desc ngForm
+     * @type {ngForm}
+     * @desc ngForm for handling the validation on the input text
      */
-
     public form: ControlGroup;
 
     /**
@@ -165,11 +166,13 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         change: <{(fun): any}[]>[]
     };
 
+
     constructor(private element: ElementRef,
                 private builder: FormBuilder,
                 private renderer: Renderer) {
         super();
     }
+
 
     /**
      * @name removes an item from the array of the model

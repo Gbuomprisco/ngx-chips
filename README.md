@@ -33,7 +33,7 @@ Properties:
 - readonly <boolean>: sets the tag input static, not allowing deletion/addition of the items entered.
 - separatorKeys <string[]>: array of keyboard keys with which is possible to define the key for separating terms. By default. only Enter is the defined key.
 - transform (item: string) => string: a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
-
+- validators <Validator[]>: an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
 
 Events:
 - onAdd(item: string): event fired when an item has been added
