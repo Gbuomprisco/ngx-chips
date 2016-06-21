@@ -105,6 +105,11 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      */
     @Output() onSelect = new EventEmitter<string>();
 
+    /**
+     * @name tags
+     * @desc array representing the tag components
+     * @type {QueryList<Tag>}
+     */
     @ViewChildren(Tag) private tags: QueryList<Tag>;
 
     // Component private/public properties
@@ -207,7 +212,9 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         const tags: Tag[] = this.tags.toArray();
 
         // deselect tag
-        if (this.selectedTag) this.selectedTag.unselect();
+        if (this.selectedTag) {
+            this.selectedTag.unselect();
+        }
 
         // activate selected tag
         tags.filter(_tag => _tag.item === item)[0].select();

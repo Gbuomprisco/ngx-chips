@@ -28,14 +28,14 @@ export class App {
         console.log(item + ' selected');
     }
 
-    public toUpperCase(item: string) {
+    public toUpperCase(item: string): string {
         if (item === 'Typescript') {
             return item.toUpperCase();
         }
 
-        return false;
+        return undefined;
     }
-
+    
     ngOnInit() {
 
     }

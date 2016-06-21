@@ -9,6 +9,7 @@ import {
     Renderer
 } from '@angular/core';
 
+
 @Component({
     selector: 'tag',
     styles: [require('./tag.style.scss').toString()],
@@ -17,7 +18,6 @@ import {
 export class Tag implements TagComponent {
     @Input() item: string;
     @Input() readonly: boolean;
-
     @Output() onRemove = new EventEmitter<TagComponent>();
 
     public isSelected: boolean;
