@@ -1,5 +1,3 @@
-/// <reference path="../ng2-tag-input.d.ts"/>
-
 import {
     Component,
     Input,
@@ -8,7 +6,6 @@ import {
     ElementRef,
     Renderer
 } from '@angular/core';
-
 
 @Component({
     selector: 'tag',

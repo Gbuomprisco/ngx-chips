@@ -1,5 +1,3 @@
-/// <reference path='../ng2-tag-input.d.ts'/>
-
 import {
     Component,
     Provider,
