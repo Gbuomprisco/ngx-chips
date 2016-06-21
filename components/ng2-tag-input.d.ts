@@ -1,9 +1,6 @@
 
 interface TagInputComponent {
-    model: {
-        value: string;
-        reset();
-    };
+    form;
     value: string[];
     input: {
         element: HTMLElement,
@@ -15,6 +12,7 @@ interface TagInputComponent {
     add(): void;
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
+    transform(item: string);
 }
 
 interface TagComponent {
@@ -25,10 +23,6 @@ interface TagComponent {
     select(): void;
     unselect(): void;
     focus(): void;
-}
-
-interface TagTemplateComponent {
-
 }
 
 declare module 'ng2-tag-input' {}

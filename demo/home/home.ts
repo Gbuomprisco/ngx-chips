@@ -1,6 +1,11 @@
 import {Component} from '@angular/core';
 import {TagInput} from '../../components/tag-input/tag-input.component';
 
+import {
+    Validators,
+    Control
+} from '@angular/common';
+
 @Component({
     selector: 'app',
     directives: [TagInput],
@@ -28,14 +33,22 @@ export class App {
         console.log(item + ' selected');
     }
 
-    public toUpperCase(item: string): string {
-        if (item === 'Typescript') {
-            return item.toUpperCase();
+    public transform(item: string): string {
+        return `@${item}`;
+    }
+
+    private startsWithAt(control: Control) {
+        if (control.value.charAt(0) !== '@') {
+            return {
+                'startsWithAt@': true
+            };
         }
 
-        return undefined;
+        return null;
     }
-    
+
+    public validators = [Validators.minLength(3), this.startsWithAt];
+
     ngOnInit() {
 
     }
