@@ -5,7 +5,7 @@ Tag Input component for Angular 2. Blandly inspired by Angular Material's md-chi
 
 ## Install the component
 
-    npm install https://github.com/Gbuomprisco/ng2-tag-input
+    npm install ng2-tag-input --save
     
 ## Run the tests
 
