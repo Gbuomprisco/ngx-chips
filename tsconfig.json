@@ -13,7 +13,7 @@
     "forkChecker": true
   },
   "files": [
-
+    "typings/index.d.ts"
   ],
   "exclude": [
     "typings/main.d.ts",

@@ -7,6 +7,10 @@ import {
     Renderer
 } from '@angular/core';
 
+import {
+    TagComponent
+} from './tag.d';
+
 @Component({
     selector: 'tag',
     styles: [require('./tag.style.scss').toString()],

@@ -1,3 +1,4 @@
+import {TagComponent} from '../tag/tag.d.ts';
 
 interface TagInputComponent {
     form;
@@ -15,12 +16,4 @@ interface TagInputComponent {
     transform(item: string);
 }
 
-interface TagComponent {
-    item: string;
-    readonly: boolean;
-    isSelected: boolean;
-    remove(): void;
-    select(): void;
-    unselect(): void;
-    focus(): void;
-}
+export {TagInputComponent, TagComponent};

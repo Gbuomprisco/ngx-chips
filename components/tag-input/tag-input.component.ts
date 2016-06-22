@@ -27,6 +27,11 @@ import {
 } from './tag-input.constants';
 
 import {NG_VALUE_ACCESSOR} from '@angular/common';
+
+import {
+    TagComponent, TagInputComponent
+} from './tag-input.d';
+
 import {Tag} from '../tag/tag.component';
 import {TagInputAccessor} from './tag-input-accessor';
 
