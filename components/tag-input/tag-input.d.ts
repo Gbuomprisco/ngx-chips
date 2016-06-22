@@ -1,13 +1,7 @@
-interface TagComponent {
-    remove(): void;
-}
+import {TagComponent} from '../tag/tag.d.ts';
 
 interface TagInputComponent {
-    selectedTag: string;
-    model: {
-        value: string;
-        reset();
-    };
+    form;
     value: string[];
     input: {
         element: HTMLElement,
@@ -15,11 +9,11 @@ interface TagInputComponent {
         isVisible(): void;
         focus(): void;
     };
-    select(item: string);
-    remove(item: string): void;
+    remove(item: TagComponent): void;
     add(): void;
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
+    transform(item: string);
 }
 
-declare module 'ng2-tag-input' {}
+export {TagInputComponent, TagComponent};

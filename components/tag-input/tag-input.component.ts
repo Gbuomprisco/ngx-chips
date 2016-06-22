@@ -1,5 +1,3 @@
-/// <reference path='../ng2-tag-input.d.ts'/>
-
 import {
     Component,
     Provider,
@@ -9,8 +7,17 @@ import {
     ElementRef,
     ChangeDetectionStrategy,
     EventEmitter,
-    Renderer
+    Renderer,
+    ViewChildren,
+    QueryList
 } from '@angular/core';
+
+import {
+    Validators,
+    Control,
+    ControlGroup,
+    FormBuilder
+} from '@angular/common';
 
 import {
     PLACEHOLDER,
@@ -20,6 +27,11 @@ import {
 } from './tag-input.constants';
 
 import {NG_VALUE_ACCESSOR} from '@angular/common';
+
+import {
+    TagComponent, TagInputComponent
+} from './tag-input.d';
+
 import {Tag} from '../tag/tag.component';
 import {TagInputAccessor} from './tag-input-accessor';
 
@@ -46,83 +58,85 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @desc keyboard keys with which a user can separate items
      * @type {Array}
      */
-    @Input() separatorKeys: number[] = [];
+    @Input() public separatorKeys: number[] = [];
 
     /**
      * @name placeholder
      * @desc the placeholder of the input text
      * @type {string}
      */
-    @Input() placeholder: string = PLACEHOLDER;
+    @Input() public placeholder: string = PLACEHOLDER;
 
     /**
      * @name secondaryPlaceholder
      * @desc placeholder to appear when the input is empty
      * @type {string}
      */
-    @Input() secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
+    @Input() public secondaryPlaceholder: string = SECONDARY_PLACEHOLDER;
 
     /**
      * @name maxItems
      * @desc maximum number of items that can be added
      * @type {number}
      */
-    @Input() maxItems: number = undefined;
+    @Input() public maxItems: number = undefined;
 
     /**
      * @name readonly
      * @desc if set to true, the user cannot remove/add new items
      * @type {boolean}
      */
-    @Input() readonly: boolean = undefined;
+    @Input() public readonly: boolean = undefined;
 
     /**
      * @name transform
      * @desc function passed to the component to transform the value of the items, or reject them instead
      */
-    @Input() transform: (item: string) => string = (item) => item;
+    @Input() public transform: (item: string) => string = (item) => item;
+
+    /**
+     *
+     */
+    @Input() public validators = [];
 
     /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
      */
-    @Output() onAdd = new EventEmitter<string>();
+    @Output() public onAdd = new EventEmitter<string>();
 
     /**
      * @name onRemove
      * @desc event emitted when removing an existing item
      * @type {EventEmitter<string>}
      */
-    @Output() onRemove = new EventEmitter<string>();
+    @Output() public onRemove = new EventEmitter<string>();
 
     /**
      * @name onSelect
      * @desc event emitted when selecting an item
      * @type {EventEmitter<string>}
      */
-    @Output() onSelect = new EventEmitter<string>();
+    @Output() public onSelect = new EventEmitter<string>();
+
+    /**
+     * @name tags
+     * @desc array representing the tag components
+     * @type {QueryList<Tag>}
+     */
+    @ViewChildren(Tag) private tags: QueryList<Tag>;
+
+
 
     // Component private/public properties
 
     /**
-     * @name model
-     * @desc value of the input text
-     * @type {{value: string, reset: (function(): undefined)}}
+     * @name form
+     * @type {ngForm}
+     * @desc ngForm for handling the validation on the input text
      */
-    public model = {
-        value: <string>undefined,
-        reset() {
-            this.value = '';
-        }
-    };
-
-    /**
-     * @name selectedTag
-     * @desc string representing the current tag selected
-     * @type {undefined}
-     */
-    public selectedTag: string = undefined;
+    public form: ControlGroup;
 
     /**
      * @name input
@@ -138,18 +152,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         focus: () => {
             this.input.isFocused = true;
             this.renderer.invokeElementMethod(this.input.element, 'focus', []);
-            this.selectedTag = undefined;
+
+            if (this.selectedTag) {
+                this.selectedTag.unselect();
+            }
         }
     };
-
-    /**
-     * @name getTagElements
-     * @desc gets list of <tag> elements
-     * @returns {any[]|NodeListOf<Element>}
-     */
-    private getTagElements(): HTMLElement[] {
-        return this.element.nativeElement.querySelectorAll('tag');
-    }
 
     /**
      * @name listeners
@@ -161,27 +169,30 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         change: <{(fun): any}[]>[]
     };
 
+
     constructor(private element: ElementRef,
+                private builder: FormBuilder,
                 private renderer: Renderer) {
         super();
     }
 
+
     /**
      * @name removes an item from the array of the model
-     * @param item {string}
+     * @param tag {TagComponent}
      */
-    public remove(item: string): void {
-        this.value = this.value.filter(_item => _item !== item);
+    public remove(tag: TagComponent): void {
+        this.value = this.value.filter(_item => _item !== tag.item);
 
-        if (this.selectedTag === item) {
-            this.selectedTag = undefined;
+        if (this.selectedTag && this.selectedTag.item === tag.item) {
+            this.selectedTag.unselect();
         }
 
         // focus input right after removing an item
         this.input.focus.call(this);
 
         // emit remove event
-        this.onRemove.emit(item);
+        this.onRemove.emit(tag.item);
     }
 
     /**
@@ -189,22 +200,26 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @desc adds the current text model to the items array
      */
     public add(): void {
-        const transform = this.transform,
-            itemValue = this.model.value,
-            item = transform(itemValue),
-            isDupe = this.value.indexOf(item) !== -1;
+        const vm = this,
+            item = vm.transform(vm.form.value.item),
+            control = <Control>vm.form.find('item');
+
+        control.updateValue(item);
+        const isDupe = vm.value.indexOf(item) !== -1;
 
         // check validity
-        if (!this.input.isVisible() || !item || isDupe) {
+        if (!vm.input.isVisible() || !vm.form.valid || isDupe) {
             return;
         }
 
         // append item to the ngModel list
-        this.value.push(item);
+        vm.value.push(item);
 
-        // reset input and emit event
-        this.model.reset();
-        this.onAdd.emit(item);
+        // reset control
+        control.updateValue('');
+
+        //  and emit event
+        vm.onAdd.emit(item);
     }
 
     /**
@@ -213,7 +228,17 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
      * @param item
      */
     public select(item: string): void {
-        this.selectedTag = item;
+        const tags: Tag[] = this.tags.toArray();
+
+        // deselect tag
+        if (this.selectedTag) {
+            this.selectedTag.unselect();
+        }
+
+        // activate selected tag
+        tags.filter(_tag => _tag.item === item)[0].select();
+
+        // emit event
         this.onSelect.emit(item);
     }
 
@@ -238,29 +263,29 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             KEY = $event.keyCode,
             ACTION = KEY_PRESS_ACTIONS[KEY],
             itemIndex = this.value.indexOf(item),
-            tagElements = this.getTagElements();
+            tags = this.tags.toArray();
 
         function deleteSelectedTag() {
             if (vm.selectedTag) {
-                vm.remove(item);
+                vm.remove(vm.selectedTag);
             }
         }
 
         function switchPrev() {
             if (itemIndex > 0) {
                 vm.select(vm.value[itemIndex - 1]);
-                vm.renderer.invokeElementMethod(tagElements[itemIndex - 1], 'focus', []);
+                tags[itemIndex - 1].focus();
             } else {
-                vm.input.focus();
+                vm.input.focus.call(vm);
             }
         }
 
         function switchNext() {
             if (itemIndex < vm.value.length - 1) {
                 vm.select(vm.value[itemIndex + 1]);
-                vm.renderer.invokeElementMethod(tagElements[itemIndex + 1], 'focus', []);
+                tags[itemIndex + 1].focus();
             } else {
-                vm.input.focus();
+                vm.input.focus.call(vm);
             }
         }
 
@@ -283,6 +308,15 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     }
 
     /**
+     * @name selectedTag
+     * @desc string representing the current tag selected
+     * @type {Tag}
+     */
+    private get selectedTag(): Tag {
+        return this.tags.toArray().filter(_tag => _tag.isSelected)[0];
+    }
+
+    /**
      * @name setupAdditionalKeysEvents
      * @desc sets up listeners for additional separator keys and the backspace key for selecting the last item
      */
@@ -297,10 +331,13 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         };
 
         const backSpaceListener = ($event) => {
-            const itemsLength = vm.value.length;
-            if ($event.keyCode === 37 || $event.keyCode === 8 && itemsLength) {
+            const itemsLength = vm.value.length,
+                inputValue = vm.form.find('item').value,
+                isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+
+            if (isCorrectKey && itemsLength && !inputValue) {
                 vm.select(vm.value[itemsLength - 1]);
-                vm.renderer.invokeElementMethod(vm.getTagElements()[itemsLength - 1], 'focus', []);
+                this.tags.last.focus();
             }
         };
 
@@ -321,9 +358,13 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
             this.maxItems = this.value.length;
             console.warn('The number of items specified was greater than the property max-items.');
         }
+
+        this.form = this.builder.group({
+            item: new Control('', Validators.compose(this.validators))
+        });
      }
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         this.input.element = this.element.nativeElement.querySelector('input');
     }
 }

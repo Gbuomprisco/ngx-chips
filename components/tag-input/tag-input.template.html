@@ -1,23 +1,26 @@
-<div class="tag-input" [class.tag-input--focused]="input.isFocused">
+<div class="tag-input"
+     [class.tag-input--invalid]="!form.valid && form.controls.item.value"
+     [class.tag-input--focused]="input.isFocused">
+
     <tag *ngFor="let item of value; trackBy: item; let i = index"
          (onRemove)="remove($event)"
          (click)="select(item)"
          (keydown)="handleKeydown($event, item)"
          [tabindex]="i"
-         [isSelected]="selectedTag === item"
          [readonly]="readonly"
          [item]="item">
     </tag>
 
-    <form (submit)="add()" *ngIf="input.isVisible.call(this)">
+    <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [ngFormModel]="form">
         <input type="text"
+               required
+               class="tag-input__text-input"
+               placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
                (focus)="input.focus()"
                (blur)="input.isFocused = false"
                (keyup)="fireEvents('keyup', $event)"
-               [(ngModel)]="model.value"
+               ngControl="item"
                [tabindex]="value.length"
-               placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
-               class="tag-input__text-input"
         />
     </form>
 </div>

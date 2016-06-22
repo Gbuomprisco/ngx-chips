@@ -1,6 +1,15 @@
-/// <reference path="../ng2-tag-input.d.ts"/>
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ElementRef,
+    Renderer
+} from '@angular/core';
 
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {
+    TagComponent
+} from './tag.d';
 
 @Component({
     selector: 'tag',
@@ -10,10 +19,26 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 export class Tag implements TagComponent {
     @Input() item: string;
     @Input() readonly: boolean;
-    @Input() isSelected: boolean;
-    @Output() onRemove = new EventEmitter<string>();
+    @Output() onRemove = new EventEmitter<TagComponent>();
+
+    public isSelected: boolean;
+
+    constructor(private element: ElementRef,
+                private renderer: Renderer) {}
+
+    public focus(): void {
+        this.renderer.invokeElementMethod(this.element.nativeElement, 'focus', []);
+    }
+
+    public select(): void {
+        this.isSelected = true;
+    }
+
+    public unselect(): void {
+        this.isSelected = false;
+    }
 
     public remove(): void {
-        this.onRemove.emit(this.item);
+        this.onRemove.emit(this);
     }
 }

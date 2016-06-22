@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Ng2TagInput: simple tag input component for Angular 2",
   "scripts": {
     "typings-install": "typings install",
@@ -72,5 +72,6 @@
     "url": "https://github.com/Gbuomprisco/ng2-tag-input/issues"
   },
   "homepage": "https://github.com/Gbuomprisco/ng2-tag-input",
-  "main": "index.ts"
+  "main": "index.ts",
+  "typings": "./components/ng2-tag-input.d.ts"
 }
