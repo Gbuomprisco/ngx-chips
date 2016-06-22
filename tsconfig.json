@@ -13,9 +13,7 @@
     "forkChecker": true
   },
   "files": [
-    "ng2-tag-input.ts",
-    "components/ng2-tag-input.d.ts",
-    "typings/index.d.ts"
+
   ],
   "exclude": [
     "typings/main.d.ts",

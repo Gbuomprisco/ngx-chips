@@ -24,7 +24,3 @@ interface TagComponent {
     unselect(): void;
     focus(): void;
 }
-
-declare module 'ng2-tag-input' {
-    export = TagInputComponent;
-}
