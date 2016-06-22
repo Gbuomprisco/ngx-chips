@@ -15,7 +15,7 @@ Tag Input component for Angular 2. Blandly inspired by Angular Material's md-chi
 
 Once installed, import the TagInput component and use it in your container component:
 
-    import {TagInput} from 'ng2-tag-input';
+    import TagInput from 'ng2-tag-input';
     import {Component} from '@angular2/core';
 
     @Component({
