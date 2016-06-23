@@ -333,6 +333,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
         const backSpaceListener = ($event) => {
             const itemsLength = vm.value.length,
                 inputValue = vm.form.find('item').value,
+                index = vm.value.indexOf(inputValue),
                 isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
             if (isCorrectKey && itemsLength && !inputValue) {

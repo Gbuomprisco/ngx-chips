@@ -2,27 +2,30 @@ tag {
   display: flex;
   flex-direction: row;
   margin: 0.2rem;
-  background: #efefef;
-  color: #222;
-  padding: 0.6rem;
+  padding: 0.1em 0.6rem;
   border-radius: 16px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: 0.05rem;
-  font-size: 13px;
+  background: #efefef;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid #eee;
+  transition: all 0.25s;
+  color: #444;
+  font-weight: 500;
+  line-height: 32px;
 }
 
 tag:focus {
   background: #2196F3;
   color: #fff;
-  border-color: darken(#2196F3, 5%);
   outline: 0;
 }
 
+tag:not(:focus):hover {
+  background: darken(#efefef, 3.5%);
+}
+
 .tag__remove-button {
-  margin-left: 5px;
   cursor: pointer;
 }
 
