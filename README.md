@@ -3,6 +3,8 @@ Tag Input component for Angular 2. Blandly inspired by Angular Material's md-chi
 
 [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![codecov](https://codecov.io/gh/Gbuomprisco/ng2-tag-input/branch/develop/graph/badge.svg)](https://codecov.io/gh/Gbuomprisco/ng2-tag-input)
 
+### [DEMO](https://gbuomprisco.github.io/ng2-tag-input/)
+
 ## Install the component
 
     npm install ng2-tag-input --save
