@@ -145,11 +145,15 @@ export class TagInput extends TagInputAccessor implements TagInputComponent {
     public input = {
         element: <HTMLElement>undefined,
         isFocused: <boolean>false,
-        isVisible: () => {
+        isVisible: (): boolean => {
             const maxItemsReached = this.maxItems !== undefined && this.value.length === this.maxItems;
             return !this.readonly && !maxItemsReached;
         },
-        focus: () => {
+        focus: (): void => {
+            if (!this.input.isVisible()) {
+                return;
+            }
+
             this.input.isFocused = true;
             this.renderer.invokeElementMethod(this.input.element, 'focus', []);
 

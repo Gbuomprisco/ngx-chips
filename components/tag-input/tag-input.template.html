@@ -1,10 +1,11 @@
 <div class="tag-input"
+     (click)="input.focus()"
      [class.tag-input--invalid]="!form.valid && form.controls.item.value"
      [class.tag-input--focused]="input.isFocused">
 
     <tag *ngFor="let item of value; trackBy: item; let i = index"
          (onRemove)="remove($event)"
-         (click)="select(item)"
+         (click)="select(item);$event.stopPropagation();"
          (keydown)="handleKeydown($event, item)"
          [tabindex]="i"
          [readonly]="readonly"

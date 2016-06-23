@@ -1,33 +1,42 @@
 .tag-input {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  transition: all 0.15s;
-  padding: 0.2rem;
-  border-bottom: 1px solid #efefef;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    transition: all 0.15s;
+
+    padding: 0.5rem 0.2rem;
+    min-height: 32px;
+
+    cursor: text;
+    border-bottom: 2px solid #efefef;
 }
 
 .tag-input--focused {
-  border-bottom: 2px solid #2196F3;
+    border-bottom: 2px solid #2196F3;
 }
 
 .tag-input--invalid {
-  border-bottom: 2px solid red;
+    border-bottom: 2px solid red;
 }
 
 .tag-input form {
-  line-height: 2;
+    margin: 0.1em 0;
 }
 
 .tag-input__text-input {
-  border: none;
-  display: inline;
-  padding: 0 0.5rem;
-  font-size: 14px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  vertical-align: sub;
+    border: none;
+
+    display: inline;
+    padding: 0 0.5rem;
+    vertical-align: middle;
+
+    font-size: 17px;
+    font-weight: 300;
+    height: 35px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .tag-input__text-input:focus {
-  outline: 0;
+    outline: 0;
 }
