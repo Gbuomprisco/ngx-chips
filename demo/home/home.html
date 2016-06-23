@@ -1,19 +1,5 @@
 <main>
-	<h1>ng2TagInput</h1>
-
 	<div class="home-container">
-		<div class="options">
-			<label>
-				Readonly:
-				<input type="checkbox" [(ngModel)]="options.readonly">
-			</label>
-
-			<label>
-				Placeholder:
-				<input type="text" [(ngModel)]="options.placeholder">
-			</label>
-		</div>
-
 		<div class="tag-input-container">
 			<tag-input [(ngModel)]="items"
 					   (onSelect)="onSelect($event)"
@@ -21,10 +7,8 @@
 					   (onRemove)="onRemove($event)"
 					   [readonly]="options.readonly"
 					   [validators]="validators"
-					   [transform]="transform"
 					   [placeholder]="options.placeholder">
 			</tag-input>
 		</div>
 	</div>
 </main>
-
