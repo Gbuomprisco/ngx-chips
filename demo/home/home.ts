@@ -47,7 +47,7 @@ export class App {
         return null;
     }
 
-    public validators = [];
+    public validators = [this.startsWithAt];
 
     ngOnInit() {
 
