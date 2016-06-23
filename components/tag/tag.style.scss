@@ -1,28 +1,31 @@
 tag {
-  display: flex;
-  flex-direction: row;
-  margin: 0.2rem;
-  padding: 0.1em 0.6rem;
-  border-radius: 16px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  letter-spacing: 0.05rem;
-  background: #efefef;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.25s;
-  color: #444;
-  font-weight: 500;
-  line-height: 32px;
+    display: flex;
+    flex-direction: row;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 0.05rem;
+
+    background: #efefef;
+    color: #222;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all 0.25s;
+
+    margin: 0.1rem 0.2rem;
+    padding: 0.1rem 0.6rem;
+    height: 32px;
+    line-height: 30px;
+    font-weight: 300;
 }
 
 tag:focus {
-  background: #2196F3;
-  color: #fff;
-  outline: 0;
+    background: #2196F3;
+    color: #fff;
+    outline: 0;
 }
 
 tag:not(:focus):hover {
-  background: darken(#efefef, 3.5%);
+    background: darken(#efefef, 3.5%);
 }
 
 .tag__remove-button {
