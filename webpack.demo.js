@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
+var precss       = require('precss');
+var autoprefixer = require('autoprefixer');
 
 // Webpack Config
 var webpackConfig = {
@@ -41,9 +43,13 @@ var webpackConfig = {
             },
             {
                 test: /\.scss$/,
-                loaders: ["style", "css", "sass"]
+                loaders: ["style", "css", "postcss", "sass"]
             }
         ]
+    },
+
+    postcss: function () {
+        return [precss, autoprefixer];
     }
 
 };
