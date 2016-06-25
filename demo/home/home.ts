@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {TagInput} from '../../components/tag-input/tag-input.component';
+import {TagInput} from '../../components/tag-input.component';
 
 import {
     Validators,

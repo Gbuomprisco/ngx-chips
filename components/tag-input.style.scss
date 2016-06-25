@@ -1,0 +1,103 @@
+// common
+
+$color-focused: #2196F3;
+$color-grey: #efefef;
+
+.flex {
+    display: flex;
+}
+
+// tag input
+
+.tag-input {
+    @extend .flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    transition: all 0.15s;
+
+    padding: 0.5rem 0.2rem;
+    min-height: 32px;
+
+    cursor: text;
+    border-bottom: 2px solid $color-grey;
+}
+
+.tag-input:focus {
+    outline: 0;
+}
+
+.tag-input--focused {
+    border-bottom: 2px solid $color-focused;
+}
+
+.tag-input--invalid {
+    border-bottom: 2px solid red;
+}
+
+
+ // form
+.tag-input form {
+    margin: 0.1em 0;
+}
+
+.tag-input__text-input {
+    border: none;
+
+    display: inline;
+    padding: 0 0.5rem;
+    vertical-align: middle;
+
+    font-size: 17px;
+    font-weight: 300;
+    height: 35px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.tag-input__text-input:focus {
+    outline: 0;
+}
+
+
+// tag
+
+.tag {
+    @extend .flex;
+    flex-direction: row;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.05rem;
+
+    background: $color-grey;
+    color: #222;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all 0.25s;
+
+    margin: 0.1rem 0.2rem;
+    padding: 0.1rem 0.8rem;
+
+    height: 32px;
+    line-height: 32px;
+}
+
+.tag:focus {
+    background: $color-focused;
+    color: #fff;
+    outline: 0;
+}
+
+.tag:not(:focus):hover {
+    background: darken($color-grey, 3.5%);
+}
+
+.tag__remove-button {
+    margin-left: 6px;
+    line-height: 28px;
+
+    img {
+        width: 15px;
+        vertical-align: sub;
+    }
+}
