@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Ng2TagInput: simple tag input component for Angular 2",
   "scripts": {
     "typings-install": "typings install",
