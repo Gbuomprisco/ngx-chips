@@ -1,3 +1,4 @@
-import {TagInput} from './components/tag-input/tag-input.component';
+const TagInput = require('./dist/ng2-tag-input.bundle.js').TagInput;
 
-export default TagInput;
+exports.TagInput = TagInput;
+export {TagInput};
