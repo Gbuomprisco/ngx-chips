@@ -9,14 +9,16 @@ import {
     EventEmitter,
     Renderer,
     ViewChildren,
-    QueryList
+    QueryList,
+    OnInit
 } from '@angular/core';
 
 import {
     Validators,
     Control,
     ControlGroup,
-    FormBuilder
+    FormBuilder,
+    NG_VALUE_ACCESSOR
 } from '@angular/common';
 
 import {
@@ -25,8 +27,6 @@ import {
     ACTIONS,
     KEY_PRESS_ACTIONS
 } from './tag-input.constants';
-
-import {NG_VALUE_ACCESSOR} from '@angular/common';
 
 import {
     TagComponent, TagInputComponent
@@ -40,6 +40,9 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(NG_VALUE_ACCESSOR, {
     multi: true
 });
 
+const styles = [require('./tag-input.style.scss').toString()],
+    template = require('./tag-input.template.html');
+
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
@@ -48,11 +51,11 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(NG_VALUE_ACCESSOR, {
     selector: 'tag-input',
     directives: [Tag],
     providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR],
-    styles: [require('./tag-input.style.scss').toString()],
-    template: require('./tag-input.template.html'),
+    styles,
+    template,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TagInput extends TagInputAccessor implements TagInputComponent {
+export class TagInput extends TagInputAccessor implements TagInputComponent, OnInit {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items

@@ -4,24 +4,17 @@ var path = require('path');
 // Webpack Config
 var webpackConfig = {
     entry: {
-        'vendor': ['@angular/core', '@angular/common'],
-        'ng2-tag-input': './components/tag-input/tag-input.component.ts'
+        'polyfills': './demo/polyfills.ts',
+        'vendor':    './demo/vendor.ts',
+        'app':       './demo/app.ts'
     },
 
     output: {
-        path: './dist',
-        libraryTarget: "umd",
-        library: 'ng2-tag-input',
-        umdNamedRequire: true
-    },
-
-    externals: {
-        "@angular/core": true,
-        "@angular/common": true
+        path: './dist'
     },
 
     plugins: [
-        //new webpack.optimize.CommonsChunkPlugin({ name: [], minChunks: Infinity })
+        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'vendor', 'polyfills'], minChunks: Infinity })
     ],
 
     tslint: {
@@ -64,7 +57,7 @@ var defaultConfig = {
     output: {
         filename: '[name].bundle.js',
         sourceMapFilename: '[name].map',
-        chunkFilename: '[name].chunk.js'
+        chunkFilename: '[id].chunk.js'
     },
 
     module: {
@@ -90,8 +83,10 @@ var defaultConfig = {
         extensions: ['', '.ts', '.js'],
         alias: {
             'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
+            '@angular/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
             'angular2/core': path.join(__dirname, 'node_modules', '@angular', 'core', 'index.js'),
             'angular2/platform/browser': path.join(__dirname, 'node_modules', '@angular', 'platform-browser', 'index.js'),
+            'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'testing', 'index.js'),
             'angular2/router': path.join(__dirname, 'node_modules', '@angular', 'router', 'index.js'),
             'angular2/http': path.join(__dirname, 'node_modules', '@angular', 'http', 'index.js'),
             'angular2/http/testing': path.join(__dirname, 'node_modules', '@angular', 'http', 'testing.js')

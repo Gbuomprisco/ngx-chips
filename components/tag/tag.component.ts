@@ -4,19 +4,24 @@ import {
     Output,
     EventEmitter,
     ElementRef,
-    Renderer
+    Renderer,
+    OnInit
 } from '@angular/core';
 
 import {
     TagComponent
 } from './tag.d';
 
+const template = require('./tag.template.html'),
+    styles =  [require('./tag.style.scss').toString()];
+
 @Component({
+    moduleId: module.id,
     selector: 'tag',
-    styles: [require('./tag.style.scss').toString()],
-    template: require('./tag.template.html')
+    styles,
+    template
 })
-export class Tag implements TagComponent {
+export class Tag implements TagComponent, OnInit {
     @Input() item: string;
     @Input() readonly: boolean;
     @Output() onRemove = new EventEmitter<TagComponent>();
@@ -41,4 +46,6 @@ export class Tag implements TagComponent {
     public remove(): void {
         this.onRemove.emit(this);
     }
+
+    ngOnInit() {}
 }
