@@ -20,6 +20,7 @@
              (keydown)="handleKeydown($event, item)"
              [tabindex]="i"
              class="tag"
+             [class.tag--readonly]="readonly"
              [attr.aria-label]="item">
 
             <!-- tag name -->

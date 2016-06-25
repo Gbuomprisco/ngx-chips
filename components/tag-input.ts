@@ -25,21 +25,21 @@ import {
     SECONDARY_PLACEHOLDER,
     ACTIONS,
     KEY_PRESS_ACTIONS
-} from './tag-input.constants';
+} from './constants';
 
 import {
     TagInputComponent
 } from './tag-input.d';
 
-import {TagInputAccessor} from './tag-input-accessor';
+import {TagInputAccessor} from './accessor';
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(NG_VALUE_ACCESSOR, {
     useExisting: forwardRef(() => TagInput),
     multi: true
 });
 
-const styles = [require('./tag-input.style.scss').toString()],
-    template = require('./tag-input.template.html');
+const styles = [require('./style.scss').toString()],
+    template = require('./template.html');
 
 /**
  * A component for entering a list of terms to be used with ngModel.
@@ -228,10 +228,28 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @param item
      */
     public select(item: string): void {
-        this.selectedTag = item;
+        if (this.readonly) {
+            this.renderer.invokeElementMethod(this.element.nativeElement, 'focus', []);
+            return;
+        }
+        
+        this._selectedTag = item;
 
         // emit event
         this.onSelect.emit(item);
+    }
+
+    /**
+     * @name selectedTag
+     * @desc string representing the current tag selected
+     * @type {string}
+     */
+    public get selectedTag(): string {
+        return this._selectedTag;
+    }
+
+    public set selectedTag(tag: string) {
+        this._selectedTag = tag;
     }
 
     /**
@@ -296,19 +314,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         }
 
         $event.preventDefault();
-    }
-
-    /**
-     * @name selectedTag
-     * @desc string representing the current tag selected
-     * @type {string}
-     */
-    public get selectedTag(): string {
-        return this._selectedTag;
-    }
-
-    public set selectedTag(tag: string) {
-        this._selectedTag = tag;
     }
 
     /**

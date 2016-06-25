@@ -82,13 +82,21 @@ $color-grey: #efefef;
     line-height: 32px;
 }
 
-.tag:focus {
+.tag--readonly {
+    cursor: default;
+}
+
+.tag--readonly:focus {
+    outline: 0;
+}
+
+.tag:not(.tag--readonly):focus {
     background: $color-focused;
     color: #fff;
     outline: 0;
 }
 
-.tag:not(:focus):hover {
+.tag:not(:focus):not(.tag--readonly):hover {
     background: darken($color-grey, 3.5%);
 }
 
