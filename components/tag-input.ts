@@ -96,7 +96,9 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
     @Input() public transform: (item: string) => string = (item) => item;
 
     /**
-     *
+     * @name validators
+     * @desc array of Validators that are used to validate the tag before it gets appended to the list
+     * @type {Validators[]}
      */
     @Input() public validators = [];
 
@@ -121,13 +123,28 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      */
     @Output() public onSelect = new EventEmitter<string>();
 
+    /**
+     * @name template
+     * @desc reference to the template if provided by the user
+     * @type {ElementRef}
+     */
     @ViewChild('template') public template: ElementRef;
 
+    /**
+     * @name hasTemplate
+     * @desc boolean that returns whether the user has specified a template or not
+     */
     private hasTemplate: boolean;
 
+    /**
+     * @name tagElements
+     * @desc list of Element items
+     */
     private tagElements: Element[];
 
+
     // Component private/public properties
+
 
     /**
      * @name form
@@ -176,7 +193,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         super();
     }
 
-
     /**
      * @name removes an item from the array of the model
      * @param item {TagComponent}
@@ -184,6 +200,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
     public remove(item: string): void {
         this.value = this.value.filter(_item => _item !== item);
 
+        // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
             this.selectedTag = undefined;
         }
@@ -204,7 +221,10 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
             item = vm.transform(vm.form.value.item),
             control = <Control>vm.form.find('item');
 
+        // update form value with the transformed item
         control.updateValue(item);
+
+        // check if the transformed item is already existing in the list
         const isDupe = vm.value.indexOf(item) !== -1;
 
         // check validity
@@ -232,7 +252,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
             this.renderer.invokeElementMethod(this.element.nativeElement, 'focus', []);
             return;
         }
-        
+
         this._selectedTag = item;
 
         // emit event
@@ -349,6 +369,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
     }
 
     ngOnInit() {
+        // setting up the keypress listeners
         this.setupAdditionalKeysEvents();
 
         // if the number of items specified in the model is > of the value of maxItems
@@ -359,6 +380,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
             console.warn('The number of items specified was greater than the property max-items.');
         }
 
+        // build form with the validators specified by the user
         this.form = this.builder.group({
             item: new Control('', Validators.compose(this.validators))
         });
@@ -366,12 +388,16 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
     ngAfterContentInit() {
         this.hasTemplate = this.template && this.template.nativeElement.childElementCount > 0;
+
+        // if the template has been specified, remove the tags-container for the tags with default template
+        // which will be replaced by <ng-content>
         if (this.hasTemplate) {
             this.element.nativeElement.querySelector('.tags-container').remove();
         }
     }
 
     ngAfterViewChecked() {
+        // store DOM references
         this.input.element = this.element.nativeElement.querySelector('input');
         this.tagElements = this.element.nativeElement.querySelectorAll('.tag');
     }
