@@ -164,14 +164,14 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
             const maxItemsReached = this.maxItems !== undefined && this.value.length === this.maxItems;
             return !this.readonly && !maxItemsReached;
         },
-        focus: (): void => {
+        focus: (keepTagSelected = false): void => {
             if (!this.input.isVisible()) {
                 return;
             }
 
-            this.input.isFocused = true;
             this.renderer.invokeElementMethod(this.input.element, 'focus', []);
-            this.selectedTag = undefined;
+            this.input.isFocused = true;
+            this.select(undefined);
         }
     };
 
@@ -202,7 +202,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
-            this.selectedTag = undefined;
+            this.select(undefined);
         }
 
         // focus input right after removing an item
@@ -332,8 +332,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
                 switchNext();
                 break;
         }
-
-        $event.preventDefault();
     }
 
     /**
@@ -351,11 +349,11 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         };
 
         const backSpaceListener = ($event) => {
-            const itemsLength = vm.value.length,
-                inputValue = vm.form.find('item').value,
+            const itemsLength: number = vm.value.length,
+                inputValue: string = vm.form.find('item').value,
                 isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
-            if (isCorrectKey && itemsLength && !inputValue) {
+            if (isCorrectKey && !inputValue && itemsLength) {
                 vm.select(vm.value[itemsLength - 1]);
                 vm.renderer.invokeElementMethod(vm.tagElements[itemsLength - 1], 'focus', []);
             }
