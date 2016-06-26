@@ -73,21 +73,35 @@ Basic examples:
         }
         // ...
     }
-
+    
+    // PROPERTIES
     <tag-input [(ngModel)]='items'
                [placeholder]="options.placeholder"
                [secondaryPlaceholder]="options.secondaryPlaceholder"
                [maxItems]="options.maxItems"
                [separatorKeys]="options.separatorKeys">
     </tag-input>
-
+        
+    // EVENTS
     <tag-input [(ngModel)]='items'
                (onRemove)="onItemRemoved($event)"
                (onAdd)="onItemAdded($event)">
+    </tag-input>
+    
+    
+    // CUSTOM TEMPLATES
+    // Input tag with a custom template
+    
+    <tag-input [(ngModel)]='items' #input> // create a reference #input to the controller in order to use its API
+        <div class='tag' *ngFor='let item of input.value'> // loop over the items
+            <div class='tag__name'> {{ item }} </span> // display its values
+            <span (click)="input.remove(item)">
+                Remove me
+            </span>
+        </div>
     </tag-input>
 
 If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/VkRLliDHW](http://www.webpackbin.com/VkRLliDHW).
 
 ## What's next?
-- Custom templates
 - Autocomplete
