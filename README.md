@@ -87,3 +87,7 @@ Basic examples:
     </tag-input>
 
 If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/VkRLliDHW](http://www.webpackbin.com/VkRLliDHW).
+
+## What's next?
+- Custom templates
+- Autocomplete
