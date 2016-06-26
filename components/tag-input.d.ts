@@ -1,5 +1,3 @@
-import {TagComponent} from '../tag/tag.d.ts';
-
 interface TagInputComponent {
     form;
     value: string[];
@@ -9,11 +7,11 @@ interface TagInputComponent {
         isVisible(): void;
         focus(): void;
     };
-    remove(item: TagComponent): void;
+    remove(item: string): void;
     add(): void;
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
     transform(item: string);
 }
 
-export {TagInputComponent, TagComponent};
+export {TagInputComponent};

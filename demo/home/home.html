@@ -2,7 +2,7 @@
 	<div class="home-container">
 		<div>
             <h3>Simple Input with two items</h3>
-			<tag-input [ngModel]="['Typescript', 'Angular 2']"></tag-input>
+			<tag-input [ngModel]="['Typescript', 'Angular 2']" #input></tag-input>
 		</div>
 
         <div>
@@ -36,6 +36,25 @@
             <tag-input [ngModel]="['@item']"
                        separatorKeys="[32]"
                        [transform]="transform">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Tags custom template</h3>
+            <tag-input [ngModel]="['@item']" #input>
+                <div *ngFor="let item of input.value; trackBy: item"
+                     (click)="input.select(item);$event.stopPropagation();"
+                     (keydown)="input.handleKeydown($event, item)"
+                     class="tag">
+
+                    <span class="tag__name">
+                        {{ item }}
+                    </span>
+
+                    <span (click)="input.remove(item)" class="tag__remove-button">
+                        x
+                    </span>
+                </div>
             </tag-input>
         </div>
 	</div>
