@@ -9,16 +9,19 @@ import {
     EventEmitter,
     Renderer,
     ViewChild,
-    OnInit
+    OnInit,
+    provide
 } from '@angular/core';
 
+import {TagInputAccessor} from './accessor';
+
 import {
-    Validators,
-    Control,
-    ControlGroup,
+    FormGroup,
+    FormControl,
     FormBuilder,
+    Validators,
     NG_VALUE_ACCESSOR
-} from '@angular/common';
+} from '@angular/forms';
 
 import {
     PLACEHOLDER,
@@ -31,9 +34,7 @@ import {
     TagInputComponent
 } from './tag-input.d';
 
-import {TagInputAccessor} from './accessor';
-
-const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = new Provider(NG_VALUE_ACCESSOR, {
+const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = provide(NG_VALUE_ACCESSOR, {
     useExisting: forwardRef(() => TagInput),
     multi: true
 });
@@ -151,7 +152,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @type {ngForm}
      * @desc ngForm for handling the validation on the input text
      */
-    public form: ControlGroup;
+    public form: FormGroup;
 
     /**
      * @name input
@@ -219,7 +220,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
     public add(): void {
         const vm = this,
             item = vm.transform(vm.form.value.item),
-            control = <Control>vm.form.find('item');
+            control = <FormControl>vm.form.find('item');
 
         // update form value with the transformed item
         control.updateValue(item);
@@ -378,9 +379,8 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
             console.warn('The number of items specified was greater than the property max-items.');
         }
 
-        // build form with the validators specified by the user
         this.form = this.builder.group({
-            item: new Control('', Validators.compose(this.validators))
+            item: new FormControl('', Validators.compose(this.validators))
         });
     }
 

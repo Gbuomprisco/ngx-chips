@@ -40,7 +40,8 @@
 
 
     <!-- form -->
-    <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [ngFormModel]="form">
+    <!-- form -->
+    <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [formGroup]="form">
         <input type="text"
                required
                class="tag-input__text-input"
@@ -48,7 +49,7 @@
                (focus)="input.focus()"
                (blur)="input.isFocused = false"
                (keyup)="fireEvents('keyup', $event)"
-               ngControl="item"
+               formControlName="item"
                tabindex="0"
                [attr.aria-label]="placeholder"
         />
