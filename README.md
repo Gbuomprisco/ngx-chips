@@ -10,10 +10,31 @@ Check out the live demo (with source code) here [http://www.webpackbin.com/VkRLl
 ## Quick start. Install the component from NPM by running:
 
     npm install ng2-tag-input --save
-    
+
 ## If you want to run the tests, run the command:
 
     npm test
+
+## Angular 2 Configuration (RC.3)
+The component is updated to use the latest version of Angular 2 forms. This means
+it requires some configuration to correctly work with your app. Ensure, you are
+registering the following providers when bootstrapping the app:
+
+  import {provide, PLATFORM_DIRECTIVES} from '@angular/core';
+  import { disableDeprecatedForms, provideForms, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+  import {App} from './home/home';
+
+  bootstrap(App, [
+    disableDeprecatedForms(),
+    provideForms(),
+    {
+          provide: PLATFORM_DIRECTIVES,
+          useValue: [REACTIVE_FORM_DIRECTIVES],
+          multi: true
+    }
+  ])
+
+Please do have a look at the file `demo/app.ts` if you are unsure how to configure the app.
 
 ## Usage
 
@@ -73,7 +94,7 @@ Basic examples:
         }
         // ...
     }
-    
+
     // PROPERTIES
     <tag-input [(ngModel)]='items'
                [placeholder]="options.placeholder"
@@ -81,17 +102,17 @@ Basic examples:
                [maxItems]="options.maxItems"
                [separatorKeys]="options.separatorKeys">
     </tag-input>
-        
+
     // EVENTS
     <tag-input [(ngModel)]='items'
                (onRemove)="onItemRemoved($event)"
                (onAdd)="onItemAdded($event)">
     </tag-input>
-    
-    
+
+
     // CUSTOM TEMPLATES
     // Input tag with a custom template
-    
+
     <tag-input [(ngModel)]='items' #input> // create a reference #input to the controller in order to use its API
         <div class='tag' *ngFor='let item of input.value'> // loop over the items
             <div class='tag__name'> {{ item }} </span> // display its values

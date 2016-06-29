@@ -5,6 +5,7 @@ import {
     expect,
     tick,
     beforeEach,
+    beforeEachProviders,
     fakeAsync
 } from '@angular/core/testing';
 
@@ -13,20 +14,36 @@ import {
     TestComponentBuilder
 } from '@angular/compiler/testing';
 
-import { Component } from '@angular/core';
-import {By} from '@angular/platform-browser';
+import {
+  Component,
+  PLATFORM_DIRECTIVES
+} from '@angular/core';
+
+import {
+  By
+} from '@angular/platform-browser';
 
 // Load the implementations that should be tested
-import {TagInput} from './tag-input';
+import {
+  TagInput
+} from './tag-input';
 
 import {
     Validators,
-    Control
-} from '@angular/common';
-
+    FormControl,
+    disableDeprecatedForms,
+    provideForms,
+    REACTIVE_FORM_DIRECTIVES
+} from '@angular/forms';
 
 describe('TagInput', () => {
     let builder: TestComponentBuilder;
+
+    beforeEachProviders(() => [provideForms(), disableDeprecatedForms(), {
+          provide: PLATFORM_DIRECTIVES,
+          useValue: [REACTIVE_FORM_DIRECTIVES],
+          multi: true
+    }]);
 
     beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
 
@@ -165,8 +182,8 @@ describe('TagInput', () => {
 
     describe('testing validators', () => {
         it('injects minLength validator and validates correctly', () => {
-            const template = `<tag-input 
-                                    [validators]="[validators.minLength]" 
+            const template = `<tag-input
+                                    [validators]="[validators.minLength]"
                                     [(ngModel)]="items"></tag-input>`;
 
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
@@ -191,8 +208,8 @@ describe('TagInput', () => {
         });
 
         it('injects minLength validator and custom validator and validates correctly', () => {
-            const template = `<tag-input 
-                                    [validators]="[validators.minLength, validators.startsWith]" 
+            const template = `<tag-input
+                                    [validators]="[validators.minLength, validators.startsWith]"
                                     [(ngModel)]="items"></tag-input>`;
 
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
@@ -222,9 +239,9 @@ describe('TagInput', () => {
         });
 
         it('validates transformed values', () => {
-            const template = `<tag-input 
+            const template = `<tag-input
                                     [transform]="addPrefix"
-                                    [validators]="[validators.minLength]" 
+                                    [validators]="[validators.minLength]"
                                     [(ngModel)]="items">
                              </tag-input>`;
 
@@ -348,11 +365,11 @@ describe('TagInput', () => {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input 
-                [(ngModel)]="items" 
-                (onRemove)="onRemove($event)" 
+    template: `<tag-input
+                [(ngModel)]="items"
+                (onRemove)="onRemove($event)"
                 (onAdd)="onAdd($event)"></tag-input>`,
-    directives: [TagInput]
+    directives: [TagInput, ...REACTIVE_FORM_DIRECTIVES]
 })
 class TestApp {
     public items = ['Javascript', 'Typescript'];
@@ -368,7 +385,7 @@ class TestApp {
 
     validators = {
         minLength: Validators.minLength(3),
-        startsWith: (control: Control) => {
+        startsWith: (control: FormControl) => {
             if (control.value.charAt(0) !== '@') {
                 return {
                     'startsWithAt@': true
