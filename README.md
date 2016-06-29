@@ -20,19 +20,19 @@ The component is updated to use the latest version of Angular 2 forms. This mean
 it requires some configuration to correctly work with your app. Ensure, you are
 registering the following providers when bootstrapping the app:
 
-  import {provide, PLATFORM_DIRECTIVES} from '@angular/core';
-  import { disableDeprecatedForms, provideForms, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
-  import {App} from './home/home';
-
-  bootstrap(App, [
-    disableDeprecatedForms(),
-    provideForms(),
-    {
-          provide: PLATFORM_DIRECTIVES,
-          useValue: [REACTIVE_FORM_DIRECTIVES],
-          multi: true
-    }
-  ])
+    import {provide, PLATFORM_DIRECTIVES} from '@angular/core';
+    import { disableDeprecatedForms, provideForms, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
+    import {App} from './home/home';
+    
+    bootstrap(App, [
+        disableDeprecatedForms(),
+        provideForms(),
+        {
+              provide: PLATFORM_DIRECTIVES,
+              useValue: [REACTIVE_FORM_DIRECTIVES],
+              multi: true
+        }
+    ])
 
 Please do have a look at the file `demo/app.ts` if you are unsure how to configure the app.
 
