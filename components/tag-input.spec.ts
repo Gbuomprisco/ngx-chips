@@ -3,32 +3,55 @@ import {
     inject,
     it,
     expect,
-    beforeEach
+    tick,
+    beforeEach,
+    beforeEachProviders,
+    fakeAsync
 } from '@angular/core/testing';
 
-import { Component } from '@angular/core';
-import {By} from '@angular/platform-browser';
+import {
+    ComponentFixture,
+    TestComponentBuilder
+} from '@angular/compiler/testing';
+
+import {
+  Component,
+  PLATFORM_DIRECTIVES
+} from '@angular/core';
+
+import {
+  By
+} from '@angular/platform-browser';
 
 // Load the implementations that should be tested
-import {TagInput} from './tag-input.component';
-import {Tag} from '../tag/tag.component';
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import {
+  TagInput
+} from './tag-input';
 
 import {
     Validators,
-    Control
-} from '@angular/common';
+    FormControl,
+    disableDeprecatedForms,
+    provideForms,
+    REACTIVE_FORM_DIRECTIVES
+} from '@angular/forms';
 
 describe('TagInput', () => {
     let builder: TestComponentBuilder;
+
+    beforeEachProviders(() => [provideForms(), disableDeprecatedForms(), {
+          provide: PLATFORM_DIRECTIVES,
+          useValue: [REACTIVE_FORM_DIRECTIVES],
+          multi: true
+    }]);
 
     beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
 
     it('should have 2 tags set by ngModel',  (done: () => void) => {
         builder.createAsync(TestApp).then(fixture => {
             fixture.detectChanges();
-            let tags = fixture.debugElement.queryAll(By.directive(Tag));
-            expect(tags.length).toEqual(2);
+            const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+            expect(component.value.length).toEqual(2);
             done();
         });
     });
@@ -43,7 +66,7 @@ describe('TagInput', () => {
         });
     });
 
-    describe('when a new item is added', function() {
+    describe('when a new item is added', () => {
         it('should be added to the list of items and update its parent\'s model', () => {
             const template = `<tag-input [(ngModel)]="items"></tag-input>`;
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
@@ -119,8 +142,7 @@ describe('TagInput', () => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
                 const tagName = 'Typescript';
-                const tag = component.tags.toArray().filter(item => item.item === tagName)[0];
-                component.remove(tag);
+                component.remove(tagName);
 
                 fixture.detectChanges();
 
@@ -134,14 +156,13 @@ describe('TagInput', () => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
                 const tagName = 'Typescript';
-                const tag = component.tags.toArray().filter(item => item.item === tagName)[0];
 
                 component.onRemove.subscribe(item => {
                     expect(item).toEqual(tagName);
                     done();
                 });
 
-                component.remove(tag);
+                component.remove(tagName);
             });
         });
 
@@ -150,20 +171,19 @@ describe('TagInput', () => {
                 fixture.detectChanges();
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
                 const tagName = 'Typescript';
-                const tag = component.tags.toArray().filter(item => item.item === tagName)[0];
 
                 fixture.detectChanges();
 
-                component.remove(tag);
+                component.remove(tagName);
                 expect(component.selectedTag).toBe(undefined);
             });
         });
     });
 
     describe('testing validators', () => {
-        it('injects minLength validator and validates correctly', function() {
-            const template = `<tag-input 
-                                    [validators]="[validators.minLength]" 
+        it('injects minLength validator and validates correctly', () => {
+            const template = `<tag-input
+                                    [validators]="[validators.minLength]"
                                     [(ngModel)]="items"></tag-input>`;
 
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
@@ -187,9 +207,9 @@ describe('TagInput', () => {
             });
         });
 
-        it('injects minLength validator and custom validator and validates correctly', function() {
-            const template = `<tag-input 
-                                    [validators]="[validators.minLength, validators.startsWith]" 
+        it('injects minLength validator and custom validator and validates correctly', () => {
+            const template = `<tag-input
+                                    [validators]="[validators.minLength, validators.startsWith]"
                                     [(ngModel)]="items"></tag-input>`;
 
             builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
@@ -218,10 +238,10 @@ describe('TagInput', () => {
             });
         });
 
-        it('validates transformed values', function() {
-            const template = `<tag-input 
+        it('validates transformed values', () => {
+            const template = `<tag-input
                                     [transform]="addPrefix"
-                                    [validators]="[validators.minLength]" 
+                                    [validators]="[validators.minLength]"
                                     [(ngModel)]="items">
                              </tag-input>`;
 
@@ -238,15 +258,118 @@ describe('TagInput', () => {
             });
         });
     });
+
+    describe('when user navigates tags with keypress event', () => {
+        let keyUp: Event = new Event('keyup');
+        let keyDown: Event = new Event('keydown');
+
+        keyUp['keyCode'] = 8;
+        keyDown['keyCode'] = 9;
+
+        it('it handles navigation/deletion of tags', () => {
+            builder.createAsync(TestApp).then((fixture: ComponentFixture<TestApp>) => {
+                fixture.detectChanges();
+
+                const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+                component.input.focus();
+
+                // selected tag is undefined
+                expect(component.selectedTag).toEqual(undefined);
+
+                // press backspace
+                component.input.element.dispatchEvent(keyUp);
+
+                // selected tag is the last one
+                expect(component.selectedTag).toEqual('Typescript');
+
+                // press tab and focus input again
+                keyUp['keyCode'] = 9;
+                component.tagElements[1].dispatchEvent(keyDown);
+                expect(component.selectedTag).toEqual(undefined);
+
+                keyUp['keyCode'] = 8;
+                // then starts from back again
+                component.input.element.dispatchEvent(keyUp);
+                expect(component.selectedTag).toEqual('Typescript');
+
+                // it removes current selected tag when pressing backspace
+                keyDown['keyCode'] = 8;
+                component.tagElements[1].dispatchEvent(keyDown);
+                expect(component.value.length).toEqual(1);
+                expect(component.selectedTag).toBe(undefined);
+            });
+        });
+
+        it('it navigates back and forth between tags', () => {
+            builder.createAsync(TestApp).then((fixture: ComponentFixture<TestApp>) => {
+                fixture.detectChanges();
+                const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+                component.input.focus();
+
+                keyUp['keyCode'] = 37;
+                keyDown['keyCode'] = 37;
+
+                // press left arrow
+                component.input.element.dispatchEvent(keyUp);
+                // selected tag is the last one
+                expect(component.selectedTag).toEqual('Typescript');
+
+                // press left arrow
+                component.tagElements[1].dispatchEvent(keyDown);
+                expect(component.selectedTag).toEqual('Javascript');
+
+                // press right arrow
+                keyDown['keyCode'] = 39;
+                component.tagElements[0].dispatchEvent(keyDown);
+                expect(component.selectedTag).toEqual('Typescript');
+
+                // press tab -> focuses input
+                component.tagElements[1].dispatchEvent(keyDown);
+                expect(component.selectedTag).toEqual(undefined);
+                expect(component.input.isFocused).toEqual(true);
+            });
+        });
+    });
+
+    describe('when using a custom template', () => {
+        const template =
+            `<tag-input [(ngModel)]="items">
+                     <div class="custom_class" *ngFor="let item of value" (click)="select(item)">
+                        <span class="tag__name">{{ item }}</span>
+                        <span (click)="remove(item)"><img src="delete.png" /></span>
+                     </div>
+                </tag-input>`;
+
+        it('replaced template with the custom one', () => {
+            builder.overrideTemplate(TestApp, template).
+                createAsync(TestApp).
+                then((fixture: ComponentFixture<TestApp>) => {
+
+                fixture.detectChanges();
+
+                fakeAsync(() => {
+                    tick();
+                    fixture.detectChanges();
+
+                    const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+
+                    expect(component.hasTemplate).toEqual(true);
+                    expect(component.value.length).toEqual(2);
+                    expect(component.element.querySelector('.tags-container')).toEqual(undefined);
+                    expect(component.element.querySelector('.custom__class').length).toEqual(2);
+                });
+            });
+        });
+    });
 });
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input 
-                [(ngModel)]="items" 
-                (onRemove)="onRemove($event)" 
+    template: `<tag-input
+                [(ngModel)]="items"
+                (onRemove)="onRemove($event)"
                 (onAdd)="onAdd($event)"></tag-input>`,
-    directives: [TagInput]
+    directives: [TagInput, ...REACTIVE_FORM_DIRECTIVES]
 })
 class TestApp {
     public items = ['Javascript', 'Typescript'];
@@ -262,7 +385,7 @@ class TestApp {
 
     validators = {
         minLength: Validators.minLength(3),
-        startsWith: (control: Control) => {
+        startsWith: (control: FormControl) => {
             if (control.value.charAt(0) !== '@') {
                 return {
                     'startsWithAt@': true

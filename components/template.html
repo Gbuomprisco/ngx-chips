@@ -1,0 +1,57 @@
+
+<!-- input tag container -->
+<div class="tag-input"
+     tabindex="0"
+     (click)="input.focus()"
+     [class.tag-input--invalid]="!form.valid && form.controls.item.value"
+     [class.tag-input--focused]="input.isFocused">
+
+
+    <!-- tags [custom] -->
+    <div #template class="flex">
+        <ng-content></ng-content>
+    </div>
+
+
+    <!-- tags [default] -->
+    <div class="tags-container flex">
+        <div *ngFor="let item of value; trackBy: item; let i = index"
+             (click)="select(item);$event.stopPropagation();"
+             (keydown)="handleKeydown($event, item)"
+             tabindex="0"
+             class="tag"
+             [class.tag--readonly]="readonly"
+             [attr.aria-label]="item">
+
+            <!-- tag name -->
+            <span class="tag__name">
+                {{ item }}
+            </span>
+
+            <!-- remove 'x' button -->
+            <span class="tag__remove-button"
+                  aria-label="Remove tag"
+                  (click)="remove(item)"
+                  *ngIf="!readonly">
+                <img src="delete.png" />
+            </span>
+        </div>
+    </div>
+
+
+    <!-- form -->
+    <!-- form -->
+    <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [formGroup]="form">
+        <input type="text"
+               required
+               class="tag-input__text-input"
+               placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
+               (focus)="input.focus()"
+               (blur)="input.isFocused = false"
+               (keyup)="fireEvents('keyup', $event)"
+               formControlName="item"
+               tabindex="0"
+               [attr.aria-label]="placeholder"
+        />
+    </form>
+</div>

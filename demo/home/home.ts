@@ -1,14 +1,15 @@
 import {Component} from '@angular/core';
-import {TagInput} from '../../components/tag-input/tag-input.component';
+import {TagInput} from '../../components/tag-input';
+import { CORE_DIRECTIVES } from '@angular/common';
 
 import {
     Validators,
-    Control
-} from '@angular/common';
+    FormControl
+} from '@angular/forms';
 
 @Component({
     selector: 'app',
-    directives: [TagInput],
+    directives: [TagInput, CORE_DIRECTIVES],
     template: require('./home.html')
 })
 
@@ -37,7 +38,7 @@ export class App {
         return `@${item}`;
     }
 
-    private startsWithAt(control: Control) {
+    private startsWithAt(control: FormControl) {
         if (control.value.charAt(0) !== '@') {
             return {
                 'startsWithAt@': true

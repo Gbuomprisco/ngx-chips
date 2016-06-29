@@ -1,4 +1,6 @@
-import {ControlValueAccessor} from '@angular/common';
+import {
+  ControlValueAccessor
+} from '@angular/forms';
 
 export class TagInputAccessor implements ControlValueAccessor {
     private _value: string[] = [];

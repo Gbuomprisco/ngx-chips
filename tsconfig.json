@@ -7,7 +7,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": false,
-    "sourceMap": false,
+    "sourceMap": true,
     "moduleResolution": "node",
     "rootDir": "."
   },
