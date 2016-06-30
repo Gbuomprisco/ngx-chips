@@ -36,22 +36,20 @@
                 <img src="delete.png" />
             </span>
         </div>
+
+        <!-- form -->
+        <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [formGroup]="form">
+            <input type="text"
+                   required
+                   class="tag-input__text-input"
+                   placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
+                   (focus)="input.focus()"
+                   (blur)="input.isFocused = false"
+                   (keyup)="fireEvents('keyup', $event)"
+                   formControlName="item"
+                   tabindex="0"
+                   [attr.aria-label]="placeholder"
+            />
+        </form>
     </div>
-
-
-    <!-- form -->
-    <!-- form -->
-    <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [formGroup]="form">
-        <input type="text"
-               required
-               class="tag-input__text-input"
-               placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
-               (focus)="input.focus()"
-               (blur)="input.isFocused = false"
-               (keyup)="fireEvents('keyup', $event)"
-               formControlName="item"
-               tabindex="0"
-               [attr.aria-label]="placeholder"
-        />
-    </form>
 </div>
