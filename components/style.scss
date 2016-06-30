@@ -35,6 +35,9 @@ $color-grey: #efefef;
     border-bottom: 2px solid red;
 }
 
+.tags-container {
+    flex-wrap: wrap;
+}
 
  // form
 .tag-input form {
@@ -64,6 +67,7 @@ $color-grey: #efefef;
 .tag {
     @extend .flex;
     flex-direction: row;
+    flex-wrap: wrap;
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
