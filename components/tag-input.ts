@@ -1,11 +1,10 @@
 import {
     Component,
-    Provider,
     forwardRef,
+    Provider,
     Input,
     Output,
     ElementRef,
-    ChangeDetectionStrategy,
     EventEmitter,
     Renderer,
     ViewChild,
@@ -51,8 +50,7 @@ const styles = [require('./style.scss').toString()],
     directives: [],
     providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR],
     styles,
-    template,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    template
 })
 export class TagInput extends TagInputAccessor implements TagInputComponent, OnInit {
     /**
@@ -230,6 +228,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
         // check validity
         if (!vm.input.isVisible() || !vm.form.valid || isDupe) {
+            control.updateValue('');
             return;
         }
 
@@ -384,17 +383,23 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         });
     }
 
-    ngAfterContentInit() {
+    ngAfterViewChecked() {
         this.hasTemplate = this.template && this.template.nativeElement.childElementCount > 0;
 
         // if the template has been specified, remove the tags-container for the tags with default template
         // which will be replaced by <ng-content>
         if (this.hasTemplate) {
-            this.element.nativeElement.querySelector('.tags-container').remove();
-        }
-    }
+            const form = this.element.nativeElement.querySelector('form');
+            const customTagsContainer = this.element.nativeElement.querySelector('.tags-container--custom');
+            const defaultTagsContainer = this.element.nativeElement.querySelector('.tags-container--default');
 
-    ngAfterViewChecked() {
+            customTagsContainer.appendChild(form);
+
+            if (defaultTagsContainer) {
+                defaultTagsContainer.remove();
+            }
+        }
+
         // store DOM references
         this.input.element = this.element.nativeElement.querySelector('input');
         this.tagElements = this.element.nativeElement.querySelectorAll('.tag');

@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Ng2TagInput: simple tag input component for Angular 2",
   "scripts": {
     "typings-install": "typings install",
@@ -19,13 +19,14 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular/common": "2.0.0-rc.3",
-    "@angular/compiler": "2.0.0-rc.3",
-    "@angular/core": "2.0.0-rc.3",
-    "@angular/http": "2.0.0-rc.3",
-    "@angular/platform-browser": "2.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.3",
-    "@angular/platform-server": "2.0.0-rc.3",
+    "@angular/common": "2.0.0-rc.4",
+    "@angular/compiler": "2.0.0-rc.4",
+    "@angular/core": "2.0.0-rc.4",
+    "@angular/forms": "^0.1.1",
+    "@angular/http": "2.0.0-rc.4",
+    "@angular/platform-browser": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/platform-server": "2.0.0-rc.4",
     "@angular/router": "2.0.0-rc.2",
     "autoprefixer": "^6.3.6",
     "awesome-typescript-loader": "~0.16.2",
@@ -62,14 +63,7 @@
     "webpack-merge": "^0.8.4",
     "zone.js": "~0.6.12"
   },
-  "dependencies": {
-    "@angular/common": "^2.0.0-rc.3",
-    "@angular/compiler": "^2.0.0-rc.3",
-    "@angular/core": "^2.0.0-rc.3",
-    "@angular/forms": "^0.1.1",
-    "rxjs": "^5.0.0-beta.6",
-    "zone.js": "^0.6.12"
-  },
+  "dependencies": {},
   "keywords": [
     "angular 2",
     "angular 2 tag input",

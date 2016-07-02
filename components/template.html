@@ -6,15 +6,13 @@
      [class.tag-input--invalid]="!form.valid && form.controls.item.value"
      [class.tag-input--focused]="input.isFocused">
 
-
     <!-- tags [custom] -->
-    <div #template class="flex">
+    <div #template class="tags-container tags-container--custom flex">
         <ng-content></ng-content>
     </div>
 
-
     <!-- tags [default] -->
-    <div class="tags-container flex">
+    <div class="tags-container tags-container--default flex">
         <div *ngFor="let item of value; trackBy: item; let i = index"
              (click)="select(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
@@ -38,7 +36,7 @@
         </div>
 
         <!-- form -->
-        <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [formGroup]="form">
+        <form (ngSubmit)="add()" *ngIf="value && input.isVisible.call(this)" [formGroup]="form">
             <input type="text"
                    required
                    class="tag-input__text-input"
