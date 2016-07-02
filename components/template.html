@@ -36,7 +36,7 @@
         </div>
 
         <!-- form -->
-        <form (ngSubmit)="add()" *ngIf="input.isVisible.call(this)" [formGroup]="form">
+        <form (ngSubmit)="add()" *ngIf="value && input.isVisible.call(this)" [formGroup]="form">
             <input type="text"
                    required
                    class="tag-input__text-input"

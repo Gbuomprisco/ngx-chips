@@ -1,20 +1,20 @@
 <main>
 	<div class="home-container">
 		<div>
-      <h3>Simple Input with two items</h3>
+            <h3>Simple Input with two items</h3>
 			<tag-input [ngModel]="['Typescript', 'Angular 2']"></tag-input>
 		</div>
 
         <div>
-            <h3>Input tag that allows max 5 tags</h3>
-            <tag-input [(ngModel)]="items"
+            <h3>Input tag that allows max 3 tags</h3>
+            <tag-input [ngModel]="['Javascript', 'Typescript']"
                        [maxItems]="3"
                        placeholder="Insert a new item"></tag-input>
         </div>
 
         <div>
             <h3>A read-only tag input</h3>
-            <tag-input [(ngModel)]="items" [readonly]="true"></tag-input>
+            <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
         </div>
 
         <div>
@@ -59,6 +59,7 @@
         </div>
 
         <div>
+            <h3>Tags within a form element</h3>
             <form>
                 <tag-input [ngModel]="['@item']" name="items"></tag-input>
             </form>

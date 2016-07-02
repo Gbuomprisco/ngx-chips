@@ -14,7 +14,6 @@ import {
 })
 
 export class App {
-    public items = ['Javascript', 'Typescript'];
     constructor() {}
 
     public options = {

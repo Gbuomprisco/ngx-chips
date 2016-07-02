@@ -1,6 +1,7 @@
 import {
     Component,
     forwardRef,
+    Provider,
     Input,
     Output,
     ElementRef,

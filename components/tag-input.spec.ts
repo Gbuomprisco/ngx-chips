@@ -47,7 +47,7 @@ describe('TagInput', () => {
 
     beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
 
-    it('should have 2 tags set by ngModel',  (done: () => void) => {
+    it('should have 2 tags set by ngModel', (done: () => void) => {
         builder.createAsync(TestApp).then(fixture => {
             fixture.detectChanges();
             const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
