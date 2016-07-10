@@ -2,6 +2,7 @@
 
 $color-focused: #2196F3;
 $color-grey: #efefef;
+$font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 .flex {
     display: flex;
@@ -16,7 +17,7 @@ $color-grey: #efefef;
 
     transition: all 0.15s;
 
-    padding: 0.5rem 0.2rem;
+    padding: 0.25rem 0.2rem;
     min-height: 32px;
 
     cursor: text;
@@ -51,10 +52,9 @@ $color-grey: #efefef;
     padding: 0 0.5rem;
     vertical-align: middle;
 
-    font-size: 17px;
-    font-weight: 300;
+    font-size: 15px;
     height: 35px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: $font-family;
 }
 
 .tag-input__text-input:focus {
@@ -69,8 +69,9 @@ $color-grey: #efefef;
     flex-direction: row;
     flex-wrap: wrap;
 
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 300;
+    font-family: $font-family;
+    font-weight: 400;
+    font-size: 15px;
     letter-spacing: 0.05rem;
 
     background: $color-grey;
@@ -80,7 +81,7 @@ $color-grey: #efefef;
     transition: all 0.25s;
 
     margin: 0.1rem 0.2rem;
-    padding: 0.15rem 0.8rem;
+    padding: 0.08rem 0.5rem;
 
     height: 32px;
     line-height: 32px;
