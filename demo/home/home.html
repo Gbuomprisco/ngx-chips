@@ -1,68 +1,68 @@
 <main>
 	<div class="home-container">
 		<div>
-            <h3>Simple Input with two items</h3>
+      <h3>Simple Input with two items</h3>
 			<tag-input [ngModel]="['Typescript', 'Angular 2']"></tag-input>
 		</div>
 
-        <div>
-            <h3>Input tag that allows max 3 tags</h3>
-            <tag-input [ngModel]="['Javascript', 'Typescript']"
-                       [maxItems]="3"
-                       placeholder="Insert a new item"></tag-input>
-        </div>
+    <div>
+        <h3>Input tag that allows max 3 tags</h3>
+        <tag-input [ngModel]="['Javascript', 'Typescript']"
+                   [maxItems]="3"
+                   placeholder="Insert a new item"></tag-input>
+    </div>
 
-        <div>
-            <h3>A read-only tag input</h3>
-            <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
-        </div>
+    <div>
+        <h3>A read-only tag input</h3>
+        <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
+    </div>
 
-        <div>
-            <h3>An input which requires all tags to start with '@'</h3>
-            <tag-input [ngModel]="['@item']"
-                       [validators]="validators">
-            </tag-input>
-        </div>
+    <div>
+        <h3>An input which requires all tags to start with '@'</h3>
+        <tag-input [ngModel]="['@item']"
+                   [validators]="validators">
+        </tag-input>
+    </div>
 
-        <div>
-            <h3>An input which will transform the value of all added tags prepending '@' to the tag</h3>
-            <tag-input [ngModel]="['@item']"
-                       [transform]="transform">
-            </tag-input>
-        </div>
+    <div>
+        <h3>An input which will transform the value of all added tags prepending '@' to the tag</h3>
+        <tag-input [ngModel]="['@item']"
+                   [transform]="transform">
+        </tag-input>
+    </div>
 
-        <div>
-            <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
-            <tag-input [ngModel]="['@item']"
-                       separatorKeys="[32]"
-                       [transform]="transform">
-            </tag-input>
-        </div>
+    <div>
+        <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
+        <tag-input [ngModel]="['@item']"
+                   separatorKeys="[32]"
+                   [transform]="transform">
+        </tag-input>
+    </div>
 
-        <div>
-            <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input>
-                <div *ngFor="let item of input.value; trackBy: item"
-                     (click)="input.select(item);$event.stopPropagation();"
-                     (keydown)="input.handleKeydown($event, item)"
-                     class="tag">
+    <div>
+        <h3>Tags custom template</h3>
+        <tag-input [ngModel]="['@item']" #input>
+            <div *ngFor="let item of input.value; trackBy: item"
+                 (click)="input.select(item);$event.stopPropagation();"
+                 (keydown)="input.handleKeydown($event, item)"
+                 class="tag">
 
-                    <span class="tag__name">
-                        {{ item }}
-                    </span>
+                <span class="tag__name">
+                    {{ item }}
+                </span>
 
-                    <span (click)="input.remove(item)" class="tag__remove-button">
-                        x
-                    </span>
-                </div>
-            </tag-input>
-        </div>
+                <span (click)="input.remove(item)" class="tag__remove-button">
+                    x
+                </span>
+            </div>
+        </tag-input>
+    </div>
 
-        <div>
-            <h3>Tags within a form element</h3>
-            <form>
-                <tag-input [ngModel]="['@item']" name="items"></tag-input>
-            </form>
-        </div>
+    <div>
+        <h3>Tags within a form element</h3>
+        <form>
+            <tag-input [ngModel]="['@item']" name="items"></tag-input>
+        </form>
+    </div>
 	</div>
 </main>

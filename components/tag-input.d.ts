@@ -1,6 +1,6 @@
 interface TagInputComponent {
     form;
-    value: string[];
+    items: string[];
     input: {
         element: HTMLElement,
         isFocused: boolean;
