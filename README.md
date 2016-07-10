@@ -23,7 +23,7 @@ registering the following providers when bootstrapping the app:
     import {provide, PLATFORM_DIRECTIVES} from '@angular/core';
     import { disableDeprecatedForms, provideForms, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
     import {App} from './home/home';
-    
+
     bootstrap(App, [
         disableDeprecatedForms(),
         provideForms(),
@@ -56,6 +56,7 @@ Once installed, import the TagInput component and use it in your container compo
 ## API
 
 **@Input**
+- **`ngModel`** - [**`string[]`**] - Model of the component. Accepts an array of strings as input.
 - **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
 - **`secondaryPlaceholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms when there are 0 items entered.
 - **`maxItems`** -  [**`?number`**] - Sets the maximum number of items it is possible to enter.
