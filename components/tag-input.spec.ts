@@ -39,21 +39,15 @@ describe('TagInput', () => {
       );
     });
 
-    beforeEach(inject([TestComponentBuilder],
-      (tcb: TestComponentBuilder) => builder = tcb));
+    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
 
     describe('Basic behaviours', () => {
-      it('should have 2 tags set by ngModel',
-        async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
-          const fixture = tcb.createSync(TestApp);
-          fixture.detectChanges();
-
-          const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-
-          console.log(component);
-          expect(component.items.length).toEqual(2);
-        }));
-      });
+        it('should have 2 tags set by ngModel', () => {
+            const fixture = builder.createSync(TestApp);
+            fixture.detectChanges();
+            const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+            expect(component.items.length).toEqual(2);
+        });
 
       it('should override the default placeholder of the input',  () => {
           const template = `<tag-input [(ngModel)]="items" placeholder="New Tag"></tag-input>`;
@@ -366,7 +360,7 @@ describe('TagInput', () => {
     selector: 'test-app',
     template: `<tag-input
                   name='tags'
-                  [ngModel]="['Typescript', 'Angular 2']"
+                  [(ngModel)]="items"
                   (onRemove)="onRemove($event)"
                   (onAdd)="onAdd($event)">
               </tag-input>`,
