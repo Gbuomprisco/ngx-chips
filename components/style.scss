@@ -80,7 +80,7 @@ $color-grey: #efefef;
     transition: all 0.25s;
 
     margin: 0.1rem 0.2rem;
-    padding: 0.1rem 0.8rem;
+    padding: 0.15rem 0.8rem;
 
     height: 32px;
     line-height: 32px;
@@ -104,12 +104,18 @@ $color-grey: #efefef;
     background: darken($color-grey, 3.5%);
 }
 
+.tag:focus path {
+    fill: #fff;
+}
+
 .tag__remove-button {
     margin-left: 6px;
-    line-height: 28px;
+    width: 16px;
+    height: 26px;
+    align-self: center;
+    transition: all 0.15s;
+}
 
-    img {
-        width: 15px;
-        vertical-align: sub;
-    }
+.tag__remove-button:hover {
+    transform: scale(1.3);
 }

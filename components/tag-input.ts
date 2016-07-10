@@ -1,7 +1,6 @@
 import {
     Component,
     forwardRef,
-    Provider,
     Input,
     Output,
     ElementRef,
@@ -39,6 +38,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = provide(NG_VALUE_ACCESSOR, {
 const styles = [require('./style.scss').toString()],
     template = require('./template.html');
 
+import { DeleteIcon } from './icon/icon';
 
 /**
  * A component for entering a list of terms to be used with ngModel.
@@ -46,7 +46,7 @@ const styles = [require('./style.scss').toString()],
 @Component({
     moduleId: module.id,
     selector: 'tag-input',
-    directives: [],
+    directives: [ DeleteIcon ],
     providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR],
     styles,
     template
@@ -139,7 +139,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @desc list of Element items
      */
     private tagElements: Element[];
-
 
     // Component private/public properties
 

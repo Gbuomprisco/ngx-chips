@@ -27,12 +27,11 @@
             </span>
 
             <!-- remove 'x' button -->
-            <span class="tag__remove-button"
+            <delete-icon class="tag__remove-button"
                   aria-label="Remove tag"
                   (click)="remove(item)"
                   *ngIf="!readonly">
-                <img src="delete.png" />
-            </span>
+            </delete-icon>
         </div>
 
         <!-- form -->
