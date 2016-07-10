@@ -13,7 +13,7 @@
 
     <!-- tags [default] -->
     <div class="tags-container tags-container--default flex">
-        <div *ngFor="let item of value; trackBy: item; let i = index"
+        <div *ngFor="let item of items; trackBy: item; let i = index"
              (click)="select(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
              tabindex="0"
@@ -36,11 +36,11 @@
         </div>
 
         <!-- form -->
-        <form (ngSubmit)="add()" *ngIf="value && input.isVisible.call(this)" [formGroup]="form">
+        <form (ngSubmit)="add()" *ngIf="items && input.isVisible.call(this)" [formGroup]="form">
             <input type="text"
                    required
                    class="tag-input__text-input"
-                   placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
+                   placeholder="{{ items.length ? placeholder : secondaryPlaceholder }}"
                    (focus)="input.focus()"
                    (blur)="input.isFocused = false"
                    (keyup)="fireEvents('keyup', $event)"

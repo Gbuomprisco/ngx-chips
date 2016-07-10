@@ -12,7 +12,7 @@ import {
     provide
 } from '@angular/core';
 
-import {TagInputAccessor} from './accessor';
+import { TagInputAccessor } from './accessor';
 
 import {
     FormGroup,
@@ -29,9 +29,7 @@ import {
     KEY_PRESS_ACTIONS
 } from './constants';
 
-import {
-    TagInputComponent
-} from './tag-input.d';
+import { TagInputComponent } from './tag-input.d';
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = provide(NG_VALUE_ACCESSOR, {
     useExisting: forwardRef(() => TagInput),
@@ -40,6 +38,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR = provide(NG_VALUE_ACCESSOR, {
 
 const styles = [require('./style.scss').toString()],
     template = require('./template.html');
+
 
 /**
  * A component for entering a list of terms to be used with ngModel.
@@ -160,7 +159,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         element: <HTMLElement>undefined,
         isFocused: <boolean>false,
         isVisible: (): boolean => {
-            const maxItemsReached = this.maxItems !== undefined && this.value.length === this.maxItems;
+            const maxItemsReached = this.maxItems !== undefined && this.items.length === this.maxItems;
             return !this.readonly && !maxItemsReached;
         },
         focus: (keepTagSelected = false): void => {
@@ -197,7 +196,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @param item {TagComponent}
      */
     public remove(item: string): void {
-        this.value = this.value.filter(_item => _item !== item);
+        this.items = this.items.filter(_item => _item !== item);
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
@@ -224,7 +223,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         control.updateValue(item);
 
         // check if the transformed item is already existing in the list
-        const isDupe = vm.value.indexOf(item) !== -1;
+        const isDupe = vm.items.indexOf(item) !== -1;
 
         // check validity
         if (!vm.input.isVisible() || !vm.form.valid || isDupe) {
@@ -233,7 +232,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         }
 
         // append item to the ngModel list
-        vm.value.push(item);
+        vm.items.push(item);
 
         // reset control
         control.updateValue('');
@@ -292,7 +291,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         const vm = this,
             KEY = $event.keyCode,
             ACTION = KEY_PRESS_ACTIONS[KEY],
-            itemIndex = this.value.indexOf(item);
+            itemIndex = this.items.indexOf(item);
 
         function deleteSelectedTag() {
             if (vm.selectedTag) {
@@ -302,7 +301,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
         function switchPrev() {
             if (itemIndex > 0) {
-                vm.select(vm.value[itemIndex - 1]);
+                vm.select(vm.items[itemIndex - 1]);
                 vm.renderer.invokeElementMethod(vm.tagElements[itemIndex - 1], 'focus', []);
             } else {
                 vm.input.focus.call(vm);
@@ -310,8 +309,8 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         }
 
         function switchNext() {
-            if (itemIndex < vm.value.length - 1) {
-                vm.select(vm.value[itemIndex + 1]);
+            if (itemIndex < vm.items.length - 1) {
+                vm.select(vm.items[itemIndex + 1]);
                 vm.renderer.invokeElementMethod(vm.tagElements[itemIndex + 1], 'focus', []);
             } else {
                 vm.input.focus.call(vm);
@@ -349,12 +348,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         };
 
         const backSpaceListener = ($event) => {
-            const itemsLength: number = vm.value.length,
+            const itemsLength: number = vm.items.length,
                 inputValue: string = vm.form.find('item').value,
                 isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
             if (isCorrectKey && !inputValue && itemsLength) {
-                vm.select(vm.value[itemsLength - 1]);
+                vm.select(vm.items[itemsLength - 1]);
                 vm.renderer.invokeElementMethod(vm.tagElements[itemsLength - 1], 'focus', []);
             }
         };
@@ -373,8 +372,8 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
         // though, warn the user.
-        if (this.maxItems !== undefined && this.value.length > this.maxItems) {
-            this.maxItems = this.value.length;
+        if (this.maxItems !== undefined && this.items.length > this.maxItems) {
+            this.maxItems = this.items.length;
             console.warn('The number of items specified was greater than the property max-items.');
         }
 

@@ -1,32 +1,20 @@
 import {
-    describe,
-    inject,
-    it,
-    expect,
-    tick,
-    beforeEach,
-    beforeEachProviders,
-    fakeAsync
-} from '@angular/core/testing';
-
-import {
+    addProviders,
+    fakeAsync,
+    TestComponentBuilder,
     ComponentFixture,
-    TestComponentBuilder
-} from '@angular/compiler/testing';
+    inject,
+    tick,
+    async
+} from '@angular/core/testing';
 
 import {
   Component,
   PLATFORM_DIRECTIVES
 } from '@angular/core';
 
-import {
-  By
-} from '@angular/platform-browser';
-
-// Load the implementations that should be tested
-import {
-  TagInput
-} from './tag-input';
+import { By } from '@angular/platform-browser';
+import { TagInput } from './tag-input';
 
 import {
     Validators,
@@ -39,31 +27,42 @@ import {
 describe('TagInput', () => {
     let builder: TestComponentBuilder;
 
-    beforeEachProviders(() => [provideForms(), disableDeprecatedForms(), {
-          provide: PLATFORM_DIRECTIVES,
-          useValue: [REACTIVE_FORM_DIRECTIVES],
-          multi: true
-    }]);
-
-    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
-
-    it('should have 2 tags set by ngModel', (done: () => void) => {
-        builder.createAsync(TestApp).then(fixture => {
-            fixture.detectChanges();
-            const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
-            expect(component.value.length).toEqual(2);
-            done();
-        });
+    beforeEach(() => {
+      addProviders([
+        disableDeprecatedForms(),
+        provideForms(),
+        {
+            provide: PLATFORM_DIRECTIVES,
+            useValue: [REACTIVE_FORM_DIRECTIVES],
+            multi: true
+        }]
+      );
     });
 
-    it('should override the default placeholder of the input',  (done: () => void) => {
-        const template = `<tag-input [(ngModel)]="items" placeholder="New Tag"></tag-input>`;
-        builder.overrideTemplate(TestApp, template).createAsync(TestApp).then(fixture => {
-            fixture.detectChanges();
-            let input = fixture.debugElement.query(By.css('input[type="text"]')).nativeElement;
-            expect(input.getAttribute('placeholder')).toEqual('New Tag');
-            done();
-        });
+    beforeEach(inject([TestComponentBuilder],
+      (tcb: TestComponentBuilder) => builder = tcb));
+
+    describe('Basic behaviours', () => {
+      it('should have 2 tags set by ngModel',
+        async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+          const fixture = tcb.createSync(TestApp);
+          fixture.detectChanges();
+
+          const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
+
+          console.log(component);
+          expect(component.items.length).toEqual(2);
+        }));
+      });
+
+      it('should override the default placeholder of the input',  () => {
+          const template = `<tag-input [(ngModel)]="items" placeholder="New Tag"></tag-input>`;
+          const fixture = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+          fixture.detectChanges();
+
+          let input = fixture.debugElement.query(By.css('input[type="text"]')).nativeElement;
+          expect(input.getAttribute('placeholder')).toEqual('New Tag');
+      });
     });
 
     describe('when a new item is added', () => {
@@ -85,7 +84,7 @@ describe('TagInput', () => {
                 fixture.detectChanges();
 
                 expect(fixture.componentInstance.items.length).toEqual(3);
-                expect(component.value.length).toEqual(3);
+                expect(component.items.length).toEqual(3);
             });
         });
 
@@ -103,7 +102,7 @@ describe('TagInput', () => {
                 fixture.detectChanges();
 
                 expect(fixture.componentInstance.items.length).toEqual(2);
-                expect(component.value.length).toEqual(2);
+                expect(component.items.length).toEqual(2);
             });
         });
 
@@ -131,7 +130,7 @@ describe('TagInput', () => {
                 const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
                 component.form.find('item').updateValue('Javascript');
                 component.add();
-                expect(component.value.length).toEqual(2);
+                expect(component.items.length).toEqual(2);
             });
         });
     });
@@ -146,7 +145,7 @@ describe('TagInput', () => {
 
                 fixture.detectChanges();
 
-                expect(component.value).toEqual(['Javascript']);
+                expect(component.items).toEqual(['Javascript']);
                 expect(component.input.isFocused).toEqual(true);
             });
         });
@@ -195,7 +194,7 @@ describe('TagInput', () => {
                 expect(component.form.valid).toBe(false);
 
                 component.add();
-                expect(component.value.length).toEqual(2);
+                expect(component.items.length).toEqual(2);
 
 
                 // add element with > 3 chars
@@ -203,7 +202,7 @@ describe('TagInput', () => {
                 expect(component.form.valid).toBe(true);
                 component.add();
 
-                expect(component.value.length).toEqual(3);
+                expect(component.items.length).toEqual(3);
             });
         });
 
@@ -220,13 +219,13 @@ describe('TagInput', () => {
                 component.form.find('item').updateValue('Javacript');
                 expect(component.form.valid).toBe(false);
                 component.add();
-                expect(component.value.length).toEqual(2);
+                expect(component.items.length).toEqual(2);
 
 
                 component.form.find('item').updateValue('@J');
                 expect(component.form.valid).toBe(false);
                 component.add();
-                expect(component.value.length).toEqual(2);
+                expect(component.items.length).toEqual(2);
 
 
                 // add element with > 3 chars AND @
@@ -234,7 +233,7 @@ describe('TagInput', () => {
                 expect(component.form.valid).toBe(true);
                 component.add();
 
-                expect(component.value.length).toEqual(3);
+                expect(component.items.length).toEqual(3);
             });
         });
 
@@ -253,8 +252,8 @@ describe('TagInput', () => {
                 component.form.find('item').updateValue('@');
                 component.add();
 
-                expect(component.value[2]).toEqual('prefix: @');
-                expect(component.value.length).toEqual(3);
+                expect(component.items[2]).toEqual('prefix: @');
+                expect(component.items.length).toEqual(3);
             });
         });
     });
@@ -295,7 +294,7 @@ describe('TagInput', () => {
                 // it removes current selected tag when pressing backspace
                 keyDown['keyCode'] = 8;
                 component.tagElements[1].dispatchEvent(keyDown);
-                expect(component.value.length).toEqual(1);
+                expect(component.items.length).toEqual(1);
                 expect(component.selectedTag).toBe(undefined);
             });
         });
@@ -354,7 +353,7 @@ describe('TagInput', () => {
                     const component = fixture.debugElement.query(By.directive(TagInput)).componentInstance;
 
                     expect(component.hasTemplate).toEqual(true);
-                    expect(component.value.length).toEqual(2);
+                    expect(component.items.length).toEqual(2);
                     expect(component.element.querySelector('.tags-container')).toEqual(undefined);
                     expect(component.element.querySelector('.custom__class').length).toEqual(2);
                 });
@@ -366,10 +365,12 @@ describe('TagInput', () => {
 @Component({
     selector: 'test-app',
     template: `<tag-input
-                [(ngModel)]="items"
-                (onRemove)="onRemove($event)"
-                (onAdd)="onAdd($event)"></tag-input>`,
-    directives: [TagInput, ...REACTIVE_FORM_DIRECTIVES]
+                  name='tags'
+                  [ngModel]="['Typescript', 'Angular 2']"
+                  (onRemove)="onRemove($event)"
+                  (onAdd)="onAdd($event)">
+              </tag-input>`,
+    directives: [ TagInput ]
 })
 class TestApp {
     public items = ['Javascript', 'Typescript'];
