@@ -330,6 +330,8 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
                 switchNext();
                 break;
         }
+
+        $event.preventDefault();
     }
 
     /**
