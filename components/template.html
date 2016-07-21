@@ -1,7 +1,6 @@
 
 <!-- input tag container -->
 <div class="tag-input"
-     tabindex="0"
      (click)="input.focus()"
      [class.tag-input--invalid]="!form.valid && form.controls.item.value"
      [class.tag-input--focused]="input.isFocused">
@@ -16,7 +15,7 @@
         <div *ngFor="let item of items; trackBy: item; let i = index"
              (click)="select(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
-             tabindex="0"
+             [attr.tabindex]="readonly ? -1 : 0"
              class="tag"
              [class.tag--readonly]="readonly"
              [attr.aria-label]="item">

@@ -304,6 +304,25 @@ describe('TagInput', () => {
             expect(component.selectedTag).toEqual(undefined);
             expect(component.input.isFocused).toEqual(true);
         }));
+
+        it('it focuses input when pressing tab', fakeAsync(() => {
+            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const component = getComponent(fixture);
+
+            component.input.focus();
+
+            keyDown['keyCode'] = 9;
+
+            // press left arrow
+            component.tagElements[0].dispatchEvent(keyDown);
+            // selected tag is the last one
+            expect(component.selectedTag).toEqual('Typescript');
+
+            // press tab -> focuses input
+            component.tagElements[1].dispatchEvent(keyDown);
+            expect(component.selectedTag).toEqual(undefined);
+            expect(component.input.isFocused).toEqual(true);
+        }));
     });
 
     describe('when using a custom template', () => {
