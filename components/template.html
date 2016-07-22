@@ -34,18 +34,29 @@
         </div>
 
         <!-- form -->
-        <form (ngSubmit)="add()" *ngIf="items && input.isVisible.call(this)" [formGroup]="form">
+        <form (ngSubmit)="addItem()" *ngIf="items && input.isVisible.call(this)" [formGroup]="form">
             <input type="text"
                    required
                    class="tag-input__text-input"
                    placeholder="{{ items.length ? placeholder : secondaryPlaceholder }}"
                    (focus)="input.focus()"
-                   (blur)="input.isFocused = false"
+                   (blur)="input.blur()"
                    (keyup)="fireEvents('keyup', $event)"
                    formControlName="item"
                    tabindex="0"
                    [attr.aria-label]="placeholder"
             />
         </form>
+
+        <div *ngIf="autocomplete">
+            <ng2-dropdown>
+                <ng2-dropdown-menu [focusFirstElement]="false" offset="60 0">
+                    <ng2-menu-item *ngFor="let item of itemsMatching"
+                                   [value]="item">
+                        {{ item }}
+                    </ng2-menu-item>
+                </ng2-dropdown-menu>
+            </ng2-dropdown>
+        </div>
     </div>
 </div>

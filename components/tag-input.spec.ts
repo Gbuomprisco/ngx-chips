@@ -184,7 +184,7 @@ describe('TagInput', () => {
             expect(component.items.length).toEqual(2);
 
 
-            // add element with > 3 chars
+            // addItem element with > 3 chars
             component.form.find('item').updateValue('Abcde');
             expect(component.form.valid).toBe(true);
             component.add();
@@ -211,7 +211,7 @@ describe('TagInput', () => {
             expect(component.items.length).toEqual(2);
 
 
-            // add element with > 3 chars AND @
+            // addItem element with > 3 chars AND @
             component.form.find('item').updateValue('@Javacript');
             expect(component.form.valid).toBe(true);
             component.add();

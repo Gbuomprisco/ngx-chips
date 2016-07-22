@@ -63,7 +63,9 @@
     "webpack-merge": "^0.8.4",
     "zone.js": "~0.6.12"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ng2-material-dropdown": "^0.1.9"
+  },
   "keywords": [
     "angular 2",
     "angular 2 tag input",
