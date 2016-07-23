@@ -4,6 +4,7 @@
 
 export const PLACEHOLDER = '+ Tag';
 export const SECONDARY_PLACEHOLDER = 'Enter a new tag';
+export const KEYDOWN = 'keydown';
 export const KEYUP = 'keyup';
 export const FOCUS = 'focus';
 export const MAX_ITEMS_WARNING = 'The number of items specified was greater than the property max-items.';

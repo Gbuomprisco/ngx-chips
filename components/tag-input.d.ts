@@ -3,13 +3,13 @@ interface TagInputComponent {
     input: {
         element: HTMLElement,
         isFocused: boolean;
-        isVisible(): void;
         focus(): void;
         blur(): void;
     };
     selectedTag: string;
-    remove(item: string): void;
+    removeItem(item: string): void;
     addItem(): void;
+    selectItem(item: string);
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
     transform(item: string);

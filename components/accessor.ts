@@ -23,7 +23,7 @@ export class TagInputAccessor implements ControlValueAccessor {
     }
 
     writeValue(items: string[]) {
-        this._items = items;
+        this._items = items || [];
     }
 
     registerOnChange(fn: any) {

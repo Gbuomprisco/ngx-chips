@@ -64,6 +64,10 @@ Once installed, import the TagInput component and use it in your container compo
 - **`separatorKeys`** - [**`?number[]`**] - Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
 - **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+- **`autocomplete`** - [**`?boolean`**] - if true, it adds an autocomplete component from which is possible to select items
+- **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
+- **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
+
 
 **@Output**
 - **`onAdd`** - [**`?onAdd(item: string)`**] - event fired when an item has been added

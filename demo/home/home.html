@@ -34,12 +34,19 @@
 
         <div>
             <h3>Tags within an autocomplete component</h3>
-            <form>
-                <tag-input [ngModel]="['@item']"
-                           name="items"
-                           [autocompleteItems]="['item1', 'item2']"
-                           [autocomplete]="true"></tag-input>
-            </form>
+            <tag-input [ngModel]="['@item']"
+                       [autocompleteItems]="['item1', 'item2']"
+                       [autocomplete]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Tags accepting only items from an autocomplete</h3>
+            <tag-input [ngModel]="['@item']"
+                       [onlyFromAutocomplete]="true"
+                       [autocompleteItems]="['item1', 'item2']"
+                       [autocomplete]="true">
+            </tag-input>
         </div>
 
         <div>

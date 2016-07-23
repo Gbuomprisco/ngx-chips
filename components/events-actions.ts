@@ -13,7 +13,7 @@ export function backSpaceListener ($event) {
         isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
     if (isCorrectKey && !inputValue && itemsLength) {
-        this.select(this.items[itemsLength - 1]);
+        this.selectItem(this.items[itemsLength - 1]);
         this.renderer.invokeElementMethod(this.tagElements[itemsLength - 1], 'focus', []);
     }
 }
@@ -33,23 +33,32 @@ export function addListener(listenerType: string, action: () => any, condition =
     this.listeners[listenerType].push(action);
 }
 
-export function autoCompleteListener(ev): void {
-    const vm = this;
-    const value: string = vm.form.value.item;
-    const position: ClientRect = vm.input.element.getBoundingClientRect();
+
+function getMatchingItems(value) {
     const itemsMatching: string[] = [];
 
-    if (!value) {
-        return;
-    }
-
-    vm.autocompleteItems.forEach(item => {
-        if (item.match(value) && vm.items.indexOf(item) === -1) {
+    this.autocompleteItems.forEach(item => {
+        if (item.match(value) && this.items.indexOf(item) === -1) {
             itemsMatching.push(item);
         }
     });
 
-    vm.itemsMatching = itemsMatching;
+    return itemsMatching;
+}
+
+export function autoCompleteListener(ev): void {
+    const vm = this;
+    const value: string = vm.form.value.item;
+    const position: ClientRect = vm.input.element.getBoundingClientRect();
+
+
+    // exit early if no value is entered
+    if (!value) {
+        return;
+    }
+
+    const itemsMatching = getMatchingItems.call(vm, value);
+    this.itemsMatching = itemsMatching;
 
     if (itemsMatching.length) {
         const focus = ev.keyCode === 40 ? true : false;
@@ -66,6 +75,7 @@ export function autoCompleteListener(ev): void {
 
 export function onAutocompleteItemClicked(item: Ng2MenuItemComponent): void {
     this.setInputValue(item.value);
-    this.addItem();
-    this.input.focus();
+    this.addItem(true);
+    this.focus();
+    this.dropdown.hide();
 }
