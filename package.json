@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Ng2TagInput: simple tag input component for Angular 2",
   "scripts": {
     "typings-install": "typings install",
@@ -63,7 +63,9 @@
     "webpack-merge": "^0.8.4",
     "zone.js": "~0.6.12"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ng2-material-dropdown": "^0.2.2"
+  },
   "keywords": [
     "angular 2",
     "angular 2 tag input",
