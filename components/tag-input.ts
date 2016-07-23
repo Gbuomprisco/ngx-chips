@@ -218,7 +218,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
-            this.selectItem(undefined);
+            this.selectedTag = undefined;
         }
 
         // focus input right after removing an item
@@ -242,27 +242,25 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         // check validity:
         // 1. form must be valid
         // 2. there must be no dupe
-        // 3. check item comes from autocomplete
-        // 4. or onlyFromAutocomplete is false
+        // 3. check max items has not been reached
+        // 4. check item comes from autocomplete
+        // 5. or onlyFromAutocomplete is false
         const isValid = this.form.valid &&
-            !isDupe &&
-            (isFromAutocomplete && this.onlyFromAutocomplete === true) ||
-            this.onlyFromAutocomplete === false;
+            isDupe === false &&
+            !this.maxItemsReached &&
+            ((isFromAutocomplete && this.onlyFromAutocomplete === true) || this.onlyFromAutocomplete === false);
 
         // if valid:
         if (isValid) {
             // append item to the ngModel list
             this.items.push(item);
 
-            // reset control
-            this.setInputValue('');
-
             //  and emit event
             this.onAdd.emit(item);
-        } else {
-            // otherwise, just reset the form
-            this.setInputValue('');
         }
+
+        // reset control
+        this.setInputValue('');
     }
 
     /**
@@ -315,7 +313,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @returns {string}
      */
     private setInputValue(value: string): string {
-        const item = this.transform(value);
+        const item = value ? this.transform(value) : '';
         const control = this.getControl();
 
         // update form value with the transformed item
@@ -384,7 +382,6 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
     ngAfterViewInit() {
         const vm = this;
-
         vm.hasTemplate = vm.template && vm.template.nativeElement.childElementCount > 0;
 
         // if the template has been specified, remove the tags-container for the tags with default template
@@ -405,8 +402,12 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         // if autocomplete is set to true, set up its events
         if (vm.autocomplete) {
             addListener.call(vm, KEYUP, autoCompleteListener);
+
             vm.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(vm));
-            vm.dropdown.onHide.subscribe(() => vm.itemsMatching = []);
+
+            vm.dropdown.onHide.subscribe(() => {
+                vm.itemsMatching = [];
+            });
         }
     }
 }

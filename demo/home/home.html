@@ -60,8 +60,8 @@
         <div>
             <h3>Tags custom template</h3>
             <tag-input [ngModel]="['@item']" #input>
-                <div *ngFor="let item of input.value; trackBy: item"
-                     (click)="input.select(item);$event.stopPropagation();"
+                <div *ngFor="let item of input.items; trackBy: item"
+                     (click)="input.selectItem(item);$event.stopPropagation();"
                      (keydown)="input.handleKeydown($event, item)"
                      class="tag">
 

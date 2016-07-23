@@ -128,6 +128,3 @@ Basic examples:
     </tag-input>
 
 If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/NkIImOi8b](http://www.webpackbin.com/NkIImOi8b).
-
-## What's next?
-- Autocomplete
