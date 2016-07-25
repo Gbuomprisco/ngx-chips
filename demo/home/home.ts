@@ -9,12 +9,14 @@ import {
 
 @Component({
     selector: 'app',
-    directives: [TagInput, CORE_DIRECTIVES],
+    directives: [TagInput, CORE_DIRECTIVES ],
     template: require('./home.html')
 })
 
 export class App {
     constructor() {}
+
+    items = ['Javascript', 'Typescript'];
 
     public options = {
         readonly: undefined,
