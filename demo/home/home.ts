@@ -16,6 +16,8 @@ import {
 export class App {
     constructor() {}
 
+    items = ['Javascript', 'Typescript'];
+
     public options = {
         readonly: undefined,
         placeholder: '+ Tag'
