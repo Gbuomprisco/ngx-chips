@@ -1,14 +1,15 @@
 interface TagInputComponent {
-    form;
-    value: string[];
+    items: string[];
     input: {
         element: HTMLElement,
         isFocused: boolean;
-        isVisible(): void;
         focus(): void;
+        blur(): void;
     };
-    remove(item: string): void;
-    add(): void;
+    selectedTag: string;
+    removeItem(item: string): void;
+    addItem(): void;
+    selectItem(item: string);
     fireEvents(eventName: string, $event?: any);
     handleKeydown($event, item: string);
     transform(item: string);

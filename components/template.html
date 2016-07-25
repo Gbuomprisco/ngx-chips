@@ -1,8 +1,7 @@
 
 <!-- input tag container -->
 <div class="tag-input"
-     tabindex="0"
-     (click)="input.focus()"
+     (click)="focus()"
      [class.tag-input--invalid]="!form.valid && form.controls.item.value"
      [class.tag-input--focused]="input.isFocused">
 
@@ -13,10 +12,10 @@
 
     <!-- tags [default] -->
     <div class="tags-container tags-container--default flex">
-        <div *ngFor="let item of value; trackBy: item; let i = index"
-             (click)="select(item);$event.stopPropagation();"
+        <div *ngFor="let item of items; trackBy: item; let i = index"
+             (click)="selectItem(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
-             tabindex="0"
+             [attr.tabindex]="readonly ? -1 : 0"
              class="tag"
              [class.tag--readonly]="readonly"
              [attr.aria-label]="item">
@@ -27,27 +26,40 @@
             </span>
 
             <!-- remove 'x' button -->
-            <span class="tag__remove-button"
+            <delete-icon class="tag__remove-button"
                   aria-label="Remove tag"
-                  (click)="remove(item)"
+                  (click)="removeItem(item)"
                   *ngIf="!readonly">
-                <img src="delete.png" />
-            </span>
+            </delete-icon>
         </div>
 
         <!-- form -->
-        <form (ngSubmit)="add()" *ngIf="value && input.isVisible.call(this)" [formGroup]="form">
+        <form (ngSubmit)="addItem()" [formGroup]="form" [hidden]="readonly || maxItemsReached">
             <input type="text"
                    required
                    class="tag-input__text-input"
-                   placeholder="{{ value.length ? placeholder : secondaryPlaceholder }}"
-                   (focus)="input.focus()"
-                   (blur)="input.isFocused = false"
+                   placeholder="{{ items.length ? placeholder : secondaryPlaceholder }}"
+                   (focus)="focus()"
+                   (blur)="blur()"
+                   (keydown)="fireEvents('keydown', $event)"
                    (keyup)="fireEvents('keyup', $event)"
                    formControlName="item"
                    tabindex="0"
                    [attr.aria-label]="placeholder"
             />
         </form>
+
+        <div *ngIf="autocomplete">
+            <ng2-dropdown>
+                <ng2-dropdown-menu [focusFirstElement]="false"
+                                   (keydown)="escapeDropdown($event)"
+                                   offset="60 0">
+                    <ng2-menu-item *ngFor="let item of itemsMatching"
+                                   [value]="item">
+                        {{ item }}
+                    </ng2-menu-item>
+                </ng2-dropdown-menu>
+            </ng2-dropdown>
+        </div>
     </div>
 </div>
