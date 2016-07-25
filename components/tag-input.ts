@@ -214,7 +214,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @param item {TagComponent}
      */
     public removeItem(item: string): void {
-        this.items = this.items.filter(_item => _item !== item);
+        this.items = this.items.filter(_item => _item !== item).slice(0);
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
@@ -253,7 +253,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         // if valid:
         if (isValid) {
             // append item to the ngModel list
-            this.items.push(item);
+            this.items = this.items.concat([item]);
 
             //  and emit event
             this.onAdd.emit(item);
