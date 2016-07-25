@@ -5,7 +5,7 @@ This is a component for Angular 2. Design and API are blandly inspired by Angula
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/NkIImOi8b](http://www.webpackbin.com/NkIImOi8b).
+Check out the live demo (with source code) here [http://www.webpackbin.com/4ydNyqnDW](http://www.webpackbin.com/4ydNyqnDW).
 
 ## Quick start. Install the component from NPM by running:
 
@@ -127,4 +127,4 @@ Basic examples:
         </div>
     </tag-input>
 
-If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/NkIImOi8b](http://www.webpackbin.com/NkIImOi8b).
+If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/4ydNyqnDW](http://www.webpackbin.com/4ydNyqnDW).
