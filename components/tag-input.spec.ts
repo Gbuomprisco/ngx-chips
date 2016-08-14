@@ -1,77 +1,69 @@
 import {
-    addProviders,
     fakeAsync,
-    TestComponentBuilder,
     ComponentFixture,
-    inject,
-    tick
+    async,
+    tick,
+    TestBed
 } from '@angular/core/testing';
 
-import {
-  Component,
-  PLATFORM_DIRECTIVES
-} from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
+
+import {
+    BasicTagInput,
+    TagInputWithOutputs,
+    TagInputWithValidation,
+    TagInputWithTransformer,
+    TagInputWithPlaceholder,
+    TagInputWithMaxItems,
+    COMPONENTS
+} from './testing-helpers';
+
 import { TagInput } from './tag-input';
 
-import {
-    Validators,
-    FormControl,
-    disableDeprecatedForms,
-    provideForms,
-    REACTIVE_FORM_DIRECTIVES
-} from '@angular/forms';
-
 describe('TagInput', () => {
-    let builder: TestComponentBuilder;
-
     beforeEach(() => {
-      addProviders([
-        disableDeprecatedForms(),
-        provideForms(),
-        {
-            provide: PLATFORM_DIRECTIVES,
-            useValue: [REACTIVE_FORM_DIRECTIVES],
-            multi: true
-        }]
-      );
+        TestBed.configureTestingModule({
+            declarations: [...COMPONENTS],
+            imports: [BrowserModule, FormsModule]
+        });
     });
 
     function getComponent(fixture) {
-        tick();
         fixture.detectChanges();
         tick();
         fixture.detectChanges();
+        tick();
 
         return fixture.debugElement.query(By.directive(TagInput)).componentInstance;
     }
 
-    beforeEach(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => builder = tcb));
+    beforeEach(async(() => {
+        TestBed.compileComponents();
+    }));
 
     describe('Basic behaviours', () => {
         it('should have 2 tags set by ngModel', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
 
             expect(component.items.length).toEqual(2);
-            tick();
         }));
 
         it('should override the default placeholder of the input', fakeAsync(() => {
-            const template = `<tag-input [(ngModel)]="items" placeholder="New Tag"></tag-input>`;
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TagInputWithPlaceholder> = TestBed.createComponent(TagInputWithPlaceholder);
             const component = getComponent(fixture);
 
             expect(component.items.length).toEqual(2);
+            console.log(component.placeholder);
             expect(component.input.element.getAttribute('placeholder')).toEqual('New Tag');
         }));
     });
 
     describe('when a new item is added', () => {
         it('should be added to the list of items and update its parent\'s model', fakeAsync(() => {
-            const template = `<tag-input [(ngModel)]="items"></tag-input>`;
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
 
             component.form.find('item').updateValue('New Item');
@@ -91,8 +83,7 @@ describe('TagInput', () => {
         }));
 
         it('should not be allowed if max-items is set up', fakeAsync(() => {
-            const template = `<tag-input [(ngModel)]="items" [maxItems]="2"></tag-input>`;
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TagInputWithMaxItems> = TestBed.createComponent(TagInputWithMaxItems);
             const component = getComponent(fixture);
 
             component.form.find('item').updateValue('New Item');
@@ -105,7 +96,7 @@ describe('TagInput', () => {
         }));
 
         it('emits the event onAdd', () => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<TagInputWithOutputs> = TestBed.createComponent(TagInputWithOutputs);
             const itemName = 'New Item';
 
             fakeAsync(() => {
@@ -123,7 +114,7 @@ describe('TagInput', () => {
         });
 
         it('does not allow dupes', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
 
             component.form.find('item').updateValue('Javascript');
@@ -134,7 +125,7 @@ describe('TagInput', () => {
 
     describe('when an item is removed', () => {
         it('is removed from the list', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const tagName = 'Typescript';
             const component = getComponent(fixture);
 
@@ -148,7 +139,7 @@ describe('TagInput', () => {
         }));
 
         it('emits the event onRemove', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
             const tagName = 'Typescript';
 
@@ -161,7 +152,7 @@ describe('TagInput', () => {
         }));
 
         it('is sets current selected item as undefined', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
             const tagName = 'Typescript';
 
@@ -172,11 +163,7 @@ describe('TagInput', () => {
 
     describe('testing validators', () => {
         it('injects minLength validator and validates correctly', fakeAsync(() => {
-            const template = `<tag-input
-                                    [validators]="[validators.minLength]"
-                                    [(ngModel)]="items"></tag-input>`;
-
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TagInputWithValidation> = TestBed.createComponent(TagInputWithValidation);
             const component = getComponent(fixture);
 
             component.form.find('item').updateValue('Ab');
@@ -185,9 +172,12 @@ describe('TagInput', () => {
             component.addItem();
             expect(component.items.length).toEqual(2);
 
-
-            // addItem element with > 3 chars
+            // addItem element with > 3 chars without @
             component.form.find('item').updateValue('Abcde');
+            expect(component.form.valid).toBe(false);
+
+            // addItem element with > 3 chars with @
+            component.form.find('item').updateValue('@Abcde');
             expect(component.form.valid).toBe(true);
             component.addItem();
 
@@ -195,14 +185,10 @@ describe('TagInput', () => {
         }));
 
         it('injects minLength validator and custom validator and validates correctly', fakeAsync(() => {
-            const template = `<tag-input
-                                    [validators]="[validators.minLength, validators.startsWith]"
-                                    [(ngModel)]="items"></tag-input>`;
-
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TagInputWithValidation> = TestBed.createComponent(TagInputWithValidation);
             const component = getComponent(fixture);
 
-            component.form.find('item').updateValue('Javacript');
+            component.form.find('item').updateValue('Javascript');
             expect(component.form.valid).toBe(false);
             component.addItem();
             expect(component.items.length).toEqual(2);
@@ -214,7 +200,7 @@ describe('TagInput', () => {
 
 
             // addItem element with > 3 chars AND @
-            component.form.find('item').updateValue('@Javacript');
+            component.form.find('item').updateValue('@Javascript');
             expect(component.form.valid).toBe(true);
             component.addItem();
 
@@ -222,13 +208,7 @@ describe('TagInput', () => {
         }));
 
         it('validates transformed values', fakeAsync(() => {
-            const template = `<tag-input
-                                    [transform]="addPrefix"
-                                    [validators]="[validators.minLength]"
-                                    [(ngModel)]="items">
-                             </tag-input>`;
-
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TagInputWithTransformer> = TestBed.createComponent(TagInputWithTransformer);
             const component = getComponent(fixture);
 
             component.form.find('item').updateValue('@');
@@ -246,7 +226,7 @@ describe('TagInput', () => {
         keyDown['keyCode'] = 8;
 
         it('it handles navigation/deletion of tags', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
 
             component.focus();
@@ -279,7 +259,7 @@ describe('TagInput', () => {
         }));
 
         it('it navigates back and forth between tags', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
 
             component.focus();
@@ -307,7 +287,7 @@ describe('TagInput', () => {
         }));
 
         it('it focuses input when pressing tab', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.createSync(TestApp);
+            const fixture: ComponentFixture<BasicTagInput> = TestBed.createComponent(BasicTagInput);
             const component = getComponent(fixture);
 
             component.focus();
@@ -326,7 +306,7 @@ describe('TagInput', () => {
             expect(component.input.isFocused).toEqual(true);
         }));
     });
-
+    /**
     describe('when using a custom template', () => {
         const template =
             `<tag-input [(ngModel)]="items">
@@ -337,7 +317,7 @@ describe('TagInput', () => {
             </tag-input>`;
 
         it('replaced template with the custom one', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TestApp> = TestBed.createComponent(TestApp);
             const component = getComponent(fixture);
 
             expect(component.hasTemplate).toEqual(true);
@@ -347,7 +327,7 @@ describe('TagInput', () => {
     });
 
     describe('when using the autocomplete', () => {
-        let template = `<tag-input [(ngModel)]="items" 
+        let template = `<tag-input [(ngModel)]="items"
                                      [autocompleteItems]="['item1', 'item2', 'itam3']"
                                      [autocomplete]="true"></tag-input>`;
 
@@ -359,7 +339,7 @@ describe('TagInput', () => {
         keyUp['keyCode'] = iCode;
 
         it('adds an autocomplete to the template', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TestApp> = TestBed.createComponent(TestApp);
             const component = getComponent(fixture);
 
             expect(component.autocomplete).toEqual(true);
@@ -368,7 +348,7 @@ describe('TagInput', () => {
         }));
 
         it('shows a dropdown when entering a matching value', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TestApp> = TestBed.createComponent(TestApp);
             const component = getComponent(fixture);
 
             // press 'i'
@@ -387,7 +367,7 @@ describe('TagInput', () => {
         }));
 
         it('filters matching values', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TestApp> = TestBed.createComponent(TestApp);
             const component = getComponent(fixture);
 
             // press 'i'
@@ -418,7 +398,7 @@ describe('TagInput', () => {
         }));
 
         it('adds items to tag input from autocomplete', fakeAsync(() => {
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TestApp> = TestBed.createComponent(TestApp);
             const component = getComponent(fixture);
 
             expect(component.dropdown).toBeDefined();
@@ -440,12 +420,12 @@ describe('TagInput', () => {
         }));
 
         it('does not let add item if onlyFromAutocomplete is set to true', fakeAsync(() => {
-            template = `<tag-input [(ngModel)]="items" 
+            template = `<tag-input [(ngModel)]="items"
                                    [onlyFromAutocomplete]="true"
                                    [autocompleteItems]="['item1', 'item2', 'itam3']"
                                    [autocomplete]="true"></tag-input>`;
 
-            const fixture: ComponentFixture<TestApp> = builder.overrideTemplate(TestApp, template).createSync(TestApp);
+            const fixture: ComponentFixture<TestApp> = TestBed.createComponent(TestApp);
             const component = getComponent(fixture);
 
             component.setInputValue('item');
@@ -457,50 +437,5 @@ describe('TagInput', () => {
             expect(component.items.length).toEqual(3);
         }));
     });
+     **/
 });
-
-@Component({
-    selector: 'test-app',
-    template: `<tag-input
-                  [(ngModel)]="items"
-                  (onRemove)="onRemove($event)"
-                  (onAdd)="onAdd($event)">
-              </tag-input>`,
-    directives: [ TagInput ]
-})
-class TestApp {
-    public items = getItems();
-    public placeholder = '';
-
-    onAdd(item) {
-
-    }
-
-    onRemove(item) {
-
-    }
-
-    validators = {
-        minLength: Validators.minLength(3),
-        startsWith: (control: FormControl) => {
-            if (control.value.charAt(0) !== '@') {
-                return {
-                    'startsWithAt@': true
-                };
-            }
-            return null;
-        }
-    };
-
-    addPrefix(item: string) {
-        return `prefix: ${item}`;
-    }
-
-    ngOnInit() {
-
-    }
-}
-
-function getItems() {
-    return ['Javascript', 'Typescript'];
-}

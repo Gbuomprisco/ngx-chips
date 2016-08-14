@@ -3,10 +3,11 @@
     "removeComments": true,
     "noImplicitAny": false,
     "module": "commonjs",
+    "outDir": "dist",
     "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "declaration": false,
+    "declaration": true,
     "sourceMap": true,
     "moduleResolution": "node",
     "rootDir": "."
@@ -16,6 +17,7 @@
   },
   "files": [
     "typings/index.d.ts",
+    "components/tag-input.ts",
     "index.ts"
   ],
   "exclude": [

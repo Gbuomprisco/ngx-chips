@@ -1,5 +1,3 @@
-import { Ng2MenuItemComponent } from 'ng2-material-dropdown';
-
 export function customSeparatorKeys($event) {
     if (this.separatorKeys.indexOf($event.keyCode) >= 0) {
         $event.preventDefault();
@@ -36,9 +34,13 @@ export function addListener(listenerType: string, action: () => any, condition =
 
 function getMatchingItems(value) {
     const itemsMatching: string[] = [];
+    const items = this.autocompleteItems;
+    const lowercaseValue = value.toLowerCase();
 
-    this.autocompleteItems.forEach(item => {
-        if (item.match(value) && this.items.indexOf(item) === -1) {
+    items.forEach(item => {
+        const condition = item.indexOf(lowercaseValue) === 0 && this.items.indexOf(item) === -1;
+
+        if (condition) {
             itemsMatching.push(item);
         }
     });
@@ -51,9 +53,10 @@ export function autoCompleteListener(ev): void {
     const value: string = vm.form.value.item;
     const position: ClientRect = vm.input.element.getBoundingClientRect();
 
-
     // exit early if no value is entered
     if (!value) {
+        this.itemsMatching = [];
+        this.dropdown.hide();
         return;
     }
 
@@ -73,9 +76,16 @@ export function autoCompleteListener(ev): void {
     }
 }
 
-export function onAutocompleteItemClicked(item: Ng2MenuItemComponent): void {
+export function onAutocompleteItemClicked(item): void {
+    if (!item) {
+        return;
+    }
+
+    // add item
     this.setInputValue(item.value);
     this.addItem(true);
     this.focus();
+
+    // hide dropdown
     this.dropdown.hide();
 }

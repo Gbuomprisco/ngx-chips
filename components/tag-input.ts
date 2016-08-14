@@ -13,7 +13,7 @@ import {
 import {
     FormGroup,
     FormControl,
-    FormBuilder,
+    REACTIVE_FORM_DIRECTIVES,
     Validators,
     NG_VALUE_ACCESSOR
 } from '@angular/forms';
@@ -37,13 +37,11 @@ import {
 
 import {
     NG2_DROPDOWN_DIRECTIVES,
-    Ng2Dropdown,
-    Ng2DropdownComponent
+    Ng2Dropdown
 } from 'ng2-material-dropdown';
 
 import { TagInputAccessor } from './accessor';
 import { getAction } from './keypress-actions';
-import { TagInputComponent } from './tag-input.d';
 import { DeleteIcon } from './icon/icon';
 import { input } from './input-manager';
 
@@ -54,9 +52,8 @@ import { input } from './input-manager';
  * A component for entering a list of terms to be used with ngModel.
  */
 @Component({
-    moduleId: module.id,
     selector: 'tag-input',
-    directives: [ DeleteIcon, ...NG2_DROPDOWN_DIRECTIVES ],
+    directives: [ DeleteIcon, ...NG2_DROPDOWN_DIRECTIVES, REACTIVE_FORM_DIRECTIVES ],
     providers: [ {
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => TagInput),
@@ -65,7 +62,7 @@ import { input } from './input-manager';
     styles: [ require('./style.scss').toString()] ,
     template: require('./template.html')
 })
-export class TagInput extends TagInputAccessor implements TagInputComponent, OnInit {
+export class TagInput extends TagInputAccessor implements OnInit {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -161,7 +158,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
     /**
      * @name dropdown
      */
-    @ViewChild(Ng2Dropdown) public dropdown: Ng2DropdownComponent;
+    @ViewChild(Ng2Dropdown) public dropdown;
 
     public itemsMatching = [];
     public selectedTag: string;
@@ -204,14 +201,14 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      */
     private form: FormGroup;
 
-    constructor(private element: ElementRef, private builder: FormBuilder, private renderer: Renderer) {
+    constructor(private element: ElementRef, private renderer: Renderer) {
         super();
     }
 
     /**
      * @name removeItem
      * @desc removes an item from the array of the model
-     * @param item {TagComponent}
+     * @param item {string}
      */
     public removeItem(item: string): void {
         this.items = this.items.filter(_item => _item !== item).slice(0);
@@ -233,6 +230,10 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
+        if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
+            return;
+        }
+
         // update form value with the transformed item
         const item = this.setInputValue(this.form.value.item);
 
@@ -340,6 +341,10 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
 
     private blur(): void {
         this.input.blur.call(this);
+
+        if (this.autocomplete) {
+            setTimeout(() => this.dropdown.hide(), 50);
+        }
     }
 
     private get maxItemsReached(): boolean {
@@ -370,7 +375,7 @@ export class TagInput extends TagInputAccessor implements TagInputComponent, OnI
         }
 
         // creating form
-        this.form = this.builder.group({
+        this.form = new FormGroup({
             item: new FormControl('', Validators.compose(this.validators))
         });
     }
