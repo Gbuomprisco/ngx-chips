@@ -52,6 +52,7 @@ export function autoCompleteListener(ev): void {
     const vm = this;
     const value: string = vm.form.value.item;
     const position: ClientRect = vm.input.element.getBoundingClientRect();
+    const key = ev.keyCode;
 
     // exit early if no value is entered
     if (!value) {
@@ -64,10 +65,7 @@ export function autoCompleteListener(ev): void {
     this.itemsMatching = itemsMatching;
 
     if (itemsMatching.length) {
-        const focus = ev.keyCode === 40 ? true : false;
-        if (focus) {
-            vm.dropdown.state.select(vm.dropdown.menu.items.first);
-        }
+        const focus = key === 40 ? true : false;
         vm.dropdown.show(position, focus);
     }
 
