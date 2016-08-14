@@ -341,10 +341,6 @@ export class TagInput extends TagInputAccessor implements OnInit {
 
     private blur(): void {
         this.input.blur.call(this);
-
-        if (this.autocomplete) {
-            setTimeout(() => this.dropdown.hide(), 50);
-        }
     }
 
     private get maxItemsReached(): boolean {

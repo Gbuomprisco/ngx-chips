@@ -22,6 +22,10 @@ const focus = function(): void {
  */
 const blur = function(): void {
     this.input.isFocused = false;
+
+    if (this.autocomplete) {
+        setTimeout(() => this.dropdown.hide(), 150);
+    }
 };
 
 export const input = {
