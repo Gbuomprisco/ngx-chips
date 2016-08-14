@@ -1,15 +1,13 @@
 import {Component} from '@angular/core';
 import {TagInput} from '../../components/tag-input';
-import { CORE_DIRECTIVES } from '@angular/common';
 
 import {
-    Validators,
     FormControl
 } from '@angular/forms';
 
 @Component({
     selector: 'app',
-    directives: [TagInput, CORE_DIRECTIVES ],
+    directives: [TagInput],
     template: require('./home.html')
 })
 

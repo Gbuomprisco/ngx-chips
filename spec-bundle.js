@@ -14,7 +14,7 @@ require('zone.js/dist/fake-async-test');
 require('zone.js/dist/sync-test');
 
 // RxJS
-require('rxjs/Rx');
+//require('rxjs/Rx');
 
 var testing = require('@angular/core/testing');
 var browser = require('@angular/platform-browser-dynamic/testing');
@@ -23,7 +23,6 @@ testing.setBaseTestProviders(
     browser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
     browser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS
 );
-
 
 var context = require.context('./components', true, /\.spec\.ts$/);
 context.keys().forEach(context);

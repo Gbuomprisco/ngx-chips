@@ -5,7 +5,7 @@ This is a component for Angular 2. Design and API are blandly inspired by Angula
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/4ydNyqnDW](http://www.webpackbin.com/4ydNyqnDW).
+Check out the live demo (with source code) here [http://www.webpackbin.com/Vy7PtkdYW](http://www.webpackbin.com/Vy7PtkdYW).
 
 ## Quick start. Install the component from NPM by running:
 
@@ -15,24 +15,26 @@ Check out the live demo (with source code) here [http://www.webpackbin.com/4ydNy
 
     npm test
 
-## Angular 2 Configuration (RC.3)
-The component is updated to use the latest version of Angular 2 forms. This means
+## Angular 2 Configuration (RC.5)
+The component is updated to use the latest version of Angular 2 (RC 5). This means
 it requires some configuration to correctly work with your app. Ensure, you are
 registering the following providers when bootstrapping the app:
 
-    import {provide, PLATFORM_DIRECTIVES} from '@angular/core';
-    import { disableDeprecatedForms, provideForms, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
-    import {App} from './home/home';
-
-    bootstrap(App, [
-        disableDeprecatedForms(),
-        provideForms(),
-        {
-              provide: PLATFORM_DIRECTIVES,
-              useValue: [REACTIVE_FORM_DIRECTIVES],
-              multi: true
-        }
-    ])
+    import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+    import { FormsModule } from '@angular/forms';
+    import { App } from './home/home';
+    
+    import { NgModule }       from '@angular/core';
+    import { BrowserModule } from '@angular/platform-browser';
+    
+    @NgModule({
+        imports:      [BrowserModule, FormsModule],
+        bootstrap:    [App],
+        declarations: [App]
+    })
+    export class AppModule {}
+    
+    platformBrowserDynamic().bootstrapModule(AppModule);
 
 Please do have a look at the file `demo/app.ts` if you are unsure how to configure the app.
 
@@ -127,4 +129,4 @@ Basic examples:
         </div>
     </tag-input>
 
-If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/4ydNyqnDW](http://www.webpackbin.com/4ydNyqnDW).
+If you want to see more advanced examples, please have a look at [http://www.webpackbin.com/Vy7PtkdYW](http://www.webpackbin.com/Vy7PtkdYW).
