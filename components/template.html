@@ -2,6 +2,7 @@
 <!-- input tag container -->
 <div class="tag-input"
      (click)="focus()"
+     [attr.tabindex]="-1"
      [class.tag-input--invalid]="!form.valid && form.controls.item.value"
      [class.tag-input--focused]="input.isFocused">
 
@@ -34,7 +35,7 @@
         </div>
 
         <!-- form -->
-        <form (ngSubmit)="addItem()" [formGroup]="form" [hidden]="readonly || maxItemsReached">
+        <form (submit)="addItem()" [formGroup]="form" [hidden]="readonly || maxItemsReached">
             <input type="text"
                    required
                    class="tag-input__text-input"
