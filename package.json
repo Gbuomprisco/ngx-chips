@@ -61,7 +61,7 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.0",
     "webpack-merge": "^0.8.4",
-    "zone.js": "~0.6.12"
+    "zone.js": "0.6.12"
   },
   "dependencies": {
     "ng2-material-dropdown": "^0.2.5"
