@@ -38,7 +38,8 @@ function getMatchingItems(value) {
     const lowercaseValue = value.toLowerCase();
 
     items.forEach(item => {
-        const condition = item.indexOf(lowercaseValue) === 0 && this.items.indexOf(item) === -1;
+        const condition = item.toLowerCase().indexOf(lowercaseValue) === 0 &&
+            this.items.indexOf(item) === -1;
 
         if (condition) {
             itemsMatching.push(item);
