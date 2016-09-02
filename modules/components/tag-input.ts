@@ -13,7 +13,6 @@ import {
 import {
     FormGroup,
     FormControl,
-    REACTIVE_FORM_DIRECTIVES,
     Validators,
     NG_VALUE_ACCESSOR
 } from '@angular/forms';
@@ -35,34 +34,27 @@ import {
     onAutocompleteItemClicked
 } from './events-actions';
 
-import {
-    NG2_DROPDOWN_DIRECTIVES,
-    Ng2Dropdown
-} from 'ng2-material-dropdown';
-
+import { Ng2Dropdown } from 'ng2-material-dropdown';
 import { TagInputAccessor } from './accessor';
 import { getAction } from './keypress-actions';
-import { DeleteIcon } from './icon/icon';
 import { input } from './input-manager';
 
 // tag-input Component
-
 
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
 @Component({
     selector: 'tag-input',
-    directives: [ DeleteIcon, ...NG2_DROPDOWN_DIRECTIVES, REACTIVE_FORM_DIRECTIVES ],
     providers: [ {
         provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => TagInput),
+        useExisting: forwardRef(() => TagInputComponent),
         multi: true
     } ],
     styles: [ require('./style.scss').toString()] ,
     template: require('./template.html')
 })
-export class TagInput extends TagInputAccessor implements OnInit {
+export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -318,7 +310,7 @@ export class TagInput extends TagInputAccessor implements OnInit {
         const control = this.getControl();
 
         // update form value with the transformed item
-        control.updateValue(item);
+        control.setValue(item);
 
         return item;
     }
@@ -328,7 +320,7 @@ export class TagInput extends TagInputAccessor implements OnInit {
      * @returns {FormControl}
      */
     private getControl(): FormControl {
-        return <FormControl>this.form.find('item');
+        return <FormControl>this.form.get('item');
     }
 
     private focus(): void {
