@@ -15,9 +15,12 @@
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true
   },
+  "angularCompilerOptions": {
+   "genDir": "./ngfactory"
+  },
   "files": [
     "typings/index.d.ts",
-    "components/tag-input.ts",
+    "modules/components/tag-input.ts",
     "index.ts"
   ],
   "exclude": [

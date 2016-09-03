@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {TagInput} from '../../components/tag-input';
 
 import {
     FormControl
@@ -7,11 +6,9 @@ import {
 
 @Component({
     selector: 'app',
-    directives: [TagInput],
     template: require('./home.html')
 })
-
-export class App {
+export class Home {
     constructor() {}
 
     items = ['Javascript', 'Typescript'];
@@ -31,6 +28,14 @@ export class App {
 
     public onSelect(item) {
         console.log(item + ' selected');
+    }
+
+    public onFocus(item) {
+        console.log('input focused: current value is ' + item);
+    }
+
+    public onBlur(item) {
+        console.log('input blurred: current value is ' + item);
     }
 
     public transform(item: string): string {

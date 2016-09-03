@@ -1,4 +1,4 @@
-const TagInput = require('./dist/ng2-tag-input.bundle.js').TagInput;
+const components = require('./dist/ng2-tag-input.bundle.js');
 
-exports.TagInput = TagInput;
-export {TagInput};
+exports.TagInput = components.TagInput;
+exports.TagInputModule = components.TagInputModule;

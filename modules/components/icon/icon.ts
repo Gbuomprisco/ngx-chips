@@ -4,4 +4,6 @@ import { Component } from '@angular/core';
     selector: 'delete-icon',
     template: require('./icon.html')
 })
-export class DeleteIcon {}
+export class DeleteIconComponent {
+    ngOnInit() {}
+}

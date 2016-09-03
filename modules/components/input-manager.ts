@@ -14,6 +14,8 @@ const focus = function(): void {
     this.renderer.invokeElementMethod(this.input.element, 'focus', []);
     this.input.isFocused = true;
     this.selectItem(undefined);
+    
+    this.onFocus.emit(this.form.value.item);
 };
 
 
@@ -26,6 +28,8 @@ const blur = function(): void {
     if (this.autocomplete) {
         setTimeout(() => this.dropdown.hide(), 150);
     }
+
+    this.onBlur.emit(this.form.value.item);
 };
 
 export const input = {
@@ -36,4 +40,3 @@ export const input = {
     focus: focus,
     blur: blur
 };
-

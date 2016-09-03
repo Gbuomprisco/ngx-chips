@@ -54,6 +54,3 @@ function switchNext(itemIndex) {
         this.focus();
     }
 }
-
-
-
