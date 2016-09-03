@@ -18,7 +18,7 @@ import {
     TagInputComponentWithMaxItems,
     TagInputComponentWithTemplate,
     TagInputComponentWithAutocomplete,
-    TagInputComponentWithOnlyAutocomplete
+    TagInputComponentWithOnlyAutocomplete,
     TestModule
 } from './testing-helpers';
 
@@ -223,17 +223,20 @@ describe('TagInputComponent', () => {
         }));
     });
 
-    xdescribe('when user navigates tags with keypress event', () => {
-        let keyUp: Event = new Event('keyup');
-        let keyDown: Event = new Event('keydown');
+    describe('when user navigates tags with keypress event', () => {
+        let keyUp: Event = new Event('keyup'),
+            keyDown: Event = new Event('keydown'),
+            fixture: ComponentFixture<BasicTagInputComponent>,
+            component;
 
-        keyDown['keyCode'] = 8;
+        keyDown['keyCode'] = 37;
+
+        beforeEach(() => {
+            fixture = TestBed.createComponent(BasicTagInputComponent);
+        });
 
         it('it handles navigation/deletion of tags', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
-            const component = getComponent(fixture);
-
-            component.focus();
+            component = getComponent(fixture);
 
             // selected tag is undefined
             expect(component.selectedTag).toEqual(undefined);
@@ -247,6 +250,7 @@ describe('TagInputComponent', () => {
             // press tab and focus input again
             keyDown['keyCode'] = 9;
             component.tagElements[1].dispatchEvent(keyDown);
+
             expect(component.selectedTag).toEqual(undefined);
             expect(component.input.isFocused).toEqual(true);
 
@@ -254,20 +258,16 @@ describe('TagInputComponent', () => {
             // then starts from back again
             component.input.element.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual('Typescript');
-            expect(component.input.isFocused).toEqual(false);
 
             // it removes current selected tag when pressing delete
             component.tagElements[1].dispatchEvent(keyDown);
+
             expect(component.items.length).toEqual(1);
             expect(component.selectedTag).toBe(undefined);
         }));
 
         it('it navigates back and forth between tags', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
-            const component = getComponent(fixture);
-
-            component.focus();
-
+            component = getComponent(fixture);
             keyDown['keyCode'] = 37;
 
             // press left arrow
@@ -291,11 +291,7 @@ describe('TagInputComponent', () => {
         }));
 
         it('it focuses input when pressing tab', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
-            const component = getComponent(fixture);
-
-            component.focus();
-
+            component = getComponent(fixture);
             keyUp['keyCode'] = 9;
 
             // press left arrow
