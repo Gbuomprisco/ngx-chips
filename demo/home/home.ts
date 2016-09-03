@@ -1,11 +1,8 @@
 import {Component} from '@angular/core';
-import {TagInput} from '../../modules/ng2-tag-input.module';
 
 import {
     FormControl
 } from '@angular/forms';
-
-import { NgModule } from '@angular/core';
 
 @Component({
     selector: 'app',
@@ -53,11 +50,3 @@ export class Home {
 
     }
 }
-
-
-@NgModule({
-    imports: [TagInput],
-    declarations: [Home],
-    exports: [Home]
-})
-export class HomeModule {}

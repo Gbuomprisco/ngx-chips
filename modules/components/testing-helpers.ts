@@ -1,14 +1,14 @@
-import { TagInput } from './tag-input';
-
-import {
-    Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
     Validators,
     FormControl
 } from '@angular/forms';
 
+import { NgModule } from '@angular/core';
+import { TagInputModule } from '../ng2-tag-input.module';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 function getItems() {
     return ['Javascript', 'Typescript'];
@@ -25,10 +25,9 @@ const validators = [Validators.minLength(3), (control: FormControl) => {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items"></tag-input>`,
-    directives: [ TagInput ]
+    template: `<tag-input [(ngModel)]="items"></tag-input>`
 })
-export class BasicTagInput {
+export class BasicTagInputComponent {
     public items = getItems();
 }
 
@@ -38,10 +37,9 @@ export class BasicTagInput {
                   [(ngModel)]="items"
                   (onRemove)="onRemove($event)"
                   (onAdd)="onAdd($event)">
-              </tag-input>`,
-    directives: [ TagInput ]
+              </tag-input>`
 })
-export class TagInputWithOutputs {
+export class TagInputComponentWithOutputs {
     public items = getItems();
 
     onAdd(item) {}
@@ -57,10 +55,9 @@ export class TagInputWithOutputs {
                   [validators]="validators"
                   (onRemove)="onRemove($event)"
                   (onAdd)="onAdd($event)">
-              </tag-input>`,
-    directives: [ TagInput ]
+              </tag-input>`
 })
-export class TagInputWithValidation {
+export class TagInputComponentWithValidation {
     public items = getItems();
     validators: any = validators;
     onAdd(item) {}
@@ -69,13 +66,12 @@ export class TagInputWithValidation {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items" 
+    template: `<tag-input [(ngModel)]="items"
                           [validators]="validators"
                           [transform]="addPrefix">
-                         </tag-input>`,
-    directives: [ TagInput ]
+                         </tag-input>`
 })
-export class TagInputWithTransformer {
+export class TagInputComponentWithTransformer {
     public items = getItems();
 
     addPrefix(item: string) {
@@ -86,27 +82,70 @@ export class TagInputWithTransformer {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items" [placeholder]="'New Tag'"></tag-input>`,
-    directives: [ TagInput ]
+    template: `<tag-input [(ngModel)]="items" [placeholder]="'New Tag'"></tag-input>`
 })
-export class TagInputWithPlaceholder {
+export class TagInputComponentWithPlaceholder {
     public items = getItems();
 }
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items" [maxItems]="2"></tag-input>`,
-    directives: [ TagInput ]
+    template: `<tag-input [(ngModel)]="items" [maxItems]="2"></tag-input>`
 })
-export class TagInputWithMaxItems {
+export class TagInputComponentWithMaxItems {
     public items = getItems();
 }
 
-export const COMPONENTS = [
-    BasicTagInput,
-    TagInputWithPlaceholder,
-    TagInputWithOutputs,
-    TagInputWithTransformer,
-    TagInputWithValidation,
-    TagInputWithMaxItems
+
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"
+                                 [autocompleteItems]="['item1', 'item2', 'itam3']"
+                                 [autocomplete]="true"></tag-input>`
+})
+export class TagInputComponentWithAutocomplete {
+    public items = getItems();
+}
+
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items">
+                     <div class="custom_class" *ngFor="let item of items" (click)="selectItem(item)">
+                        <span class="tag__name">{{ item }}</span>
+                        <span (click)="remove(item)"><img src="delete.png" /></span>
+                     </div>
+                </tag-input>`
+})
+export class TagInputComponentWithTemplate {
+    public items = getItems();
+}
+
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"
+                           [onlyFromAutocomplete]="true"
+                           [autocompleteItems]="['item1', 'item2', 'itam3']"
+                           [autocomplete]="true"></tag-input>`
+})
+export class TagInputComponentWithOnlyAutocomplete {
+    public items = getItems();
+}
+
+const COMPONENTS = [
+    BasicTagInputComponent,
+    TagInputComponentWithPlaceholder,
+    TagInputComponentWithOutputs,
+    TagInputComponentWithTransformer,
+    TagInputComponentWithValidation,
+    TagInputComponentWithMaxItems,
+    TagInputComponentWithTemplate,
+    TagInputComponentWithAutocomplete,
+    TagInputComponentWithOnlyAutocomplete
 ];
+
+@NgModule({
+    imports: [CommonModule, FormsModule, TagInputModule],
+    declarations: [...COMPONENTS],
+    exports: [...COMPONENTS]
+})
+export class TestModule {}

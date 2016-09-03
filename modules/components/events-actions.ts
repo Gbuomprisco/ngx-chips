@@ -7,7 +7,7 @@ export function customSeparatorKeys($event) {
 
 export function backSpaceListener ($event) {
     const itemsLength: number = this.items.length,
-        inputValue: string = this.form.find('item').value,
+        inputValue: string = this.form.get('item').value,
         isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
     if (isCorrectKey && !inputValue && itemsLength) {

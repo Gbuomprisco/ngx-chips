@@ -64,7 +64,7 @@
     "zone.js": "0.6.17"
   },
   "dependencies": {
-    "ng2-material-dropdown": "^0.2.5"
+    "ng2-material-dropdown": "^0.2.9"
   },
   "keywords": [
     "angular 2",

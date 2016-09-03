@@ -15,7 +15,7 @@ Check out the live demo (with source code) here [http://www.webpackbin.com/Vy7Pt
 
     npm test
 
-## Angular 2 Configuration (RC.5)
+## Angular 2 Configuration (RC.6)
 The component is updated to use the latest version of Angular 2 (RC 5). This means
 it requires some configuration to correctly work with your app. Ensure, you are
 registering the following providers when bootstrapping the app:
@@ -23,31 +23,42 @@ registering the following providers when bootstrapping the app:
     import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
     import { FormsModule } from '@angular/forms';
     import { App } from './home/home';
-    
+
     import { NgModule }       from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
-    
+
     @NgModule({
         imports:      [BrowserModule, FormsModule],
         bootstrap:    [App],
         declarations: [App]
     })
     export class AppModule {}
-    
+
     platformBrowserDynamic().bootstrapModule(AppModule);
 
 Please do have a look at the file `demo/app.ts` if you are unsure how to configure the app.
 
 ## Usage
 
-Once installed, import the TagInput component and use it in your container component:
+Ensure you import the module:
+
+    import { TagInputModule } from 'ng2-tag-input';
+
+    // please notice this is the new way of telling a Component
+    // to import another component...no more directives[]
+    @NgModule({
+       imports: [TagInputModule]
+    })
+    export class MyModule {}
+
+
+Once the module is imported, import the TagInput component and use it in your container component:
 
     import { TagInput } from 'ng2-tag-input';
     import { Component } from '@angular2/core';
 
     @Component({
         selector: 'app',
-        directives: [TagInput],
         template: `<tag-input [(ngModel)]='items'></tag-input>`
     });
     export class App {
@@ -82,7 +93,6 @@ Basic examples:
 
     @Component({
         selector: 'app',
-        directives: [TagInput],
         template: `<tag-input [(ngModel)]='items'></tag-input>`
     });
     export class App {
