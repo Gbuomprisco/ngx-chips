@@ -86,6 +86,9 @@ Once the module is imported, import the TagInput component and use it in your co
 - **`onAdd`** - [**`?onAdd(item: string)`**] - event fired when an item has been added
 - **`onRemove`** - [**`?onRemove(item: string)`**] - event fired when an item has been removed
 - **`onSelect`** - [**`?onSelect(item: string)`**] - event fired when an item has been selected
+- **`onFocus`** - [**`?onFocus(item: string)`**] - event fired when the input is focused - will return current input value
+- **`onBlur`** - [**`?onBlur(item: string)`**] - event fired when the input is blurred - will return current input value
+
 
 Basic examples:
 

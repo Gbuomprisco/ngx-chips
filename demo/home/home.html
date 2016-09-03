@@ -78,7 +78,11 @@
         <div>
             <h3>Tags within a form element</h3>
             <form>
-                <tag-input [ngModel]="['@item']" name="items"></tag-input>
+                <tag-input
+                    (onBlur)="onBlur($event)"
+                    (onFocus)="onFocus($event)"
+                    [ngModel]="['@item']"
+                    name="items"></tag-input>
             </form>
         </div>
     </div>

@@ -30,6 +30,14 @@ export class Home {
         console.log(item + ' selected');
     }
 
+    public onFocus(item) {
+        console.log('input focused: current value is ' + item);
+    }
+
+    public onBlur(item) {
+        console.log('input blurred: current value is ' + item);
+    }
+
     public transform(item: string): string {
         return `@${item}`;
     }

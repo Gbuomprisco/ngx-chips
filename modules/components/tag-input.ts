@@ -118,6 +118,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     @Input() public autocompleteItems: string[] = undefined;
 
+    /**
+    * - if set to true, it will only possible to add items from the autocomplete
+    * @name onlyFromAutocomplete
+    * @type {Boolean}
+    */
     @Input() public onlyFromAutocomplete: boolean = false;
 
     /**
@@ -142,6 +147,20 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Output() public onSelect = new EventEmitter<string>();
 
     /**
+     * @name onFocus
+     * @desc event emitted when the input is focused
+     * @type {EventEmitter<string>}
+     */
+    @Output() public onFocus = new EventEmitter<string>();
+
+    /**
+     * @name onFocus
+     * @desc event emitted when the input is blurred
+     * @type {EventEmitter<string>}
+     */
+    @Output() public onBlur = new EventEmitter<string>();
+
+    /**
      * @name template
      * @desc reference to the template if provided by the user
      * @type {ElementRef}
@@ -153,7 +172,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     @ViewChild(Ng2Dropdown) public dropdown;
 
+    /**
+    * list of items that match the current value of the input (for autocomplete)
+    * @name itemsMatching
+    * @type {String[]}
+    */
     public itemsMatching = [];
+
+    /**
+     * @name selectedTag
+     * @desc reference to the current selected tag
+     * @type {String}
+     */
     public selectedTag: string;
 
     /**
@@ -325,7 +355,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     private focus(): void {
-        if (this.readonly) {
+        if (this.readonly || this.input.isFocused) {
             return;
         }
 
