@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "typings-install": "typings install",
@@ -79,10 +79,9 @@
     "url": "https://github.com/Gbuomprisco/ng2-tag-input/issues"
   },
   "homepage": "https://github.com/Gbuomprisco/ng2-tag-input",
-  "main": "./index.js",
+  "main": "./dist/index.js",
   "files": [
     "dist",
-    "index.js",
     "index.ts"
   ]
 }
