@@ -1,7 +1,6 @@
-# Angular2 Tag Input [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![codecov](https://codecov.io/gh/Gbuomprisco/ng2-tag-input/branch/develop/graph/badge.svg)](https://codecov.io/gh/Gbuomprisco/ng2-tag-input)
+# Angular2 Tag Input [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input)
 
 This is a component for Angular 2. Design and API are blandly inspired by Angular Material's md-chips.
-
 
 ## Demo
 
@@ -50,21 +49,6 @@ Ensure you import the module:
        imports: [TagInputModule]
     })
     export class MyModule {}
-
-
-Once the module is imported, import the TagInput component and use it in your container component:
-
-    import { TagInput } from 'ng2-tag-input';
-    import { Component } from '@angular2/core';
-
-    @Component({
-        selector: 'app',
-        template: `<tag-input [(ngModel)]='items'></tag-input>`
-    });
-    export class App {
-        items = ['Pizza', 'Pasta', 'Parmesan'];
-        // ...
-    }
 
 ## API
 
