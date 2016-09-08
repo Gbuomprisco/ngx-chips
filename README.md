@@ -1,7 +1,6 @@
-# Angular2 Tag Input [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![codecov](https://codecov.io/gh/Gbuomprisco/ng2-tag-input/branch/develop/graph/badge.svg)](https://codecov.io/gh/Gbuomprisco/ng2-tag-input)
+# Angular2 Tag Input [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input)
 
 This is a component for Angular 2. Design and API are blandly inspired by Angular Material's md-chips.
-
 
 ## Demo
 
@@ -51,21 +50,6 @@ Ensure you import the module:
     })
     export class MyModule {}
 
-
-Once the module is imported, import the TagInput component and use it in your container component:
-
-    import { TagInput } from 'ng2-tag-input';
-    import { Component } from '@angular2/core';
-
-    @Component({
-        selector: 'app',
-        template: `<tag-input [(ngModel)]='items'></tag-input>`
-    });
-    export class App {
-        items = ['Pizza', 'Pasta', 'Parmesan'];
-        // ...
-    }
-
 ## API
 
 **@Input**
@@ -77,6 +61,7 @@ Once the module is imported, import the TagInput component and use it in your co
 - **`separatorKeys`** - [**`?number[]`**] - Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
 - **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+- **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 - **`autocomplete`** - [**`?boolean`**] - if true, it adds an autocomplete component from which is possible to select items
 - **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown

@@ -125,6 +125,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     */
     @Input() public onlyFromAutocomplete: boolean = false;
 
+	/**
+     * @name errorMessages
+     * @type {[key: string]: string}
+     */
+    @Input() public errorMessages: {[key: string]: string} = {};
+
     /**
      * @name onAdd
      * @desc event emitted when adding a new item
@@ -331,6 +337,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         $event.preventDefault();
     }
 
+    public get errors(): string[] {
+        return Object.keys(this.errorMessages)
+            .filter(err => this.form.get('item').hasError(err))
+            .map(err => this.errorMessages[err]);
+    }
+
     /**
      * @name seyInputValue
      * @param value
@@ -354,6 +366,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         return <FormControl>this.form.get('item');
     }
 
+	/**
+     * @name focus
+     */
     private focus(): void {
         if (this.readonly || this.input.isFocused) {
             return;
@@ -362,21 +377,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         this.input.focus.call(this);
     }
 
+	/**
+     * @name blur
+     */
     private blur(): void {
         this.input.blur.call(this);
     }
 
+	/**
+     * @name maxItemsReached
+     * @returns {boolean}
+     */
     private get maxItemsReached(): boolean {
         return this.maxItems !== undefined && this.items.length >= this.maxItems;
-    }
-
-    private escapeDropdown($event) {
-        const isArrowUp = $event.keyCode === 38;
-        const isFirstItemsSelected = this.dropdown.menu.items.first.isSelected;
-
-        if (isArrowUp && isFirstItemsSelected) {
-            this.focus();
-        }
     }
 
     ngOnInit() {
