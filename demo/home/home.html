@@ -20,6 +20,7 @@
         <div>
             <h3>An input which requires all tags to start with '@'</h3>
             <tag-input [ngModel]="['@item']"
+                       [errorMessages]="errorMessages"
                        [validators]="validators">
             </tag-input>
         </div>
