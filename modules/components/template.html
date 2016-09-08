@@ -64,3 +64,11 @@
         </div>
     </div>
 </div>
+
+<!-- ERRORS -->
+<div class="tag-input__errors-container"
+     *ngIf="form.controls.item.dirty && form.controls.item.value">
+    <p *ngFor="let error of errors" class="tag-input__error-message">
+       <span>{{ error }}</span>
+    </p>
+</div>

@@ -52,7 +52,22 @@ export class Home {
         return null;
     }
 
-    public validators = [this.startsWithAt];
+    private endsWith$(control: FormControl) {
+        if (control.value.charAt(control.value.length - 1) !== '$') {
+            return {
+                'endsWith$': true
+            };
+        }
+
+        return null;
+    }
+
+    public validators = [this.startsWithAt, this.endsWith$];
+
+    public errorMessages = {
+        'startsWithAt@': 'Your items need to start with "@"',
+        'endsWith$': 'Your items need to end with "$"'
+    };
 
     ngOnInit() {
 
