@@ -10,7 +10,8 @@
     "declaration": true,
     "sourceMap": true,
     "moduleResolution": "node",
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["node", "es6-shim", "es6-collections"]
   },
   "awesomeTypescriptLoaderOptions": {
     "forkChecker": true
@@ -19,13 +20,10 @@
    "genDir": "./ngfactory"
   },
   "files": [
-    "typings/index.d.ts",
     "modules/components/tag-input.ts",
     "index.ts"
   ],
   "exclude": [
-    "typings/main.d.ts",
-    "typings/main",
     "node_modules"
   ],
   "compileOnSave": false,
