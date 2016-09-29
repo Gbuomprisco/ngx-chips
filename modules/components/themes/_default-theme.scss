@@ -1,0 +1,25 @@
+.tag-input.default {
+    border-bottom: 2px solid map-get($color-grey, 'default');
+}
+
+.default.tag-input--focused {
+    border-bottom: 2px solid map-get($color-focused, 'default');
+}
+
+.default .tag {
+    background: map-get($color-grey, 'default');
+}
+
+.default .tag:not(.tag--readonly):focus {
+    background: map-get($color-focused, 'default');
+    color: #fff;
+}
+
+.default .tag:not(:focus):not(.tag--readonly):hover {
+    background: darken(map-get($color-grey, 'default'), 3.5%);
+}
+
+.default .tag:focus path {
+    fill: #fff;
+}
+

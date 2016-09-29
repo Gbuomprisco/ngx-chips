@@ -1,0 +1,16 @@
+<!-- form -->
+<form (submit)="onSubmit.emit()" [formGroup]="form">
+    <input #input
+           type="text"
+           required
+           class="tag-input__text-input"
+           [attr.placeholder]="placeholder"
+           (focus)="onFocus.emit($event)"
+           (blur)="onBlur.emit($event)"
+           (keydown)="onKeyDown($event)"
+           (keyup)="onKeyup.emit($event)"
+           formControlName="item"
+           tabindex="0"
+           [attr.aria-label]="placeholder"
+    />
+</form>

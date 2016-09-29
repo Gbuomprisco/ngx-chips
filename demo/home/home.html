@@ -69,7 +69,7 @@
                     {{ item }}
                 </span>
 
-                <span (click)="input.remove(item)" class="tag__remove-button">
+                <span (click)="input.removeItem(item)" class="tag__remove-button">
                     x
                 </span>
                 </div>
@@ -82,6 +82,26 @@
                 <tag-input
                     (onBlur)="onBlur($event)"
                     (onFocus)="onFocus($event)"
+                    [ngModel]="['@item']"
+                    name="items"></tag-input>
+            </form>
+        </div>
+
+        <div>
+            <h3>Tags with Custom theme minimal</h3>
+            <form>
+                <tag-input
+                    [theme]="'minimal'"
+                    [ngModel]="['@item']"
+                    name="items"></tag-input>
+            </form>
+        </div>
+
+        <div>
+            <h3>Tags with Custom theme dark</h3>
+            <form>
+                <tag-input
+                    [theme]="'dark'"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
             </form>

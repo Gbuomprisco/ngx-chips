@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run build && ./node_modules/.bin/tsc",
@@ -17,10 +17,6 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@types/es6-collections": "^0.5.29",
-    "@types/es6-shim": "0.0.22-alpha",
-    "@types/jasmine": "^2.2.34",
-    "@types/node": "^6.0.39",
     "@angular/common": "2.0.0",
     "@angular/compiler": "2.0.0",
     "@angular/core": "2.0.0",
@@ -28,6 +24,10 @@
     "@angular/http": "2.0.0",
     "@angular/platform-browser": "2.0.0",
     "@angular/platform-browser-dynamic": "2.0.0",
+    "@types/es6-collections": "^0.5.29",
+    "@types/es6-shim": "0.0.22-alpha",
+    "@types/jasmine": "^2.2.34",
+    "@types/node": "^6.0.39",
     "autoprefixer": "^6.3.7",
     "awesome-typescript-loader": "1.1.1",
     "core-js": "^2.4.1",
@@ -63,7 +63,7 @@
     "zone.js": "0.6.23"
   },
   "dependencies": {
-    "ng2-material-dropdown": "^0.3.4"
+    "ng2-material-dropdown": "^0.3.6"
   },
   "keywords": [
     "angular 2",
@@ -78,7 +78,7 @@
     "url": "https://github.com/Gbuomprisco/ng2-tag-input/issues"
   },
   "homepage": "https://github.com/Gbuomprisco/ng2-tag-input",
-  "main": "./dist/index.js",
+  "main": "./dist/ng2-tag-input.bundle.js",
   "files": [
     "dist",
     "index.ts"

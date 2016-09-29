@@ -7,7 +7,7 @@ export function customSeparatorKeys($event) {
 
 export function backSpaceListener ($event) {
     const itemsLength: number = this.items.length,
-        inputValue: string = this.form.get('item').value,
+        inputValue: string = this.inputForm.value.value,
         isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
     if (isCorrectKey && !inputValue && itemsLength) {
@@ -50,9 +50,8 @@ function getMatchingItems(value) {
 }
 
 export function autoCompleteListener(ev): void {
-    const vm = this;
-    const value: string = vm.form.value.item;
-    const position: ClientRect = vm.input.element.getBoundingClientRect();
+    const value: string = this.inputForm.value.value;
+    const position: ClientRect = this.inputForm.getElementPosition();
     const key = ev.keyCode;
 
     // exit early if no value is entered
@@ -62,16 +61,16 @@ export function autoCompleteListener(ev): void {
         return;
     }
 
-    const itemsMatching = getMatchingItems.call(vm, value);
+    const itemsMatching = getMatchingItems.call(this, value);
     this.itemsMatching = itemsMatching;
 
     if (itemsMatching.length) {
         const focus = key === 40 ? true : false;
-        vm.dropdown.show(position, focus);
+        this.dropdown.show(position, focus);
     }
 
-    if (!itemsMatching.length && vm.dropdown.menu.state.isVisible) {
-        vm.dropdown.hide();
+    if (!itemsMatching.length && this.dropdown.menu.state.isVisible) {
+        this.dropdown.hide();
     }
 }
 
