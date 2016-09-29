@@ -1,0 +1,17 @@
+.tag-input.dark {
+    border-bottom: 2px solid map-get($color-grey, 'dark');
+}
+
+.dark .tag {
+    background: map-get($color-grey, 'dark');
+    color: #f9f9f9;
+}
+
+.dark .tag:not(.tag--readonly):focus {
+    background: map-get($color-focused, 'dark');
+    color: map-get($color-grey, 'dark');
+}
+
+.dark path {
+    fill: #fff;
+}

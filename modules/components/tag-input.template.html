@@ -1,0 +1,80 @@
+
+<!-- input tag container -->
+<div ngClass="tag-input {{ theme }}"
+     (click)="focus()"
+     [attr.tabindex]="-1"
+     [class.tag-input--invalid]="hasErrors()"
+     [class.tag-input--focused]="isInputFocused()">
+
+    <!-- tags [custom] -->
+    <div #template class="tags-container tags-container--custom flex">
+        <ng-content></ng-content>
+
+        <tag-input-form
+            *ngIf="hasCustomTemplate()"
+            (onSubmit)="addItem()"
+            (onBlur)="blur()"
+            (onFocus)="focus()"
+            (onKeydown)="fireEvents('keydown', $event)"
+            (onKeyup)="fireEvents('keyup', $event)"
+            [validators]="validators"
+            [hidden]="readonly || maxItemsReached"
+            [placeholder]="items.length ? placeholder : secondaryPlaceholder"
+        ></tag-input-form>
+    </div>
+
+    <!-- tags [default] -->
+    <div class="tags-container tags-container--default flex" *ngIf="hasCustomTemplate() === false">
+        <div *ngFor="let item of items"
+             (click)="selectItem(item);$event.stopPropagation();"
+             (keydown)="handleKeydown($event, item)"
+             [attr.tabindex]="readonly ? -1 : 0"
+             class="tag"
+             [class.tag--readonly]="readonly"
+             [attr.aria-label]="item">
+
+            <!-- tag name -->
+            <span class="tag__name">
+                {{ item }}
+            </span>
+
+            <!-- remove 'x' button -->
+            <delete-icon class="tag__remove-button"
+                  aria-label="Remove tag"
+                  (click)="removeItem(item)"
+                  *ngIf="!readonly">
+            </delete-icon>
+        </div>
+
+        <tag-input-form
+            (onSubmit)="addItem()"
+            (onBlur)="blur()"
+            (onFocus)="focus()"
+            (onKeydown)="fireEvents('keydown', $event)"
+            (onKeyup)="fireEvents('keyup', $event)"
+            [validators]="validators"
+            [hidden]="readonly || maxItemsReached"
+            [placeholder]="items.length ? placeholder : secondaryPlaceholder"
+        ></tag-input-form>
+    </div>
+
+    <div *ngIf="autocomplete">
+        <ng2-dropdown>
+            <ng2-dropdown-menu [focusFirstElement]="false"
+                               (keydown)="escapeDropdown($event)"
+                               offset="50 0">
+                <ng2-menu-item *ngFor="let item of itemsMatching" [value]="item">
+                    {{ item }}
+                </ng2-menu-item>
+            </ng2-dropdown-menu>
+        </ng2-dropdown>
+    </div>
+</div>
+
+<!-- ERRORS -->
+<div class="tag-input__errors-container" *ngIf="hasErrors()">
+    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)"
+       class="tag-input__error-message">
+        <span>{{ error }}</span>
+    </p>
+</div>

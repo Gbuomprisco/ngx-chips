@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
-import { TagInputModule } from '../ng2-tag-input.module';
+import { TagInputModule } from '../../ng2-tag-input.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 

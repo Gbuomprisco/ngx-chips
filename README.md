@@ -247,3 +247,11 @@ Define your own template, but remember to set up the needed events using the `in
 </tag-input>
 ```
 
+#### New Themes
+If you don't like how the default theme looks, or you just need it to
+fit in a different design, you can choose 2 new themes: `dark` and `minimal`.
+
+```html
+<tag-input [(ngModel)]='items' theme='minimal'></tag-input>
+<tag-input [(ngModel)]='items' theme='dark'></tag-input>
+```

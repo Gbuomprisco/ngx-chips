@@ -11,9 +11,7 @@ import {
 } from '@angular/core';
 
 import {
-    FormGroup,
     FormControl,
-    Validators,
     NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
@@ -24,7 +22,7 @@ import {
     KEYUP,
     MAX_ITEMS_WARNING,
     FOCUS
-} from './constants';
+} from './helpers/constants';
 
 import {
     backSpaceListener,
@@ -32,15 +30,14 @@ import {
     customSeparatorKeys,
     addListener,
     onAutocompleteItemClicked
-} from './events-actions';
+} from './helpers/events-actions';
 
 import { Ng2Dropdown } from 'ng2-material-dropdown';
-import { TagInputAccessor } from './accessor';
-import { getAction } from './keypress-actions';
-import { input } from './input-manager';
+import { TagInputAccessor } from './helpers/accessor';
+import { getAction } from './helpers/keypress-actions';
+import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
 // tag-input Component
-
 
 /**
  * A component for entering a list of terms to be used with ngModel.
@@ -52,8 +49,8 @@ import { input } from './input-manager';
         useExisting: forwardRef(() => TagInputComponent),
         multi: true
     } ],
-    styles: [ require('./style.scss').toString()] ,
-    template: require('./template.html')
+    styles: [ require('./tag-input.style.scss').toString()] ,
+    template: require('./tag-input.template.html')
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
@@ -127,9 +124,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
 	/**
      * @name errorMessages
-     * @type {[key: string]: string}
+     * @type {Map<string, string>}
      */
     @Input() public errorMessages: {[key: string]: string} = {};
+
+    @Input() public theme: string = 'default';
 
     /**
      * @name onAdd
@@ -178,12 +177,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     @ViewChild(Ng2Dropdown) public dropdown;
 
+	/**
+     * @name inputForm
+     * @type {TagInputForm}
+     */
+    @ViewChild(TagInputForm) public inputForm: TagInputForm;
+
     /**
     * list of items that match the current value of the input (for autocomplete)
     * @name itemsMatching
     * @type {String[]}
     */
-    public itemsMatching = [];
+    public itemsMatching: string[] = [];
 
     /**
      * @name selectedTag
@@ -193,24 +198,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public selectedTag: string;
 
     /**
-     * @name hasTemplate
-     * @desc boolean that returns whether the user has specified a template or not
-     */
-    private hasTemplate: boolean;
-
-    /**
      * @name tagElements
      * @desc list of Element items
      */
     private tagElements: Element[];
 
     // Component private/public properties
-
-    /**
-     * @name input
-     * @desc object representing utilities for managing the input text element
-     */
-    public input = Object.create(input);
 
     /**
      * @name listeners
@@ -223,13 +216,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         change: <{(fun): any}[]>[]
     };
 
-    /**
-     * @name form
-     * @type {ngForm}
-     * @desc ngForm for handling the validation on the input text
-     */
-    private form: FormGroup;
-
     constructor(private element: ElementRef, private renderer: Renderer) {
         super();
     }
@@ -240,7 +226,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item {string}
      */
     public removeItem(item: string): void {
-        this.items = this.items.filter(_item => _item !== item).slice(0);
+        this.items = this.items.filter(_item => _item !== item);
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === item) {
@@ -264,7 +250,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
 
         // update form value with the transformed item
-        const item = this.setInputValue(this.form.value.item);
+        const item = this.setInputValue(this.inputForm.value.value);
 
         // check if the transformed item is already existing in the list
         const isDupe = this.items.indexOf(item) !== -1;
@@ -275,7 +261,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // 3. check max items has not been reached
         // 4. check item comes from autocomplete
         // 5. or onlyFromAutocomplete is false
-        const isValid = this.form.valid &&
+        const isValid = this.inputForm.form.valid &&
             isDupe === false &&
             !this.maxItemsReached &&
             ((isFromAutocomplete && this.onlyFromAutocomplete === true) || this.onlyFromAutocomplete === false);
@@ -283,7 +269,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // if valid:
         if (isValid) {
             // append item to the ngModel list
-            this.items = this.items.concat([item]);
+            this.items = [...this.items, item];
 
             //  and emit event
             this.onAdd.emit(item);
@@ -337,12 +323,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         $event.preventDefault();
     }
 
-    public get errors(): string[] {
-        return Object.keys(this.errorMessages)
-            .filter(err => this.form.get('item').hasError(err))
-            .map(err => this.errorMessages[err]);
-    }
-
     /**
      * @name seyInputValue
      * @param value
@@ -363,25 +343,39 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {FormControl}
      */
     private getControl(): FormControl {
-        return <FormControl>this.form.get('item');
+        return <FormControl>this.inputForm.value;
     }
 
 	/**
      * @name focus
      */
-    private focus(): void {
-        if (this.readonly || this.input.isFocused) {
+    public focus(): void {
+        if (this.readonly || this.inputForm.isInputFocused()) {
             return;
         }
 
-        this.input.focus.call(this);
+        this.selectItem(undefined);
+        this.inputForm.focus();
+        this.onFocus.emit(this.inputForm.value.value);
     }
 
 	/**
      * @name blur
      */
-    private blur(): void {
-        this.input.blur.call(this);
+    public blur(): void {
+        if (this.autocomplete) {
+            setTimeout(() => this.dropdown.hide(), 150);
+        }
+
+        this.onBlur.emit(this.inputForm.form.value.value);
+    }
+
+    public hasErrors(): boolean {
+        return this.inputForm && this.inputForm.hasErrors() ? true : false;
+    }
+
+    public isInputFocused(): boolean {
+        return this.inputForm && this.inputForm.isInputFocused() ? true : false;
     }
 
 	/**
@@ -390,6 +384,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     private get maxItemsReached(): boolean {
         return this.maxItems !== undefined && this.items.length >= this.maxItems;
+    }
+
+	/**
+     * @name hasCustomTemplate
+     * @returns {boolean}
+     */
+    private hasCustomTemplate(): boolean {
+        if (!this.template.nativeElement) {
+            return false;
+        }
+
+        return this.template.nativeElement.children.length > 0;
     }
 
     ngOnInit() {
@@ -405,46 +411,23 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.maxItems = this.items.length;
             console.warn(MAX_ITEMS_WARNING);
         }
-
-        // creating form
-        this.form = new FormGroup({
-            item: new FormControl('', Validators.compose(this.validators))
-        });
     }
 
     ngAfterViewChecked() {
-        this.input.element = this.input.element || this.element.nativeElement.querySelector('input');
         this.tagElements = this.element.nativeElement.querySelectorAll('.tag');
     }
 
     ngAfterViewInit() {
-        const vm = this;
-        vm.hasTemplate = vm.template && vm.template.nativeElement.childElementCount > 0;
-
-        // if the template has been specified, remove the tags-container for the tags with default template
-        // which will be replaced by <ng-content>
-        if (vm.hasTemplate) {
-            const el = vm.element.nativeElement;
-            const form = el.querySelector('form');
-            const customTagsContainer = el.querySelector('.tags-container--custom');
-            const defaultTagsContainer = el.querySelector('.tags-container--default');
-
-            vm.renderer.invokeElementMethod(customTagsContainer, 'appendChild', [form]);
-
-            if (defaultTagsContainer) {
-                vm.renderer.invokeElementMethod(defaultTagsContainer, 'remove', []);
-            }
-        }
-
         // if autocomplete is set to true, set up its events
-        if (vm.autocomplete) {
-            addListener.call(vm, KEYUP, autoCompleteListener);
+        if (this.autocomplete) {
+            addListener.call(this, KEYUP, autoCompleteListener);
 
-            vm.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(vm));
-
-            vm.dropdown.onHide.subscribe(() => {
-                vm.itemsMatching = [];
-            });
+            this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
+            this.dropdown.onHide.subscribe(() => this.itemsMatching = []);
         }
+
+        this.inputForm.onKeydown.subscribe(event => {
+            this.fireEvents('keydown', event);
+        });
     }
 }

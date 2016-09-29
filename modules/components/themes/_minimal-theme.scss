@@ -1,0 +1,20 @@
+.tag-input.minimal {
+    border-bottom: 1px solid transparent;
+}
+
+.minimal .tag {
+    background: map-get($color-grey, 'minimal');
+    border-radius: 0;
+}
+
+.minimal .tag:not(.tag--readonly):focus {
+    background: map-get($color-focused, 'minimal');
+}
+
+.minimal .tag:not(:focus):not(.tag--readonly):hover {
+    background: darken(map-get($color-grey, 'minimal'), 3.5%);
+}
+
+.minimal .tag:not(:focus):not(.tag--readonly):hover {
+    background: darken(map-get($color-grey, 'minimal'), 3.5%);
+}
