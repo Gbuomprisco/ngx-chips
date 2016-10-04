@@ -41,7 +41,7 @@ function switchPrev(itemIndex): void {
         this.selectItem(this.items[itemIndex - 1]);
         this.renderer.invokeElementMethod(el, 'focus', []);
     } else {
-        this.focus();
+        this.focus(true);
     }
 }
 
@@ -51,6 +51,6 @@ function switchNext(itemIndex) {
         this.selectItem(this.items[itemIndex + 1]);
         this.renderer.invokeElementMethod(el, 'focus', []);
     } else {
-        this.focus();
+        this.focus(true);
     }
 }

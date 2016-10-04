@@ -1,3 +1,7 @@
+/**
+ * @name customSeparatorKeys
+ * @param $event
+ */
 export function customSeparatorKeys($event) {
     if (this.separatorKeys.indexOf($event.keyCode) >= 0) {
         $event.preventDefault();
@@ -5,7 +9,11 @@ export function customSeparatorKeys($event) {
     }
 }
 
-export function backSpaceListener ($event) {
+/**
+ * @name backSpaceListener
+ * @param $event
+ */
+export function backSpaceListener($event) {
     const itemsLength: number = this.items.length,
         inputValue: string = this.inputForm.value.value,
         isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
@@ -16,7 +24,13 @@ export function backSpaceListener ($event) {
     }
 }
 
-export function addListener(listenerType: string, action: () => any, condition = true) : void{
+/**
+ * @name addListener
+ * @param listenerType
+ * @param action
+ * @param condition
+ */
+export function addListener(listenerType: string, action: () => any, condition = true): void {
     // if the event provided does not exist, throw an error
     if (!this.listeners.hasOwnProperty(listenerType)) {
         throw new Error('The event entered may be wrong');
@@ -31,15 +45,18 @@ export function addListener(listenerType: string, action: () => any, condition =
     this.listeners[listenerType].push(action);
 }
 
-
-function getMatchingItems(value) {
+/**
+ * @name getMatchingItems
+ * @param value
+ * @returns {string[]}
+ */
+function getMatchingItems(value: string): string[] {
     const itemsMatching: string[] = [];
     const items = this.autocompleteItems;
     const lowercaseValue = value.toLowerCase();
 
     items.forEach(item => {
-        const condition = item.toLowerCase().indexOf(lowercaseValue) === 0 &&
-            this.items.indexOf(item) === -1;
+        const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && this.items.indexOf(item) === -1;
 
         if (condition) {
             itemsMatching.push(item);
@@ -53,18 +70,11 @@ export function autoCompleteListener(ev): void {
     const value: string = this.inputForm.value.value;
     const position: ClientRect = this.inputForm.getElementPosition();
     const key = ev.keyCode;
-
-    // exit early if no value is entered
-    if (!value) {
-        this.itemsMatching = [];
-        this.dropdown.hide();
-        return;
-    }
-
     const itemsMatching = getMatchingItems.call(this, value);
+
     this.itemsMatching = itemsMatching;
 
-    if (itemsMatching.length) {
+    if (itemsMatching.length || !value) {
         const focus = key === 40 ? true : false;
         this.dropdown.show(position, focus);
     }
@@ -74,6 +84,10 @@ export function autoCompleteListener(ev): void {
     }
 }
 
+/**
+ * @name onAutocompleteItemClicked
+ * @param item
+ */
 export function onAutocompleteItemClicked(item): void {
     if (!item) {
         return;

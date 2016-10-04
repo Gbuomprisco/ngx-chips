@@ -1,11 +1,10 @@
-body, h1, h2, h3 {
+html, body, h1, h2, h3 {
   font-family: "Roboto";
 }
 
 .tag-input-container {
     width: 50%;
 }
-
 
 .options {
     display: flex;
