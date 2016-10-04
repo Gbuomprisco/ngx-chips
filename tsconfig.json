@@ -20,8 +20,10 @@
    "genDir": "./ngfactory"
   },
   "files": [
-    "modules/components/tag-input.ts",
     "index.ts"
+  ],
+  "include": [
+    "modules"
   ],
   "exclude": [
     "node_modules"
