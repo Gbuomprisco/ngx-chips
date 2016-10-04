@@ -128,6 +128,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     @Input() public errorMessages: {[key: string]: string} = {};
 
+    /**
+     * @name theme
+     * @type {string}
+     */
     @Input() public theme: string = 'default';
 
     /**
@@ -234,7 +238,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
 
         // focus input right after removing an item
-        this.focus();
+        this.focus(true);
 
         // emit remove event
         this.onRemove.emit(item);
@@ -277,6 +281,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // reset control
         this.setInputValue('');
+        this.focus(true);
     }
 
     /**
@@ -348,15 +353,23 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
 	/**
      * @name focus
+     * @param applyFocus
      */
-    public focus(): void {
-        if (this.readonly || this.inputForm.isInputFocused()) {
+    public focus(applyFocus = false): void {
+        if (this.readonly) {
             return;
         }
 
+        if (this.autocomplete) {
+            autoCompleteListener.call(this, {});
+        }
+
         this.selectItem(undefined);
-        this.inputForm.focus();
         this.onFocus.emit(this.inputForm.value.value);
+
+        if (applyFocus) {
+            this.inputForm.focus();
+        }
     }
 
 	/**
@@ -370,10 +383,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         this.onBlur.emit(this.inputForm.form.value.value);
     }
 
+    /**
+     * @name hasErrors
+     * @returns {boolean}
+     */
     public hasErrors(): boolean {
         return this.inputForm && this.inputForm.hasErrors() ? true : false;
     }
 
+    /**
+     * @name isInputFocused
+     * @returns {boolean}
+     */
     public isInputFocused(): boolean {
         return this.inputForm && this.inputForm.isInputFocused() ? true : false;
     }

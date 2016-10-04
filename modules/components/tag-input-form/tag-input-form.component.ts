@@ -92,6 +92,10 @@ export class TagInputForm {
         return this.input.nativeElement.getBoundingClientRect();
     }
 
+    /**
+     * @name onKeyDown
+     * @param $event
+     */
     private onKeyDown($event) {
         if (this.value.value.length > 0) {
             return;
