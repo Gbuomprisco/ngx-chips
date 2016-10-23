@@ -460,7 +460,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     ngAfterViewChecked() {
-        this.tagElements = this.element.nativeElement.querySelectorAll('.tag');
+        this.tagElements = this.element.nativeElement.querySelectorAll('.ng2-tag');
     }
 
     ngAfterViewInit() {

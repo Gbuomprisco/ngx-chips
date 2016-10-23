@@ -7,7 +7,7 @@ var autoprefixer = require('autoprefixer');
 // Webpack Config
 var webpackConfig = {
     entry: {
-        'vendor': ['@angular/core', '@angular/common', "@angular/forms"],
+        'vendor': ['@angular/core', '@angular/common', "@angular/forms", "rxjs/add/operator/debounceTime"],
         'ng2-tag-input': './modules/ng2-tag-input.module.ts'
     },
 
@@ -21,7 +21,8 @@ var webpackConfig = {
     externals: {
         "@angular/core": true,
         "@angular/common": true,
-        "@angular/forms": true
+        "@angular/forms": true,
+        "rxjs/add/operator/debounceTime": true
     },
 
     plugins: [
