@@ -4,6 +4,8 @@ import {
     FormControl
 } from '@angular/forms';
 
+import { Observable } from 'rxjs';
+
 @Component({
     selector: 'app',
     template: require('./home.html')
@@ -19,19 +21,23 @@ export class Home {
     };
 
     public onAdd(item) {
-        console.log(item + ' added');
+        console.log('tag added: value is ' + item);
     }
 
     public onRemove(item) {
-        console.log(item + ' removed');
+        console.log('tag removed: value is ' + item);
     }
 
     public onSelect(item) {
-        console.log(item + ' selected');
+        console.log('tag selected: value is ' + item);
     }
 
     public onFocus(item) {
         console.log('input focused: current value is ' + item);
+    }
+
+    public onTextChange(text) {
+        console.log('text changed: value is ' + text);
     }
 
     public onBlur(item) {

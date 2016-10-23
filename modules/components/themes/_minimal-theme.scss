@@ -1,20 +1,20 @@
-.tag-input.minimal {
+.ng2-tag-input.minimal {
     border-bottom: 1px solid transparent;
 }
 
-.minimal .tag {
+.minimal .ng2-tag {
     background: map-get($color-grey, 'minimal');
     border-radius: 0;
 }
 
-.minimal .tag:not(.tag--readonly):focus {
+.minimal .ng2-tag:not(.ng2-tag--readonly):focus {
     background: map-get($color-focused, 'minimal');
 }
 
-.minimal .tag:not(:focus):not(.tag--readonly):hover {
+.minimal .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
     background: darken(map-get($color-grey, 'minimal'), 3.5%);
 }
 
-.minimal .tag:not(:focus):not(.tag--readonly):hover {
+.minimal .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
     background: darken(map-get($color-grey, 'minimal'), 3.5%);
 }

@@ -37,6 +37,8 @@ import { TagInputAccessor } from './helpers/accessor';
 import { getAction } from './helpers/keypress-actions';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
+import 'rxjs/add/operator/debounceTime';
+
 // tag-input Component
 
 /**
@@ -49,7 +51,7 @@ import { TagInputForm } from './tag-input-form/tag-input-form.component';
         useExisting: forwardRef(() => TagInputComponent),
         multi: true
     } ],
-    styles: [ require('./tag-input.style.scss').toString()] ,
+    styles: [ require('./tag-input.style.scss').toString() ],
     template: require('./tag-input.template.html')
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
@@ -135,6 +137,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public theme: string = 'default';
 
     /**
+     * @name onTextChangeDebounce
+     * @type {number}
+     */
+    @Input() private onTextChangeDebounce: number = 250;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -168,6 +176,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @type {EventEmitter<string>}
      */
     @Output() public onBlur = new EventEmitter<string>();
+
+    /**
+     * @name onTextChange
+     * @desc event emitted when the input value changes
+     * @type {EventEmitter<string>}
+     */
+    @Output() public onTextChange = new EventEmitter<string>();
 
     /**
      * @name template
@@ -365,6 +380,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
 
         this.selectItem(undefined);
+
         this.onFocus.emit(this.inputForm.value.value);
 
         if (applyFocus) {
@@ -380,7 +396,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             setTimeout(() => this.dropdown.hide(), 150);
         }
 
-        this.onBlur.emit(this.inputForm.form.value.value);
+        this.onBlur.emit(this.inputForm.value.value);
     }
 
     /**
@@ -450,5 +466,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
         });
+
+        this.inputForm.form.valueChanges
+            .debounceTime(this.onTextChangeDebounce)
+            .subscribe(() => {
+                const value = this.inputForm.value.value;
+                this.onTextChange.emit(value);
+            });
     }
 }
