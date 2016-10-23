@@ -1,11 +1,7 @@
-.flex {
-    display: flex;
-}
-
 // tag input
 
-.tag-input {
-    @extend .flex;
+.ng2-tag-input {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 
@@ -17,21 +13,21 @@
     cursor: text;
 }
 
-.tag-input:focus {
+.ng2-tag-input:focus {
     outline: 0;
 }
 
-
-.tags-container {
+.ng2-tags-container {
     flex-wrap: wrap;
+    display: flex;
 }
 
 // form
-.tag-input form {
+.ng2-tag-input form {
     margin: 0.1em 0;
 }
 
-.tag-input__text-input {
+.ng2-tag-input__text-input {
     border: none;
 
     display: inline;
@@ -43,24 +39,24 @@
     font-family: $font-family;
 }
 
-.tag-input__text-input:focus {
+.ng2-tag-input__text-input:focus {
     outline: 0;
 }
 
 // tag
 
 
-.tag--readonly {
+.ng2-tag--readonly {
     cursor: default;
 }
 
-.tag--readonly:focus, .tag {
+.ng2-tag--readonly:focus, .tag {
     outline: 0;
 }
 
 
-.tag {
-    @extend .flex;
+.ng2-tag {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 
@@ -82,7 +78,7 @@
 }
 
 
-.tag__remove-button {
+.ng2-tag__remove-button {
     margin-left: 6px;
     width: 16px;
     height: 26px;
@@ -90,11 +86,11 @@
     transition: all 0.15s;
 }
 
-.tag__remove-button:hover {
+.ng2-tag__remove-button:hover {
     transform: scale(1.3);
 }
 
-.tag-input__errors-container {
+.ng2-tag-input__errors-container {
     margin: 0.5em 0;
 }
 
@@ -104,9 +100,9 @@
 }
 
 
-.default.tag-input--invalid,
-.minimal.tag-input--invalid,
-.dark.tag-input--invalid {
+.default.ng2-tag-input--invalid,
+.minimal.ng2-tag-input--invalid,
+.dark.ng2-tag-input--invalid {
     border-bottom: 2px solid map-get($color-red, 'default');
 }
 

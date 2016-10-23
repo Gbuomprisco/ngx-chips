@@ -60,29 +60,33 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input>
+            <tag-input [ngModel]="['@item']" #input >
                 <div *ngFor="let item of input.items; trackBy: item"
                      (click)="input.selectItem(item);$event.stopPropagation();"
                      (keydown)="input.handleKeydown($event, item)"
-                     class="tag">
+                     [attr.tabindex]="input.readonly ? -1 : 0"
+                     [class.ng2-tag--readonly]="input.readonly"
+                     [attr.aria-label]="item"
+                     class="ng2-tag ng2-tag--custom">
 
-                <span class="tag__name">
-                    {{ item }}
-                </span>
+                    <span class="ng2-tag__name">
+                        {{ item }}
+                    </span>
 
-                <span (click)="input.removeItem(item)" class="tag__remove-button">
-                    x
-                </span>
+                    <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
+                        x
+                    </span>
                 </div>
             </tag-input>
         </div>
 
         <div>
-            <h3>Tags within a form element</h3>
+            <h3>Tags within a form element with outputs</h3>
             <form>
                 <tag-input
                     (onBlur)="onBlur($event)"
                     (onFocus)="onFocus($event)"
+                    (onTextChange)="onTextChange($event)"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
             </form>

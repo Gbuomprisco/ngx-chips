@@ -1,13 +1,13 @@
-.tag-input.dark {
+.ng2-tag-input.dark {
     border-bottom: 2px solid map-get($color-grey, 'dark');
 }
 
-.dark .tag {
+.dark .ng2-tag {
     background: map-get($color-grey, 'dark');
     color: #f9f9f9;
 }
 
-.dark .tag:not(.tag--readonly):focus {
+.dark .ng2-tag:not(.ng2-tag--readonly):focus {
     background: map-get($color-focused, 'dark');
     color: map-get($color-grey, 'dark');
 }

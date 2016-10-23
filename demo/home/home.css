@@ -19,3 +19,11 @@ html, body, h1, h2, h3 {
 .home-container {
     padding: 2em;
 }
+
+.ng2-tag {
+    outline: 0;
+}
+
+.ng2-tag--custom .ng2-tag__remove-button {
+    line-height: 1.6;
+}

@@ -71,6 +71,7 @@ export class MyModule {}
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
+- **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
 
 #### Outputs
 - **`onAdd`** - [**`?onAdd(item: string)`**] - event fired when an item has been added
@@ -78,6 +79,8 @@ export class MyModule {}
 - **`onSelect`** - [**`?onSelect(item: string)`**] - event fired when an item has been selected
 - **`onFocus`** - [**`?onFocus(item: string)`**] - event fired when the input is focused - will return current input value
 - **`onBlur`** - [**`?onBlur(item: string)`**] - event fired when the input is blurred - will return current input value
+- **`onTextChange`** - [**`?onTextChange(text: string)`**] - event fired when the input value changes
+
 
 
 ### Basic Example

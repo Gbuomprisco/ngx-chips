@@ -21,10 +21,10 @@ import {
 })
 export class TagInputForm {
     @Output() onSubmit: EventEmitter<any> = new EventEmitter();
-    @Output() onBlur: EventEmitter<Event> = new EventEmitter();
-    @Output() onFocus: EventEmitter<Event> = new EventEmitter();
-    @Output() onKeyup: EventEmitter<Event> = new EventEmitter();
-    @Output() onKeydown: EventEmitter<Event> = new EventEmitter();
+    @Output() onBlur: EventEmitter<any> = new EventEmitter();
+    @Output() onFocus: EventEmitter<any> = new EventEmitter();
+    @Output() onKeyup: EventEmitter<any> = new EventEmitter();
+    @Output() onKeydown: EventEmitter<any> = new EventEmitter();
 
     // inputs
     @Input() placeholder: string;
