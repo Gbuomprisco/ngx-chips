@@ -44,6 +44,7 @@
             <h3>Tags accepting only items from an autocomplete</h3>
             <tag-input [ngModel]="['@item']"
                        [onlyFromAutocomplete]="true"
+                       [showDropdownIfEmpty]="true"
                        [autocompleteItems]="['iTem1', 'item2', 'item3']"
                        [autocomplete]="true">
             </tag-input>
