@@ -69,6 +69,8 @@ export class MyModule {}
 - **`autocomplete`** - [**`?boolean`**] - if true, it adds an autocomplete component from which is possible to select items
 - **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
+- **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
+
 - **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
 
 #### Outputs

@@ -51,6 +51,10 @@ export function addListener(listenerType: string, action: () => any, condition =
  * @returns {string[]}
  */
 function getMatchingItems(value: string): string[] {
+    if (!value && !this.showDropdownIfEmpty) {
+        return [];
+    }
+
     const itemsMatching: string[] = [];
     const items = this.autocompleteItems;
     const lowercaseValue = value.toLowerCase();
@@ -74,7 +78,7 @@ export function autoCompleteListener(ev): void {
 
     this.itemsMatching = itemsMatching;
 
-    if (itemsMatching.length || !value) {
+    if (itemsMatching.length || (this.showDropdownIfEmpty && !value)) {
         const focus = key === 40 ? true : false;
         this.dropdown.show(position, focus);
     }

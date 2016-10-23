@@ -137,6 +137,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public theme: string = 'default';
 
     /**
+     * - show autocomplete dropdown if the value of input is empty
+     * @name showDropdownIfEmpty
+     * @type {boolean}
+     */
+    @Input() public showDropdownIfEmpty: boolean = false;
+
+    // outputs
+
+    /**
      * @name onTextChangeDebounce
      * @type {number}
      */
