@@ -401,10 +401,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name blur
      */
     public blur(): void {
-        if (this.autocomplete) {
-            setTimeout(() => this.dropdown.hide(), 150);
-        }
-
         this.onBlur.emit(this.inputForm.value.value);
     }
 
