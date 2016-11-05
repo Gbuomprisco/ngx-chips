@@ -70,8 +70,9 @@ export class MyModule {}
 - **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
-
 - **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
+- **`inputId`** - [**`?string`**] - custom ID assigned to the input
+- **`inputClass`** - [**`?string`**] - custom class assigned to the input
 
 #### Outputs
 - **`onAdd`** - [**`?onAdd(item: string)`**] - event fired when an item has been added

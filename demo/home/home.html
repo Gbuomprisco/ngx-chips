@@ -53,6 +53,8 @@
         <div>
             <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
             <tag-input [ngModel]="['@item']"
+                       [inputClass]="'myinput'"
+                       [inputId]="'myinputId'"
                        [separatorKeys]="[32]"
                        [transform]="transform">
             </tag-input>
