@@ -1,5 +1,7 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
+const escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
 @Pipe({
     name: 'highlight'
 })
@@ -9,7 +11,11 @@ export class HighlightPipe implements PipeTransform {
             return value;
         }
 
-        const regex = new RegExp(`(${arg})`, 'i');
-        return value.replace(regex, '<b>$1</b>');
+        try {
+            const regex = new RegExp(`(${escape(arg)})`, 'i');
+            return value.replace(regex, '<b>$1</b>');
+        } catch (e) {
+            return value;
+        }
     }
 }
