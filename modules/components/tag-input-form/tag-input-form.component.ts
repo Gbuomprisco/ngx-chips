@@ -97,10 +97,6 @@ export class TagInputForm {
      * @param $event
      */
     private onKeyDown($event) {
-        if (this.value.value.length > 0) {
-            return;
-        }
-
         return this.onKeydown.emit($event);
     }
 }
