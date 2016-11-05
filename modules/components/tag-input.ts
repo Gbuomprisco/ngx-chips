@@ -152,6 +152,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private onTextChangeDebounce: number = 250;
 
     /**
+     * - custom id assigned to the input
+     * @name id
+     */
+    @Input() private inputId: string;
+
+    /**
+     * - custom class assigned to the input
+     */
+    @Input() private inputClass: string;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}

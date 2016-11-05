@@ -4,13 +4,17 @@
            type="text"
            required
            class="ng2-tag-input__text-input"
+           formControlName="item"
+           tabindex="0"
+
+           [ngClass]="inputClass"
+           [attr.id]="inputId"
            [attr.placeholder]="placeholder"
+           [attr.aria-label]="placeholder"
+
            (focus)="onFocus.emit($event)"
            (blur)="onBlur.emit($event)"
            (keydown)="onKeyDown($event)"
            (keyup)="onKeyup.emit($event)"
-           formControlName="item"
-           tabindex="0"
-           [attr.aria-label]="placeholder"
     />
 </form>
