@@ -4,7 +4,7 @@ This is a component for Angular 2. Design and API are blandly inspired by Angula
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/NJy38G8kM](http://www.webpackbin.com/NJy38G8kM).
+Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgHA8xM](http://www.webpackbin.com/VkEgHA8xM).
 
 ## Quick start. Install the component from NPM by running:
 
