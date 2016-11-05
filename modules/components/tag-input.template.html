@@ -69,7 +69,7 @@
                                (keydown)="escapeDropdown($event)"
                                offset="50 0">
                 <ng2-menu-item *ngFor="let item of itemsMatching" [value]="item">
-                    {{ item }}
+                    <span [innerHTML]="item | highlight : inputForm.value.value"></span>
                 </ng2-menu-item>
             </ng2-dropdown-menu>
         </ng2-dropdown>
