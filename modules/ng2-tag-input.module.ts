@@ -5,6 +5,7 @@ import { TagInputComponent } from './components';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { HighlightPipe } from './components/pipes/highlight.pipe';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 
 @NgModule({
@@ -16,12 +17,14 @@ import { Ng2DropdownModule } from 'ng2-material-dropdown';
     declarations: [
         TagInputComponent,
         DeleteIconComponent,
-        TagInputForm
+        TagInputForm,
+        HighlightPipe
     ],
     exports: [
         TagInputComponent,
         DeleteIconComponent,
-        TagInputForm
+        TagInputForm,
+        HighlightPipe
     ]
 })
 export class TagInputModule {}
