@@ -3,7 +3,7 @@
   "version": "0.4.3",
   "description": "Tag Input component for Angular 2",
   "scripts": {
-    "prepublish": "npm run build && ./node_modules/.bin/tsc",
+    "prepublish": "npm run build && tsc",
     "build": "webpack --inline --colors --progress --display-error-details --display-cached",
     "watch": "npm run build -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base demo",
