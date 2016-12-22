@@ -8,7 +8,9 @@ Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgH
 
 ## Quick start. Install the component from NPM by running:
 
-    npm install ng2-tag-input --save
+    npm install ng2-material-dropdown ng2-tag-input --save
+    
+Please notice that since version `0.4.7`, `ng2-material-dropdown` is a peer-dependency and is not installed automatically.
 
 ## If you want to run the tests, run the command:
 
