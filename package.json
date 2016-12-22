@@ -3,8 +3,8 @@
   "version": "0.4.5",
   "description": "Tag Input component for Angular 2",
   "scripts": {
-    "prepublish": "npm run build && ./node_modules/.bin/tsc",
-    "build": "npm run moveassets && npm run ngc && webpack --inline --colors --progress --display-error-details --display-cached",
+    "prepublish": "tsc && npm run moveassets && npm run build",
+    "build": "npm run ngc && webpack --inline --colors --progress --display-error-details --display-cached",
     "watch": "npm run build -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base demo",
     "start": "npm run server",
@@ -70,7 +70,7 @@
     "zone.js": "0.6.23"
   },
   "dependencies": {
-    "ng2-material-dropdown": "^0.5.1"
+    "ng2-material-dropdown": "^0.5.2"
   },
   "keywords": [
     "angular 2",

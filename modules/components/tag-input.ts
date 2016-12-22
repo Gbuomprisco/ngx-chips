@@ -283,7 +283,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
-        if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
+        const selectedItem = this.dropdown.menu.state.dropdownState.selectedItem;
+        if (this.autocomplete && selectedItem && !isFromAutocomplete) {
             return;
         }
 
@@ -492,7 +493,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     @HostListener('window:scroll')
     private scrollListener() {
-        if (this.dropdown && this.dropdown.menu.state.isVisible) {
+        const isVisible = this.dropdown.menu.state.menuState.isVisible;
+        if (this.dropdown && isVisible) {
             this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
         }
     }
