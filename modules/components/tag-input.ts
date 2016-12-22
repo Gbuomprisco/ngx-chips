@@ -283,7 +283,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
-        const selectedItem = this.dropdown.menu.state.dropdownState.selectedItem;
+        const selectedItem = this.autocomplete ? this.dropdown.menu.state.dropdownState.selectedItem : undefined;
         if (this.autocomplete && selectedItem && !isFromAutocomplete) {
             return;
         }
