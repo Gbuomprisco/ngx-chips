@@ -28,6 +28,7 @@
     "@types/es6-shim": "0.0.22-alpha",
     "@types/jasmine": "^2.2.34",
     "@types/node": "^6.0.39",
+    "angular2-template-loader": "^0.6.0",
     "autoprefixer": "^6.3.7",
     "awesome-typescript-loader": "1.1.1",
     "core-js": "^2.4.1",
@@ -47,6 +48,7 @@
     "postcss-loader": "^0.9.1",
     "precss": "^1.4.0",
     "protractor": "^3.3.0",
+    "raw-loader": "^0.5.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.12",
     "sass-loader": "^3.2.3",
@@ -63,7 +65,8 @@
     "zone.js": "0.6.23"
   },
   "dependencies": {
-    "ng2-material-dropdown": "^0.3.7"
+    "ng2-material-dropdown": "^0.3.7",
+    "universal-style-loader": "^0.16.3"
   },
   "keywords": [
     "angular 2",

@@ -7,7 +7,6 @@ var autoprefixer = require('autoprefixer');
 var webpackConfig = {
     entry: {
         'polyfills': './demo/polyfills.ts',
-        'vendor':    './demo/vendor.ts',
         'app':       './demo/app.ts'
     },
 
@@ -16,7 +15,7 @@ var webpackConfig = {
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'vendor', 'polyfills'], minChunks: Infinity })
+        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'], minChunks: Infinity })
     ],
 
     tslint: {
@@ -30,7 +29,7 @@ var webpackConfig = {
             // .ts files for TypeScript
             {
                 test: /\.ts$/,
-                loader: 'awesome-typescript-loader'
+                loaders: ['awesome-typescript-loader', 'angular2-template-loader']
             },
             {
                 test: /\.png/,
@@ -43,7 +42,7 @@ var webpackConfig = {
             },
             {
                 test: /\.scss$/,
-                loaders: ["style", "css", "postcss", "sass"]
+                loaders: ['raw', "postcss", "sass"]
             }
         ]
     },
@@ -88,7 +87,6 @@ var defaultConfig = {
         root: [ path.join(__dirname, 'demo') ],
         extensions: ['', '.ts', '.js'],
         alias: {
-            'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
             '@angular/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
             'angular2/core': path.join(__dirname, 'node_modules', '@angular', 'core', 'index.js'),
             'angular2/platform/browser': path.join(__dirname, 'node_modules', '@angular', 'platform-browser', 'index.js'),
@@ -96,7 +94,7 @@ var defaultConfig = {
             'angular2/router': path.join(__dirname, 'node_modules', '@angular', 'router', 'index.js'),
             'angular2/http': path.join(__dirname, 'node_modules', '@angular', 'http', 'index.js'),
             'angular2/http/testing': path.join(__dirname, 'node_modules', '@angular', 'http', 'testing.js')
-        },
+        }
     },
 
     devServer: {

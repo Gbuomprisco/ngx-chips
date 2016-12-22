@@ -11,10 +11,13 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "rootDir": ".",
-    "types": ["node", "es6-shim", "es6-collections", "jasmine"]
+    "types": ["node", "es6-shim", "es6-collections", "jasmine"],
+    "lib": ["es2015", "dom"],
+    "suppressImplicitAnyIndexErrors": true
   },
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true
+    "forkChecker": true,
+    "useWebpackText": true
   },
   "angularCompilerOptions": {
    "genDir": "./ngfactory"

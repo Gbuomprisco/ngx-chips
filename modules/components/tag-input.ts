@@ -39,8 +39,6 @@ import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
 import 'rxjs/add/operator/debounceTime';
 
-// tag-input Component
-
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
@@ -51,8 +49,8 @@ import 'rxjs/add/operator/debounceTime';
         useExisting: forwardRef(() => TagInputComponent),
         multi: true
     } ],
-    styles: [ require('./tag-input.style.scss').toString() ],
-    template: require('./tag-input.template.html')
+    styleUrls: [ './tag-input.style.scss' ],
+    templateUrl: './tag-input.template.html'
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**

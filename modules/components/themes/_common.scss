@@ -27,24 +27,7 @@
     margin: 0.1em 0;
 }
 
-.ng2-tag-input__text-input {
-    border: none;
-
-    display: inline;
-    padding: 0 0.5rem;
-    vertical-align: middle;
-
-    font-size: 15px;
-    height: 35px;
-    font-family: $font-family;
-}
-
-.ng2-tag-input__text-input:focus {
-    outline: 0;
-}
-
 // tag
-
 
 .ng2-tag--readonly {
     cursor: default;
@@ -53,7 +36,6 @@
 .ng2-tag--readonly:focus, .tag {
     outline: 0;
 }
-
 
 .ng2-tag {
     display: flex;
