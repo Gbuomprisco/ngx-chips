@@ -1,10 +1,11 @@
-var webpack = require('webpack');
-var path = require('path');
-var precss       = require('precss');
-var autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const path = require('path');
+const precss       = require('precss');
+const autoprefixer = require('autoprefixer');
+const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 // Webpack Config
-var webpackConfig = {
+const webpackConfig = {
     entry: {
         'polyfills': './demo/polyfills.ts',
         'app':       './demo/app.ts'
@@ -15,7 +16,8 @@ var webpackConfig = {
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'], minChunks: Infinity })
+        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'], minChunks: Infinity }),
+        new ForkCheckerPlugin()
     ],
 
     tslint: {
@@ -29,7 +31,7 @@ var webpackConfig = {
             // .ts files for TypeScript
             {
                 test: /\.ts$/,
-                loaders: ['awesome-typescript-loader', 'angular2-template-loader']
+                loaders: ['angular2-template-loader', 'awesome-typescript-loader']
             },
             {
                 test: /\.png/,
@@ -50,9 +52,7 @@ var webpackConfig = {
     postcss: function () {
         return [precss, autoprefixer];
     }
-
 };
-
 
 // Our Webpack Defaults
 var defaultConfig = {
@@ -84,22 +84,16 @@ var defaultConfig = {
     },
 
     resolve: {
-        root: [ path.join(__dirname, 'demo') ],
-        extensions: ['', '.ts', '.js'],
-        alias: {
-            '@angular/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
-            'angular2/core': path.join(__dirname, 'node_modules', '@angular', 'core', 'index.js'),
-            'angular2/platform/browser': path.join(__dirname, 'node_modules', '@angular', 'platform-browser', 'index.js'),
-            'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'testing', 'index.js'),
-            'angular2/router': path.join(__dirname, 'node_modules', '@angular', 'router', 'index.js'),
-            'angular2/http': path.join(__dirname, 'node_modules', '@angular', 'http', 'index.js'),
-            'angular2/http/testing': path.join(__dirname, 'node_modules', '@angular', 'http', 'testing.js')
-        }
+        extensions: ['', '.ts', '.js']
     },
 
     devServer: {
-        historyApiFallback: true,
-        watchOptions: { aggregateTimeout: 300, poll: 1000 }
+        clientLogLevel: "info",
+        watchOptions: {
+            aggregateTimeout: 300,
+            poll: 1000
+        },
+        stats: { colors: true }
     },
 
     node: {

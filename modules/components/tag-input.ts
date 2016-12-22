@@ -493,8 +493,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     @HostListener('window:scroll')
     private scrollListener() {
+        if (!this.autocomplete || !this.dropdown) {
+            return;
+        }
+
         const isVisible = this.dropdown.menu.state.menuState.isVisible;
-        if (this.dropdown && isVisible) {
+
+        if (isVisible) {
             this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
         }
     }
