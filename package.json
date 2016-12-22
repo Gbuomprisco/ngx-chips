@@ -3,9 +3,10 @@
   "version": "0.4.5",
   "description": "Tag Input component for Angular 2",
   "scripts": {
-    "prepublish": "tsc && npm run moveassets && npm run build",
-    "build": "npm run ngc && webpack --inline --colors --progress --display-error-details --display-cached",
-    "watch": "npm run build -- --watch",
+    "prepublish": "npm run build",
+    "webpack:dev": "webpack --inline --colors --progress --display-error-details --display-cached",
+    "build": "npm run webpack:dev && tsc -p tsconfig.json && npm run moveassets && npm run ngc",
+    "watch": "npm run webpack:dev -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base demo",
     "start": "npm run server",
     "test": "karma start karma.conf.js",
