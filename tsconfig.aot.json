@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "noImplicitAny": false,
+        "module": "es2015",
+        "target": "es5",
+        "outDir": "dist",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "declaration": true,
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "rootDir": ".",
+        "types": ["node", "es6-shim", "es6-collections", "jasmine"]
+    },
+    "awesomeTypescriptLoaderOptions": {
+        "forkChecker": true
+    },
+    "angularCompilerOptions": {
+        "genDir": "factories",
+        "debug": true
+    },
+    "files": [
+        "modules/ng2-tag-input.module.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false,
+    "atom": { "rewriteTsconfig": false }
+}

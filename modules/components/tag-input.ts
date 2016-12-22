@@ -40,8 +40,6 @@ import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
 import 'rxjs/add/operator/debounceTime';
 
-// tag-input Component
-
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
@@ -52,8 +50,8 @@ import 'rxjs/add/operator/debounceTime';
         useExisting: forwardRef(() => TagInputComponent),
         multi: true
     } ],
-    styles: [ require('./tag-input.style.scss').toString() ],
-    template: require('./tag-input.template.html')
+    styleUrls: [ './tag-input.style.scss' ],
+    templateUrl: './tag-input.template.html'
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
@@ -285,7 +283,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
-        if (this.autocomplete && this.dropdown.state.selectedItem && !isFromAutocomplete) {
+        const selectedItem = this.autocomplete ? this.dropdown.menu.state.dropdownState.selectedItem : undefined;
+        if (this.autocomplete && selectedItem && !isFromAutocomplete) {
             return;
         }
 
@@ -494,7 +493,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     @HostListener('window:scroll')
     private scrollListener() {
-        if (this.dropdown && this.dropdown.menu.state.isVisible) {
+        if (!this.autocomplete || !this.dropdown) {
+            return;
+        }
+
+        const isVisible = this.dropdown.menu.state.menuState.isVisible;
+
+        if (isVisible) {
             this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
         }
     }

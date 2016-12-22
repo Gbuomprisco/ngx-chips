@@ -11,22 +11,25 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "rootDir": ".",
-    "types": ["node", "es6-shim", "es6-collections", "jasmine"]
+    "types": ["node", "es6-shim", "jasmine"],
+    "suppressImplicitAnyIndexErrors": true
   },
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true
+    "forkChecker": true,
+    "useWebpackText": true
   },
   "angularCompilerOptions": {
    "genDir": "./ngfactory"
   },
   "files": [
-    "index.ts"
+    "./modules/ng2-tag-input.module.ts"
   ],
   "include": [
     "modules"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ],
   "compileOnSave": false,
   "buildOnSave": false,

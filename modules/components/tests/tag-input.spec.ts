@@ -232,7 +232,8 @@ describe('TagInputComponent', () => {
         }));
 
         it('validates transformed values', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithTransformer> = TestBed.createComponent(TagInputComponentWithTransformer);
+            const fixture: ComponentFixture<TagInputComponentWithTransformer> =
+                TestBed.createComponent(TagInputComponentWithTransformer);
             const component = getComponent(fixture);
 
             component.inputForm.form.get('item').setValue('@');
@@ -281,7 +282,6 @@ describe('TagInputComponent', () => {
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual('Typescript');
 
-            console.log(component.tagElements);
             // it removes current selected tag when pressing delete
             component.tagElements[1].dispatchEvent(keyDown);
 
@@ -394,7 +394,8 @@ describe('TagInputComponent', () => {
         }));
 
         it('filters matching values', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> = TestBed.createComponent(TagInputComponentWithAutocomplete);
+            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
+                TestBed.createComponent(TagInputComponentWithAutocomplete);
             const component = getComponent(fixture);
 
             // press 'i'
@@ -427,7 +428,8 @@ describe('TagInputComponent', () => {
         }));
 
         it('adds items to tag input from autocomplete', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> = TestBed.createComponent(TagInputComponentWithAutocomplete);
+            const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
+                TestBed.createComponent(TagInputComponentWithAutocomplete);
             const component = getComponent(fixture);
 
             expect(component.dropdown).toBeDefined();
@@ -440,7 +442,7 @@ describe('TagInputComponent', () => {
             tick();
 
             const item = component.dropdown.menu.items.first;
-            component.dropdown.state.onItemClicked.emit(item);
+            component.dropdown.menu.state.dropdownState.onItemClicked.emit(item);
 
             tick();
 

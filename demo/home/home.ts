@@ -4,8 +4,6 @@ import {
     FormControl
 } from '@angular/forms';
 
-import { Observable } from 'rxjs';
-
 @Component({
     selector: 'app',
     template: require('./home.html')

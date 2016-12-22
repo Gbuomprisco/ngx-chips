@@ -17,7 +17,8 @@ import {
 
 @Component({
     selector: 'tag-input-form',
-    template: require('./tag-input-form.template.html')
+    styleUrls: [ './tag-input-form.style.scss' ],
+    templateUrl: './tag-input-form.template.html'
 })
 export class TagInputForm {
     @Output() public onSubmit: EventEmitter<any> = new EventEmitter();

@@ -62,7 +62,7 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input >
+            <tag-input [ngModel]="['@item']" #input class="default">
                 <div *ngFor="let item of input.items; trackBy: item"
                      (click)="input.selectItem(item);$event.stopPropagation();"
                      (keydown)="input.handleKeydown($event, item)"
@@ -72,7 +72,7 @@
                      class="ng2-tag ng2-tag--custom">
 
                     <span class="ng2-tag__name">
-                        {{ item }}
+                        item: {{ item }}
                     </span>
 
                     <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
