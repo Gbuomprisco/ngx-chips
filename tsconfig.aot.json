@@ -18,8 +18,7 @@
     },
     "angularCompilerOptions": {
         "genDir": "factories",
-        "debug": true,
-        "skipMetadataEmit" : true
+        "debug": true
     },
     "files": [
         "modules/ng2-tag-input.module.ts"
