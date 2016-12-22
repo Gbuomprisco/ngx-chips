@@ -1,6 +1,6 @@
-@import "themes/palette";
-@import "themes/common";
+@import "themes/_palette.scss";
+@import "themes/_common.scss";
 
-@import "themes/default-theme";
-@import "themes/minimal-theme";
-@import "themes/dark-theme";
+@import "themes/_default-theme.scss";
+@import "themes/_minimal-theme.scss";
+@import "themes/_dark-theme.scss";

@@ -11,8 +11,7 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "rootDir": ".",
-    "types": ["node", "es6-shim", "es6-collections", "jasmine"],
-    "lib": ["es2015", "dom"],
+    "types": ["node", "es6-shim", "jasmine"],
     "suppressImplicitAnyIndexErrors": true
   },
   "awesomeTypescriptLoaderOptions": {
