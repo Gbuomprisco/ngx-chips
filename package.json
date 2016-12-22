@@ -10,7 +10,7 @@
     "start": "npm run server",
     "test": "karma start karma.conf.js",
     "ngc": "ngc -p ./tsconfig.aot.json",
-    "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*/' --exclude='*' ./modules/ ./dist/modules"
+    "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*/' --exclude='*' modules/ dist/modules"
   },
   "author": {
     "name": "Giancarlo Buomprisco",
