@@ -1,9 +1,9 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "description": "Tag Input component for Angular 2",
   "scripts": {
-    "prepublish": "npm run build && ./node_modules/.bin/tsc",
+    "prepublish": "npm run build && tsc",
     "build": "webpack --inline --colors --progress --display-error-details --display-cached",
     "watch": "npm run build -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base demo",
@@ -62,11 +62,11 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.0",
     "webpack-merge": "^0.8.4",
-    "zone.js": "0.6.23"
+    "zone.js": "0.6.23",
+    "universal-style-loader": "^0.16.3"
   },
   "dependencies": {
-    "ng2-material-dropdown": "^0.3.7",
-    "universal-style-loader": "^0.16.3"
+    "ng2-material-dropdown": "^0.4.2"
   },
   "keywords": [
     "angular 2",
