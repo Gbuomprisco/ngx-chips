@@ -7,7 +7,8 @@ import {
     EventEmitter,
     Renderer,
     ViewChild,
-    OnInit
+    OnInit,
+    HostListener
 } from '@angular/core';
 
 import {
@@ -212,7 +213,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name dropdown
      */
-    @ViewChild(Ng2Dropdown) public dropdown;
+    @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
 
 	/**
      * @name inputForm
@@ -487,5 +488,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                 const value = this.inputForm.value.value;
                 this.onTextChange.emit(value);
             });
+    }
+
+    @HostListener('window:scroll')
+    private scrollListener() {
+        if (this.dropdown && this.dropdown.menu.state.isVisible) {
+            this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
+        }
     }
 }
