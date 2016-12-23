@@ -6,11 +6,9 @@ import {
 
 @Component({
     selector: 'app',
-    template: require('./home.html')
+    templateUrl: './home.html'
 })
 export class Home {
-    constructor() {}
-
     items = ['Javascript', 'Typescript'];
 
     public options = {
@@ -69,11 +67,7 @@ export class Home {
     public validators = [this.startsWithAt, this.endsWith$];
 
     public errorMessages = {
-        'startsWithAt@': 'Your items need to start with "@"',
-        'endsWith$': 'Your items need to end with "$"'
+        'startsWithAt@': 'Your items need to start with \'@\'',
+        'endsWith$': 'Your items need to end with \'$\''
     };
-
-    ngOnInit() {
-
-    }
 }

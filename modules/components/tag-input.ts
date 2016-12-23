@@ -8,7 +8,8 @@ import {
     Renderer,
     ViewChild,
     OnInit,
-    HostListener
+    HostListener,
+    ViewEncapsulation
 } from '@angular/core';
 
 import {

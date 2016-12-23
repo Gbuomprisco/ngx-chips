@@ -84,8 +84,6 @@ export class MyModule {}
 - **`onBlur`** - [**`?onBlur(item: string)`**] - event fired when the input is blurred - will return current input value
 - **`onTextChange`** - [**`?onTextChange(text: string)`**] - event fired when the input value changes
 
-
-
 ### Basic Example
 #### Component
 
@@ -261,4 +259,72 @@ fit in a different design, you can choose 2 new themes: `dark` and `minimal`.
 ```html
 <tag-input [(ngModel)]='items' theme='minimal'></tag-input>
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
+```
+
+## Customization **NEW**
+
+Thanks to the newly introduced component inheritance, it is possible to finally customize the component with your own settings.
+It is not super straightforward, but you can finally define your own templates and styles. Let's see how it's done.
+
+The first thing to do, is to define a new component and extend `tag-input`:
+
+```javascript
+import { Component, forwardRef } from '@angular/core';
+import { TagInputComponent } from 'ng2-tag-input';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+
+// all this boilerplate is needed
+@Component({
+    selector: 'custom-tag-input', // or whatever you want
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => CustomComponent),
+        multi: true
+    }  ],
+    styleUrls: [
+        './custom.scss' // not needed, but you may want it
+    ],
+    templateUrl: '~ng2-tag-input/modules/components/tag-input.template.html' // you can add your own, but for now let's go with this
+})
+export class CustomComponent extends TagInputComponent { }
+```
+
+And here is where we define our own styles:
+```sass
+// I'm overwriting the variables
+$tag-color: #222;
+$tag-border-radius: 100px;
+$color-primary-default: #000;
+// have a look at https://github.com/Gbuomprisco/ng2-tag-input/tree/master/modules/components/themes
+// for having an idea on how to change the variables and how they're defined
+
+@import "~ng2-tag-input/modules/components/tag-input.style.scss";
+```
+
+We now need to register this newly created component. Here is how our app module looks like:
+
+```javascript
+
+// .. all other imports
+import { TagInputModule } from 'ng2-tag-input';
+import { Ng2DropdownModule } from 'ng2-material-dropdown';
+
+import { CustomComponent } from './custom/custom.component'; // my newly defined component
+
+@NgModule({
+    imports: [
+        BrowserModule,
+        CommonModule,
+        FormsModule,
+
+        TagInputModule, // we need this here
+        Ng2DropdownModule // we need this here
+    ],
+    declarations: [ Home, CustomComponent ], // we need this here
+    bootstrap: [ Home ], // this is just an example
+    entryComponents: [ Home ] // this is just an example
+})
+export class AppModule {}
+platformBrowserDynamic().bootstrapModule(AppModule);
+
 ```
