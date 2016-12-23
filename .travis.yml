@@ -17,6 +17,7 @@ addons:
      - google-chrome-stable
 
 script:
+  - npm install ng2-material-dropdown
   - npm test
 
 notifications:

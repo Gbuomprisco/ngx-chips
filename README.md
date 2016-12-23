@@ -261,7 +261,7 @@ fit in a different design, you can choose 2 new themes: `dark` and `minimal`.
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
 ```
 
-## Customization **NEW**
+## Customization
 
 Thanks to the newly introduced component inheritance, it is possible to finally customize the component with your own settings.
 It is not super straightforward, but you can finally define your own templates and styles. Let's see how it's done.
@@ -280,11 +280,13 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => CustomComponent),
         multi: true
-    }  ],
-    styleUrls: [
-        './custom.scss' // not needed, but you may want it
-    ],
-    templateUrl: '~ng2-tag-input/modules/components/tag-input.template.html' // you can add your own, but for now let's go with this
+    }],
+    
+    // not needed, but you may want it
+    styleUrls: [ './custom.scss' ],
+    
+    // you can add your own, but for now let's go with this
+    templateUrl: '~ng2-tag-input/modules/components/tag-input.template.html' 
 })
 export class CustomComponent extends TagInputComponent { }
 ```
