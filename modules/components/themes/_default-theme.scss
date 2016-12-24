@@ -18,8 +18,3 @@
 .default .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
     background: darken(map-get($color-primary, 'default'), 3.5%);
 }
-
-.default .ng2-tag:focus path {
-    fill: #fff;
-}
-

@@ -302,7 +302,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
     styleUrls: [ './custom.scss' ],
     
     // you can add your own, but for now let's go with this
-    templateUrl: '{{ node_modules }}/ng2-tag-input/modules/components/tag-input.template.html' 
+    templateUrl: '{{ node_modules }}/ng2-tag-input/dist/modules/components/tag-input.template.html' 
     // or
     // template: require('ng2-tag-input/dist/modules/components/tag-input.template.html')
 })
@@ -318,7 +318,7 @@ $color-primary-default: #000;
 // have a look at https://github.com/Gbuomprisco/ng2-tag-input/tree/master/modules/components/themes
 // for having an idea on how to change the variables and how they're defined
 
-@import "~ng2-tag-input/modules/components/tag-input.style.scss";
+@import "~ng2-tag-input/dist/modules/components/tag-input.style.scss";
 ```
 
 We now need to register this newly created component. Here is how our app module looks like:
