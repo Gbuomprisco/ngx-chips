@@ -20,9 +20,7 @@
         "forkChecker": true
     },
     "angularCompilerOptions": {
-        "genDir": "factories",
-        "entryModule": "modules/ng2-tag-input.module.ts",
-        "strictMetadataEmit": false
+        "genDir": "factories"
     },
     "files": [
         "modules/ng2-tag-input.module.ts"
