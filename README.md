@@ -114,8 +114,6 @@ export class App {
 }
 ```
 
-#### Template
-
 ```html
 <tag-input [(ngModel)]='items'
            [placeholder]="options.placeholder"
@@ -126,8 +124,6 @@ export class App {
 
 ```
 
-### More examples
-
 #### Max number of items
 ```html
 <tag-input [(ngModel)]='items' [maxItems]='5'></tag-input>
@@ -137,6 +133,7 @@ export class App {
 ```html
 <tag-input [ngModel]="['@item']"
            [autocompleteItems]="['Item1', 'item2', 'item3']">
+       <tag-input-dropdown></tag-input-dropdown>
 </tag-input>
 ```
 
@@ -179,31 +176,31 @@ Create some validation methods in your component:
 ```javascript
 class MyComponent {
     private startsWithAt(control: FormControl) {
-            if (control.value.charAt(0) !== '@') {
-                return {
-                    'startsWithAt@': true
-                };
-            }
-    
-            return null;
+        if (control.value.charAt(0) !== '@') {
+            return {
+                'startsWithAt@': true
+            };
         }
+
+        return null;
+    }
     
-        private endsWith$(control: FormControl) {
-            if (control.value.charAt(control.value.length - 1) !== '$') {
-                return {
-                    'endsWith$': true
-                };
-            }
-    
-            return null;
+    private endsWith$(control: FormControl) {
+        if (control.value.charAt(control.value.length - 1) !== '$') {
+            return {
+                'endsWith$': true
+            };
         }
+
+        return null;
+    }
     
-        public validators = [this.startsWithAt, this.endsWith$];
+    public validators = [this.startsWithAt, this.endsWith$];
     
-        public errorMessages = {
-            'startsWithAt@': 'Your items need to start with "@"',
-            'endsWith$': 'Your items need to end with "$"'
-        };
+    public errorMessages = {
+        'startsWithAt@': 'Your items need to start with "@"',
+        'endsWith$': 'Your items need to end with "$"'
+    };
 }
 ```
 
@@ -233,11 +230,11 @@ class MyComponent {
 Every item entered will be prefixed with `@`.
 
 ```html
-<tag-input [ngModel]="['@item']"[transform]="transformer"></tag-input>
+<tag-input [ngModel]="['@item']" [transform]="transformer"></tag-input>
 ```
 
 #### Events
-Set up some methods that will fire when its relative event is outputted.
+Set up some methods that will run when its relative event is fired.
 
 ```html
 <tag-input [(ngModel)]='items'
@@ -256,7 +253,7 @@ If readonly is passed to the tag-input, it won't be possible to select, add and 
 <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
 ```
 
-#### Custom template
+#### Custom items template
 Define your own template, but remember to set up the needed events using the `input` reference.
 
 ```html
@@ -270,14 +267,15 @@ Define your own template, but remember to set up the needed events using the `in
 </tag-input>
 ```
 
-#### New Themes
-If you don't like how the default theme looks, or you just need it to
-fit in a different design, you can choose 2 new themes: `dark` and `minimal`.
+#### Built-in Themes
+If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 2 new themes: `dark` and `minimal`.
 
 ```html
 <tag-input [(ngModel)]='items' theme='minimal'></tag-input>
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
 ```
+
+You still don't like them? It's fine, read the next section.
 
 ## Customization
 
