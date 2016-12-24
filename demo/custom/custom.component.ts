@@ -9,9 +9,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
         useExisting: forwardRef(() => CustomComponent),
         multi: true
     }  ],
-    styleUrls: [
-        './custom.scss'
-    ],
+    styleUrls: [ './custom.scss' ],
     templateUrl: '../../modules/components/tag-input.template.html'
 })
-export class CustomComponent extends TagInputComponent { }
+export class CustomComponent extends TagInputComponent {}

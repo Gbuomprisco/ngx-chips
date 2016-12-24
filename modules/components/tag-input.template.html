@@ -7,7 +7,7 @@
      [class.ng2-tag-input--focused]="isInputFocused()">
 
     <!-- tags [custom] -->
-    <div #template class="ng2-tags-container ng2-tags-container--custom">
+    <div class="ng2-tags-container ng2-tags-container--custom">
         <ng-content></ng-content>
 
         <tag-input-form
@@ -62,18 +62,6 @@
             [inputClass]="inputClass"
             [inputId]="inputId"
         ></tag-input-form>
-    </div>
-
-    <div *ngIf="autocomplete">
-        <ng2-dropdown>
-            <ng2-dropdown-menu [focusFirstElement]="false"
-                               (keydown)="escapeDropdown($event)"
-                               offset="50 0">
-                <ng2-menu-item *ngFor="let item of itemsMatching" [value]="item">
-                    <span [innerHTML]="item | highlight : inputForm.value.value"></span>
-                </ng2-menu-item>
-            </ng2-dropdown-menu>
-        </ng2-dropdown>
     </div>
 </div>
 

@@ -7,7 +7,6 @@ import { TagInputModule } from '../modules/ng2-tag-input.module';
 import { Home } from './home/home';
 import { CustomComponent } from './custom/custom.component';
 import { CommonModule } from '@angular/common';
-import { Ng2DropdownModule } from 'ng2-material-dropdown';
 
 @NgModule({
     imports: [
@@ -15,8 +14,7 @@ import { Ng2DropdownModule } from 'ng2-material-dropdown';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        TagInputModule,
-        Ng2DropdownModule
+        TagInputModule
     ],
     declarations: [ Home, CustomComponent ],
     bootstrap: [ Home ],

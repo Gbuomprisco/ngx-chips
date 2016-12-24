@@ -54,7 +54,7 @@ import { TagInputModule } from 'ng2-tag-input';
 export class MyModule {}
 ```
 
-## API
+## API for TagInputComponent
 
 #### Inputs
 - **`ngModel`** - [**`string[]`**] - Model of the component. Accepts an array of strings as input.
@@ -66,7 +66,6 @@ export class MyModule {}
 - **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
 - **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
-- **`autocomplete`** - [**`?boolean`**] - if true, it adds an autocomplete component from which is possible to select items
 - **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
@@ -81,6 +80,13 @@ export class MyModule {}
 - **`onFocus`** - [**`?onFocus(item: string)`**] - event fired when the input is focused - will return current input value
 - **`onBlur`** - [**`?onBlur(item: string)`**] - event fired when the input is blurred - will return current input value
 - **`onTextChange`** - [**`?onTextChange(text: string)`**] - event fired when the input value changes
+
+## API for TagInputDropdownComponent
+TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
+
+- **`offset`** - [**`?string`**] - offset to adjust the position of the dropdown with absolute values
+
+More options to customise the dropdown will follow.
 
 ### Basic Example
 #### Component
@@ -130,8 +136,7 @@ export class App {
 #### Autocomplete 
 ```html
 <tag-input [ngModel]="['@item']"
-           [autocompleteItems]="['Item1', 'item2', 'item3']"
-           [autocomplete]="true">
+           [autocompleteItems]="['Item1', 'item2', 'item3']">
 </tag-input>
 ```
 
@@ -140,8 +145,23 @@ This will accept items only from the autocomplete dropdown:
 ```html 
 <tag-input [ngModel]="['@item']"
            [onlyFromAutocomplete]="true"
-           [autocompleteItems]="['Item1', 'item2', 'item3']"
-           [autocomplete]="true">
+           [showDropdownIfEmpty]="true"
+           [autocompleteItems]="['iTem1', 'item2', 'item3']">
+    <tag-input-dropdown></tag-input-dropdown>
+</tag-input>
+```
+
+##### Define a template for your menu items
+```html
+<tag-input [ngModel]="['@item']"
+           [onlyFromAutocomplete]="true"
+           [showDropdownIfEmpty]="true"
+           [autocompleteItems]="['iTem1', 'item2', 'item3']">
+    <tag-input-dropdown>
+        <template let-item="item" let-index="index">
+            {{ index }}: {{ item }}
+        </template>
+    </tag-input-dropdown>
 </tag-input>
 ```
 
@@ -284,7 +304,9 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
     styleUrls: [ './custom.scss' ],
     
     // you can add your own, but for now let's go with this
-    templateUrl: '~ng2-tag-input/modules/components/tag-input.template.html' 
+    templateUrl: '{{ node_modules }}/ng2-tag-input/modules/components/tag-input.template.html' 
+    // or
+    // template: require('ng2-tag-input/dist/modules/components/tag-input.template.html')
 })
 export class CustomComponent extends TagInputComponent { }
 ```
@@ -307,8 +329,6 @@ We now need to register this newly created component. Here is how our app module
 
 // .. all other imports
 import { TagInputModule } from 'ng2-tag-input';
-import { Ng2DropdownModule } from 'ng2-material-dropdown';
-
 import { CustomComponent } from './custom/custom.component'; // my newly defined component
 
 @NgModule({
@@ -318,7 +338,6 @@ import { CustomComponent } from './custom/custom.component'; // my newly defined
         FormsModule,
 
         TagInputModule, // we need this here
-        Ng2DropdownModule // we need this here
     ],
     declarations: [ Home, CustomComponent ], // we need this here
     bootstrap: [ Home ], // this is just an example

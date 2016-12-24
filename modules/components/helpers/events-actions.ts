@@ -80,11 +80,11 @@ export function autoCompleteListener(ev): void {
 
     if (itemsMatching.length || (this.showDropdownIfEmpty && !value)) {
         const focus = key === 40 ? true : false;
-        this.dropdown.show(position, focus);
+        this.dropdown.dropdown.show(position, focus);
     }
 
-    if (!itemsMatching.length && this.dropdown.menu.state.isVisible) {
-        this.dropdown.hide();
+    if (!itemsMatching.length && this.dropdown.isVisible) {
+        this.dropdown.dropdown.hide();
     }
 }
 
@@ -103,5 +103,5 @@ export function onAutocompleteItemClicked(item): void {
     this.focus();
 
     // hide dropdown
-    this.dropdown.hide();
+    this.dropdown.dropdown.hide();
 }
