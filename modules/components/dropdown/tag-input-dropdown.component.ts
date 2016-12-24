@@ -2,7 +2,6 @@ import { Component, ViewChild, forwardRef, Inject, TemplateRef, ContentChild, In
 import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
-import { DropdownStateService } from 'ng2-material-dropdown/dist/src/modules/services/dropdown-state.service';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -70,7 +69,7 @@ export class TagInputDropdown {
      * @name state
      * @returns {DropdownStateService}
      */
-    public get state(): DropdownStateService {
+    public get state(): any {
         return this.dropdown.menu.state;
     }
 }
