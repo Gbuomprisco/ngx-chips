@@ -2,7 +2,7 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items (using one-way binding)</h3>
-            <custom-tag-input [ngModel]="items"></custom-tag-input>
+            <tag-input [ngModel]="items"></tag-input>
         </div>
 
         <div>
@@ -119,6 +119,11 @@
                     [ngModel]="['@item']"
                     name="items"></tag-input>
             </form>
+        </div>
+
+        <div>
+            <h3>Component customized via inheritance</h3>
+            <custom-tag-input [ngModel]="items"></custom-tag-input>
         </div>
     </div>
 </main>

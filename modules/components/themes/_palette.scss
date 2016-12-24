@@ -17,3 +17,15 @@ $color-error: (
     minimal: $color-error-minimal,
     dark: $color-error-dark
 );
+
+$color-arrow: (
+    default: $color-arrow-default,
+    minimal: $color-arrow-minimal,
+    dark: $color-arrow-dark
+);
+
+$color-arrow-focused: (
+    default: $color-arrow-default-focused,
+    minimal: $color-arrow-minimal-focused,
+    dark: $color-arrow-dark-focused
+);

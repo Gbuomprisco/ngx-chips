@@ -1,13 +1,15 @@
+@import "../themes/variables";
+
 .ng2-tag-input__text-input {
-    border: none;
+    border: $input-border;
 
     display: inline;
-    padding: 0 0.5rem;
+    padding: $input-padding;
     vertical-align: middle;
 
-    font-size: 15px;
-    height: 35px;
-    font-family: "Roboto", "Helvetica Neue", sans-serif;
+    font-size: $input-font-size;
+    height: $input-height;
+    font-family: $font-family;
 }
 
 .ng2-tag-input__text-input:focus {
