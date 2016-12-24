@@ -363,7 +363,6 @@ describe('TagInputComponent', () => {
 
             const component = getComponent(fixture);
 
-            expect(component.autocomplete).toEqual(true);
             expect(component.autocompleteItems.length).toEqual(3);
             expect(component.element.nativeElement.querySelector('ng2-dropdown')).toBeTruthy();
 
@@ -440,9 +439,10 @@ describe('TagInputComponent', () => {
 
             fixture.detectChanges();
             tick();
+            const dropdown = component.dropdown.dropdown;
 
-            const item = component.dropdown.menu.items.first;
-            component.dropdown.menu.state.dropdownState.onItemClicked.emit(item);
+            const item = dropdown.menu.items.first;
+            dropdown.menu.state.dropdownState.onItemClicked.emit(item);
 
             tick();
 
