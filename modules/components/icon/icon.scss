@@ -1,0 +1,27 @@
+@import "../themes/variables";
+
+// ICON
+
+.default path {
+    fill: $color-arrow-default;
+}
+
+.dark path {
+    fill: $color-arrow-dark;
+}
+
+.minimal path {
+    fill: $color-arrow-minimal;
+}
+
+.default .ng2-tag:focus delete-icon path {
+    fill: $color-arrow-default-focused;
+}
+
+.dark .ng2-tag:focus delete-icon path {
+    fill: $color-arrow-dark-focused;
+}
+
+.minimal .ng2-tag:focus delete-icon path {
+    fill: $color-arrow-minimal-focused;
+}
