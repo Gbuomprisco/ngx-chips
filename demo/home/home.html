@@ -2,7 +2,7 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items (using one-way binding)</h3>
-            <tag-input [ngModel]="items"></tag-input>
+            <custom-tag-input [ngModel]="items"></custom-tag-input>
         </div>
 
         <div>
@@ -35,8 +35,12 @@
         <div>
             <h3>Tags within an autocomplete component</h3>
             <tag-input [ngModel]="['@item']"
-                       [autocompleteItems]="['Item1', 'item2', 'item3']"
-                       [autocomplete]="true">
+                       [autocompleteItems]="['Item1', 'item2', 'item3']">
+                <tag-input-dropdown>
+                    <template let-item="item" let-index="index">
+                        {{ index }}: {{ item }}
+                    </template>
+                </tag-input-dropdown>
             </tag-input>
         </div>
 
@@ -45,11 +49,14 @@
             <tag-input [ngModel]="['@item']"
                        [onlyFromAutocomplete]="true"
                        [showDropdownIfEmpty]="true"
-                       [autocompleteItems]="['iTem1', 'item2', 'item3']"
-                       [autocomplete]="true">
+                       [autocompleteItems]="['iTem1', 'item2', 'item3']">
+                <tag-input-dropdown>
+                    <template let-item="item" let-index="index">
+                        {{ index }}: {{ item }}
+                    </template>
+                </tag-input-dropdown>
             </tag-input>
         </div>
-
         <div>
             <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
             <tag-input [ngModel]="['@item']"
@@ -62,7 +69,7 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input class="default">
+            <tag-input [ngModel]="['@item']" #input>
                 <div *ngFor="let item of input.items; trackBy: item"
                      (click)="input.selectItem(item);$event.stopPropagation();"
                      (keydown)="input.handleKeydown($event, item)"
@@ -71,13 +78,13 @@
                      [attr.aria-label]="item"
                      class="ng2-tag ng2-tag--custom">
 
-                    <span class="ng2-tag__name">
-                        item: {{ item }}
-                    </span>
+                        <span class="ng2-tag__name">
+                            item: {{ item }}
+                        </span>
 
                     <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
-                        x
-                    </span>
+                            x
+                        </span>
                 </div>
             </tag-input>
         </div>

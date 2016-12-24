@@ -100,8 +100,9 @@ export class TagInputComponentWithMaxItems {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items"
-                                 [autocompleteItems]="['item1', 'item2', 'itam3']"
-                                 [autocomplete]="true"></tag-input>`
+                          [autocompleteItems]="['item1', 'item2', 'itam3']">
+                    <tag-input-dropdown></tag-input-dropdown>         
+               </tag-input>`
 })
 export class TagInputComponentWithAutocomplete {
     public items = getItems();
@@ -124,8 +125,9 @@ export class TagInputComponentWithTemplate {
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items"
                            [onlyFromAutocomplete]="true"
-                           [autocompleteItems]="['item1', 'item2', 'itam3']"
-                           [autocomplete]="true"></tag-input>`
+                           [autocompleteItems]="['item1', 'item2', 'itam3']">
+                   <tag-input-dropdown></tag-input-dropdown>
+               </tag-input>`
 })
 export class TagInputComponentWithOnlyAutocomplete {
     public items = getItems();

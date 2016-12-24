@@ -1,19 +1,19 @@
 // common
 
 $color-focused: (
-    default: #2196F3,
-    minimal: #ddd,
-    dark: #999
+    default: $color-focused-default,
+    minimal: $color-focused-minimal,
+    dark: $color-focused-dark
 );
 
-$color-grey: (
-    default: #efefef,
-    minimal: #f9f9f9,
-    dark: #212121
+$color-primary: (
+    default: $color-primary-default,
+    minimal: $color-primary-minimal,
+    dark: $color-primary-dark
 );
 
-$color-red: (
-    default: #f44336
+$color-error: (
+    default: $color-error-default,
+    minimal: $color-error-minimal,
+    dark: $color-error-dark
 );
-
-$font-family: "Roboto", "Helvetica Neue", sans-serif;

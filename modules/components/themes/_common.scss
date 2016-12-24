@@ -7,8 +7,8 @@
 
     transition: all 0.15s;
 
-    padding: 0.25rem 0.2rem;
-    min-height: 32px;
+    padding: $container-padding;
+    min-height: $container-height;
 
     cursor: text;
 }
@@ -24,7 +24,7 @@
 
 // form
 .ng2-tag-input form {
-    margin: 0.1em 0;
+    margin: $container-margin;
 }
 
 // tag
@@ -43,21 +43,21 @@
     flex-wrap: wrap;
 
     font-family: $font-family;
-    font-weight: 400;
-    font-size: 1em;
-    letter-spacing: 0.05rem;
+    font-weight: $tag-font-weight;
+    font-size: $tag-font-size;
+    letter-spacing: $tag-letter-spacing;
 
     outline: 0;
-    color: #222;
+    color: $tag-color;
     cursor: pointer;
-    border-radius: 16px;
+    border-radius: $tag-border-radius;
     transition: all 0.25s;
 
-    margin: 0.1rem 0.2rem;
-    padding: 0.08rem 0.45rem;
+    margin: $tag-margin;
+    padding: $tag-padding;
 
-    height: 32px;
-    line-height: 34px;
+    height: $tag-height;
+    line-height: $tag-line-height;
 }
 
 
@@ -74,14 +74,14 @@
 }
 
 .ng2-tag-input__error-message {
-    font-size: 0.8em;
-    color: map-get($color-red, 'default');
-    margin: 0.5em 0;
+    font-size: $error-message-font-size;
+    color: $error-message-color;
+    margin: $error-message-margin;
 }
 
 .default.ng2-tag-input--invalid,
 .minimal.ng2-tag-input--invalid,
 .dark.ng2-tag-input--invalid {
-    border-bottom: 2px solid map-get($color-red, 'default');
+    border-bottom: 2px solid map-get($color-error, 'default');
 }
 

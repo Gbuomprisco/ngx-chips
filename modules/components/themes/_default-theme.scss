@@ -1,5 +1,5 @@
 .ng2-tag-input.default {
-    border-bottom: 2px solid map-get($color-grey, 'default');
+    border-bottom: 2px solid map-get($color-primary, 'default');
 }
 
 .default.ng2-tag-input--focused {
@@ -7,7 +7,7 @@
 }
 
 .default .ng2-tag {
-    background: map-get($color-grey, 'default');
+    background: map-get($color-primary, 'default');
 }
 
 .default .ng2-tag:not(.ng2-tag--readonly):focus {
@@ -16,7 +16,7 @@
 }
 
 .default .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
-    background: darken(map-get($color-grey, 'default'), 3.5%);
+    background: darken(map-get($color-primary, 'default'), 3.5%);
 }
 
 .default .ng2-tag:focus path {

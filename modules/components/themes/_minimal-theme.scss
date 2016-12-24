@@ -3,7 +3,7 @@
 }
 
 .minimal .ng2-tag {
-    background: map-get($color-grey, 'minimal');
+    background: map-get($color-primary, 'minimal');
     border-radius: 0;
 }
 
@@ -12,9 +12,9 @@
 }
 
 .minimal .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
-    background: darken(map-get($color-grey, 'minimal'), 3.5%);
+    background: darken(map-get($color-primary, 'minimal'), 3.5%);
 }
 
 .minimal .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
-    background: darken(map-get($color-grey, 'minimal'), 3.5%);
+    background: darken(map-get($color-primary, 'minimal'), 3.5%);
 }

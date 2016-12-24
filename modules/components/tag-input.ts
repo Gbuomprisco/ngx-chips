@@ -7,8 +7,10 @@ import {
     EventEmitter,
     Renderer,
     ViewChild,
+    ContentChild,
     OnInit,
-    HostListener
+    HostListener,
+    TemplateRef
 } from '@angular/core';
 
 import {
@@ -33,12 +35,12 @@ import {
     onAutocompleteItemClicked
 } from './helpers/events-actions';
 
-import { Ng2Dropdown } from 'ng2-material-dropdown';
 import { TagInputAccessor } from './helpers/accessor';
 import { getAction } from './helpers/keypress-actions';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
 import 'rxjs/add/operator/debounceTime';
+import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
 
 /**
  * A component for entering a list of terms to be used with ngModel.
@@ -103,13 +105,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public validators = [];
 
     /**
-     * @name autocomplete
-     * @desc sets if autocomplete is enabled. By default it's not.
-     * @type {boolean}
-     */
-    @Input() public autocomplete: boolean = false;
-
-    /**
      * @name autocompleteItems
      * @desc array of items that will populate the autocomplete
      * @type {Array<string>}
@@ -162,6 +157,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private inputClass: string;
 
     /**
+     * @name dropdown
+     */
+    @ContentChild(TagInputDropdown) public dropdown: TagInputDropdown;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -206,14 +206,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name template
      * @desc reference to the template if provided by the user
-     * @type {ElementRef}
+     * @type {TemplateRef}
      */
-    @ViewChild('template') public template: ElementRef;
-
-    /**
-     * @name dropdown
-     */
-    @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
+    @ContentChild(TemplateRef) public template: TemplateRef<any>;
 
 	/**
      * @name inputForm
@@ -283,8 +278,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
-        const selectedItem = this.autocomplete ? this.dropdown.menu.state.dropdownState.selectedItem : undefined;
-        if (this.autocomplete && selectedItem && !isFromAutocomplete) {
+        const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
+        if (selectedItem && !isFromAutocomplete) {
             return;
         }
 
@@ -302,7 +297,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // 5. or onlyFromAutocomplete is false
         const isValid = this.inputForm.form.valid &&
             isDupe === false &&
-            !this.maxItemsReached &&
+            this.maxItemsReached === false &&
             ((isFromAutocomplete && this.onlyFromAutocomplete === true) || this.onlyFromAutocomplete === false);
 
         // if valid:
@@ -395,7 +390,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        if (this.autocomplete) {
+        if (this.dropdown) {
             autoCompleteListener.call(this, {});
         }
 
@@ -444,11 +439,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {boolean}
      */
     private hasCustomTemplate(): boolean {
-        if (!this.template.nativeElement) {
+        if (!this.template) {
             return false;
         }
 
-        return this.template.nativeElement.children.length > 0;
+        const parent = this.template.elementRef.nativeElement.parentElement;
+        const classList = parent ? parent.classList : undefined;
+        return classList ? classList.contains('ng2-tags-container--custom') : false;
     }
 
     ngOnInit() {
@@ -471,14 +468,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     ngAfterViewInit() {
-        // if autocomplete is set to true, set up its events
-        if (this.autocomplete) {
-            addListener.call(this, KEYUP, autoCompleteListener);
-
-            this.dropdown.onItemClicked.subscribe(onAutocompleteItemClicked.bind(this));
-            this.dropdown.onHide.subscribe(() => this.itemsMatching = []);
-        }
-
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
         });
@@ -491,16 +480,20 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             });
     }
 
+    ngAfterContentInit() {
+        // if dropdown is defined, set up its events
+        if (this.dropdown) {
+            addListener.call(this, KEYUP, autoCompleteListener);
+
+            this.dropdown.onItemClicked().subscribe(onAutocompleteItemClicked.bind(this));
+            this.dropdown.onHide().subscribe(() => this.itemsMatching = []);
+        }
+    }
+
     @HostListener('window:scroll')
     private scrollListener() {
-        if (!this.autocomplete || !this.dropdown) {
-            return;
-        }
-
-        const isVisible = this.dropdown.menu.state.menuState.isVisible;
-
-        if (isVisible) {
-            this.dropdown.menu.updatePosition(this.inputForm.getElementPosition());
+        if (this.dropdown && this.dropdown.isVisible) {
+            this.dropdown.updatePosition(this.inputForm.getElementPosition());
         }
     }
 }

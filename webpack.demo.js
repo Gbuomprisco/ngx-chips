@@ -84,7 +84,7 @@ var defaultConfig = {
     },
 
     resolve: {
-        extensions: ['', '.ts', '.js']
+        extensions: ['', '.ts', '.js', '.scss']
     },
 
     devServer: {

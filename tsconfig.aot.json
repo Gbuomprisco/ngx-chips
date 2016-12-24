@@ -11,21 +11,26 @@
         "sourceMap": true,
         "moduleResolution": "node",
         "rootDir": ".",
-        "types": ["node", "es6-shim", "es6-collections", "jasmine"]
+        "skipLibCheck": true,
+        "typeRoots": [ "./node_modules/@types" ],
+        "types": ["node", "es6-shim", "es6-collections", "jasmine"],
+        "suppressImplicitAnyIndexErrors": true
     },
     "awesomeTypescriptLoaderOptions": {
         "forkChecker": true
     },
     "angularCompilerOptions": {
-        "genDir": "factories",
-        "debug": true
+        "genDir": "factories"
     },
     "files": [
         "modules/ng2-tag-input.module.ts"
     ],
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "**/*.spec.ts",
+        "**/*.ngfactory.ts",
+        "**/*.shim.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false,
