@@ -354,6 +354,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // call action
         action.call(this, itemIndex);
+
         // prevent default behaviour
         $event.preventDefault();
     }
@@ -432,20 +433,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     private get maxItemsReached(): boolean {
         return this.maxItems !== undefined && this.items.length >= this.maxItems;
-    }
-
-	/**
-     * @name hasCustomTemplate
-     * @returns {boolean}
-     */
-    private hasCustomTemplate(): boolean {
-        if (!this.template) {
-            return false;
-        }
-
-        const parent = this.template.elementRef.nativeElement.parentElement;
-        const classList = parent ? parent.classList : undefined;
-        return classList ? classList.contains('ng2-tags-container--custom') : false;
     }
 
     ngOnInit() {

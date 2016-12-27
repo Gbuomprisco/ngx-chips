@@ -1,34 +1,14 @@
-
-<!-- input tag container -->
+<!-- CONTAINER -->
 <div ngClass="ng2-tag-input {{ theme }}"
      (click)="focus(true)"
      [attr.tabindex]="-1"
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
 
-    <!-- tags [custom] -->
-    <div class="ng2-tags-container ng2-tags-container--custom">
-        <ng-content></ng-content>
-
-        <tag-input-form
-            *ngIf="hasCustomTemplate()"
-            (onSubmit)="addItem()"
-            (onBlur)="blur()"
-            (onFocus)="focus()"
-            (onKeydown)="fireEvents('keydown', $event)"
-            (onKeyup)="fireEvents('keyup', $event)"
-            (onKeypress)="handleKeyPress()"
-            [validators]="validators"
-            [hidden]="readonly || maxItemsReached"
-            [placeholder]="items.length ? placeholder : secondaryPlaceholder"
-            [inputClass]="inputClass"
-            [inputId]="inputId"
-        ></tag-input-form>
-    </div>
-
-    <!-- tags [default] -->
-    <div class="ng2-tags-container ng2-tags-container--default" *ngIf="hasCustomTemplate() === false">
+    <!-- TAGS [DEFAULT] -->
+    <div class="ng2-tags-container">
         <div *ngFor="let item of items"
+             [ngSwitch]="!!template"
              (click)="selectItem(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
              [attr.tabindex]="readonly ? -1 : 0"
@@ -36,19 +16,28 @@
              [class.ng2-tag--readonly]="readonly"
              [attr.aria-label]="item">
 
-            <!-- tag name -->
-            <span class="ng2-tag__name">
-                {{ item }}
-            </span>
+            <div *ngSwitchCase="true">
+                <template
+                    [ngOutletContext]="{item: item}"
+                    [ngTemplateOutlet]="template">
+                </template>
+            </div>
 
-            <!-- remove 'x' button -->
-            <delete-icon
-                class="ng2-tag__remove-button"
-                aria-label="Remove tag"
-                role="button"
-                (click)="removeItem(item)"
-                *ngIf="!readonly">
-            </delete-icon>
+            <div *ngSwitchCase="false">
+                <!-- TAG NAME -->
+                <span class="ng2-tag__name">
+                    {{ item }}
+                </span>
+
+                <!-- 'X' BUTTON -->
+                <delete-icon
+                    class="ng2-tag__remove-button"
+                    aria-label="Remove tag"
+                    role="button"
+                    (click)="removeItem(item)"
+                    *ngIf="!readonly">
+                </delete-icon>
+            </div>
         </div>
 
         <tag-input-form
@@ -57,6 +46,7 @@
             (onFocus)="focus()"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
+            (onKeypress)="handleKeyPress()"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"

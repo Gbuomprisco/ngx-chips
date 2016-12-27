@@ -69,23 +69,16 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input>
-                <div *ngFor="let item of input.items; trackBy: item"
-                     (click)="input.selectItem(item);$event.stopPropagation();"
-                     (keydown)="input.handleKeydown($event, item)"
-                     [attr.tabindex]="input.readonly ? -1 : 0"
-                     [class.ng2-tag--readonly]="input.readonly"
-                     [attr.aria-label]="item"
-                     class="ng2-tag ng2-tag--custom">
-
-                        <span class="ng2-tag__name">
-                            item: {{ item }}
-                        </span>
+            <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
+                <template let-item="item">
+                    <span>
+                        item: {{ item }}
+                    </span>
 
                     <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
-                            x
-                        </span>
-                </div>
+                        x
+                    </span>
+                </template>
             </tag-input>
         </div>
 

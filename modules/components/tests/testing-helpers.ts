@@ -111,10 +111,15 @@ export class TagInputComponentWithAutocomplete {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
-                     <div class="custom_class" *ngFor="let item of items" (click)="selectItem(item)">
-                        <span class="tag__name">{{ item }}</span>
-                        <span (click)="remove(item)"><img src="delete.png" /></span>
-                     </div>
+                    <template let-item="item">
+                        <span>
+                            item: {{ item }}
+                        </span>
+    
+                        <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
+                            x
+                        </span>
+                    </template>
                 </tag-input>`
 })
 export class TagInputComponentWithTemplate {
