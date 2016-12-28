@@ -1,4 +1,4 @@
-<a name="0.4.8"></a>
+<a name="0.4.8">0.4.8</a>
 
 ### Bug Fixes
 - Custom theme's style is back

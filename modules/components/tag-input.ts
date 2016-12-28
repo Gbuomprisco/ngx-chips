@@ -487,8 +487,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.dropdown.onItemClicked().subscribe(onAutocompleteItemClicked.bind(this));
             this.dropdown.onHide().subscribe(() => this.itemsMatching = []);
         }
-
-        console.log(this.hasCustomTemplate());
     }
 
     @HostListener('window:scroll')

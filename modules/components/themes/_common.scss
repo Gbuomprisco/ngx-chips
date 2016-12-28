@@ -60,16 +60,14 @@
     line-height: $tag-line-height;
 }
 
-
-.ng2-tag__remove-button {
-    margin-left: 3px;
+delete-icon {
     width: 16px;
     height: 26px;
-    align-self: center;
     transition: all 0.15s;
+    display: inline-block;
 }
 
-.ng2-tag__remove-button:hover {
+delete-icon:hover {
     transform: scale(1.3);
 }
 
