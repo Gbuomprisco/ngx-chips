@@ -11,6 +11,8 @@ import {
 export class Home {
     items = ['Javascript', 'Typescript'];
 
+    itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
+
     public options = {
         readonly: undefined,
         placeholder: '+ Tag'

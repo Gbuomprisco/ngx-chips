@@ -9,6 +9,8 @@ Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgH
 ## Quick start. Install the component from NPM by running:
 
     npm install ng2-tag-input --save
+    
+Please notice that the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
    
 ## If you want to run the tests, run the command:
 
@@ -54,24 +56,63 @@ import { TagInputModule } from 'ng2-tag-input';
 export class MyModule {}
 ```
 
+### Configuration for SystemJS
+
+Many users have reported issues with SystemJS. I got it working with the following additions to the SystemJS configuration:
+
+```javascript
+// packages object
+{
+        'ng2-tag-input': {
+            main: 'dist/ng2-tag-input.bundle.js',
+            format: 'cjs',
+        },
+        'ng2-material-dropdown': {
+            defaultExtension: 'js',
+            main: 'dist/ng2-dropdown.bundle.js',
+            format: 'cjs',
+        },
+        'ng2-tag-input/modules/components/tag-input.template.html': {
+            defaultJSExtension: false
+        }
+        // rest of the configuration
+};
+```
+
 ## API for TagInputComponent
 
 #### Inputs
-- **`ngModel`** - [**`string[]`**] - Model of the component. Accepts an array of strings as input.
+
+##### Model
+- **`ngModel`** - [**`string[] | TagModel[]`**] - Model of the component. Accepts an array of strings as input OR an array of objects.
+
+If you do use an array of objects, make sure you:
+- define two properties, `value` and `display`. `Value` will uniquely identify the items, `display` will be the value displayed.
+- or, in alternative, provide the keys using the inputs `identifyBy` and `displayBy`
+
+#### Properties
 - **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
 - **`secondaryPlaceholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms when there are 0 items entered.
 - **`maxItems`** -  [**`?number`**] - Sets the maximum number of items it is possible to enter.
 - **`readonly`** - [**`?boolean`**] - Sets the tag input static, not allowing deletion/addition of the items entered.
 - **`separatorKeys`** - [**`?number[]`**] - Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
 - **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
+- **`inputId`** - [**`?string`**] - custom ID assigned to the input
+- **`inputClass`** - [**`?string`**] - custom class assigned to the input
+- **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
+
+##### Validation
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
 - **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
+
+##### Autocomplete
 - **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
-- **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
-- **`inputId`** - [**`?string`**] - custom ID assigned to the input
-- **`inputClass`** - [**`?string`**] - custom class assigned to the input
+
+##### Tags as Objects
+- **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by
+- **`displayBy`** - [**`?string`**] - the string displayed in a tag object
 
 #### Outputs
 - **`onAdd`** - [**`?onAdd($event: string)`**] - event fired when an item has been added
@@ -122,6 +163,19 @@ export class App {
            [separatorKeys]="options.separatorKeys">
 </tag-input>
 
+```
+
+#### Using an array of objects
+
+```html
+// itemsAsObjects = [{value: 0, display: 'Angular'}, {value: 1, display: 'React'}];
+<tag-input [ngModel]="itemsAsObjects"></tag-input>
+```
+
+#### Using an array of with custom `identifyBy` and `displayBy`
+```html
+// itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
+<tag-input [ngModel]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
 ```
 
 #### Max number of items
@@ -261,7 +315,8 @@ Define your own template, but remember to set up the needed events using the `in
 <tag-input [ngModel]="['@item']" #input>
     <template let-item="item"> <!-- DEFINE HERE YOUR TEMPLATE -->
         <span>
-            item: {{ item }}
+            <!-- YOU MAY ACTUALLY DISPLAY WHATEVER YOU WANT IF YOU PASS AN OBJECT AS ITEM -->
+            item: {{ item.display }}
         </span>
         <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
             x

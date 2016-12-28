@@ -1,8 +1,13 @@
 <main>
     <div class="home-container">
         <div>
-            <h3>Simple Input with two items (using one-way binding)</h3>
+            <h3>Simple Input with two items</h3>
             <tag-input [ngModel]="items"></tag-input>
+        </div>
+
+        <div>
+            <h3>Simple Input with two items as objects)</h3>
+            <tag-input [ngModel]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
         </div>
 
         <div>
@@ -72,7 +77,7 @@
             <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
                 <template item-template let-item="item">
                     <span>
-                        item: {{ item }}
+                        item: {{ item.display }}
                     </span>
 
                     <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">

@@ -7,7 +7,7 @@
 
     <!-- TAGS -->
     <div class="ng2-tags-container">
-        <div *ngFor="let item of items"
+        <div *ngFor="let item of items; trackBy: value"
              class="ng2-tag"
              (click)="selectItem(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
@@ -27,7 +27,7 @@
             <div *ngSwitchCase="false">
                 <!-- TAG NAME -->
                 <span class="ng2-tag__name">
-                    {{ item }}
+                    {{ item.display }}
                 </span>
 
                 <!-- 'X' BUTTON -->

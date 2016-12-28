@@ -36,7 +36,7 @@ import {
     onAutocompleteItemClicked
 } from './helpers/events-actions';
 
-import { TagInputAccessor } from './helpers/accessor';
+import { TagInputAccessor, TagModel } from './helpers/accessor';
 import { getAction } from './helpers/keypress-actions';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
@@ -162,21 +162,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
      */
-    @Output() public onAdd = new EventEmitter<string>();
+    @Output() public onAdd = new EventEmitter<TagModel>();
 
     /**
      * @name onRemove
      * @desc event emitted when removing an existing item
      * @type {EventEmitter<string>}
      */
-    @Output() public onRemove = new EventEmitter<string>();
+    @Output() public onRemove = new EventEmitter<TagModel>();
 
     /**
      * @name onSelect
      * @desc event emitted when selecting an item
      * @type {EventEmitter<string>}
      */
-    @Output() public onSelect = new EventEmitter<string>();
+    @Output() public onSelect = new EventEmitter<TagModel>();
 
     /**
      * @name onFocus
@@ -197,7 +197,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc event emitted when the input value changes
      * @type {EventEmitter<string>}
      */
-    @Output() public onTextChange = new EventEmitter<string>();
+    @Output() public onTextChange = new EventEmitter<TagModel>();
 
     /**
      * @name dropdown
@@ -229,7 +229,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc reference to the current selected tag
      * @type {String}
      */
-    public selectedTag: string;
+    public selectedTag: TagModel;
 
     /**
      * @name tagElements
@@ -259,11 +259,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc removes an item from the array of the model
      * @param item {string}
      */
-    public removeItem(item: string): void {
-        this.items = this.items.filter(_item => _item !== item);
+    public removeItem(item: TagModel): void {
+        this.items = this.items.filter(_item => _item !== this.findItem(item.value));
 
         // if the removed tag was selected, set it as undefined
-        if (this.selectedTag === item) {
+        if (this.selectedTag && this.selectedTag.value === item.value) {
             this.selectedTag = undefined;
         }
 
@@ -288,7 +288,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         const item = this.setInputValue(this.inputForm.value.value);
 
         // check if the transformed item is already existing in the list
-        const isDupe = this.items.indexOf(item) !== -1;
+        const isDupe = !!this.findItem(item);
 
         // check validity:
         // 1. form must be valid
@@ -303,11 +303,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // if valid:
         if (isValid) {
+            const newTag = new TagModel(item, item);
+
             // append item to the ngModel list
-            this.items = [...this.items, item];
+            this.items = [...this.items, newTag];
 
             //  and emit event
-            this.onAdd.emit(item);
+            this.onAdd.emit(newTag);
         }
 
         // reset control
@@ -320,7 +322,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc selects item passed as parameter as the selected tag
      * @param item
      */
-    public selectItem(item: string): void {
+    public selectItem(item: TagModel): void {
         if (this.readonly) {
             const el = this.element.nativeElement;
             this.renderer.invokeElementMethod(el, FOCUS, []);
@@ -331,6 +333,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // emit event
         this.onSelect.emit(item);
+    }
+
+    /**
+     * @name findItem
+     * @param value
+     * @returns {TagModel}
+     */
+    public findItem(value: string): TagModel {
+        return this.items.find((item: TagModel) => item.value === value);
     }
 
     /**
@@ -349,9 +360,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param $event
      * @param item
      */
-    public handleKeydown($event, item: string): void {
+    public handleKeydown($event, item: TagModel): void {
         const action = getAction($event.keyCode || $event.which);
-        const itemIndex = this.items.indexOf(item);
+        const itemIndex = this.items.findIndex(tag => tag === this.findItem(item.value));
 
         // call action
         action.call(this, itemIndex);
@@ -505,7 +516,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name scrollListener
      */
     @HostListener('window:scroll')
-    private scrollListener() {
+    private scrollListener(): void {
         if (this.dropdown && this.dropdown.isVisible) {
             this.dropdown.updatePosition(this.inputForm.getElementPosition());
         }

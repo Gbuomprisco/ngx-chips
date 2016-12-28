@@ -8,9 +8,11 @@ import {
     Input,
     QueryList
 } from '@angular/core';
+
 import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
+import { TagModel } from '../helpers/accessor';
 
 @Component({
     selector: 'tag-input-dropdown',
