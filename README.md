@@ -60,7 +60,7 @@ export class MyModule {}
 
 Many users have reported issues with SystemJS. I got it working with the following additions to the SystemJS configuration:
 
-```
+```javascript
 // packages object
 {
         'ng2-tag-input': {
