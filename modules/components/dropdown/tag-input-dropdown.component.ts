@@ -75,4 +75,12 @@ export class TagInputDropdown {
     public get state(): any {
         return this.dropdown.menu.state;
     }
+
+    /**
+     * - manually destroy menu
+     * @name destroy
+     */
+    public destroy(): void {
+        this.dropdown.menu.ngOnDestroy();
+    }
 }

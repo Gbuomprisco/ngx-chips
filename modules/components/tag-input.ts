@@ -447,7 +447,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         return this.maxItems !== undefined && this.items.length >= this.maxItems;
     }
 
-    ngOnInit() {
+    /**
+     * @name ngOnInit
+     */
+    public ngOnInit() {
         // setting up the keypress listeners
         addListener.call(this, KEYDOWN, backSpaceListener);
         addListener.call(this, KEYDOWN, customSeparatorKeys, this.separatorKeys.length > 0);
@@ -462,11 +465,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
     }
 
-    ngAfterViewChecked() {
+    /**
+     * @name ngAfterViewChecked
+     */
+    public ngAfterViewChecked() {
         this.tagElements = this.element.nativeElement.querySelectorAll('.ng2-tag');
     }
 
-    ngAfterViewInit() {
+    /**
+     * @name ngAfterViewInit
+     */
+    public ngAfterViewInit() {
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
         });
@@ -479,7 +488,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             });
     }
 
-    ngAfterContentInit() {
+    /**
+     * @name ngAfterContentInit
+     */
+    public ngAfterContentInit() {
         // if dropdown is defined, set up its events
         if (this.dropdown) {
             addListener.call(this, KEYUP, autoCompleteListener);
@@ -489,6 +501,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
     }
 
+    /**
+     * @name ngOnDestroy
+     */
+    public ngOnDestroy() {
+        return this.dropdown ? this.dropdown.destroy() : undefined;
+    }
+
+    /**
+     * @name scrollListener
+     */
     @HostListener('window:scroll')
     private scrollListener() {
         if (this.dropdown && this.dropdown.isVisible) {
