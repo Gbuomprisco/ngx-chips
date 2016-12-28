@@ -9,6 +9,8 @@ Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgH
 ## Quick start. Install the component from NPM by running:
 
     npm install ng2-tag-input --save
+    
+Please notice that the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
    
 ## If you want to run the tests, run the command:
 
@@ -52,6 +54,29 @@ import { TagInputModule } from 'ng2-tag-input';
    imports: [TagInputModule]
 })
 export class MyModule {}
+```
+
+### Configuration for SystemJS
+
+Many users have reported issues with SystemJS. I got it working with the following additions to the SystemJS configuration:
+
+```
+// packages object
+{
+        'ng2-tag-input': {
+            main: 'dist/ng2-tag-input.bundle.js',
+            format: 'cjs',
+        },
+        'ng2-material-dropdown': {
+            defaultExtension: 'js',
+            main: 'dist/ng2-dropdown.bundle.js',
+            format: 'cjs',
+        },
+        'ng2-tag-input/modules/components/tag-input.template.html': {
+            defaultJSExtension: false
+        }
+        // rest of the configuration
+};
 ```
 
 ## API for TagInputComponent
