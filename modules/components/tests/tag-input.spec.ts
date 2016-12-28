@@ -10,6 +10,8 @@ import {
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { TagModel } from '../helpers/accessor';
+
 import {
     BasicTagInputComponent,
     TagInputComponentWithOutputs,
@@ -24,6 +26,8 @@ import {
 } from './testing-helpers';
 
 import { TagInputComponent } from '../tag-input';
+
+const match = jasmine.objectContaining;
 
 describe('TagInputComponent', () => {
     beforeEach(() => {
@@ -138,27 +142,32 @@ describe('TagInputComponent', () => {
     });
 
     describe('when an item is removed', () => {
-        it('is removed from the list', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
-            const tagName = 'Typescript';
-            const component = getComponent(fixture);
+        let fixture: ComponentFixture<BasicTagInputComponent>;
+        let tagName: string;
+        let item: TagModel;
+        let component;
 
-            component.removeItem(tagName);
+        beforeEach(() => {
+            fixture = TestBed.createComponent(BasicTagInputComponent);
+            tagName = 'Typescript';
+            item = new TagModel(tagName, tagName);
+        });
+
+        it('is removed from the list', fakeAsync(() => {
+            component = getComponent(fixture);
+            component.removeItem(item);
 
             fixture.detectChanges();
 
-            expect(component.items).toEqual([ 'Javascript' ]);
+            expect(component.items.length).toEqual(1);
             expect(component.inputForm.isInputFocused()).toEqual(true);
 
         }));
 
         it('emits the event onRemove', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
-            const component = getComponent(fixture);
-            const tagName = 'Typescript';
-
-            component.onRemove.subscribe(item => {
-                expect(item).toEqual(tagName);
+            component = getComponent(fixture);
+            component.onRemove.subscribe(tag => {
+                expect(tag).toEqual(tagName);
             });
 
             component.removeItem(tagName);
@@ -168,10 +177,7 @@ describe('TagInputComponent', () => {
         }));
 
         it('is sets current selected item as undefined', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
-            const component = getComponent(fixture);
-            const tagName = 'Typescript';
-
+            component = getComponent(fixture);
             component.removeItem(tagName);
             expect(component.selectedTag).toBe(undefined);
         }));
@@ -237,7 +243,7 @@ describe('TagInputComponent', () => {
             component.inputForm.form.get('item').setValue('@');
             component.addItem();
 
-            expect(component.items[ 2 ]).toEqual('prefix: @');
+            expect(component.items[ 2 ]).toEqual(match({ display: 'prefix: @', value: 'prefix: @' }));
             expect(component.items.length).toEqual(3);
 
             discardPeriodicTasks();
@@ -266,7 +272,7 @@ describe('TagInputComponent', () => {
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
-            expect(component.selectedTag).toEqual('Typescript');
+            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press tab and focus input again
             keyDown[ 'keyCode' ] = 9;
@@ -278,7 +284,7 @@ describe('TagInputComponent', () => {
             keyDown[ 'keyCode' ] = 8;
             // then starts from back again
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
-            expect(component.selectedTag).toEqual('Typescript');
+            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // it removes current selected tag when pressing delete
             component.tagElements[1].dispatchEvent(keyDown);
@@ -295,17 +301,18 @@ describe('TagInputComponent', () => {
 
             // press left arrow
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
+
             // selected tag is the last one
-            expect(component.selectedTag).toEqual('Typescript');
+            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press left arrow
             component.tagElements[ 1 ].dispatchEvent(keyDown);
-            expect(component.selectedTag).toEqual('Javascript');
+            expect(component.selectedTag).toEqual(match({display: 'Javascript', value: 'Javascript' }));
 
             // press right arrow
             keyDown[ 'keyCode' ] = 39;
             component.tagElements[ 0 ].dispatchEvent(keyDown);
-            expect(component.selectedTag).toEqual('Typescript');
+            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press tab -> focuses input
             component.tagElements[ 1 ].dispatchEvent(keyDown);
@@ -322,7 +329,7 @@ describe('TagInputComponent', () => {
             // press left arrow
             component.tagElements[ 0 ].dispatchEvent(keyDown);
             // selected tag is the last one
-            expect(component.selectedTag).toEqual('Typescript');
+            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press tab -> focuses input
             component.tagElements[ 1 ].dispatchEvent(keyDown);
@@ -440,15 +447,16 @@ describe('TagInputComponent', () => {
 
             fixture.detectChanges();
             tick();
-            const dropdown = component.dropdown.dropdown;
 
+            const dropdown = component.dropdown.dropdown;
             const item = dropdown.menu.items.first;
             dropdown.menu.state.dropdownState.onItemClicked.emit(item);
 
             tick();
 
             expect(component.items.length).toEqual(3);
-            expect(component.items.indexOf(item.value)).toEqual(2);
+            const index = component.items.findIndex(tag => component.findItem(item.value) === tag);
+            expect(index).toEqual(2);
 
             discardPeriodicTasks();
         }));

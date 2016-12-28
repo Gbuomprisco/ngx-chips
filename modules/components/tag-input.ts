@@ -263,7 +263,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         this.items = this.items.filter(_item => _item !== this.findItem(item.value));
 
         // if the removed tag was selected, set it as undefined
-        if (this.selectedTag.value === item.value) {
+        if (this.selectedTag && this.selectedTag.value === item.value) {
             this.selectedTag = undefined;
         }
 
@@ -360,9 +360,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param $event
      * @param item
      */
-    public handleKeydown($event, item: string): void {
+    public handleKeydown($event, item: TagModel): void {
         const action = getAction($event.keyCode || $event.which);
-        const itemIndex = this.items.indexOf(this.findItem(item));
+        const itemIndex = this.items.findIndex(tag => tag === this.findItem(item.value));
 
         // call action
         action.call(this, itemIndex);

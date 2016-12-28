@@ -28,14 +28,20 @@ export function getAction(KEY: number): () => any {
     return action;
 }
 
-
+/**
+ * @name deleteSelectedTag
+ */
 function deleteSelectedTag(): void {
     if (this.selectedTag) {
         this.removeItem(this.selectedTag);
     }
 }
 
-function switchPrev(itemIndex): void {
+/**
+ * @name switchPrev
+ * @param itemIndex { number }
+ */
+function switchPrev(itemIndex: number): void {
     if (itemIndex > 0) {
         const el = this.tagElements[itemIndex - 1];
         this.selectItem(this.items[itemIndex - 1]);
@@ -45,7 +51,11 @@ function switchPrev(itemIndex): void {
     }
 }
 
-function switchNext(itemIndex) {
+/**
+ * @name switchNext
+ * @param itemIndex
+ */
+function switchNext(itemIndex: number) {
     if (itemIndex < this.items.length - 1) {
         const el = this.tagElements[itemIndex + 1];
         this.selectItem(this.items[itemIndex + 1]);

@@ -50,6 +50,22 @@ export class TagInputComponentWithOutputs {
 
 @Component({
     selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"></tag-input>`
+})
+export class TagInputComponentTagsAsObjects {
+    public items = [{value: 0, display: 'React'}, {value: 1, display: 'Angular'}];
+}
+
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"></tag-input>`
+})
+export class TagInputComponentCustomTagsAsObjects {
+    public items = [{id: 0, name: 'React'}, {id: 1, name: 'Angular'}];
+}
+
+@Component({
+    selector: 'test-app',
     template: `<tag-input
                   [(ngModel)]="items"
                   [validators]="validators"
@@ -147,7 +163,9 @@ const COMPONENTS = [
     TagInputComponentWithMaxItems,
     TagInputComponentWithTemplate,
     TagInputComponentWithAutocomplete,
-    TagInputComponentWithOnlyAutocomplete
+    TagInputComponentWithOnlyAutocomplete,
+    TagInputComponentTagsAsObjects,
+    TagInputComponentCustomTagsAsObjects
 ];
 
 @NgModule({
