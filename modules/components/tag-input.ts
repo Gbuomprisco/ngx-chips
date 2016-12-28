@@ -502,13 +502,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name ngOnDestroy
-     */
-    public ngOnDestroy() {
-        return this.dropdown ? this.dropdown.destroy() : undefined;
-    }
-
-    /**
      * @name scrollListener
      */
     @HostListener('window:scroll')

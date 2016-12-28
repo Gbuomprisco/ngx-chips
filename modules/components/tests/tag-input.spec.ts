@@ -23,8 +23,6 @@ import {
     TestModule
 } from './testing-helpers';
 
-import { TagInputModule } from '../../ng2-tag-input.module';
-
 import { TagInputComponent } from '../tag-input';
 
 describe('TagInputComponent', () => {

@@ -1,4 +1,13 @@
-import { Component, ViewChild, forwardRef, Inject, TemplateRef, ContentChildren, Input, QueryList } from '@angular/core';
+import {
+    Component,
+    ViewChild,
+    forwardRef,
+    Inject,
+    TemplateRef,
+    ContentChildren,
+    Input,
+    QueryList
+} from '@angular/core';
 import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
@@ -74,13 +83,5 @@ export class TagInputDropdown {
      */
     public get state(): any {
         return this.dropdown.menu.state;
-    }
-
-    /**
-     * - manually destroy menu
-     * @name destroy
-     */
-    public destroy(): void {
-        this.dropdown.menu.ngOnDestroy();
     }
 }
