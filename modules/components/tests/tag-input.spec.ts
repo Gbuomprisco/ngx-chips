@@ -343,9 +343,8 @@ describe('TagInputComponent', () => {
 
             const component = getComponent(fixture);
 
-            expect(component.hasCustomTemplate()).toEqual(true);
             expect(component.items.length).toEqual(2);
-            expect(component.element.nativeElement.querySelectorAll('.custom_class').length).toEqual(2);
+            expect(component.element.nativeElement.querySelectorAll('.custom-class').length).toEqual(2);
 
             discardPeriodicTasks();
         }));

@@ -1,4 +1,4 @@
-import { Component, ViewChild, forwardRef, Inject, TemplateRef, ContentChild, Input } from '@angular/core';
+import { Component, ViewChild, forwardRef, Inject, TemplateRef, ContentChildren, Input, QueryList } from '@angular/core';
 import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
@@ -8,14 +8,17 @@ import { EventEmitter } from '@angular/core';
     templateUrl: './tag-input-dropdown.template.html'
 })
 export class TagInputDropdown {
+    /**
+     * @name dropdown
+     */
     @ViewChild(Ng2Dropdown) dropdown: Ng2Dropdown;
 
     /**
-     * @name template
+     * @name menuTemplate
      * @desc reference to the template if provided by the user
      * @type {TemplateRef}
      */
-    @ContentChild(TemplateRef) public template: TemplateRef<any>;
+    @ContentChildren(TemplateRef) public templates: QueryList<TemplateRef<any>>;
 
     /**
      * @name offset

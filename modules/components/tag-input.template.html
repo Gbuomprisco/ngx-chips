@@ -5,21 +5,22 @@
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
 
-    <!-- TAGS [DEFAULT] -->
+    <!-- TAGS -->
     <div class="ng2-tags-container">
         <div *ngFor="let item of items"
-             [ngSwitch]="!!template"
+             class="ng2-tag"
              (click)="selectItem(item);$event.stopPropagation();"
              (keydown)="handleKeydown($event, item)"
+             [ngSwitch]="!!hasCustomTemplate()"
              [attr.tabindex]="readonly ? -1 : 0"
-             class="ng2-tag"
              [class.ng2-tag--readonly]="readonly"
              [attr.aria-label]="item">
 
             <div *ngSwitchCase="true">
+                <!-- CUSTOM TEMPLATE -->
                 <template
-                    [ngOutletContext]="{item: item}"
-                    [ngTemplateOutlet]="template">
+                    [ngOutletContext]="{ item: item }"
+                    [ngTemplateOutlet]="templates.first">
                 </template>
             </div>
 
@@ -58,8 +59,7 @@
 
 <!-- ERRORS -->
 <div class="ng2-tag-input__errors-container" *ngIf="hasErrors()">
-    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)"
-       class="ng2-tag-input__error-message">
+    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="ng2-tag-input__error-message">
         <span>{{ error }}</span>
     </p>
 </div>

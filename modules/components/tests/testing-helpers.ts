@@ -112,7 +112,7 @@ export class TagInputComponentWithAutocomplete {
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
                     <template let-item="item">
-                        <span>
+                        <span class="custom-class">
                             item: {{ item }}
                         </span>
     

@@ -2,13 +2,13 @@
     <ng2-dropdown-menu [focusFirstElement]="false" [offset]="offset">
         <ng2-menu-item *ngFor="let item of tagInput.itemsMatching; let index = index;"
                        [value]="item"
-                       [ngSwitch]="template">
-            <span *ngSwitchCase="undefined"
+                       [ngSwitch]="!!templates.length">
+            <span *ngSwitchCase="false"
                   [innerHTML]="item | highlight : tagInput.inputForm.value.value">
             </span>
 
             <template *ngSwitchDefault
-                      [ngTemplateOutlet]="template"
+                      [ngTemplateOutlet]="templates.first"
                       [ngOutletContext]="{ item: item, index: index }">
             </template>
         </ng2-menu-item>

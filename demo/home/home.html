@@ -70,7 +70,7 @@
         <div>
             <h3>Tags custom template</h3>
             <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
-                <template let-item="item">
+                <template item-template let-item="item">
                     <span>
                         item: {{ item }}
                     </span>

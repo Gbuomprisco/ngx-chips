@@ -7,10 +7,11 @@ import {
     EventEmitter,
     Renderer,
     ViewChild,
+    ContentChildren,
     ContentChild,
     OnInit,
     HostListener,
-    TemplateRef
+    TemplateRef, QueryList
 } from '@angular/core';
 
 import {
@@ -157,11 +158,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private inputClass: string;
 
     /**
-     * @name dropdown
-     */
-    @ContentChild(TagInputDropdown) public dropdown: TagInputDropdown;
-
-    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -204,11 +200,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Output() public onTextChange = new EventEmitter<string>();
 
     /**
+     * @name dropdown
+     */
+    @ContentChild(TagInputDropdown) public dropdown: TagInputDropdown;
+
+    /**
      * @name template
      * @desc reference to the template if provided by the user
      * @type {TemplateRef}
      */
-    @ContentChild(TemplateRef) public template: TemplateRef<any>;
+    @ContentChildren(TemplateRef, {descendants: false}) public templates: QueryList<TemplateRef<any>>;
 
 	/**
      * @name inputForm
@@ -427,6 +428,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         return this.inputForm && this.inputForm.isInputFocused() ? true : false;
     }
 
+    /**
+     * - this is the one way I found to tell if the template has been passed and it is not
+     * the template for the menu item
+     * @name hasCustomTemplate
+     */
+    public hasCustomTemplate(): boolean {
+        const template = this.templates ? this.templates.first : undefined;
+        const menuTemplate = this.dropdown && this.dropdown.templates ? this.dropdown.templates.first : undefined;
+        return template && template !== menuTemplate;
+    }
+
 	/**
      * @name maxItemsReached
      * @returns {boolean}
@@ -475,6 +487,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.dropdown.onItemClicked().subscribe(onAutocompleteItemClicked.bind(this));
             this.dropdown.onHide().subscribe(() => this.itemsMatching = []);
         }
+
+        console.log(this.hasCustomTemplate());
     }
 
     @HostListener('window:scroll')
