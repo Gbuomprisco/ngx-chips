@@ -1,17 +1,46 @@
-
-<!-- input tag container -->
+<!-- CONTAINER -->
 <div ngClass="ng2-tag-input {{ theme }}"
      (click)="focus(true)"
      [attr.tabindex]="-1"
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
 
-    <!-- tags [custom] -->
-    <div class="ng2-tags-container ng2-tags-container--custom">
-        <ng-content></ng-content>
+    <!-- TAGS -->
+    <div class="ng2-tags-container">
+        <div *ngFor="let item of items"
+             class="ng2-tag"
+             (click)="selectItem(item);$event.stopPropagation();"
+             (keydown)="handleKeydown($event, item)"
+             [ngSwitch]="!!hasCustomTemplate()"
+             [attr.tabindex]="readonly ? -1 : 0"
+             [class.ng2-tag--readonly]="readonly"
+             [attr.aria-label]="item">
+
+            <div *ngSwitchCase="true">
+                <!-- CUSTOM TEMPLATE -->
+                <template
+                    [ngOutletContext]="{ item: item }"
+                    [ngTemplateOutlet]="templates.first">
+                </template>
+            </div>
+
+            <div *ngSwitchCase="false">
+                <!-- TAG NAME -->
+                <span class="ng2-tag__name">
+                    {{ item }}
+                </span>
+
+                <!-- 'X' BUTTON -->
+                <delete-icon
+                    aria-label="Remove tag"
+                    role="button"
+                    (click)="removeItem(item)"
+                    *ngIf="!readonly">
+                </delete-icon>
+            </div>
+        </div>
 
         <tag-input-form
-            *ngIf="hasCustomTemplate()"
             (onSubmit)="addItem()"
             (onBlur)="blur()"
             (onFocus)="focus()"
@@ -25,51 +54,11 @@
             [inputId]="inputId"
         ></tag-input-form>
     </div>
-
-    <!-- tags [default] -->
-    <div class="ng2-tags-container ng2-tags-container--default" *ngIf="hasCustomTemplate() === false">
-        <div *ngFor="let item of items"
-             (click)="selectItem(item);$event.stopPropagation();"
-             (keydown)="handleKeydown($event, item)"
-             [attr.tabindex]="readonly ? -1 : 0"
-             class="ng2-tag"
-             [class.ng2-tag--readonly]="readonly"
-             [attr.aria-label]="item">
-
-            <!-- tag name -->
-            <span class="ng2-tag__name">
-                {{ item }}
-            </span>
-
-            <!-- remove 'x' button -->
-            <delete-icon
-                class="ng2-tag__remove-button"
-                aria-label="Remove tag"
-                role="button"
-                (click)="removeItem(item)"
-                *ngIf="!readonly">
-            </delete-icon>
-        </div>
-
-        <tag-input-form
-            (onSubmit)="addItem()"
-            (onBlur)="blur()"
-            (onFocus)="focus()"
-            (onKeydown)="fireEvents('keydown', $event)"
-            (onKeyup)="fireEvents('keyup', $event)"
-            [validators]="validators"
-            [hidden]="readonly || maxItemsReached"
-            [placeholder]="items.length ? placeholder : secondaryPlaceholder"
-            [inputClass]="inputClass"
-            [inputId]="inputId"
-        ></tag-input-form>
-    </div>
 </div>
 
 <!-- ERRORS -->
 <div class="ng2-tag-input__errors-container" *ngIf="hasErrors()">
-    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)"
-       class="ng2-tag-input__error-message">
+    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="ng2-tag-input__error-message">
         <span>{{ error }}</span>
     </p>
 </div>

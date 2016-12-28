@@ -23,8 +23,6 @@ import {
     TestModule
 } from './testing-helpers';
 
-import { TagInputModule } from '../../ng2-tag-input.module';
-
 import { TagInputComponent } from '../tag-input';
 
 describe('TagInputComponent', () => {
@@ -343,9 +341,10 @@ describe('TagInputComponent', () => {
 
             const component = getComponent(fixture);
 
-            expect(component.hasCustomTemplate()).toEqual(true);
+            component.ngAfterContentInit();
+
             expect(component.items.length).toEqual(2);
-            expect(component.element.nativeElement.querySelectorAll('.custom_class').length).toEqual(2);
+            expect(component.element.nativeElement.querySelectorAll('.custom-class').length).toEqual(2);
 
             discardPeriodicTasks();
         }));
@@ -363,8 +362,10 @@ describe('TagInputComponent', () => {
 
             const component = getComponent(fixture);
 
+            component.ngAfterContentInit();
+
             expect(component.autocompleteItems.length).toEqual(3);
-            expect(component.element.nativeElement.querySelector('ng2-dropdown')).toBeTruthy();
+            expect(document.querySelector('ng2-dropdown-menu')).toBeTruthy();
 
             discardPeriodicTasks();
         }));

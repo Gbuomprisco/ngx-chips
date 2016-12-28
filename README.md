@@ -4,7 +4,7 @@ This is a component for Angular 2. Design and API are blandly inspired by Angula
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgHA8xM](http://www.webpackbin.com/VkEgHA8xM).
+Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgHA8xM](http://www.webpackbin.com/VkEgHA8xM). **[OUTDATED]**
 
 ## Quick start. Install the component from NPM by running:
 
@@ -74,12 +74,12 @@ export class MyModule {}
 - **`inputClass`** - [**`?string`**] - custom class assigned to the input
 
 #### Outputs
-- **`onAdd`** - [**`?onAdd(item: string)`**] - event fired when an item has been added
-- **`onRemove`** - [**`?onRemove(item: string)`**] - event fired when an item has been removed
-- **`onSelect`** - [**`?onSelect(item: string)`**] - event fired when an item has been selected
-- **`onFocus`** - [**`?onFocus(item: string)`**] - event fired when the input is focused - will return current input value
-- **`onBlur`** - [**`?onBlur(item: string)`**] - event fired when the input is blurred - will return current input value
-- **`onTextChange`** - [**`?onTextChange(text: string)`**] - event fired when the input value changes
+- **`onAdd`** - [**`?onAdd($event: string)`**] - event fired when an item has been added
+- **`onRemove`** - [**`?onRemove($event: string)`**] - event fired when an item has been removed
+- **`onSelect`** - [**`?onSelect($event: string)`**] - event fired when an item has been selected
+- **`onFocus`** - [**`?onFocus($event: string)`**] - event fired when the input is focused - will return current input value
+- **`onBlur`** - [**`?onBlur($event: string)`**] - event fired when the input is blurred - will return current input value
+- **`onTextChange`** - [**`?onTextChange($event: string)`**] - event fired when the input value changes
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
@@ -242,6 +242,7 @@ Set up some methods that will run when its relative event is fired.
            (onFocus)="onInputFocused($event)"
            (onSelect)="onSelected($event)"
            (onRemove)="onItemRemoved($event)"
+           (onTextChange)="onTextChange($event)"
            (onAdd)="onItemAdded($event)">
 </tag-input>
 ```
@@ -257,13 +258,15 @@ If readonly is passed to the tag-input, it won't be possible to select, add and 
 Define your own template, but remember to set up the needed events using the `input` reference.
 
 ```html
-<tag-input [(ngModel)]='items' #input> // create a reference #input to the controller in order to use its API
-    <div class='tag' *ngFor='let item of input.value'> // loop over the items
-        <div class='tag__name'> {{ item }} </span> // display its values
-        <span (click)="input.remove(item)">
-            Remove me
+<tag-input [ngModel]="['@item']" #input>
+    <template let-item="item"> <!-- DEFINE HERE YOUR TEMPLATE -->
+        <span>
+            item: {{ item }}
         </span>
-    </div>
+        <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
+            x
+        </span>
+    </template>
 </tag-input>
 ```
 

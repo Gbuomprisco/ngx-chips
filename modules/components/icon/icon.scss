@@ -2,6 +2,11 @@
 
 // ICON
 
+.ng2-tag svg {
+    vertical-align: bottom;
+    height: 34px;
+}
+
 .default path {
     fill: $color-arrow-default;
 }
