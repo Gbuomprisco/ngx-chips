@@ -1,32 +1,45 @@
+@import "../themes/colors";
 @import "../themes/variables";
+@import "../themes/palette";
 
 // ICON
 
-.ng2-tag svg {
+:host(delete-icon) {
+    width: 16px;
+    height: 26px;
+    transition: all 0.15s;
+    display: inline-block;
+}
+
+:host(delete-icon):hover {
+    transform: scale(1.3);
+}
+
+:host(delete-icon) svg {
     vertical-align: bottom;
     height: 34px;
 }
 
-.default path {
+:host-context(.default) path {
     fill: $color-arrow-default;
 }
 
-.dark path {
+:host-context(.dark) path {
     fill: $color-arrow-dark;
 }
 
-.minimal path {
+:host-context(.minimal) path {
     fill: $color-arrow-minimal;
 }
 
-.default .ng2-tag:focus delete-icon path {
+:host-context(.default tag:focus) path {
     fill: $color-arrow-default-focused;
 }
 
-.dark .ng2-tag:focus delete-icon path {
+:host-context(.dark tag:focus) path {
     fill: $color-arrow-dark-focused;
 }
 
-.minimal .ng2-tag:focus delete-icon path {
+:host-context(.minimal tag:focus) path {
     fill: $color-arrow-minimal-focused;
 }

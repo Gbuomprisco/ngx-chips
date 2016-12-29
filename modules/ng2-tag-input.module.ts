@@ -8,6 +8,7 @@ import { TagInputForm } from './components/tag-input-form';
 import { TagInputComponent } from './components';
 import { TagInputDropdown } from './components/dropdown/tag-input-dropdown.component';
 import { HighlightPipe } from './components/pipes/highlight.pipe';
+import { TagComponent } from './components/tag/tag.component';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { HighlightPipe } from './components/pipes/highlight.pipe';
         TagInputComponent,
         DeleteIconComponent,
         TagInputForm,
+        TagComponent,
         HighlightPipe,
         TagInputDropdown
     ],
@@ -26,6 +28,7 @@ import { HighlightPipe } from './components/pipes/highlight.pipe';
         TagInputComponent,
         DeleteIconComponent,
         TagInputForm,
+        TagComponent,
         HighlightPipe,
         TagInputDropdown
     ]

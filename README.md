@@ -403,3 +403,19 @@ export class AppModule {}
 platformBrowserDynamic().bootstrapModule(AppModule);
 
 ```
+
+## Use tags without a form
+
+It is possible to use `<tag>` components independently from the `tag-input` component.
+In order to do so, pass to the component the input `model` (TagModel).
+
+Notice: by default, these are unstyled. You are free to add the required styles yourself. For example, just add a class `tag`.
+If you wish to copy the same style as the one used in the component, please have a look at source code.
+
+```html
+<div class="flex">
+    <tag [model]="{display: 'Tag 1'}" class='tag'></tag>
+    <tag [model]="{display: 'Tag 2'}" class='tag'></tag>
+    <tag [model]="{display: 'Tag 3'}" [readonly]="true" class='tag'></tag>
+</div>
+```
