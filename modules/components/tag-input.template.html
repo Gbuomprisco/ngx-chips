@@ -7,7 +7,7 @@
 
     <!-- TAGS -->
     <div class="ng2-tags-container">
-        <tag *ngFor="let item of items; trackBy: getTagValue(item)"
+        <tag *ngFor="let item of items"
              (onSelect)="selectItem(item)"
              (onRemove)="removeItem(item)"
              (onKeyDown)="handleKeydown($event, item)"
