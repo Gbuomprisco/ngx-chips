@@ -2,36 +2,32 @@ import {
     ACTIONS_KEYS,
     KEY_PRESS_ACTIONS
 } from './constants';
+import { TagModel } from './accessor';
 
-export function getAction(KEY: number): () => any {
-    const ACTION_TYPE = KEY_PRESS_ACTIONS[KEY];
-
-    let action;
-
-    switch (ACTION_TYPE) {
+/**
+ * @name getAction
+ * @param action
+ * @returns {any}
+ */
+export function getAction(action: number): (args?) => any {
+    switch (KEY_PRESS_ACTIONS[action]) {
         case ACTIONS_KEYS.DELETE:
-            action = deleteSelectedTag;
-            break;
+            return deleteSelectedTag;
         case ACTIONS_KEYS.SWITCH_PREV:
-            action = switchPrev;
-            break;
+            return switchPrev;
         case ACTIONS_KEYS.SWITCH_NEXT:
-            action = switchNext;
-            break;
+            return switchNext;
         case ACTIONS_KEYS.TAB:
-            action = switchNext;
-            break;
+            return switchNext;
         default:
             return () => {};
     }
-
-    return action;
 }
 
 /**
  * @name deleteSelectedTag
  */
-function deleteSelectedTag(): void {
+function deleteSelectedTag() {
     if (this.selectedTag) {
         this.removeItem(this.selectedTag);
     }
@@ -39,28 +35,33 @@ function deleteSelectedTag(): void {
 
 /**
  * @name switchPrev
- * @param itemIndex { number }
+ * @param item { TagModel }
  */
-function switchPrev(itemIndex: number): void {
-    if (itemIndex > 0) {
-        const el = this.tagElements[itemIndex - 1];
-        this.selectItem(this.items[itemIndex - 1]);
-        this.renderer.invokeElementMethod(el, 'focus', []);
-    } else {
-        this.focus(true);
+function switchPrev(item: TagModel) {
+    if (this.tags.first.model !== item) {
+        const tags = this.tags.toArray();
+        const tagIndex = tags.findIndex(tag => tag.model === item);
+        const tag = tags[tagIndex - 1];
+
+        // select tags
+        tag.select.call(tag);
     }
 }
 
 /**
  * @name switchNext
- * @param itemIndex
+ * @param item { TagModel }
  */
-function switchNext(itemIndex: number) {
-    if (itemIndex < this.items.length - 1) {
-        const el = this.tagElements[itemIndex + 1];
-        this.selectItem(this.items[itemIndex + 1]);
-        this.renderer.invokeElementMethod(el, 'focus', []);
-    } else {
+function switchNext(item: TagModel) {
+    if (this.tags.last.model === item) {
         this.focus(true);
+        return;
     }
+
+    const tags = this.tags.toArray();
+    const tagIndex = tags.findIndex(tag => tag.model === item);
+    const tag = tags[tagIndex + 1];
+
+    // select tag
+    tag.select.call(tag);
 }

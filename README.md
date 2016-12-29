@@ -99,6 +99,8 @@ If you do use an array of objects, make sure you:
 - **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 - **`inputId`** - [**`?string`**] - custom ID assigned to the input
 - **`inputClass`** - [**`?string`**] - custom class assigned to the input
+- **`clearOnBlur`** - [**`?boolean`**] - if set to true, it will clear the form's text on blur events
+- **`hideForm`** - [**`?number`**] - if set to true, will remove the form from the component
 - **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
 
 ##### Validation
@@ -402,4 +404,20 @@ import { CustomComponent } from './custom/custom.component'; // my newly defined
 export class AppModule {}
 platformBrowserDynamic().bootstrapModule(AppModule);
 
+```
+
+## Use tags without a form
+
+It is possible to use `<tag>` components independently from the `tag-input` component.
+In order to do so, pass to the component the input `model` (TagModel).
+
+Notice: by default, these are unstyled. You are free to add the required styles yourself. For example, just add a class `tag`.
+If you wish to copy the same style as the one used in the component, please have a look at source code.
+
+```html
+<div class="flex">
+    <tag [model]="{display: 'Tag 1'}" class='tag'></tag>
+    <tag [model]="{display: 'Tag 2'}" class='tag'></tag>
+    <tag [model]="{display: 'Tag 3'}" [readonly]="true" class='tag'></tag>
+</div>
 ```

@@ -1,20 +1,3 @@
 .ng2-tag-input.minimal {
     border-bottom: 1px solid transparent;
 }
-
-.minimal .ng2-tag {
-    background: map-get($color-primary, 'minimal');
-    border-radius: 0;
-}
-
-.minimal .ng2-tag:not(.ng2-tag--readonly):focus {
-    background: map-get($color-focused, 'minimal');
-}
-
-.minimal .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
-    background: darken(map-get($color-primary, 'minimal'), 3.5%);
-}
-
-.minimal .ng2-tag:not(:focus):not(.ng2-tag--readonly):hover {
-    background: darken(map-get($color-primary, 'minimal'), 3.5%);
-}

@@ -97,6 +97,15 @@ export class TagInputForm {
     }
 
     /**
+     * - removes input from the component
+     * @name destroy
+     */
+    public destroy(): void {
+        const input = this.input.nativeElement;
+        input.parentElement.removeChild(input);
+    }
+
+    /**
      * @name onKeyDown
      * @param $event
      */

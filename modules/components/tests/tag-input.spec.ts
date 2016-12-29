@@ -276,7 +276,7 @@ describe('TagInputComponent', () => {
 
             // press tab and focus input again
             keyDown[ 'keyCode' ] = 9;
-            component.tagElements[ 1 ].dispatchEvent(keyDown);
+            component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
             expect(component.selectedTag).toEqual(undefined);
             expect(component.inputForm.isInputFocused()).toEqual(true);
@@ -284,10 +284,11 @@ describe('TagInputComponent', () => {
             keyDown[ 'keyCode' ] = 8;
             // then starts from back again
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
+
             expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // it removes current selected tag when pressing delete
-            component.tagElements[1].dispatchEvent(keyDown);
+            component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
             expect(component.items.length).toEqual(1);
             expect(component.selectedTag).toBe(undefined);
@@ -306,16 +307,18 @@ describe('TagInputComponent', () => {
             expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press left arrow
-            component.tagElements[ 1 ].dispatchEvent(keyDown);
+            component.tags.last.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(match({display: 'Javascript', value: 'Javascript' }));
 
             // press right arrow
             keyDown[ 'keyCode' ] = 39;
-            component.tagElements[ 0 ].dispatchEvent(keyDown);
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press tab -> focuses input
-            component.tagElements[ 1 ].dispatchEvent(keyDown);
+            keyDown[ 'keyCode' ] = 9;
+            component.tags.last.element.nativeElement.dispatchEvent(keyDown);
+
             expect(component.selectedTag).toEqual(undefined);
             expect(component.inputForm.isInputFocused()).toEqual(true);
 
@@ -327,12 +330,13 @@ describe('TagInputComponent', () => {
             keyUp[ 'keyCode' ] = 9;
 
             // press left arrow
-            component.tagElements[ 0 ].dispatchEvent(keyDown);
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
             // selected tag is the last one
             expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
 
             // press tab -> focuses input
-            component.tagElements[ 1 ].dispatchEvent(keyDown);
+            component.tags.last.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(undefined);
 
             expect(component.inputForm.isInputFocused()).toEqual(true);
