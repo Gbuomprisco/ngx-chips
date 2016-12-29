@@ -83,14 +83,14 @@ Many users have reported issues with SystemJS. I got it working with the followi
 
 #### Inputs
 
-##### Model
+##### Model (required)
 - **`ngModel`** - [**`string[] | TagModel[]`**] - Model of the component. Accepts an array of strings as input OR an array of objects.
 
 If you do use an array of objects, make sure you:
 - define two properties, `value` and `display`. `Value` will uniquely identify the items, `display` will be the value displayed.
 - or, in alternative, provide the keys using the inputs `identifyBy` and `displayBy`
 
-#### Properties
+#### Properties (optional)
 - **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
 - **`secondaryPlaceholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms when there are 0 items entered.
 - **`maxItems`** -  [**`?number`**] - Sets the maximum number of items it is possible to enter.
@@ -102,21 +102,24 @@ If you do use an array of objects, make sure you:
 - **`clearOnBlur`** - [**`?boolean`**] - if set to true, it will clear the form's text on blur events
 - **`hideForm`** - [**`?number`**] - if set to true, will remove the form from the component
 - **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
+- **`addOnBlur`** - [**`?boolean`**] - if set to true, will add an item when the form is blurred
+- **`addOnPaste`** - [**`?boolean`**] - if set to true, will add items pasted into the form's input
+- **`pasteSplitPattern`** - [**`?string`**] - pattern used with the native method split() to separate patterns in the string pasted
 
-##### Validation
+##### Validation (optional)
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
 - **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 
-##### Autocomplete
+##### Autocomplete (optional)
 - **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
-##### Tags as Objects
+##### Tags as Objects (optional)
 - **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by
 - **`displayBy`** - [**`?string`**] - the string displayed in a tag object
 
-#### Outputs
+#### Outputs (optional)
 - **`onAdd`** - [**`?onAdd($event: string)`**] - event fired when an item has been added
 - **`onRemove`** - [**`?onRemove($event: string)`**] - event fired when an item has been removed
 - **`onSelect`** - [**`?onSelect($event: string)`**] - event fired when an item has been selected
