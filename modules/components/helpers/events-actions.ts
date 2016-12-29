@@ -19,8 +19,7 @@ export function backSpaceListener($event) {
         isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
     if (isCorrectKey && !inputValue && itemsLength) {
-        this.selectItem(this.items[itemsLength - 1]);
-        this.renderer.invokeElementMethod(this.tagElements[itemsLength - 1], 'focus', []);
+        this.tags.last.select.call(this.tags.last);
     }
 }
 

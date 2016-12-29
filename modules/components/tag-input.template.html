@@ -7,38 +7,15 @@
 
     <!-- TAGS -->
     <div class="ng2-tags-container">
-        <div *ngFor="let item of items; trackBy: value"
-             class="ng2-tag"
-             (click)="selectItem(item);$event.stopPropagation();"
-             (keydown)="handleKeydown($event, item)"
-             [ngSwitch]="!!hasCustomTemplate()"
+        <tag *ngFor="let item of items; trackBy: value"
+             (onSelect)="selectItem(item)"
+             (onRemove)="removeItem(item)"
+             (onKeyDown)="handleKeydown($event, item)"
              [attr.tabindex]="readonly ? -1 : 0"
-             [class.ng2-tag--readonly]="readonly"
-             [attr.aria-label]="item">
-
-            <div *ngSwitchCase="true">
-                <!-- CUSTOM TEMPLATE -->
-                <template
-                    [ngOutletContext]="{ item: item }"
-                    [ngTemplateOutlet]="templates.first">
-                </template>
-            </div>
-
-            <div *ngSwitchCase="false">
-                <!-- TAG NAME -->
-                <span class="ng2-tag__name">
-                    {{ item.display }}
-                </span>
-
-                <!-- 'X' BUTTON -->
-                <delete-icon
-                    aria-label="Remove tag"
-                    role="button"
-                    (click)="removeItem(item)"
-                    *ngIf="!readonly">
-                </delete-icon>
-            </div>
-        </div>
+             [readonly]="readonly"
+             [template]="!!hasCustomTemplate() ? templates.first : undefined"
+             [model]="item">
+        </tag>
 
         <tag-input-form
             (onSubmit)="addItem()"

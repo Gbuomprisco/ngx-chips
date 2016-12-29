@@ -7,11 +7,13 @@ import {
     EventEmitter,
     Renderer,
     ViewChild,
+    ViewChildren,
     ContentChildren,
     ContentChild,
     OnInit,
     HostListener,
-    TemplateRef, QueryList
+    TemplateRef,
+    QueryList
 } from '@angular/core';
 
 import {
@@ -24,8 +26,7 @@ import {
     SECONDARY_PLACEHOLDER,
     KEYDOWN,
     KEYUP,
-    MAX_ITEMS_WARNING,
-    FOCUS
+    MAX_ITEMS_WARNING
 } from './helpers/constants';
 
 import {
@@ -42,6 +43,7 @@ import { TagInputForm } from './tag-input-form/tag-input-form.component';
 
 import 'rxjs/add/operator/debounceTime';
 import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
+import { TagComponent } from './tag/tag.component';
 
 /**
  * A component for entering a list of terms to be used with ngModel.
@@ -232,12 +234,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public selectedTag: TagModel;
 
     /**
-     * @name tagElements
+     * @name tags
      * @desc list of Element items
      */
-    private tagElements: Element[];
-
-    // Component private/public properties
+    @ViewChildren(TagComponent) private tags: QueryList<TagComponent>;
 
     /**
      * @name listeners
@@ -323,9 +323,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item
      */
     public selectItem(item: TagModel): void {
-        if (this.readonly) {
-            const el = this.element.nativeElement;
-            this.renderer.invokeElementMethod(el, FOCUS, []);
+        if (this.readonly || !item) {
             return;
         }
 
@@ -357,18 +355,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name handleKeydown
      * @desc handles action when the user hits a keyboard key
-     * @param $event
-     * @param item
+     * @param data
      */
-    public handleKeydown($event, item: TagModel): void {
-        const action = getAction($event.keyCode || $event.which);
-        const itemIndex = this.items.findIndex(tag => tag === this.findItem(item.value));
+    public handleKeydown(data: any): void {
+        const event = data.event;
+        const action = getAction(event.keyCode || event.which);
 
         // call action
-        action.call(this, itemIndex);
+        action.call(this, data.model);
 
         // prevent default behaviour
-        $event.preventDefault();
+        event.preventDefault();
     }
 
     /**
@@ -407,7 +404,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             autoCompleteListener.call(this, {});
         }
 
-        this.selectItem(undefined);
+        this.selectedTag = undefined;
 
         this.onFocus.emit(this.inputForm.value.value);
 
@@ -477,13 +474,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name ngAfterViewChecked
-     */
-    public ngAfterViewChecked() {
-        this.tagElements = this.element.nativeElement.querySelectorAll('.ng2-tag');
-    }
-
-    /**
      * @name ngAfterViewInit
      */
     public ngAfterViewInit() {
@@ -508,7 +498,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             addListener.call(this, KEYUP, autoCompleteListener);
 
             this.dropdown.onItemClicked().subscribe(onAutocompleteItemClicked.bind(this));
-            this.dropdown.onHide().subscribe(() => this.itemsMatching = []);
+
+            // reset itemsMatching array when the dropdown is hidden
+            this.dropdown.onHide().subscribe(() => {
+                this.itemsMatching = [];
+            });
         }
     }
 

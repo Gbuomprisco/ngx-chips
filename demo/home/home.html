@@ -123,5 +123,15 @@
             <h3>Component customized via inheritance</h3>
             <custom-tag-input [ngModel]="items"></custom-tag-input>
         </div>
+
+        <div>
+            <h3>List of tags without form</h3>
+
+            <div class="flex default">
+                <tag [model]="{display: 'Tag 1'}" class='tag'></tag>
+                <tag [model]="{display: 'Tag 2'}" class='tag'></tag>
+                <tag [model]="{display: 'Tag 3'}" [readonly]="true" class='tag'></tag>
+            </div>
+        </div>
     </div>
 </main>
