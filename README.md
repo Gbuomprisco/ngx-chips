@@ -99,6 +99,8 @@ If you do use an array of objects, make sure you:
 - **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 - **`inputId`** - [**`?string`**] - custom ID assigned to the input
 - **`inputClass`** - [**`?string`**] - custom class assigned to the input
+- **`clearOnBlur`** - [**`?boolean`**] - if set to true, it will clear the form's text on blur events
+- **`hideForm`** - [**`?number`**] - if set to true, will remove the form from the component
 - **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
 
 ##### Validation

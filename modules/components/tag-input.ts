@@ -160,6 +160,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private inputClass: string;
 
     /**
+     * - option to clear text input when the form is blurred
+     * @name clearOnBlur
+     */
+    @Input() private clearOnBlur: string;
+
+    /**
+     * - hideForm
+     * @name clearOnBlur
+     */
+    @Input() private hideForm: string;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -481,12 +493,28 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.fireEvents('keydown', event);
         });
 
-        this.inputForm.form.valueChanges
-            .debounceTime(this.onTextChangeDebounce)
-            .subscribe(() => {
-                const value = this.inputForm.value.value;
-                this.onTextChange.emit(value);
-            });
+        if (this.onTextChange.observers.length) {
+            this.inputForm.form.valueChanges
+                .debounceTime(this.onTextChangeDebounce)
+                .subscribe(() => {
+                    const value = this.inputForm.value.value;
+                    this.onTextChange.emit(value);
+                });
+        }
+
+        // if clear on blur is set to true, subscribe to the event and clear the text's form
+        if (this.clearOnBlur) {
+            this.inputForm
+                .onBlur
+                .subscribe(() => {
+                    this.setInputValue('');
+                });
+        }
+
+        // if hideForm is set to true, remove the input
+        if (this.hideForm) {
+            this.inputForm.destroy();
+        }
     }
 
     /**
