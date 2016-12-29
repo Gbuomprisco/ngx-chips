@@ -20,7 +20,8 @@
         "forkChecker": true
     },
     "angularCompilerOptions": {
-        "genDir": "factories"
+        "genDir": "factories",
+        "useWebpackText": true
     },
     "files": [
         "modules/ng2-tag-input.module.ts"

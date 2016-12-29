@@ -1,8 +1,8 @@
 // TAG
 
-@import "../themes/colors";
-@import "../themes/variables";
-@import "../themes/palette";
+@import "../themes/_colors.scss";
+@import "../themes/_variables.scss";
+@import "../themes/_palette.scss";
 
 tag {
     display: flex;
