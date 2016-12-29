@@ -323,7 +323,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item
      */
     public selectItem(item: TagModel): void {
-        if (this.readonly || !item) {
+        if (this.readonly || !item || item === this.selectedTag) {
             return;
         }
 
