@@ -39,11 +39,6 @@ tag:focus {
     outline: 0;
 }
 
-tag > div:focus,
-tag > div:active {
-    outline: 0;
-}
-
 .default tag {
     background: map-get($color-primary, 'default');
 }

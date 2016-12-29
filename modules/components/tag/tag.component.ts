@@ -13,16 +13,53 @@ import { TagModel } from '../helpers/accessor';
 
 @Component({
     selector: 'tag',
-    templateUrl: './tag.template.html'
+    templateUrl: './tag.template.html',
+    styles: [
+        `:host,
+         :host > div,
+         :host > div:focus {
+            outline: 0;
+        }`
+    ]
 })
 export class TagComponent {
+    /**
+     * @name model {TagModel}
+     */
     @Input() public model: TagModel;
+
+    /**
+     * @name readonly
+     */
     @Input() public readonly: boolean;
+
+    /**
+     * @name template
+     */
     @Input() public template: TemplateRef<any>;
 
+    /**
+     * @name onSelect
+     * @type {EventEmitter<TagModel>}
+     */
     @Output() public onSelect: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+
+    /**
+     * @name onRemove
+     * @type {EventEmitter<TagModel>}
+     */
     @Output() public onRemove: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+
+    /**
+     * @name onBlur
+     * @type {EventEmitter<TagModel>}
+     */
     @Output() public onBlur: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+
+    /**
+     * @name onKeyDown
+     * @type {EventEmitter<any>}
+     */
     @Output() public onKeyDown: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(public element: ElementRef, public renderer: Renderer) {}
