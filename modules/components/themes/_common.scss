@@ -33,9 +33,9 @@
     margin: $error-message-margin;
 }
 
-.default.ng2-tag-input--invalid,
-.minimal.ng2-tag-input--invalid,
-.dark.ng2-tag-input--invalid {
+.default.ng2-tag-input.ng2-tag-input--invalid,
+.minimal.ng2-tag-input.ng2-tag-input--invalid,
+.dark.ng2-tag-input.ng2-tag-input--invalid {
     border-bottom: 2px solid map-get($color-error, 'default');
 }
 

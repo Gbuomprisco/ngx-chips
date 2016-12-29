@@ -37,6 +37,12 @@ export class TagInputDropdown {
      */
     @Input() public offset: string = '50 0';
 
+    /**
+     * @name focusFirstElement
+     * @type {boolean}
+     */
+    @Input() public focusFirstElement: boolean = false;
+
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
 
     /**

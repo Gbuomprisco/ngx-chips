@@ -135,7 +135,8 @@ If you do use an array of objects, make sure you:
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
-- **`offset`** - [**`?string`**] - offset to adjust the position of the dropdown with absolute values
+- **`offset`** - [**`?string`**] - offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
+- **`focusFirstElement`** - [**`?boolean`**] - if true, the first item of the dropdown will be automatically focused (defaults to `false`)
 
 More options to customise the dropdown will follow.
 

@@ -59,7 +59,7 @@ function getMatchingItems(value: string): string[] {
     const lowercaseValue = value.toLowerCase();
 
     items.forEach(item => {
-        const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && this.items.indexOf(item) === -1;
+        const condition = item.toLowerCase().indexOf(lowercaseValue) >= 0 && !this.findItem(item);
 
         if (condition) {
             itemsMatching.push(item);
@@ -97,9 +97,13 @@ export function onAutocompleteItemClicked(item): void {
     }
 
     // add item
-    this.setInputValue(item.value);
-    this.addItem(true);
-    this.focus();
+    if (this.isTagValid(item.value, true)) {
+        this.appendNewTag(item.value);
+    }
+
+    this.setInputValue('');
+
+    setTimeout(() => this.inputForm.focus(), 0);
 
     // hide dropdown
     this.dropdown.dropdown.hide();
