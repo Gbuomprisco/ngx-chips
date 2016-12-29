@@ -94,6 +94,7 @@
                     (onBlur)="onBlur($event)"
                     (onFocus)="onFocus($event)"
                     (onTextChange)="onTextChange($event)"
+                    (onValidationError)="onValidationError($event)"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
             </form>
@@ -113,6 +114,8 @@
             <h3>Tags with Custom theme dark</h3>
             <form>
                 <tag-input
+                    [addOnPaste]="true"
+                    [pasteSplitPattern]="'-'"
                     [theme]="'dark'"
                     [ngModel]="['@item']"
                     name="items"></tag-input>

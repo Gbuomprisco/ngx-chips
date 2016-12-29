@@ -137,6 +137,8 @@ describe('TagInputComponent', () => {
             component.addItem();
             expect(component.items.length).toEqual(2);
 
+            tick(1000);
+
             discardPeriodicTasks();
         }));
     });

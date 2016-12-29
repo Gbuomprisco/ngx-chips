@@ -172,6 +172,28 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private hideForm: string;
 
     /**
+     * @name addOnBlur
+     */
+    @Input() private addOnBlur: boolean;
+
+    /**
+     * @name addOnPaste
+     */
+    @Input() private addOnPaste: boolean;
+
+    /**
+     * - pattern used with the native method split() to separate patterns in the string pasted
+     * @name pasteSplitPattern
+     */
+    @Input() private pasteSplitPattern: string = ',';
+
+    /**
+     * @name blinkIfDupe
+     * @type {boolean}
+     */
+    @Input() private blinkIfDupe: boolean = true;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -212,6 +234,20 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @type {EventEmitter<string>}
      */
     @Output() public onTextChange = new EventEmitter<TagModel>();
+
+    /**
+     * - output triggered when text is pasted in the form
+     * @name onPaste
+     * @type {EventEmitter<TagModel>}
+     */
+    @Output() public onPaste = new EventEmitter<string>();
+
+    /**
+     * - output triggered when tag entered is not valid
+     * @name onValidationError
+     * @type {EventEmitter<string>}
+     */
+    @Output() public onValidationError = new EventEmitter<string>();
 
     /**
      * @name dropdown
@@ -291,42 +327,70 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
-        const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
-        if (selectedItem && !isFromAutocomplete) {
+        // update form value with the transformed item
+        const item = this.setInputValue(this.inputForm.value.value);
+        const isInputValid = this.inputForm.form.valid;
+
+        if (!isInputValid) {
             return;
         }
 
-        // update form value with the transformed item
-        const item = this.setInputValue(this.inputForm.value.value);
-
-        // check if the transformed item is already existing in the list
-        const isDupe = !!this.findItem(item);
-
-        // check validity:
-        // 1. form must be valid
-        // 2. there must be no dupe
-        // 3. check max items has not been reached
-        // 4. check item comes from autocomplete
-        // 5. or onlyFromAutocomplete is false
-        const isValid = this.inputForm.form.valid &&
-            isDupe === false &&
-            this.maxItemsReached === false &&
-            ((isFromAutocomplete && this.onlyFromAutocomplete === true) || this.onlyFromAutocomplete === false);
+        const isValid = this.isTagValid(item, isFromAutocomplete);
 
         // if valid:
         if (isValid) {
-            const newTag = new TagModel(item, item);
-
-            // append item to the ngModel list
-            this.items = [...this.items, newTag];
-
-            //  and emit event
-            this.onAdd.emit(newTag);
+            this.appendNewTag(item);
+        } else {
+            this.onValidationError.emit(item);
         }
 
         // reset control
         this.setInputValue('');
         this.focus(true);
+    }
+
+    /**
+     *
+     * @param value
+     * @param isFromAutocomplete
+     */
+    public isTagValid(value: string, isFromAutocomplete = false): boolean {
+        const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
+        if (selectedItem && !isFromAutocomplete) {
+            return;
+        }
+
+        // check validity:
+        // 1. there must be no dupe
+
+        // check if the transformed item is already existing in the list
+        const dupe = this.findItem(value);
+
+        // if so, give a visual cue and return false
+        if (!!dupe && this.blinkIfDupe) {
+            const item = this.tags.find(item => item.model === dupe);
+            item.blink();
+        }
+
+        // 2. check max items has not been reached
+        // 3. check item comes from autocomplete
+        // 4. or onlyFromAutocomplete is false
+        return !dupe && !this.maxItemsReached &&
+            ((isFromAutocomplete && this.onlyFromAutocomplete) || !this.onlyFromAutocomplete);
+    }
+
+    /**
+     * @name appendNewTag
+     * @param item
+     */
+    public appendNewTag(item: string): void {
+        const newTag = new TagModel(item, item);
+
+        // append item to the ngModel list
+        this.items = [...this.items, newTag];
+
+        //  and emit event
+        this.onAdd.emit(newTag);
     }
 
     /**
@@ -351,7 +415,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {TagModel}
      */
     public findItem(value: string): TagModel {
-        return this.items.find((item: TagModel) => item.value === value);
+        return this.items.find((item: TagModel) => item.display === value);
     }
 
     /**
@@ -468,6 +532,27 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name onPasteCallback
+     * @param data
+     */
+    private onPasteCallback(data: ClipboardEvent) {
+        const text = data.clipboardData.getData('text/plain');
+
+        text.split(this.pasteSplitPattern)
+            .map(item => new TagModel(item, item))
+            .forEach(item => {
+                const value = this.transform(item.value);
+                if (this.isTagValid(value)) {
+                    this.appendNewTag(value);
+                }
+            });
+
+        this.onPaste.emit(text);
+
+        setTimeout(() => this.setInputValue(''), 0);
+    }
+
+    /**
      * @name ngOnInit
      */
     public ngOnInit() {
@@ -503,12 +588,24 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
 
         // if clear on blur is set to true, subscribe to the event and clear the text's form
-        if (this.clearOnBlur) {
+        if (this.clearOnBlur || this.addOnBlur) {
             this.inputForm
                 .onBlur
                 .subscribe(() => {
+                    if (this.addOnBlur) {
+                        this.addItem();
+                    }
+
                     this.setInputValue('');
                 });
+        }
+
+        // if addOnPaste is set to true, register the handler and add items
+        if (this.addOnPaste) {
+            const input = this.inputForm.input.nativeElement;
+
+            // attach listener to input
+            this.renderer.listen(input, 'paste', this.onPasteCallback.bind(this));
         }
 
         // if hideForm is set to true, remove the input

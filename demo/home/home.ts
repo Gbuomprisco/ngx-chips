@@ -42,6 +42,10 @@ export class Home {
         console.log('input blurred: current value is ' + item);
     }
 
+    public onValidationError(item) {
+        console.log('invalid tag ' + item);
+    }
+
     public transform(item: string): string {
         return `@${item}`;
     }
