@@ -101,10 +101,12 @@ If you do use an array of objects, make sure you:
 - **`inputClass`** - [**`?string`**] - custom class assigned to the input
 - **`clearOnBlur`** - [**`?boolean`**] - if set to true, it will clear the form's text on blur events
 - **`hideForm`** - [**`?number`**] - if set to true, will remove the form from the component
-- **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event
-- **`addOnBlur`** - [**`?boolean`**] - if set to true, will add an item when the form is blurred
-- **`addOnPaste`** - [**`?boolean`**] - if set to true, will add items pasted into the form's input
-- **`pasteSplitPattern`** - [**`?string`**] - pattern used with the native method split() to separate patterns in the string pasted
+- **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event (defaults to `250`)
+- **`addOnBlur`** - [**`?boolean`**] - if set to true, will add an item when the form is blurred (defaults to `false`)
+- **`addOnPaste`** - [**`?boolean`**] - if set to true, will add items pasted into the form's input  (defaults to `false`)
+- **`pasteSplitPattern`** - [**`?string`**] - pattern used with the native method split() to separate patterns in the string pasted (defaults to `,`)
+- **`blinkIfDupe`** - [**`?boolean`**] - if a duplicate item gets added, this will blink - giving the user a visual cue of where it is located (defaults to `true`)
+
 
 ##### Validation (optional)
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
@@ -116,8 +118,8 @@ If you do use an array of objects, make sure you:
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
 ##### Tags as Objects (optional)
-- **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by
-- **`displayBy`** - [**`?string`**] - the string displayed in a tag object
+- **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by (defaults to `value`)
+- **`displayBy`** - [**`?string`**] - the string displayed in a tag object (defaults to `display`)
 
 #### Outputs (optional)
 - **`onAdd`** - [**`?onAdd($event: string)`**] - event fired when an item has been added
@@ -126,6 +128,9 @@ If you do use an array of objects, make sure you:
 - **`onFocus`** - [**`?onFocus($event: string)`**] - event fired when the input is focused - will return current input value
 - **`onBlur`** - [**`?onBlur($event: string)`**] - event fired when the input is blurred - will return current input value
 - **`onTextChange`** - [**`?onTextChange($event: string)`**] - event fired when the input value changes
+- **`onPaste`** - [**`?onPaste($event: string)`**] - event fired when the text is pasted into the input (only if `addOnPaste` is set to `true`)
+- **`onValidationError`** - [**`?onValidationError($event: string)`**] - event fired when the validation fails
+
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.

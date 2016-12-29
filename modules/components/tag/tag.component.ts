@@ -14,13 +14,7 @@ import { TagModel } from '../helpers/accessor';
 @Component({
     selector: 'tag',
     templateUrl: './tag.template.html',
-    styles: [
-        `:host,
-         :host > div,
-         :host > div:focus {
-            outline: 0;
-        }`
-    ]
+    styleUrls: [ './tag-component.style.scss' ]
 })
 export class TagComponent {
     /**
@@ -102,5 +96,14 @@ export class TagComponent {
     @HostListener('keydown', ['$event'])
     public keydown(event: any): void {
         this.onKeyDown.emit({event, model: this.model});
+    }
+
+    /**
+     * @name blink
+     */
+    public blink(): void {
+        const classList = this.element.nativeElement.classList;
+        classList.add('blink');
+        setTimeout(() => classList.remove('blink'), 50);
     }
 }
