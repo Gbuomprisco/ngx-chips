@@ -415,7 +415,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {TagModel}
      */
     public findItem(value: string): TagModel {
-        return this.items.find((item: TagModel) => item.display === value);
+        return this.items.find((item: TagModel) => item.value === value);
     }
 
     /**
