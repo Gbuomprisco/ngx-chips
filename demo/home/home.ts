@@ -51,7 +51,7 @@ export class Home {
     }
 
     public onTagEdited(item) {
-        console.log('tag edited: current value is ' + item.display);
+        console.log('input blurred: current value is ' + item);
     }
 
     public onValidationError(item) {

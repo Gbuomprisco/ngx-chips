@@ -4,7 +4,7 @@
      [attr.tabindex]="-1"
      [attr.aria-label]="model.display">
 
-    <div *ngSwitchCase="true" [attr.contenteditable]="editable && editModeActivated">
+    <div *ngSwitchCase="true" [attr.contenteditable]="editModeActivated">
         <!-- CUSTOM TEMPLATE -->
         <template
             [ngOutletContext]="{ item: model }"
@@ -14,8 +14,11 @@
 
     <div *ngSwitchCase="false">
         <!-- TAG NAME -->
-        <span [attr.contenteditable]="editable && editModeActivated"
-              (blur)="editable ? toggleEditMode() : undefined">
+        <span [attr.contenteditable]="editModeActivated"
+              spellcheck="false"
+              (keydown.enter)="disableEditMode($event)"
+              (keydown.escape)="disableEditMode($event)"
+              (blur)="editModeActivated=false">
             {{ model.display }}
         </span>
 

@@ -8,6 +8,7 @@
     <!-- TAGS -->
     <div class="ng2-tags-container">
         <tag *ngFor="let item of items"
+             [@flyInOut]="'in'"
              (onSelect)="selectItem(item)"
              (onRemove)="removeItem(item)"
              (onKeyDown)="handleKeydown($event, item)"

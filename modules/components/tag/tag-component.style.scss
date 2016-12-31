@@ -14,6 +14,7 @@
     }
 }
 
-:host [contenteditable] {
+:host [contenteditable='true'] {
     outline: 0;
+    user-select: none;
 }

@@ -120,9 +120,9 @@ export class TagComponent {
      * @param event
      */
     @HostListener('keydown', ['$event'])
-    public keydown(event: any): void {
+    public keydown(event: KeyboardEvent): void {
         if (this.editModeActivated) {
-            this.storeNewValue();
+            event.keyCode === 13 ? this.disableEditMode(event) : this.storeNewValue();
             return;
         }
 
@@ -155,6 +155,15 @@ export class TagComponent {
      */
     private getContentEditableText(): string {
         return this.element.nativeElement.querySelector('[contenteditable]').innerText.trim();
+    }
+
+    /**
+     * @name disableEditMode
+     * @param $event
+     */
+    private disableEditMode($event: KeyboardEvent): void {
+        this.editModeActivated = false;
+        $event.preventDefault();
     }
 
     /**
