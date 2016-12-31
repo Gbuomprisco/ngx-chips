@@ -1,6 +1,6 @@
 <ng2-dropdown>
     <ng2-dropdown-menu [focusFirstElement]="focusFirstElement" [offset]="offset">
-        <ng2-menu-item *ngFor="let item of itemsMatching; let index = index;"
+        <ng2-menu-item *ngFor="let item of items; let index = index;"
                        [value]="item"
                        [ngSwitch]="!!templates.length">
             <span *ngSwitchCase="false"

@@ -67,10 +67,10 @@ export class TagInputDropdown {
 
     /**
      * list of items that match the current value of the input (for autocomplete)
-     * @name itemsMatching
+     * @name items
      * @type {AutocompleteItemModel[]}
      */
-    public itemsMatching: AutocompleteItemModel[] = [];
+    private items: AutocompleteItemModel[] = [];
 
     /**
      * @name _autocompleteItems
@@ -97,11 +97,11 @@ export class TagInputDropdown {
 
         // reset itemsMatching array when the dropdown is hidden
         this.onHide().subscribe(() => {
-            this.itemsMatching = [];
+            this.resetItems();
         });
 
-        this.tagInput.inputForm.onKeydown.subscribe(() => {
-           this.show();
+        this.tagInput.inputForm.onKeyup.subscribe(() => {
+            this.show();
         });
     }
 
@@ -184,14 +184,15 @@ export class TagInputDropdown {
     public show(): void {
         const value: string = this.tagInput.inputForm.value.value;
         const position: ClientRect = this.tagInput.inputForm.getElementPosition();
+        const items = this.getMatchingItems(value);
+        const hasItems = items.length > 0;
+        const showDropdownIfEmpty = this.showDropdownIfEmpty && !value && this.autocompleteItems.length;
 
-        this.itemsMatching = this.getMatchingItems(value);
+        this.items = items;
 
-        if (this.itemsMatching.length || (this.showDropdownIfEmpty && !value)) {
+        if ((hasItems || showDropdownIfEmpty) && !this.isVisible) {
             this.dropdown.toggleMenu(position);
-        }
-
-        if (!this.itemsMatching.length && this.isVisible) {
+        } else if (!hasItems && this.isVisible) {
             this.dropdown.hide();
         }
     }
@@ -206,13 +207,18 @@ export class TagInputDropdown {
             return [];
         }
 
-        return this.autocompleteItems.map(item => {
+        return this.autocompleteItems.filter(item => {
             const matchesValue = item.display.toLowerCase().indexOf(value.toLowerCase()) >= 0;
-            const hasValue = this.tagInput.findItem(item.display);
-            const condition = matchesValue && !hasValue;
+            const hasValue = !!this.tagInput.findItem(item.display);
+            return (matchesValue === true) && (hasValue === false);
+        });
+    }
 
-            return condition ? item : undefined;
-        }).filter(item => item);
+    /**
+     * @name resetItems
+     */
+    private resetItems(): void {
+        this.items = [];
     }
 
     /**

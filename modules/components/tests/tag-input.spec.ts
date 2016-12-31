@@ -354,20 +354,16 @@ describe('TagInputComponent', () => {
 
             const component = getComponent(fixture);
 
-            component.ngAfterContentInit();
-
             expect(component.items.length).toEqual(2);
-            expect(component.element.nativeElement.querySelectorAll('.custom-class').length).toEqual(2);
+            expect(document.querySelectorAll('.custom-class').length).toEqual(2);
 
             discardPeriodicTasks();
         }));
     });
 
     describe('when using the autocomplete', () => {
-        let keyUp: Event = new Event('keyup');
-        const iCode = 73;
-
-        keyUp[ 'keyCode' ] = iCode;
+        let keyUp: Event = new Event('keyUp');
+        keyUp[ 'keyCode' ] = 73;
 
         it('adds an autocomplete to the template', fakeAsync(() => {
             const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
@@ -375,9 +371,7 @@ describe('TagInputComponent', () => {
 
             const component = getComponent(fixture);
 
-            component.ngAfterContentInit();
-
-            expect(component.autocompleteItems.length).toEqual(3);
+            expect(component.dropdown.autocompleteItems.length).toEqual(3);
             expect(document.querySelector('ng2-dropdown-menu')).toBeTruthy();
 
             discardPeriodicTasks();
@@ -392,6 +386,7 @@ describe('TagInputComponent', () => {
             // press 'i'
             component.setInputValue('i');
             component.inputForm.input.nativeElement.dispatchEvent(keyUp);
+            component.inputForm.onKeyup.emit();
 
             fixture.detectChanges();
             tick();
@@ -399,8 +394,8 @@ describe('TagInputComponent', () => {
             const dropdown = document.querySelector('.ng2-dropdown-menu-container');
             const items = document.querySelectorAll('ng2-menu-item');
 
-            expect(dropdown).toBeTruthy();
-            expect(component.itemsMatching.length).toEqual(3);
+            expect(dropdown).toBeDefined();
+            expect(component.dropdown.items.length).toEqual(3);
             expect(items.length).toEqual(3);
 
             discardPeriodicTasks();
@@ -414,28 +409,32 @@ describe('TagInputComponent', () => {
             // press 'i'
             component.setInputValue('i');
             component.inputForm.input.nativeElement.dispatchEvent(keyUp);
+            component.inputForm.onKeyup.emit();
 
             fixture.detectChanges();
             tick();
 
-            expect(component.itemsMatching.length).toEqual(3);
-            component.itemsMatching = [];
+            expect(component.dropdown.items.length).toEqual(3);
+            component.dropdown.items = [];
 
             component.setInputValue('ite');
             component.inputForm.input.nativeElement.dispatchEvent(keyUp);
+            component.inputForm.onKeyup.emit();
 
             fixture.detectChanges();
             tick();
 
-            expect(component.itemsMatching.length).toEqual(2);
-            component.itemsMatching = [];
+            expect(component.dropdown.items.length).toEqual(2);
+            component.dropdown.items = [];
 
             fixture.detectChanges();
             tick();
 
             component.setInputValue('ita');
             component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            expect(component.itemsMatching.length).toEqual(1);
+            component.inputForm.onKeyup.emit();
+
+            expect(component.dropdown.items.length).toEqual(1);
 
             discardPeriodicTasks();
         }));
@@ -450,6 +449,7 @@ describe('TagInputComponent', () => {
             // press 'i'
             component.setInputValue('i');
             component.inputForm.input.nativeElement.dispatchEvent(keyUp);
+            component.inputForm.onKeyup.emit();
 
             fixture.detectChanges();
             tick();
@@ -461,7 +461,7 @@ describe('TagInputComponent', () => {
             tick();
 
             expect(component.items.length).toEqual(3);
-            const index = component.items.findIndex(tag => component.findItem(item.value) === tag);
+            const index = component.items.findIndex(tag => component.findItem(item.value.display) === tag);
             expect(index).toEqual(2);
 
             discardPeriodicTasks();

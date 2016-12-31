@@ -507,7 +507,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         tag.select.call(tag);
     }
 
-
     /**
      * @name switchPrev
      * @param item { TagModel }
