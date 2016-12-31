@@ -6,13 +6,14 @@ import {
     TemplateRef,
     ContentChildren,
     Input,
-    QueryList
+    QueryList,
+    HostListener
 } from '@angular/core';
 
 import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
-import { TagModel } from '../helpers/accessor';
+import { AutocompleteItemModel } from '../helpers/accessor';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -43,7 +44,66 @@ export class TagInputDropdown {
      */
     @Input() public focusFirstElement: boolean = false;
 
+    /**
+     * @name autocompleteItems
+     * @param items
+     */
+    @Input() public set autocompleteItems(items: AutocompleteItemModel[]) {
+        this._autocompleteItems = items ? items.map((item: AutocompleteItemModel | string) => {
+            if (typeof item === 'string') {
+                return new AutocompleteItemModel(item, item);
+            } else {
+                return new AutocompleteItemModel(item.display, item.value);
+            }
+        }) : [];
+    }
+
+    /**
+     * - show autocomplete dropdown if the value of input is empty
+     * @name showDropdownIfEmpty
+     * @type {boolean}
+     */
+    @Input() public showDropdownIfEmpty: boolean = false;
+
+    /**
+     * list of items that match the current value of the input (for autocomplete)
+     * @name itemsMatching
+     * @type {AutocompleteItemModel[]}
+     */
+    public itemsMatching: AutocompleteItemModel[] = [];
+
+    /**
+     * @name _autocompleteItems
+     * @type {Array}
+     * @private
+     */
+    private _autocompleteItems: AutocompleteItemModel[] = [];
+
+    /**
+     * @name autocompleteItems
+     * @desc array of items that will populate the autocomplete
+     * @type {Array<string>}
+     */
+    public get autocompleteItems(): AutocompleteItemModel[] {
+        return this._autocompleteItems;
+    }
+
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
+
+    public ngOnInit() {
+        this.onItemClicked().subscribe(item => {
+            this.addNewItem(item);
+        });
+
+        // reset itemsMatching array when the dropdown is hidden
+        this.onHide().subscribe(() => {
+            this.itemsMatching = [];
+        });
+
+        this.tagInput.inputForm.onKeydown.subscribe(() => {
+           this.show();
+        });
+    }
 
     /**
      * @name updatePosition
@@ -91,5 +151,79 @@ export class TagInputDropdown {
      */
     public get state(): any {
         return this.dropdown.menu.state;
+    }
+
+    /**
+     * @name addNewItem
+     * @param item
+     */
+    private addNewItem(item): void {
+        if (!item) {
+            return;
+        }
+
+        const value = item.value.display;
+
+        // add item
+        if (this.tagInput.isTagValid(value, true)) {
+            this.tagInput.appendNewTag(value);
+        }
+
+        this.tagInput.setInputValue('');
+
+        setTimeout(() => this.tagInput.inputForm.focus(), 0);
+
+        // hide dropdown
+        this.dropdown.hide();
+    }
+
+    /**
+     *
+     * @name show
+     */
+    public show(): void {
+        const value: string = this.tagInput.inputForm.value.value;
+        const position: ClientRect = this.tagInput.inputForm.getElementPosition();
+
+        this.itemsMatching = this.getMatchingItems(value);
+
+        if (this.itemsMatching.length || (this.showDropdownIfEmpty && !value)) {
+            this.dropdown.toggleMenu(position);
+        }
+
+        if (!this.itemsMatching.length && this.isVisible) {
+            this.dropdown.hide();
+        }
+    }
+
+    /**
+     *
+     * @param value
+     * @returns {any}
+     */
+    private getMatchingItems(value: string): AutocompleteItemModel[] {
+        if (!value && !this.showDropdownIfEmpty) {
+            return [];
+        }
+
+        return this.autocompleteItems.map(item => {
+            const matchesValue = item.display.toLowerCase().indexOf(value.toLowerCase()) >= 0;
+            const hasValue = this.tagInput.findItem(item.display);
+            const condition = matchesValue && !hasValue;
+
+            return condition ? item : undefined;
+        }).filter(item => item);
+    }
+
+    /**
+     * @name scrollListener
+     */
+    @HostListener('window:scroll')
+    private scrollListener(): void {
+        if (!this.isVisible) {
+            return;
+        }
+
+        this.updatePosition(this.tagInput.inputForm.getElementPosition());
     }
 }

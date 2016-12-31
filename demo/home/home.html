@@ -39,25 +39,19 @@
 
         <div>
             <h3>Tags within an autocomplete component</h3>
-            <tag-input [ngModel]="['@item']"
-                       [autocompleteItems]="['Item1', 'item2', 'item3']">
-                <tag-input-dropdown>
-                    <template let-item="item" let-index="index">
-                        {{ index }}: {{ item }}
-                    </template>
-                </tag-input-dropdown>
+            <tag-input [ngModel]="['@item']">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems"></tag-input-dropdown>
             </tag-input>
         </div>
 
         <div>
             <h3>Tags accepting only items from an autocomplete</h3>
             <tag-input [ngModel]="['@item']"
-                       [onlyFromAutocomplete]="true"
-                       [showDropdownIfEmpty]="true"
-                       [autocompleteItems]="['iTem1', 'item2', 'item3']">
-                <tag-input-dropdown>
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [autocompleteItems]="autocompleteItemsAsObjects">
                     <template let-item="item" let-index="index">
-                        {{ index }}: {{ item }}
+                        {{ index }}: {{ item.display }}
                     </template>
                 </tag-input-dropdown>
             </tag-input>

@@ -113,9 +113,7 @@ If you do use an array of objects, make sure you:
 - **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 
 ##### Autocomplete (optional)
-- **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
-- **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
 ##### Tags as Objects (optional)
 - **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by (defaults to `value`)
@@ -135,8 +133,19 @@ If you do use an array of objects, make sure you:
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
+- **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
+- **`autocompleteItems`** - [**`?string[] | AutoCompleteModel[]`**] - an array of items to populate the autocomplete dropdown
 - **`offset`** - [**`?string`**] - offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
 - **`focusFirstElement`** - [**`?boolean`**] - if true, the first item of the dropdown will be automatically focused (defaults to `false`)
+
+The property `autocompleteItems` can be an array of strings or objects. Interface for `AutoCompleteModel` is:
+
+```javascript
+interface AutoCompleteModel {
+   value: any;
+   display: string;
+}
+```
 
 More options to customise the dropdown will follow.
 
