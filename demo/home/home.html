@@ -17,7 +17,10 @@
 
         <div>
             <h3>Simple Input with editable items</h3>
-            <tag-input [ngModel]="items" [editable]="true" (onTagEdited)="onTagEdited($event)"></tag-input>
+            <tag-input [ngModel]="items"
+                       [editable]="true"
+                       (onTagEdited)="onTagEdited($event)">
+            </tag-input>
         </div>
 
         <div>
@@ -129,7 +132,7 @@
 
         <div>
             <h3>Component customized via inheritance</h3>
-            <custom-tag-input [ngModel]="items"></custom-tag-input>
+
         </div>
 
         <div>
