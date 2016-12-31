@@ -11,8 +11,11 @@
              (onSelect)="selectItem(item)"
              (onRemove)="removeItem(item)"
              (onKeyDown)="handleKeydown($event, item)"
+             (onTagEdited)="onTagEdited.emit(item)"
              [attr.tabindex]="readonly ? -1 : 0"
              [readonly]="readonly"
+             [removable]="removable"
+             [editable]="editable"
              [template]="!!hasCustomTemplate() ? templates.first : undefined"
              [model]="item">
         </tag>

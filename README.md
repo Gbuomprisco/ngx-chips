@@ -5,6 +5,7 @@ This is a component for Angular 2. Design and API are blandly inspired by Angula
 ## Demo
 
 Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgHA8xM](http://www.webpackbin.com/VkEgHA8xM). **[OUTDATED]**
+**Demo will soon be published on its dedicated gh-pages site**
 
 ## Quick start. Install the component from NPM by running:
 
@@ -90,6 +91,8 @@ If you do use an array of objects, make sure you:
 - define two properties, `value` and `display`. `Value` will uniquely identify the items, `display` will be the value displayed.
 - or, in alternative, provide the keys using the inputs `identifyBy` and `displayBy`
 
+**Notice**: the model will be transformed into an object { display, value }.
+
 #### Properties (optional)
 - **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
 - **`secondaryPlaceholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms when there are 0 items entered.
@@ -106,6 +109,8 @@ If you do use an array of objects, make sure you:
 - **`addOnPaste`** - [**`?boolean`**] - if set to true, will add items pasted into the form's input  (defaults to `false`)
 - **`pasteSplitPattern`** - [**`?string`**] - pattern used with the native method split() to separate patterns in the string pasted (defaults to `,`)
 - **`blinkIfDupe`** - [**`?boolean`**] - if a duplicate item gets added, this will blink - giving the user a visual cue of where it is located (defaults to `true`)
+- **`removable`** - [**`?boolean`**] - if set to `false`, it will not be possible to remove tags (defaults to `true`)
+- **`editable`** (experimental) - [**`?boolean`**] - if set to `true`, it will be possible to edit the display value of the tags (defaults to `false`)
 
 
 ##### Validation (optional)
@@ -113,9 +118,7 @@ If you do use an array of objects, make sure you:
 - **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 
 ##### Autocomplete (optional)
-- **`autocompleteItems`** - [**`?string[]`**] - an array of items to populate the autocomplete dropdown
 - **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
-- **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
 ##### Tags as Objects (optional)
 - **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by (defaults to `value`)
@@ -130,13 +133,25 @@ If you do use an array of objects, make sure you:
 - **`onTextChange`** - [**`?onTextChange($event: string)`**] - event fired when the input value changes
 - **`onPaste`** - [**`?onPaste($event: string)`**] - event fired when the text is pasted into the input (only if `addOnPaste` is set to `true`)
 - **`onValidationError`** - [**`?onValidationError($event: string)`**] - event fired when the validation fails
+- **`onTagEdited`** - [**`?onTagEdited($event: TagModel)`**] - event fired when a tag is edited
 
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
+- **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
+- **`autocompleteItems`** - [**`?string[] | AutoCompleteModel[]`**] - an array of items to populate the autocomplete dropdown
 - **`offset`** - [**`?string`**] - offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
 - **`focusFirstElement`** - [**`?boolean`**] - if true, the first item of the dropdown will be automatically focused (defaults to `false`)
+
+The property `autocompleteItems` can be an array of strings or objects. Interface for `AutoCompleteModel` (just like `TagModel)` is:
+
+```javascript
+interface AutoCompleteModel {
+   value: any;
+   display: string;
+}
+```
 
 More options to customise the dropdown will follow.
 
@@ -196,9 +211,8 @@ export class App {
 
 #### Autocomplete 
 ```html
-<tag-input [ngModel]="['@item']"
-           [autocompleteItems]="['Item1', 'item2', 'item3']">
-       <tag-input-dropdown></tag-input-dropdown>
+<tag-input [ngModel]="['@item']">
+       <tag-input-dropdown [autocompleteItems]="[{display: 'Item1', value: 0}, 'item2', 'item3']"></tag-input-dropdown>
 </tag-input>
 ```
 
@@ -206,20 +220,19 @@ This will accept items only from the autocomplete dropdown:
 
 ```html 
 <tag-input [ngModel]="['@item']"
-           [onlyFromAutocomplete]="true"
-           [showDropdownIfEmpty]="true"
-           [autocompleteItems]="['iTem1', 'item2', 'item3']">
-    <tag-input-dropdown></tag-input-dropdown>
+           [onlyFromAutocomplete]="true">
+    <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        [autocompleteItems]="['iTem1', 'item2', 'item3']">
+    </tag-input-dropdown>
 </tag-input>
 ```
 
 ##### Define a template for your menu items
 ```html
 <tag-input [ngModel]="['@item']"
-           [onlyFromAutocomplete]="true"
-           [showDropdownIfEmpty]="true"
-           [autocompleteItems]="['iTem1', 'item2', 'item3']">
-    <tag-input-dropdown>
+           [onlyFromAutocomplete]="true">
+    <tag-input-dropdown [showDropdownIfEmpty]="true"
+                        [autocompleteItems]="['iTem1', 'item2', 'item3']">
         <template let-item="item" let-index="index">
             {{ index }}: {{ item }}
         </template>

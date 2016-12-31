@@ -4,7 +4,7 @@
      [attr.tabindex]="-1"
      [attr.aria-label]="model.display">
 
-    <div *ngSwitchCase="true">
+    <div *ngSwitchCase="true" [attr.contenteditable]="editable && editModeActivated">
         <!-- CUSTOM TEMPLATE -->
         <template
             [ngOutletContext]="{ item: model }"
@@ -14,7 +14,8 @@
 
     <div *ngSwitchCase="false">
         <!-- TAG NAME -->
-        <span>
+        <span [attr.contenteditable]="editable && editModeActivated"
+              (blur)="editable ? toggleEditMode() : undefined">
             {{ model.display }}
         </span>
 
@@ -23,7 +24,7 @@
             aria-label="Remove tag"
             role="button"
             (click)="remove()"
-            *ngIf="!readonly">
+            *ngIf="!readonly && removable">
         </delete-icon>
     </div>
 </div>

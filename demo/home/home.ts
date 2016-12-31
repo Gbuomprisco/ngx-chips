@@ -13,6 +13,14 @@ export class Home {
 
     itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
 
+    autocompleteItems = ['Item1', 'item2', 'item3'];
+
+    autocompleteItemsAsObjects = [
+        {display: 'Item1', value: 0},
+        {display: 'item2', value: 1, data: {custom: 'Ciao'}},
+        'item3'
+    ];
+
     public options = {
         readonly: undefined,
         placeholder: '+ Tag'
@@ -40,6 +48,10 @@ export class Home {
 
     public onBlur(item) {
         console.log('input blurred: current value is ' + item);
+    }
+
+    public onTagEdited(item) {
+        console.log('tag edited: current value is ' + item.display);
     }
 
     public onValidationError(item) {

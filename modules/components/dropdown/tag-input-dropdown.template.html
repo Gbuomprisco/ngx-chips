@@ -1,10 +1,10 @@
 <ng2-dropdown>
     <ng2-dropdown-menu [focusFirstElement]="focusFirstElement" [offset]="offset">
-        <ng2-menu-item *ngFor="let item of tagInput.itemsMatching; let index = index;"
+        <ng2-menu-item *ngFor="let item of items; let index = index;"
                        [value]="item"
                        [ngSwitch]="!!templates.length">
             <span *ngSwitchCase="false"
-                  [innerHTML]="item | highlight : tagInput.inputForm.value.value">
+                  [innerHTML]="item.display | highlight : tagInput.inputForm.value.value">
             </span>
 
             <template *ngSwitchDefault

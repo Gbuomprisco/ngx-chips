@@ -11,7 +11,11 @@ export class TagModel {
     }
 }
 
-function isObject(obj: any): boolean {
+export class AutocompleteItemModel extends TagModel {
+    data: any;
+};
+
+export function isObject(obj: any): boolean {
     return obj === Object(obj);
 }
 
