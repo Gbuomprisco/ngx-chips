@@ -17,31 +17,6 @@ Please notice that the latest version on NPM may not reflect the branch `master`
 
     npm test
 
-## Set up the module
-The component is updated to use the latest version of Angular 2. This means
-it requires some configuration to correctly work with your app. Ensure, you are
-registering the following providers when bootstrapping the app:
-
-```javascript
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { FormsModule } from '@angular/forms';
-import { App } from './home/home';
-
-import { NgModule }       from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-@NgModule({
-    imports:      [BrowserModule, FormsModule],
-    bootstrap:    [App],
-    declarations: [App]
-})
-export class AppModule {}
-
-platformBrowserDynamic().bootstrapModule(AppModule);
-```
-
-Please do have a look at the file `demo/app.ts` if you are unsure how to configure the app.
-
 ## Configuration
 
 Ensure you import the module:
@@ -49,10 +24,8 @@ Ensure you import the module:
 ```javascript
 import { TagInputModule } from 'ng2-tag-input';
 
-// please notice this is the new way of telling a Component
-// to import another component...no more directives[]
 @NgModule({
-   imports: [TagInputModule]
+   imports: [ TagInputModule ]
 })
 export class MyModule {}
 ```
@@ -64,19 +37,19 @@ Many users have reported issues with SystemJS. I got it working with the followi
 ```javascript
 // packages object
 {
-        'ng2-tag-input': {
-            main: 'dist/ng2-tag-input.bundle.js',
-            format: 'cjs',
-        },
-        'ng2-material-dropdown': {
-            defaultExtension: 'js',
-            main: 'dist/ng2-dropdown.bundle.js',
-            format: 'cjs',
-        },
-        'ng2-tag-input/modules/components/tag-input.template.html': {
-            defaultJSExtension: false
-        }
-        // rest of the configuration
+    'ng2-tag-input': {
+        main: 'dist/ng2-tag-input.bundle.js',
+        format: 'cjs',
+    },
+    'ng2-material-dropdown': {
+        defaultExtension: 'js',
+        main: 'dist/ng2-dropdown.bundle.js',
+        format: 'cjs',
+    },
+    'ng2-tag-input/modules/components/tag-input.template.html': {
+        defaultJSExtension: false
+    }
+    // rest of the configuration
 };
 ```
 
@@ -156,7 +129,6 @@ interface AutoCompleteModel {
 More options to customise the dropdown will follow.
 
 ### Basic Example
-#### Component
 
 ```javascript
 @Component({
@@ -165,19 +137,6 @@ More options to customise the dropdown will follow.
 });
 export class App {
     items = ['Pizza', 'Pasta', 'Parmesan'];
-    options = {
-        placeholder: "+ term",
-        secondaryPlaceholder: "Enter a new term",
-        separatorKeys: [4, 5]
-        maxItems: 10
-    }
-    onItemAdded(item) {
-        console.log(``${item} has been added`)
-    }
-    onItemRemoved(item) {
-        console.log(``${item} has been removed :(`)
-    }
-    // ...
 }
 ```
 
@@ -190,6 +149,8 @@ export class App {
 </tag-input>
 
 ```
+
+### Advanced usage
 
 #### Using an array of objects
 
@@ -204,15 +165,28 @@ export class App {
 <tag-input [ngModel]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
 ```
 
+#### Editable tags (experimental)
+```html
+<tag-input [(ngModel)]='items' [editable]='true' (onTagEdited)="onTagEdited($event)"></tag-input>
+```
+
+#### Static Tags (not removable)
+```html
+<tag-input [(ngModel)]='items' [removable]='false'></tag-input>
+```
+
 #### Max number of items
 ```html
 <tag-input [(ngModel)]='items' [maxItems]='5'></tag-input>
 ```
 
+If the value of the model will contain more tags than `maxItems`, `maxItems` will be replaced with the current size of the model.
+
 #### Autocomplete 
 ```html
 <tag-input [ngModel]="['@item']">
-       <tag-input-dropdown [autocompleteItems]="[{display: 'Item1', value: 0}, 'item2', 'item3']"></tag-input-dropdown>
+       <tag-input-dropdown [autocompleteItems]="[{display: 'Item1', value: 0}, 'item2', 'item3']">
+       </tag-input-dropdown>
 </tag-input>
 ```
 
@@ -234,7 +208,7 @@ This will accept items only from the autocomplete dropdown:
     <tag-input-dropdown [showDropdownIfEmpty]="true"
                         [autocompleteItems]="['iTem1', 'item2', 'item3']">
         <template let-item="item" let-index="index">
-            {{ index }}: {{ item }}
+            {{ index }}: {{ item.display }}
         </template>
     </tag-input-dropdown>
 </tag-input>
@@ -301,7 +275,6 @@ class MyComponent {
     public transformer(item: string): string {
         return `@${item}`;
     }
-    // ...
 }
 ```
 
