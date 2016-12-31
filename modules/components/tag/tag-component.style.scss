@@ -13,3 +13,7 @@
         opacity: 0.3;
     }
 }
+
+:host [contenteditable] {
+    outline: 0;
+}

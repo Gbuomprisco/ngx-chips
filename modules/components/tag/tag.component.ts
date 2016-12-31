@@ -28,6 +28,16 @@ export class TagComponent {
     @Input() public readonly: boolean;
 
     /**
+     * @name removable
+     */
+    @Input() public removable: boolean;
+
+    /**
+     * @name editable
+     */
+    @Input() public editable: boolean;
+
+    /**
      * @name template
      */
     @Input() public template: TemplateRef<any>;
@@ -56,6 +66,18 @@ export class TagComponent {
      */
     @Output() public onKeyDown: EventEmitter<any> = new EventEmitter<any>();
 
+    /**
+     * @name onTagEdited
+     * @type {EventEmitter<any>}
+     */
+    @Output() public onTagEdited: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+
+    /**
+     * @name editModeActivated
+     * @type {boolean}
+     */
+    private editModeActivated: boolean = false;
+
     constructor(public element: ElementRef, public renderer: Renderer) {}
 
     /**
@@ -68,6 +90,10 @@ export class TagComponent {
 
         if ($event) {
             $event.stopPropagation();
+        }
+
+        if (this.editable) {
+            this.toggleEditMode();
         }
 
         this.focus();
@@ -95,6 +121,11 @@ export class TagComponent {
      */
     @HostListener('keydown', ['$event'])
     public keydown(event: any): void {
+        if (this.editModeActivated) {
+            this.storeNewValue();
+            return;
+        }
+
         this.onKeyDown.emit({event, model: this.model});
     }
 
@@ -105,5 +136,39 @@ export class TagComponent {
         const classList = this.element.nativeElement.classList;
         classList.add('blink');
         setTimeout(() => classList.remove('blink'), 50);
+    }
+
+    /**
+     * @name toggleEditMode
+     */
+    public toggleEditMode(): void {
+        if (this.editModeActivated) {
+            this.storeNewValue();
+        }
+
+        this.editModeActivated = !this.editModeActivated;
+    }
+
+    /**
+     * @name getContentEditableText
+     * @returns {string}
+     */
+    private getContentEditableText(): string {
+        return this.element.nativeElement.querySelector('[contenteditable]').innerText.trim();
+    }
+
+    /**
+     * @name storeNewValue
+     */
+    private storeNewValue(): void {
+        const input = this.getContentEditableText();
+
+        // if the value changed, replace the value in the model
+        if (input !== this.model.display) {
+            this.model.display = input;
+
+            // emit output
+            this.onTagEdited.emit(this.model);
+        }
     }
 }

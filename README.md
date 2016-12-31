@@ -91,6 +91,8 @@ If you do use an array of objects, make sure you:
 - define two properties, `value` and `display`. `Value` will uniquely identify the items, `display` will be the value displayed.
 - or, in alternative, provide the keys using the inputs `identifyBy` and `displayBy`
 
+**Notice**: the model will be transformed into an object { display, value }.
+
 #### Properties (optional)
 - **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
 - **`secondaryPlaceholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms when there are 0 items entered.
@@ -107,6 +109,9 @@ If you do use an array of objects, make sure you:
 - **`addOnPaste`** - [**`?boolean`**] - if set to true, will add items pasted into the form's input  (defaults to `false`)
 - **`pasteSplitPattern`** - [**`?string`**] - pattern used with the native method split() to separate patterns in the string pasted (defaults to `,`)
 - **`blinkIfDupe`** - [**`?boolean`**] - if a duplicate item gets added, this will blink - giving the user a visual cue of where it is located (defaults to `true`)
+- **`removable`** - [**`?boolean`**] - if set to `false`, it will not be possible to remove tags (defaults to `true`)
+- **`editable`** (experimental) - [**`?boolean`**] - if set to `true`, it will be possible to edit the display value of the tags (defaults to `false`)
+
 
 ##### Validation (optional)
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
@@ -128,6 +133,8 @@ If you do use an array of objects, make sure you:
 - **`onTextChange`** - [**`?onTextChange($event: string)`**] - event fired when the input value changes
 - **`onPaste`** - [**`?onPaste($event: string)`**] - event fired when the text is pasted into the input (only if `addOnPaste` is set to `true`)
 - **`onValidationError`** - [**`?onValidationError($event: string)`**] - event fired when the validation fails
+- **`onTagEdited`** - [**`?onTagEdited($event: TagModel)`**] - event fired when a tag is edited
+
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.

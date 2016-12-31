@@ -50,6 +50,10 @@ export class Home {
         console.log('input blurred: current value is ' + item);
     }
 
+    public onTagEdited(item) {
+        console.log('tag edited: current value is ' + item.display);
+    }
+
     public onValidationError(item) {
         console.log('invalid tag ' + item);
     }

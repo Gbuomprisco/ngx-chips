@@ -158,6 +158,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private blinkIfDupe: boolean = true;
 
     /**
+     * @name removable
+     * @type {boolean}
+     */
+    @Input() private removable: boolean = true;
+
+    /**
+     * @name editable
+     * @type {boolean}
+     */
+    @Input() private editable: boolean = false;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -212,6 +224,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @type {EventEmitter<string>}
      */
     @Output() public onValidationError = new EventEmitter<string>();
+
+    /**
+     * - output triggered when tag is edited
+     * @name onTagEdited
+     * @type {EventEmitter<TagModel>}
+     */
+    @Output() public onTagEdited = new EventEmitter<TagModel>();
 
     /**
      * @name dropdown
@@ -390,7 +409,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         switch (constants.KEY_PRESS_ACTIONS[key]) {
             case constants.ACTIONS_KEYS.DELETE:
-                if (this.selectedTag) {
+                if (this.selectedTag && this.removable) {
                     this.removeItem(this.selectedTag);
                 }
                 break;
