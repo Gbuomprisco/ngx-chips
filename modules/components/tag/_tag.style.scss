@@ -25,6 +25,9 @@ tag {
 
     height: $tag-height;
     line-height: $tag-line-height;
+
+    user-select: none;
+    overflow: hidden;
 }
 
 tag.readonly {
@@ -43,17 +46,17 @@ tag:focus {
     background: map-get($color-primary, 'default');
 }
 
-.default tag:not(.ng2-tag--readonly):focus {
+.default tag:not(.readonly):focus {
     background: map-get($color-focused, 'default');
     color: #fff;
 }
 
-.default tag:not(.ng2-tag--readonly):active {
+.default tag:not(.readonly):active {
     background: darken(map-get($color-focused, 'default'), 5%);
     color: #fff;
 }
 
-.default tag:not(:focus):not(.ng2-tag--readonly):hover {
+.default tag:not(:focus):not(:active):not(.readonly):hover {
     background: darken(map-get($color-primary, 'default'), 5%);
 }
 
@@ -62,16 +65,16 @@ tag:focus {
     border-radius: 0;
 }
 
-.minimal tag:not(tag--readonly):focus,
-.minimal tag:not(tag--readonly):active {
+.minimal tag:not(.readonly):focus,
+.minimal tag:not(.readonly):active {
     background: map-get($color-focused, 'minimal');
 }
 
-.minimal tag:not(:focus):not(tag--readonly):hover {
+.minimal tag:not(:focus):not(.readonly):hover {
     background: darken(map-get($color-primary, 'minimal'), 5%);
 }
 
-.minimal tag:not(:focus):not(tag--readonly):hover {
+.minimal tag:not(:focus):not(.readonly):hover {
     background: darken(map-get($color-primary, 'minimal'), 5%);
 }
 
@@ -80,8 +83,8 @@ tag:focus {
     color: #f9f9f9;
 }
 
-.dark tag:not(.ng2-tag--readonly):focus,
-.dark tag:not(.ng2-tag--readonly):active {
+.dark tag:not(.readonly):focus,
+.dark tag:not(.readonly):active {
     background: map-get($color-focused, 'dark');
     color: map-get($color-primary, 'dark');
 }

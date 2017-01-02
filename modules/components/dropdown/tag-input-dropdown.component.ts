@@ -186,7 +186,7 @@ export class TagInputDropdown {
         const position: ClientRect = this.tagInput.inputForm.getElementPosition();
         const items = this.getMatchingItems(value);
         const hasItems = items.length > 0;
-        const showDropdownIfEmpty = this.showDropdownIfEmpty && !value && this.autocompleteItems.length;
+        const showDropdownIfEmpty = this.showDropdownIfEmpty && !value && hasItems;
 
         this.items = items;
 

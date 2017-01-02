@@ -9,6 +9,7 @@ import { TagInputComponent } from './components';
 import { TagInputDropdown } from './components/dropdown/tag-input-dropdown.component';
 import { HighlightPipe } from './components/pipes/highlight.pipe';
 import { TagComponent } from './components/tag/tag.component';
+import { TagRipple } from './components/tag/tag-ripple.component';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { TagComponent } from './components/tag/tag.component';
         TagInputForm,
         TagComponent,
         HighlightPipe,
-        TagInputDropdown
+        TagInputDropdown,
+        TagRipple
     ],
     exports: [
         TagInputComponent,
@@ -30,7 +32,8 @@ import { TagComponent } from './components/tag/tag.component';
         TagInputForm,
         TagComponent,
         HighlightPipe,
-        TagInputDropdown
+        TagInputDropdown,
+        TagRipple
     ]
 })
 export class TagInputModule {}

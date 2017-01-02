@@ -2,6 +2,9 @@
 :host > div,
 :host > div:focus {
     outline: 0;
+    overflow: hidden;
+    transition: opacity 1s;
+    z-index: 1;
 }
 
 :host.blink {
