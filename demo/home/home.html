@@ -70,6 +70,7 @@
                 </tag-input-dropdown>
             </tag-input>
         </div>
+
         <div>
             <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
             <tag-input [ngModel]="['@item']"
@@ -92,6 +93,20 @@
                         x
                     </span>
                 </template>
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Input with custom item template and custom dropdown item template</h3>
+            <tag-input [ngModel]="['@item']">
+                <template let-item="item">
+                    tag: {{ item.display }}
+                </template>
+                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects">
+                    <template let-item="item" let-index="index">
+                        dropdown: {{ item.display }}
+                    </template>
+                </tag-input-dropdown>
             </tag-input>
         </div>
 

@@ -6,10 +6,12 @@ import {
     TemplateRef,
     ElementRef,
     Renderer,
-    HostListener
+    HostListener,
+    ViewChild
 } from '@angular/core';
 
 import { TagModel } from '../helpers/accessor';
+import { TagRipple } from './tag-ripple.component';
 
 @Component({
     selector: 'tag',
@@ -78,22 +80,30 @@ export class TagComponent {
      */
     private editModeActivated: boolean = false;
 
-    constructor(public element: ElementRef, public renderer: Renderer) {}
+    /**
+     * @name rippleState
+     * @type {string}
+     */
+    private rippleState: string = 'none';
+
+    /**
+     * @name ripple
+     */
+    @ViewChild(TagRipple) public ripple: TagRipple;
+
+    constructor(public element: ElementRef,
+                public renderer: Renderer) {}
 
     /**
      * @name select
      */
-    public select($event?): void {
+    public select($event?: MouseEvent): void {
         if (this.readonly) {
             return;
         }
 
         if ($event) {
             $event.stopPropagation();
-        }
-
-        if (this.editable) {
-            this.toggleEditMode();
         }
 
         this.focus();
@@ -141,7 +151,10 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(): void {
+    public toggleEditMode($event?): void {
+        $event.stopPropagation();
+        $event.preventDefault();
+
         if (this.editModeActivated) {
             this.storeNewValue();
         }

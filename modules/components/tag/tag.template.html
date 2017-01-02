@@ -1,6 +1,8 @@
 <div (click)="select($event)"
+     (dblclick)="editable ? toggleEditMode($event) : undefined"
+     (mousedown)="rippleState='clicked'"
+     (mouseup)="rippleState='none'"
      [ngSwitch]="!!template"
-     [class.readonly]="readonly"
      [attr.tabindex]="-1"
      [attr.aria-label]="model.display">
 
@@ -31,3 +33,5 @@
         </delete-icon>
     </div>
 </div>
+
+<tag-ripple [state]="rippleState" *ngIf="!readonly"></tag-ripple>
