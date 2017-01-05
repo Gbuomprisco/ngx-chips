@@ -311,10 +311,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item {string}
      */
     public removeItem(item: TagModel): void {
-        this.items = this.items.filter(_item => _item !== this.findItem(this.getTagValue(item)));
+        this.items = this.items.filter(_item => _item !== this.findItem(item.display));
 
         // if the removed tag was selected, set it as undefined
-        if (this.selectedTag && this.getTagValue(this.selectedTag) === this.getTagValue(item)) {
+        if (this.selectedTag && this.selectedTag.display === item.display) {
             this.selectedTag = undefined;
         }
 
@@ -361,7 +361,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // 1. there must be no dupe
 
         // check if the transformed item is already existing in the list
-        const dupe = this.findItem(value);
+        const dupe = this.items.find(item => item.display === value);
 
         // if so, give a visual cue and return false
         if (!!dupe && this.blinkIfDupe) {
@@ -576,16 +576,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * - helper to take value of a model; mostly for trackBy because it will only accept a function
-     * @name getTagValue
-     * @param item
-     * @returns {string}
-     */
-    private getTagValue(item: TagModel): string {
-        return item ? item.value : undefined;
-    }
-
-    /**
      * @name onPasteCallback
      * @param data
      */
@@ -595,9 +585,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         text.split(this.pasteSplitPattern)
             .map(item => new TagModel(item, item))
             .forEach(item => {
-                const value = this.transform(this.getTagValue(item));
-                if (this.isTagValid(value)) {
-                    this.appendNewTag(value);
+                const display = this.transform(item.display);
+                if (this.isTagValid(display)) {
+                    this.appendNewTag(display);
                 }
             });
 

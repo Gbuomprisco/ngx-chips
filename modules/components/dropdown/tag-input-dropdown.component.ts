@@ -162,11 +162,11 @@ export class TagInputDropdown {
             return;
         }
 
-        const value = item.value.display;
+        const display = item.value.display;
 
         // add item
-        if (this.tagInput.isTagValid(value, true)) {
-            this.tagInput.appendNewTag(value);
+        if (this.tagInput.isTagValid(display, true)) {
+            this.tagInput.appendNewTag(display);
         }
 
         this.tagInput.setInputValue('');
