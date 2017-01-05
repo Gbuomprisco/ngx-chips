@@ -21,6 +21,10 @@ export class Home {
         'item3'
     ];
 
+    autocompleteMapper(data: any) {
+        return data.items.map(item => item.full_name).slice(0, 10);
+    }
+
     public options = {
         readonly: undefined,
         placeholder: '+ Tag'

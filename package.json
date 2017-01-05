@@ -23,7 +23,6 @@
     "@angular/common": "2.4.1",
     "@angular/compiler": "2.3.1",
     "@angular/compiler-cli": "2.4.1",
-    "@angular/core": "2.4.1",
     "@angular/forms": "2.4.1",
     "@angular/platform-browser": "2.4.1",
     "@angular/platform-browser-dynamic": "2.4.1",
@@ -50,10 +49,8 @@
     "node-sass": "^3.8.0",
     "postcss-loader": "^0.9.1",
     "precss": "^1.4.0",
-    "protractor": "^3.3.0",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.12",
     "sass-loader": "^3.2.3",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
@@ -70,6 +67,12 @@
   },
   "dependencies": {
     "ng2-material-dropdown": "0.5.8"
+  },
+  "peerDependencies": {
+      "@angular/core": "2.4.1",
+      "@angular/forms": "2.4.1",
+      "@angular/http": "2.4.1",
+      "rxjs": "5.0.0-beta.12"
   },
   "keywords": [
     "angular 2",

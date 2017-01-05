@@ -14,6 +14,9 @@ import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { AutocompleteItemModel } from '../helpers/accessor';
+import { Http, URLSearchParams } from '@angular/http';
+
+import 'rxjs/add/operator/map';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -66,6 +69,22 @@ export class TagInputDropdown {
     @Input() public showDropdownIfEmpty: boolean = false;
 
     /**
+     * @name autocompleteEndpoint
+     */
+    @Input() public autocompleteEndpoint: string;
+
+    /**
+     * @name autocompleteEndpointQueryParam
+     * @type {string}
+     */
+    @Input() public autocompleteEndpointQueryParam: string;
+
+    /**
+     * @name autocompleteEndpointMapper
+     */
+    @Input() public autocompleteEndpointMapper: (items: any) => string[] = (items) => items;
+
+    /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
      * @type {AutocompleteItemModel[]}
@@ -88,7 +107,7 @@ export class TagInputDropdown {
         return this._autocompleteItems;
     }
 
-    constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
+    constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent, private http: Http) {}
 
     public ngOnInit() {
         this.onItemClicked().subscribe(item => {
@@ -103,6 +122,12 @@ export class TagInputDropdown {
         this.tagInput.inputForm.onKeyup.subscribe(() => {
             this.show();
         });
+
+        if (this.autocompleteEndpoint) {
+            this.tagInput
+                .onTextChange
+                .subscribe(this.performCall.bind(this));
+        }
     }
 
     /**
@@ -231,5 +256,36 @@ export class TagInputDropdown {
         }
 
         this.updatePosition(this.tagInput.inputForm.getElementPosition());
+    }
+
+    /**
+     * @name performCall
+     * @param text
+     */
+    private performCall(text: string) {
+        const param = this.autocompleteEndpointQueryParam;
+        const params = new URLSearchParams();
+
+        if (params) {
+            params.set(param, text);
+        }
+
+        this.http
+            .get(this.autocompleteEndpoint, {search: params})
+            .map(items => items.json())
+            .subscribe(this.populateItemsFromHttp.bind(this));
+    }
+
+    /**
+     * @name populateItemsFromHttp
+     * @param data
+     */
+    private populateItemsFromHttp(data: any) {
+        const terms = this.autocompleteEndpointMapper(data)
+            .map(item => new AutocompleteItemModel(item, item));
+
+        this.autocompleteItems = [...this.autocompleteItems, ...terms];
+
+        this.show();
     }
 }
