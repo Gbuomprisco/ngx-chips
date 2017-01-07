@@ -37,12 +37,12 @@ import {
             state('none', style({width: 0, opacity: 0})),
             transition('none => clicked', [
                 animate(200, keyframes([
-                    style({opacity: 1, offset: 0, width: 0, height: 0, borderRadius: '100%'}),
-                    style({opacity: 1, offset: 0.15, width: '15%', height: '30%'}),
-                    style({opacity: 1, offset: 0.35, width: '35%', height: '50%'}),
-                    style({opacity: 1, offset: 0.5, width: '50%', height: '75%'}),
-                    style({opacity: 1, offset: 0.8, width: '80%', height: '90%'}),
-                    style({opacity: 1, offset: 1, width: '100%', height: '100%', borderRadius: '16px'})
+                    style({opacity: 1, offset: 0, width: 0, borderRadius: '0'}),
+                    style({opacity: 1, offset: 0.15, width: '15%'}),
+                    style({opacity: 1, offset: 0.35, width: '35%'}),
+                    style({opacity: 1, offset: 0.5, width: '50%'}),
+                    style({opacity: 1, offset: 0.8, width: '80%'}),
+                    style({opacity: 1, offset: 1, width: '200%', borderRadius: '16px'})
                 ]))
             ])
         ])

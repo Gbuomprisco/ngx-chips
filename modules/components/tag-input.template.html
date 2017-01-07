@@ -7,10 +7,10 @@
 
     <!-- TAGS -->
     <div class="ng2-tags-container">
-        <tag *ngFor="let item of items"
+        <tag *ngFor="let item of items; let i = index"
              [@flyInOut]="'in'"
              (onSelect)="selectItem(item)"
-             (onRemove)="removeItem(item)"
+             (onRemove)="removeItem(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
              [attr.tabindex]="readonly ? -1 : 0"
@@ -18,6 +18,8 @@
              [readonly]="readonly"
              [removable]="removable"
              [editable]="editable"
+             [displayBy]="displayBy"
+             [identifyBy]="identifyBy"
              [template]="!!hasCustomTemplate() ? templates.first : undefined"
              [model]="item">
         </tag>

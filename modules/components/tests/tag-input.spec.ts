@@ -152,12 +152,11 @@ describe('TagInputComponent', () => {
         beforeEach(() => {
             fixture = TestBed.createComponent(BasicTagInputComponent);
             tagName = 'Typescript';
-            item = new TagModel(tagName, tagName);
         });
 
         it('is removed from the list', fakeAsync(() => {
             component = getComponent(fixture);
-            component.removeItem(item);
+            component.removeItem(tagName);
 
             fixture.detectChanges();
 
@@ -274,7 +273,7 @@ describe('TagInputComponent', () => {
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
-            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
+            expect(component.selectedTag).toEqual('Typescript');
 
             // press tab and focus input again
             keyDown[ 'keyCode' ] = 9;
@@ -287,7 +286,7 @@ describe('TagInputComponent', () => {
             // then starts from back again
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
-            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
+            expect(component.selectedTag).toEqual('Typescript');
 
             // it removes current selected tag when pressing delete
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
@@ -306,16 +305,16 @@ describe('TagInputComponent', () => {
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
-            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
+            expect(component.selectedTag).toEqual('Typescript');
 
             // press left arrow
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
-            expect(component.selectedTag).toEqual(match({display: 'Javascript', value: 'Javascript' }));
+            expect(component.selectedTag).toEqual('Javascript');
 
             // press right arrow
             keyDown[ 'keyCode' ] = 39;
             component.tags.first.element.nativeElement.dispatchEvent(keyDown);
-            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
+            expect(component.selectedTag).toEqual('Typescript');
 
             // press tab -> focuses input
             keyDown[ 'keyCode' ] = 9;
@@ -335,7 +334,7 @@ describe('TagInputComponent', () => {
             component.tags.first.element.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
-            expect(component.selectedTag).toEqual(match({ display: 'Typescript', value: 'Typescript' }));
+            expect(component.selectedTag).toEqual('Typescript');
 
             // press tab -> focuses input
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
@@ -461,7 +460,7 @@ describe('TagInputComponent', () => {
             tick();
 
             expect(component.items.length).toEqual(3);
-            const index = component.items.findIndex(tag => component.findItem(item.value.display) === tag);
+            const index = component.items.findIndex(tag => item.value === tag);
             expect(index).toEqual(2);
 
             discardPeriodicTasks();

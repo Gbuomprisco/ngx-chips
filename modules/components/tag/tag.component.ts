@@ -44,6 +44,9 @@ export class TagComponent {
      */
     @Input() public template: TemplateRef<any>;
 
+    @Input() private displayBy: string;
+    @Input() private identifyBy: string;
+
     /**
      * @name onSelect
      * @type {EventEmitter<TagModel>}
@@ -115,7 +118,7 @@ export class TagComponent {
      * @name remove
      */
     public remove(): void {
-        this.onRemove.emit(this.model);
+        this.onRemove.emit(this);
     }
 
     /**
@@ -152,14 +155,24 @@ export class TagComponent {
      * @name toggleEditMode
      */
     public toggleEditMode($event?): void {
-        $event.stopPropagation();
-        $event.preventDefault();
-
         if (this.editModeActivated) {
             this.storeNewValue();
+            this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', false);
+        } else {
+            this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', true);
+            this.element.nativeElement.querySelector('[contenteditable]').focus();
         }
 
         this.editModeActivated = !this.editModeActivated;
+    }
+
+    /**
+     * @name getDisplayValue
+     * @param item
+     * @returns {string}
+     */
+    public getDisplayValue(item: TagModel): string {
+        return typeof item === 'string' ? item : item[this.displayBy];
     }
 
     /**
@@ -185,9 +198,19 @@ export class TagComponent {
     private storeNewValue(): void {
         const input = this.getContentEditableText();
 
+        const exists = (model: TagModel) => {
+            if (typeof model === 'string') {
+                return model === input;
+            } else {
+                return model[this.identifyBy] === input;
+            }
+        };
+
         // if the value changed, replace the value in the model
-        if (input !== this.model.display) {
-            this.model.display = input;
+        if (exists(this.model)) {
+            const itemValue = this.model[this.identifyBy];
+            this.model = typeof this.model === 'string' ? input :
+                {[this.identifyBy]: itemValue, [this.displayBy]: itemValue};
 
             // emit output
             this.onTagEdited.emit(this.model);
