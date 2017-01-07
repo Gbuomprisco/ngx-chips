@@ -2,6 +2,8 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
+**This component works in Angular 2.4.1**. If you have an issues, please do make sure you're not running a different version. Otherwise, please do open a new issue.
+
 ## Demo
 
 Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgHA8xM](http://www.webpackbin.com/VkEgHA8xM). 
