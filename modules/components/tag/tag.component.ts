@@ -44,6 +44,9 @@ export class TagComponent {
      */
     @Input() public template: TemplateRef<any>;
 
+    @Input() private displayBy: string;
+    @Input() private identifyBy: string;
+
     /**
      * @name onSelect
      * @type {EventEmitter<TagModel>}
@@ -115,7 +118,7 @@ export class TagComponent {
      * @name remove
      */
     public remove(): void {
-        this.onRemove.emit(this.model);
+        this.onRemove.emit(this);
     }
 
     /**
@@ -151,15 +154,24 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode($event?): void {
-        $event.stopPropagation();
-        $event.preventDefault();
-
+    public toggleEditMode(): void {
         if (this.editModeActivated) {
             this.storeNewValue();
+        } else {
+            this.element.nativeElement.querySelector('[contenteditable]').focus();
         }
 
         this.editModeActivated = !this.editModeActivated;
+        this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', this.editModeActivated);
+    }
+
+    /**
+     * @name getDisplayValue
+     * @param item
+     * @returns {string}
+     */
+    public getDisplayValue(item: TagModel): string {
+        return typeof item === 'string' ? item : item[this.displayBy];
     }
 
     /**
@@ -185,12 +197,37 @@ export class TagComponent {
     private storeNewValue(): void {
         const input = this.getContentEditableText();
 
+        const exists = (model: TagModel) => {
+            return typeof model === 'string' ?
+                model === input :
+                model[this.identifyBy] === input;
+        };
+
         // if the value changed, replace the value in the model
-        if (input !== this.model.display) {
-            this.model.display = input;
+        if (exists(this.model)) {
+            const itemValue = this.model[this.identifyBy];
+
+            this.model = typeof this.model === 'string' ? input :
+                {[this.identifyBy]: itemValue, [this.displayBy]: itemValue};
 
             // emit output
             this.onTagEdited.emit(this.model);
         }
+    }
+
+    /**
+     * @name isDeleteIconVisible
+     * @returns {boolean}
+     */
+    private isDeleteIconVisible(): boolean {
+        return !this.readonly && this.removable && !this.editModeActivated;
+    }
+
+    /**
+     * @name isRippleVisible
+     * @returns {boolean}
+     */
+    private isRippleVisible(): boolean {
+        return !this.readonly && !this.editModeActivated;
     }
 }

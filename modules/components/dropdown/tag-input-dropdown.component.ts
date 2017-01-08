@@ -13,7 +13,7 @@ import {
 import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
-import { AutocompleteItemModel } from '../helpers/accessor';
+import { TagModel } from '../helpers/accessor';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -48,12 +48,12 @@ export class TagInputDropdown {
      * @name autocompleteItems
      * @param items
      */
-    @Input() public set autocompleteItems(items: AutocompleteItemModel[]) {
-        this._autocompleteItems = items ? items.map((item: AutocompleteItemModel | string) => {
+    @Input() public set autocompleteItems(items: TagModel[]) {
+        this._autocompleteItems = items ? items.map((item: TagModel | string) => {
             if (typeof item === 'string') {
-                return new AutocompleteItemModel(item, item);
+                return {display: item, value: item};
             } else {
-                return new AutocompleteItemModel(item.display, item.value);
+                return item;
             }
         }) : [];
     }
@@ -70,21 +70,21 @@ export class TagInputDropdown {
      * @name items
      * @type {AutocompleteItemModel[]}
      */
-    private items: AutocompleteItemModel[] = [];
+    private items: TagModel[] = [];
 
     /**
      * @name _autocompleteItems
      * @type {Array}
      * @private
      */
-    private _autocompleteItems: AutocompleteItemModel[] = [];
+    private _autocompleteItems: TagModel[] = [];
 
     /**
      * @name autocompleteItems
      * @desc array of items that will populate the autocomplete
      * @type {Array<string>}
      */
-    public get autocompleteItems(): AutocompleteItemModel[] {
+    public get autocompleteItems(): TagModel[] {
         return this._autocompleteItems;
     }
 
@@ -162,11 +162,9 @@ export class TagInputDropdown {
             return;
         }
 
-        const value = item.value.display;
-
         // add item
-        if (this.tagInput.isTagValid(value, true)) {
-            this.tagInput.appendNewTag(value);
+        if (this.tagInput.isTagValid(item.value, true)) {
+            this.tagInput.appendNewTag(item.value);
         }
 
         this.tagInput.setInputValue('');
@@ -202,15 +200,19 @@ export class TagInputDropdown {
      * @param value
      * @returns {any}
      */
-    private getMatchingItems(value: string): AutocompleteItemModel[] {
+    private getMatchingItems(value: string): TagModel[] {
         if (!value && !this.showDropdownIfEmpty) {
             return [];
         }
 
+        const matchesFn = (item: string) => item.toLowerCase().indexOf(value.toLowerCase()) >= 0;
+        const matchesValue = (item: TagModel) => {
+            return typeof item === 'string' ? matchesFn(item) : matchesFn(item[this.tagInput.displayBy]);
+        };
+
         return this.autocompleteItems.filter(item => {
-            const matchesValue = item.display.toLowerCase().indexOf(value.toLowerCase()) >= 0;
-            const hasValue = !!this.tagInput.findItem(item.display);
-            return (matchesValue === true) && (hasValue === false);
+            const hasValue = !!this.tagInput.tags.find(tag => tag.model === item);
+            return (matchesValue(item) === true) && (hasValue === false);
         });
     }
 

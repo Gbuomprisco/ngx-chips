@@ -2,12 +2,12 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items</h3>
-            <tag-input [ngModel]="items"></tag-input>
+            <tag-input [(ngModel)]="items"></tag-input>
         </div>
 
         <div>
             <h3>Simple Input with two items as objects</h3>
-            <tag-input [ngModel]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
+            <tag-input [(ngModel)]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
         </div>
 
         <div>
@@ -100,11 +100,11 @@
             <h3>Input with custom item template and custom dropdown item template</h3>
             <tag-input [ngModel]="['@item']">
                 <template let-item="item">
-                    tag: {{ item.display }}
+                    tag: {{ item }}
                 </template>
                 <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects">
                     <template let-item="item" let-index="index">
-                        dropdown: {{ item.display }}
+                        dropdown: {{ item }}
                     </template>
                 </tag-input-dropdown>
             </tag-input>
@@ -146,17 +146,17 @@
         </div>
 
         <div>
-            <h3>Component customized via inheritance</h3>
-
+            <h3>Simple Input that allows dupes</h3>
+            <tag-input [(ngModel)]="items" [allowDupes]="true"></tag-input>
         </div>
 
         <div>
             <h3>List of tags without form</h3>
 
             <div class="flex default">
-                <tag [model]="{display: 'Tag 1'}" class='tag'></tag>
-                <tag [model]="{display: 'Tag 2'}" class='tag'></tag>
-                <tag [model]="{display: 'Tag 3'}" [readonly]="true" class='tag'></tag>
+                <tag [model]="'Tag 1'" class='tag'></tag>
+                <tag [model]="'Tag 2'" class='tag'></tag>
+                <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
             </div>
         </div>
     </div>

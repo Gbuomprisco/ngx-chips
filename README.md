@@ -99,6 +99,8 @@ If you do use an array of objects, make sure you:
 
 - **`editable`** (experimental) - [**`?boolean`**] - if set to `true`, it will be possible to edit the display value of the tags (defaults to `false`)
 
+- **`allowDupes`** - [**`?boolean`**] - if set to `true`, it will be possible to add tags with the same value (defaults to `false`)
+
 
 ##### Validation (optional)
 - **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.

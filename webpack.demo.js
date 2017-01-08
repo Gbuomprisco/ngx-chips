@@ -23,7 +23,7 @@ const webpackConfig = {
     tslint: {
         emitErrors: false,
         failOnHint: false,
-        resourcePath: 'demo'
+        resourcePath: './'
     },
 
     module: {

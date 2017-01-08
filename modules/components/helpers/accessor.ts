@@ -4,16 +4,7 @@ import {
 
 import { Input } from '@angular/core';
 
-export class TagModel {
-    constructor(public display: string, public value: string) {
-        this.display = display;
-        this.value = value;
-    }
-}
-
-export class AutocompleteItemModel extends TagModel {
-    data: any;
-};
+export type TagModel = string | {[key: string]: any};
 
 export function isObject(obj: any): boolean {
     return obj === Object(obj);
@@ -21,22 +12,20 @@ export function isObject(obj: any): boolean {
 
 export class TagInputAccessor implements ControlValueAccessor {
     private _items: TagModel[] = [];
-
     private _onTouchedCallback: (items: TagModel[]) => void;
-
     private _onChangeCallback: (items: TagModel[]) => void;
 
     /**
      * @name displayBy
      * @type {string}
      */
-    @Input() private displayBy: string = 'display';
+    @Input() public displayBy: string = 'display';
 
     /**
      * @name identifyBy
      * @type {string}
      */
-    @Input() private identifyBy: string = 'value';
+    @Input() public identifyBy: string = 'value';
 
     public get items(): TagModel[] {
         return this._items;
@@ -52,7 +41,7 @@ export class TagInputAccessor implements ControlValueAccessor {
     }
 
     writeValue(items: any[]) {
-        this._items = this.transformItems(items);
+        this._items = items || [];
     }
 
     registerOnChange(fn: any) {
@@ -63,31 +52,11 @@ export class TagInputAccessor implements ControlValueAccessor {
         this._onTouchedCallback = fn;
     }
 
-    /**
-     * @name transformItems
-     * @param items
-     * @returns {TagModel|TagModel[]|Array}
-     */
-    private transformItems(items: any[]): TagModel[] {
-        const displayBy = this.displayBy;
-        const identifyBy = this.identifyBy;
+    public getItemValue(item: TagModel): string {
+        return isObject(item) ? item[this.identifyBy] : item;
+    }
 
-        return items ? items.map(item => {
-            if (isObject(item)) {
-
-                // throw an error if the items do not have the properties needed
-                if (!item.hasOwnProperty(displayBy) || !item.hasOwnProperty(identifyBy)) {
-                    throw new Error(`
-                        'Please, make sure the objects have "identifyBy" and "displayBy" properties,
-                         by default these are "value" and "display", but you can pass your own as inputs
-                    `);
-                }
-
-                return new TagModel(item[this.displayBy], item[this.identifyBy]);
-            }
-
-            // if the user returned an array of strings, give the same value to display and value
-            return new TagModel(item, item);
-        }) : [];
+    protected getItemsWithout(index: number): TagModel[] {
+        return this.items.filter((item, position) => position !== index);
     }
 }
