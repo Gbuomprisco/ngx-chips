@@ -63,7 +63,7 @@ If you do use an array of objects, make sure you:
 - define two properties, `value` and `display`. `Value` will uniquely identify the items, `display` will be the value displayed.
 - or, in alternative, provide the keys using the inputs `identifyBy` and `displayBy`
 
-**Notice**: the model will be transformed into an object { display, value }.
+**Notice**: the items provided to the model won't change, but the items added to the model will have the format { display, value }. If you do provide `identifyBy` and `displayBy`, these will be used as format for the user-entered tags.
 
 #### Properties (optional)
 - **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
@@ -155,6 +155,8 @@ interface AutoCompleteModel {
    display: string;
 }
 ```
+
+The input text will be matched against both the properties.
 
 More options to customise the dropdown will follow.
 

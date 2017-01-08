@@ -205,9 +205,16 @@ export class TagInputDropdown {
             return [];
         }
 
-        const matchesFn = (item: string) => item.toLowerCase().indexOf(value.toLowerCase()) >= 0;
-        const matchesValue = (item: TagModel) => {
-            return typeof item === 'string' ? matchesFn(item) : matchesFn(item[this.tagInput.displayBy]);
+        const matchesFn = (item: string): boolean => {
+            return item && item.toString()
+                    .toLowerCase()
+                    .indexOf(value.toLowerCase()) >= 0 || false;
+        };
+
+        const matchesValue = (item: TagModel): boolean => {
+            return typeof item === 'string' ?
+                matchesFn(item) :
+                matchesFn(item[this.tagInput.displayBy]) || matchesFn(item[this.tagInput.identifyBy]);
         };
 
         return this.autocompleteItems.filter(item => {

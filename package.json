@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run build",
