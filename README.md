@@ -6,8 +6,9 @@ This is a component for Angular >= 2. Design and API are blandly inspired by Ang
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/VkEgHA8xM](http://www.webpackbin.com/VkEgHA8xM). 
-**[OUTDATED] - the demo will soon be published on its dedicated gh-pages site**
+Check out the live demo (with source code) here [http://www.webpackbin.com/VJX2uIsBz](http://www.webpackbin.com/VJX2uIsBz). 
+
+** The demo will soon be published on its dedicated gh-pages site**
 
 ## Install
 
@@ -455,8 +456,8 @@ If you wish to copy the same style as the one used in the component, please have
 
 ```html
 <div class="flex">
-    <tag [model]="{display: 'Tag 1'}" class='tag'></tag>
-    <tag [model]="{display: 'Tag 2'}" class='tag'></tag>
-    <tag [model]="{display: 'Tag 3'}" [readonly]="true" class='tag'></tag>
+    <tag [model]="'Tag 1'" class='tag'></tag>
+    <tag [model]="'Tag 2'" class='tag'></tag>
+    <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
 </div>
 ```
