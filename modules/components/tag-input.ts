@@ -315,6 +315,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name removeItem
      * @desc removes an item from the array of the model
      * @param tag {TagModel}
+     * @param index {number}
      */
     public removeItem(tag: TagModel, index: number): void {
         this.items = this.getItemsWithout(index);

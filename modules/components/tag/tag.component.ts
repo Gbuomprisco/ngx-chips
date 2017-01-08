@@ -154,16 +154,15 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode($event?): void {
+    public toggleEditMode(): void {
         if (this.editModeActivated) {
             this.storeNewValue();
-            this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', false);
         } else {
-            this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', true);
             this.element.nativeElement.querySelector('[contenteditable]').focus();
         }
 
         this.editModeActivated = !this.editModeActivated;
+        this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', this.editModeActivated);
     }
 
     /**
@@ -199,21 +198,36 @@ export class TagComponent {
         const input = this.getContentEditableText();
 
         const exists = (model: TagModel) => {
-            if (typeof model === 'string') {
-                return model === input;
-            } else {
-                return model[this.identifyBy] === input;
-            }
+            return typeof model === 'string' ?
+                model === input :
+                model[this.identifyBy] === input;
         };
 
         // if the value changed, replace the value in the model
         if (exists(this.model)) {
             const itemValue = this.model[this.identifyBy];
+
             this.model = typeof this.model === 'string' ? input :
                 {[this.identifyBy]: itemValue, [this.displayBy]: itemValue};
 
             // emit output
             this.onTagEdited.emit(this.model);
         }
+    }
+
+    /**
+     * @name isDeleteIconVisible
+     * @returns {boolean}
+     */
+    private isDeleteIconVisible(): boolean {
+        return !this.readonly && this.removable && !this.editModeActivated;
+    }
+
+    /**
+     * @name isRippleVisible
+     * @returns {boolean}
+     */
+    private isRippleVisible(): boolean {
+        return !this.readonly && !this.editModeActivated;
     }
 }

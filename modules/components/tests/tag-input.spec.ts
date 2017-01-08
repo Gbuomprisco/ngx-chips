@@ -156,13 +156,12 @@ describe('TagInputComponent', () => {
 
         it('is removed from the list', fakeAsync(() => {
             component = getComponent(fixture);
-            component.removeItem(tagName);
+            component.removeItem(tagName, 1);
 
             fixture.detectChanges();
 
             expect(component.items.length).toEqual(1);
             expect(component.inputForm.isInputFocused()).toEqual(true);
-
         }));
 
         it('emits the event onRemove', fakeAsync(() => {
@@ -179,7 +178,7 @@ describe('TagInputComponent', () => {
 
         it('is sets current selected item as undefined', fakeAsync(() => {
             component = getComponent(fixture);
-            component.removeItem(tagName);
+            component.removeItem(tagName, 0);
             expect(component.selectedTag).toBe(undefined);
         }));
     });

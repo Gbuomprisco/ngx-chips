@@ -30,9 +30,9 @@
             aria-label="Remove tag"
             role="button"
             (click)="remove()"
-            *ngIf="!readonly && removable && !editModeActivated">
+            *ngIf="isDeleteIconVisible()">
         </delete-icon>
     </div>
 </div>
 
-<tag-ripple [state]="rippleState" *ngIf="!readonly && !editModeActivated"></tag-ripple>
+<tag-ripple [state]="rippleState" *ngIf="isRippleVisible()"></tag-ripple>
