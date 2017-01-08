@@ -21,7 +21,8 @@
     },
     "angularCompilerOptions": {
         "genDir": "factories",
-        "useWebpackText": true
+        "useWebpackText": true,
+        "skipMetadataEmit" : true
     },
     "files": [
         "modules/ng2-tag-input.module.ts"

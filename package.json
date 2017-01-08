@@ -20,12 +20,15 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular/common": "2.4.1",
-    "@angular/compiler": "2.3.1",
-    "@angular/compiler-cli": "2.4.1",
-    "@angular/forms": "2.4.1",
-    "@angular/platform-browser": "2.4.1",
-    "@angular/platform-browser-dynamic": "2.4.1",
+    "@angular/core": "2.4.2",
+    "@angular/forms": "2.4.2",
+    "@angular/http": "2.4.2",
+    "rxjs": "5.0.1",
+    "@angular/common": "2.4.2",
+    "@angular/compiler": "2.4.2",
+    "@angular/compiler-cli": "2.4.2",
+    "@angular/platform-browser": "2.4.2",
+    "@angular/platform-browser-dynamic": "2.4.2",
     "@types/es6-collections": "^0.5.29",
     "@types/es6-shim": "0.0.31",
     "@types/jasmine": "^2.2.34",
@@ -63,16 +66,17 @@
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2",
     "webpack-merge": "^0.8.4",
-    "zone.js": "0.6.23"
+    "zone.js": "0.7.2"
   },
   "dependencies": {
     "ng2-material-dropdown": "0.5.9"
   },
   "peerDependencies": {
-      "@angular/core": "2.4.1",
-      "@angular/forms": "2.4.1",
-      "@angular/http": "2.4.1",
-      "rxjs": "5.0.0-beta.12"
+    "@angular/core": "2.4.2",
+    "@angular/common": "2.4.2",
+    "@angular/forms": "2.4.2",
+    "@angular/http": "2.4.2",
+    "rxjs": "5.0.1"
   },
   "keywords": [
     "angular 2",

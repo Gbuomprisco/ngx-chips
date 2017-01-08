@@ -14,9 +14,11 @@ import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { TagModel } from '../helpers/accessor';
-import { Http, URLSearchParams } from '@angular/http';
+import { Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -71,23 +73,12 @@ export class TagInputDropdown {
     /**
      * @name autocompleteEndpoint
      */
-    @Input() public autocompleteEndpoint: string;
-
-    /**
-     * @name autocompleteEndpointQueryParam
-     * @type {string}
-     */
-    @Input() public autocompleteEndpointQueryParam: string;
-
-    /**
-     * @name autocompleteEndpointMapper
-     */
-    @Input() public autocompleteEndpointMapper: (items: any) => string[] = (items) => items;
+    @Input() public autocompleteRequest: (text: string) => Observable<Response>;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
-     * @type {AutocompleteItemModel[]}
+     * @type {TagModel[]}
      */
     private items: TagModel[] = [];
 
@@ -107,7 +98,7 @@ export class TagInputDropdown {
         return this._autocompleteItems;
     }
 
-    constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent, private http: Http) {}
+    constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
 
     public ngOnInit() {
         this.onItemClicked().subscribe(item => {
@@ -123,10 +114,19 @@ export class TagInputDropdown {
             this.show();
         });
 
-        if (this.autocompleteEndpoint) {
+        if (this.autocompleteRequest) {
             this.tagInput
                 .onTextChange
-                .subscribe(this.performCall.bind(this));
+                .filter((text: string) => !!text.trim().length)
+                .subscribe((text: string) => {
+                    this.tagInput.isLoading = true;
+
+                    this.autocompleteRequest(text)
+                        .subscribe(data => {
+                            this.tagInput.isLoading = false;
+                            this.populateItemsFromHttp(data);
+                        });
+                });
         }
     }
 
@@ -268,30 +268,11 @@ export class TagInputDropdown {
     }
 
     /**
-     * @name performCall
-     * @param text
-     */
-    private performCall(text: string) {
-        const param = this.autocompleteEndpointQueryParam;
-        const params = new URLSearchParams();
-
-        if (params) {
-            params.set(param, text);
-        }
-
-        this.http
-            .get(this.autocompleteEndpoint, {search: params})
-            .map(items => items.json())
-            .subscribe(this.populateItemsFromHttp.bind(this));
-    }
-
-    /**
      * @name populateItemsFromHttp
      * @param data
      */
     private populateItemsFromHttp(data: any) {
-        const terms = this.autocompleteEndpointMapper(data)
-            .map(item => new AutocompleteItemModel(item, item));
+        const terms = data.map(item => ({display: item, value: item}));
 
         this.autocompleteItems = [...this.autocompleteItems, ...terms];
 

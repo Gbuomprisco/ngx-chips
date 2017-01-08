@@ -12,7 +12,8 @@ var webpackConfig = {
             "@angular/forms",
             "@angular/http",
             "rxjs/add/operator/debounceTime",
-            "rxjs/add/operator/map"
+            "rxjs/add/operator/map",
+            "rxjs/add/operator/filter"
         ],
         'ng2-tag-input': './modules/ng2-tag-input.module.ts'
     },
@@ -29,8 +30,7 @@ var webpackConfig = {
         "@angular/common": true,
         "@angular/forms": true,
         "@angular/http": true,
-        "rxjs/add/operator/debounceTime": true,
-        "rxjs/add/operator/map": true
+        "rxjs": true
     },
 
     plugins: [

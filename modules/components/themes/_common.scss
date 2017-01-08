@@ -1,5 +1,7 @@
 // tag input
 
+@import "./_progress-bar.scss";
+
 .ng2-tag-input {
     display: flex;
     flex-direction: row;
@@ -11,6 +13,7 @@
     min-height: $container-height;
 
     cursor: text;
+    position: relative;
 }
 
 .ng2-tag-input:focus {
@@ -39,3 +42,8 @@
     border-bottom: 2px solid map-get($color-error, 'default');
 }
 
+.default.ng2-tag-input.ng2-tag-input--loading,
+.dark.ng2-tag-input.ng2-tag-input--loading,
+.minimal.ng2-tag-input.ng2-tag-input--loading {
+    border: none;
+}

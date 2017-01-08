@@ -307,6 +307,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         change: <{(fun): any}[]>[]
     };
 
+    public isLoading: boolean = false;
+
     constructor(private renderer: Renderer) {
         super();
     }

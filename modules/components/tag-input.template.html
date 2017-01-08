@@ -2,6 +2,7 @@
 <div ngClass="ng2-tag-input {{ theme }}"
      (click)="focus(true)"
      [attr.tabindex]="-1"
+     [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
 
@@ -38,6 +39,8 @@
             [inputId]="inputId">
         </tag-input-form>
     </div>
+
+    <div class="progress-bar" *ngIf="isLoading"></div>
 </div>
 
 <!-- ERRORS -->
