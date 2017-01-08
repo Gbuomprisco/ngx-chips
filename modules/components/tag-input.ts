@@ -197,6 +197,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() private editable: boolean = false;
 
     /**
+     * @name allowDupes
+     * @type {boolean}
+     */
+    @Input() public allowDupes: boolean = false;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -250,7 +256,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name onValidationError
      * @type {EventEmitter<string>}
      */
-    @Output() public onValidationError = new EventEmitter<string>();
+    @Output() public onValidationError = new EventEmitter<TagModel>();
 
     /**
      * - output triggered when tag is edited
@@ -288,7 +294,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name tags
      * @desc list of Element items
      */
-    @ViewChildren(TagComponent) private tags: QueryList<TagComponent>;
+    @ViewChildren(TagComponent) public tags: QueryList<TagComponent>;
 
     /**
      * @name listeners
@@ -308,13 +314,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name removeItem
      * @desc removes an item from the array of the model
-     * @param item {string}
+     * @param tag {TagModel}
+     * @param index {number}
      */
-    public removeItem(item: TagModel): void {
-        this.items = this.items.filter(_item => _item !== this.findItem(this.getTagValue(item)));
+    public removeItem(tag: TagModel, index: number): void {
+        this.items = this.getItemsWithout(index);
 
         // if the removed tag was selected, set it as undefined
-        if (this.selectedTag && this.getTagValue(this.selectedTag) === this.getTagValue(item)) {
+        if (this.selectedTag === tag) {
             this.selectedTag = undefined;
         }
 
@@ -322,7 +329,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         this.focus(true);
 
         // emit remove event
-        this.onRemove.emit(item);
+        this.onRemove.emit(tag);
     }
 
     /**
@@ -330,15 +337,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false): void {
-        const item = this.setInputValue(this.inputForm.value.value);
+        const inputValue = this.setInputValue(this.inputForm.value.value);
+        const tag = this.createTag(inputValue, inputValue);
+
         if (!this.inputForm.form.valid) {
             return;
         }
 
-        if (this.isTagValid(item, isFromAutocomplete)) {
-            this.appendNewTag(item);
+        if (this.isTagValid(tag, isFromAutocomplete)) {
+            this.appendNewTag(tag);
         } else {
-            this.onValidationError.emit(item);
+            this.onValidationError.emit(tag);
         }
 
         // reset control and focus input
@@ -348,46 +357,64 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     /**
      *
-     * @param value
+     * @param tag
      * @param isFromAutocomplete
      */
-    public isTagValid(value: string, isFromAutocomplete = false): boolean {
+    public isTagValid(tag: TagModel, isFromAutocomplete = false): boolean {
         const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
+
         if (selectedItem && !isFromAutocomplete) {
             return;
         }
 
-        // check validity:
-        // 1. there must be no dupe
+        const displayBy = this.displayBy;
+        const identifyBy = this.identifyBy;
 
         // check if the transformed item is already existing in the list
-        const dupe = this.findItem(value);
+        const dupe = this.items.find(item => {
+            return item === tag[identifyBy] ||
+                item[identifyBy] === tag[identifyBy] ||
+                item[displayBy] === tag[displayBy];
+        });
 
         // if so, give a visual cue and return false
-        if (!!dupe && this.blinkIfDupe) {
-            const item = this.tags.find(item => item.model === dupe);
+        if (!this.allowDupes && !!dupe && this.blinkIfDupe) {
+            const item = this.tags.find(item => this.getItemValue(item.model) === this.getItemValue(dupe));
             item.blink();
         }
 
-        // 2. check max items has not been reached
-        // 3. check item comes from autocomplete
-        // 4. or onlyFromAutocomplete is false
-        return !dupe && !this.maxItemsReached &&
-            ((isFromAutocomplete && this.onlyFromAutocomplete) || !this.onlyFromAutocomplete);
+        const fromAutocomplete = isFromAutocomplete && this.onlyFromAutocomplete;
+
+        // 1. there must be no dupe OR dupes are allowed
+        return (dupe === undefined || this.allowDupes === true) &&
+
+            // 2. check max items has not been reached
+            this.maxItemsReached === false &&
+
+            // 3. check item comes from autocomplete or onlyFromAutocomplete is false
+            ((fromAutocomplete) || this.onlyFromAutocomplete === false);
     }
 
     /**
      * @name appendNewTag
-     * @param item
+     * @param tag
      */
-    public appendNewTag(item: string): void {
-        const newTag = new TagModel(item, item);
+    public appendNewTag(tag: TagModel): void {
+        this.items = [...this.items, tag];
+        this.onAdd.emit(tag);
+    }
 
-        // append item to the ngModel list
-        this.items = [...this.items, newTag];
-
-        //  and emit event
-        this.onAdd.emit(newTag);
+    /**
+     * @name createTag
+     * @param display
+     * @param value
+     * @returns {{}}
+     */
+    public createTag(display: string, value: any): TagModel {
+        return {
+            [this.displayBy]: display,
+            [this.identifyBy]: value
+        };
     }
 
     /**
@@ -404,15 +431,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // emit event
         this.onSelect.emit(item);
-    }
-
-    /**
-     * @name findItem
-     * @param value
-     * @returns {TagModel}
-     */
-    public findItem(value: string): TagModel {
-        return this.items.find((item: TagModel) => item.value === value);
     }
 
     /**
@@ -437,7 +455,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         switch (constants.KEY_PRESS_ACTIONS[key]) {
             case constants.ACTIONS_KEYS.DELETE:
                 if (this.selectedTag && this.removable) {
-                    this.removeItem(this.selectedTag);
+                    this.removeItem(this.selectedTag, this.items.indexOf(this.selectedTag));
                 }
                 break;
             case constants.ACTIONS_KEYS.SWITCH_PREV:
@@ -576,13 +594,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * - helper to take value of a model; mostly for trackBy because it will only accept a function
-     * @name getTagValue
+     * @name trackBy
      * @param item
      * @returns {string}
      */
-    private getTagValue(item: TagModel): string {
-        return item ? item.value : undefined;
+    private trackBy(item: TagModel): string {
+        return item[this.identifyBy];
     }
 
     /**
@@ -593,11 +610,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         const text = data.clipboardData.getData('text/plain');
 
         text.split(this.pasteSplitPattern)
-            .map(item => new TagModel(item, item))
+            .map(item => this.createTag(item, item))
             .forEach(item => {
-                const value = this.transform(this.getTagValue(item));
-                if (this.isTagValid(value)) {
-                    this.appendNewTag(value);
+                const display = this.transform(item[this.displayBy]);
+                const tag = this.createTag(display, display);
+
+                if (this.isTagValid(tag)) {
+                    this.appendNewTag(tag);
                 }
             });
 
@@ -631,7 +650,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
         // though, warn the user.
-        const maxItemsReached = this.maxItems !== undefined && this.items.length > this.maxItems;
+        const maxItemsReached = this.maxItems !== undefined && this.items && this.items.length > this.maxItems;
 
         if (maxItemsReached) {
             this.maxItems = this.items.length;
