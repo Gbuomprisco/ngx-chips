@@ -139,6 +139,9 @@ If you do use an array of objects, make sure you:
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
+- **`autocompleteRequest`** - [**`(text: string) => Observable<Response>`**] - a function that takes a string (current input value) and returns an Observable (ex. `http.get()`)
+ with an array of items wit the same structure as `autocompleteItems` (see below). It can be used to popuplate the autocomplete with items coming from an async request.
+
 - **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
 - **`autocompleteItems`** - [**`?string[] | AutoCompleteModel[]`**] - an array of items to populate the autocomplete dropdown
