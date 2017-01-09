@@ -65,6 +65,8 @@ If you do use an array of objects, make sure you:
 
 **Notice**: the items provided to the model won't change, but the items added to the model will have the format { display, value }. If you do provide `identifyBy` and `displayBy`, these will be used as format for the user-entered tags.
 
+
+
 #### Properties (optional)
 **`placeholder`** - [**`?string`**]
 
@@ -156,6 +158,7 @@ If set to `true`, it will be possible to edit the display value of the tags (def
 If set to `true`, it will be possible to add tags with the same value (defaults to `false`)
 
 
+
 ##### Validation (optional)
 **`validators`** - [**`?Validators[]`**] 
 
@@ -165,10 +168,13 @@ An array of Validators (custom or Angular's) that will validate the tag before a
 **`errorMessages`** - [**`?Object{error: message}`**]
 An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 
+
+
 ##### Autocomplete (optional)
 **`onlyFromAutocomplete`** - [**`?boolean`**]
 
 If set to `true`, it will be possible to add new items only from the autocomplete dropdown
+
 
 
 ##### Tags as Objects (optional)
@@ -179,6 +185,8 @@ Any value you want your tag object to be defined by (defaults to `value`)
 
 **`displayBy`** - [**`?string`**] 
 The string displayed in a tag object (defaults to `display`)
+
+
 
 #### Outputs (optional)
 **`onAdd`** - [**`?onAdd($event: string)`**]
