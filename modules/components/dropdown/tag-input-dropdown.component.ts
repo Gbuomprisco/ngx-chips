@@ -73,7 +73,7 @@ export class TagInputDropdown {
     /**
      * @name autocompleteEndpoint
      */
-    @Input() public autocompleteRequest: (text: string) => Observable<Response>;
+    @Input() public autocompleteObservable: (text: string) => Observable<Response>;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
@@ -114,14 +114,14 @@ export class TagInputDropdown {
             this.show();
         });
 
-        if (this.autocompleteRequest) {
+        if (typeof this.autocompleteItems === Observable) {
             this.tagInput
                 .onTextChange
                 .filter((text: string) => !!text.trim().length)
                 .subscribe((text: string) => {
                     this.tagInput.isLoading = true;
 
-                    this.autocompleteRequest(text)
+                    this.autocompleteObservable(text)
                         .subscribe(data => {
                             this.tagInput.isLoading = false;
                             this.populateItemsFromHttp(data);
