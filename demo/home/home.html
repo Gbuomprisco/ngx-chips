@@ -72,6 +72,20 @@
         </div>
 
         <div>
+            <h3>Tags accepting only items from an autocomplete using a remote endpoint</h3>
+            <tag-input [ngModel]="[]"
+                       [placeholder]="'Enter a new repo'"
+                       [secondaryPlaceholder]="'Search in Github'"
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
+                    <template let-item="item" let-index="index">
+                        {{ item.display }}
+                    </template>
+                </tag-input-dropdown>
+            </tag-input>
+        </div>
+
+        <div>
             <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
             <tag-input [ngModel]="['@item']"
                        [inputClass]="'myinput'"

@@ -4,11 +4,16 @@ import {
     FormControl
 } from '@angular/forms';
 
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs';
+
 @Component({
     selector: 'app',
     templateUrl: './home.html'
 })
 export class Home {
+    constructor(private http: Http) {}
+
     items = ['Javascript', 'Typescript'];
 
     itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
@@ -20,6 +25,13 @@ export class Home {
         {display: 'item2', value: 1, data: {custom: 'Ciao'}},
         'item3'
     ];
+
+    public requestAutocompleteItems = (text: string): Observable<Response> => {
+        const url = `https://api.github.com/search/repositories?q=${text}`;
+        return this.http
+            .get(url)
+            .map(data => data.json().items.map(item => item.full_name));
+    };
 
     public options = {
         readonly: undefined,

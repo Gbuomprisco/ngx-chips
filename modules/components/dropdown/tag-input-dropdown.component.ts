@@ -14,6 +14,11 @@ import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { TagModel } from '../helpers/accessor';
+import { Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -66,9 +71,14 @@ export class TagInputDropdown {
     @Input() public showDropdownIfEmpty: boolean = false;
 
     /**
+     * @name autocompleteEndpoint
+     */
+    @Input() public autocompleteObservable: (text: string) => Observable<Response>;
+
+    /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
-     * @type {AutocompleteItemModel[]}
+     * @type {TagModel[]}
      */
     private items: TagModel[] = [];
 
@@ -103,6 +113,13 @@ export class TagInputDropdown {
         this.tagInput.inputForm.onKeyup.subscribe(() => {
             this.show();
         });
+
+        if (this.autocompleteObservable) {
+            this.tagInput
+                .onTextChange
+                .filter((text: string) => !!text.trim().length)
+                .subscribe(this.getItemsFromObservable.bind(this));
+        }
     }
 
     /**
@@ -240,5 +257,31 @@ export class TagInputDropdown {
         }
 
         this.updatePosition(this.tagInput.inputForm.getElementPosition());
+    }
+
+    /**
+     * @name populateItems
+     * @param data
+     */
+    private populateItems(data: any) {
+        const terms = data.map(item => ({display: item, value: item}));
+
+        this.autocompleteItems = [...this.autocompleteItems, ...terms];
+
+        this.show();
+    }
+
+    /**
+     * @name getItemsFromObservable
+     * @param text
+     */
+    private getItemsFromObservable(text: string) {
+        this.tagInput.isLoading = true;
+
+        this.autocompleteObservable(text)
+            .subscribe(data => {
+                this.tagInput.isLoading = false;
+                this.populateItems(data);
+            });
     }
 }

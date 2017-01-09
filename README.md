@@ -2,7 +2,7 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
-**This component works in Angular 2.4.1**. If you have an issues, please do make sure you're not running a different version. Otherwise, please do open a new issue.
+**This component works in Angular 2.4.2**. If you have an issues, please do make sure you're not running a different version. Otherwise, please do open a new issue.
 
 ## Demo
 
@@ -65,87 +65,202 @@ If you do use an array of objects, make sure you:
 
 **Notice**: the items provided to the model won't change, but the items added to the model will have the format { display, value }. If you do provide `identifyBy` and `displayBy`, these will be used as format for the user-entered tags.
 
+
+
 #### Properties (optional)
-- **`placeholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms.
+**`placeholder`** - [**`?string`**]
 
-- **`secondaryPlaceholder`** - [**`?string`**] - String that sets the placeholder of the input for entering new terms when there are 0 items entered.
+String that sets the placeholder of the input for entering new terms.
 
-- **`maxItems`** -  [**`?number`**] - Sets the maximum number of items it is possible to enter.
 
-- **`readonly`** - [**`?boolean`**] - Sets the tag input static, not allowing deletion/addition of the items entered.
+**`secondaryPlaceholder`** - [**`?string`**]
 
-- **`separatorKeys`** - [**`?number[]`**] - Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
+String that sets the placeholder of the input for entering new terms when there are 0 items entered.
 
-- **`transform`** - [**`?(item: string) => string`**] - a function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 
-- **`inputId`** - [**`?string`**] - custom ID assigned to the input
+**`maxItems`** -  [**`?number`**]
 
-- **`inputClass`** - [**`?string`**] - custom class assigned to the input
+Sets the maximum number of items it is possible to enter.
 
-- **`clearOnBlur`** - [**`?boolean`**] - if set to true, it will clear the form's text on blur events
 
-- **`hideForm`** - [**`?number`**] - if set to true, will remove the form from the component
+**`readonly`** - [**`?boolean`**]
 
-- **`onTextChangeDebounce`** - [**`?number`**] - number of ms for debouncing the `onTextChange` event (defaults to `250`)
+Sets the tag input static, not allowing deletion/addition of the items entered.
 
-- **`addOnBlur`** - [**`?boolean`**] - if set to true, will add an item when the form is blurred (defaults to `false`)
 
-- **`addOnPaste`** - [**`?boolean`**] - if set to true, will add items pasted into the form's input  (defaults to `false`)
+**`separatorKeys`** - [**`?number[]`**] 
 
-- **`pasteSplitPattern`** - [**`?string`**] - pattern used with the native method split() to separate patterns in the string pasted (defaults to `,`)
+Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
 
-- **`blinkIfDupe`** - [**`?boolean`**] - if a duplicate item gets added, this will blink - giving the user a visual cue of where it is located (defaults to `true`)
 
-- **`removable`** - [**`?boolean`**] - if set to `false`, it will not be possible to remove tags (defaults to `true`)
+**`transform`** - [**`?(item: string) => string`**]
 
-- **`editable`** (experimental) - [**`?boolean`**] - if set to `true`, it will be possible to edit the display value of the tags (defaults to `false`)
+A function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
 
-- **`allowDupes`** - [**`?boolean`**] - if set to `true`, it will be possible to add tags with the same value (defaults to `false`)
+
+**`inputId`** - [**`?string`**]
+
+Custom ID assigned to the input
+
+
+**`inputClass`** - [**`?string`**]
+
+Custom class assigned to the input
+
+
+**`clearOnBlur`** - [**`?boolean`**]
+
+If set to true, it will clear the form's text on blur events
+
+
+**`hideForm`** - [**`?number`**]
+
+If set to true, will remove the form from the component
+
+
+**`onTextChangeDebounce`** - [**`?number`**]
+
+Number of ms for debouncing the `onTextChange` event (defaults to `250`)
+
+
+**`addOnBlur`** - [**`?boolean`**]
+
+If set to `true`, will add an item when the form is blurred (defaults to `false`)
+
+
+**`addOnPaste`** - [**`?boolean`**]
+
+If set to `true`, will add items pasted into the form's input  (defaults to `false`)
+
+
+**`pasteSplitPattern`** - [**`?string`**]
+
+Pattern used with the native method split() to separate patterns in the string pasted (defaults to `,`)
+
+
+**`blinkIfDupe`** - [**`?boolean`**]
+
+If a duplicate item gets added, this will blink - giving the user a visual cue of where it is located (defaults to `true`)
+
+
+**`removable`** - [**`?boolean`**]
+
+If set to `false`, it will not be possible to remove tags (defaults to `true`)
+
+
+**`editable`** (experimental) - [**`?boolean`**]
+
+If set to `true`, it will be possible to edit the display value of the tags (defaults to `false`)
+
+
+**`allowDupes`** - [**`?boolean`**]
+
+If set to `true`, it will be possible to add tags with the same value (defaults to `false`)
+
 
 
 ##### Validation (optional)
-- **`validators`** - [**`?Validators[]`**] - an array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+**`validators`** - [**`?Validators[]`**] 
 
-- **`errorMessages`** - [**`?Object{error: message}`**] - an object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
+An array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+
+
+**`errorMessages`** - [**`?Object{error: message}`**]
+An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
+
+
 
 ##### Autocomplete (optional)
-- **`onlyFromAutocomplete`** - [**`?boolean`**] - if true, it will be possible to add new items only from the autocomplete dropdown
+**`onlyFromAutocomplete`** - [**`?boolean`**]
+
+If set to `true`, it will be possible to add new items only from the autocomplete dropdown
+
+
 
 ##### Tags as Objects (optional)
-- **`identifyBy`** - [**`?any`**] - any value you want your tag object to be defined by (defaults to `value`)
+**`identifyBy`** - [**`?any`**]
 
-- **`displayBy`** - [**`?string`**] - the string displayed in a tag object (defaults to `display`)
+Any value you want your tag object to be defined by (defaults to `value`)
+
+
+**`displayBy`** - [**`?string`**] 
+The string displayed in a tag object (defaults to `display`)
+
+
 
 #### Outputs (optional)
-- **`onAdd`** - [**`?onAdd($event: string)`**] - event fired when an item has been added
+**`onAdd`** - [**`?onAdd($event: string)`**]
 
-- **`onRemove`** - [**`?onRemove($event: string)`**] - event fired when an item has been removed
+Event fired when an item has been added
 
-- **`onSelect`** - [**`?onSelect($event: string)`**] - event fired when an item has been selected
 
-- **`onFocus`** - [**`?onFocus($event: string)`**] - event fired when the input is focused - will return current input value
+**`onRemove`** - [**`?onRemove($event: string)`**]
 
-- **`onBlur`** - [**`?onBlur($event: string)`**] - event fired when the input is blurred - will return current input value
+Event fired when an item has been removed
 
-- **`onTextChange`** - [**`?onTextChange($event: string)`**] - event fired when the input value changes
 
-- **`onPaste`** - [**`?onPaste($event: string)`**] - event fired when the text is pasted into the input (only if `addOnPaste` is set to `true`)
+**`onSelect`** - [**`?onSelect($event: string)`**]
+Event fired when an item has been selected
 
-- **`onValidationError`** - [**`?onValidationError($event: string)`**] - event fired when the validation fails
 
-- **`onTagEdited`** - [**`?onTagEdited($event: TagModel)`**] - event fired when a tag is edited
+**`onFocus`** - [**`?onFocus($event: string)`**]
+
+Event fired when the input is focused - will return current input value
+
+
+**`onBlur`** - [**`?onBlur($event: string)`**]
+
+Event fired when the input is blurred - will return current input value
+
+
+**`onTextChange`** - [**`?onTextChange($event: string)`**]
+
+Event fired when the input value changes
+
+
+**`onPaste`** - [**`?onPaste($event: string)`**]
+
+Event fired when the text is pasted into the input (only if `addOnPaste` is set to `true`)
+
+
+**`onValidationError`** - [**`?onValidationError($event: string)`**]
+
+Event fired when the validation fails
+
+
+**`onTagEdited`** - [**`?onTagEdited($event: TagModel)`**]
+
+Event fired when a tag is edited
 
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
-- **`showDropdownIfEmpty`** - [**`?boolean`**] - if true, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
+**`autocompleteObservable`** - [**`(text: string) => Observable<Response>`**] 
 
-- **`autocompleteItems`** - [**`?string[] | AutoCompleteModel[]`**] - an array of items to populate the autocomplete dropdown
+A function that takes a string (current input value) and returns an Observable (ex. `http.get()`) with an array of items wit the same structure as `autocompleteItems` (see below). Make sure you retain the scope of your class or function when using this property.
+It can be used to popuplate the autocomplete with items coming from an async request.
 
-- **`offset`** - [**`?string`**] - offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
 
-- **`focusFirstElement`** - [**`?boolean`**] - if true, the first item of the dropdown will be automatically focused (defaults to `false`)
+**`showDropdownIfEmpty`** - [**`?boolean`**]
+
+If set to `true`, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
+
+
+**`autocompleteItems`** - [**`?string[] | AutoCompleteModel[]`**]
+
+An array of items to populate the autocomplete dropdown
+
+
+**`offset`** - [**`?string`**] 
+
+Offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
+
+
+**`focusFirstElement`** - [**`?boolean`**] 
+
+If set to `true`, the first item of the dropdown will be automatically focused (defaults to `false`)
+
 
 The property `autocompleteItems` can be an array of strings or objects. Interface for `AutoCompleteModel` (just like `TagModel)` is:
 
@@ -238,6 +353,22 @@ This will accept items only from the autocomplete dropdown:
             {{ index }}: {{ item.display }}
         </template>
     </tag-input-dropdown>
+</tag-input>
+```
+
+##### Populate items using an Observable
+```javascript
+public requestAutocompleteItems = (text: string): Observable<Response> => {
+    const url = `https://my.api.com/search?q=${text}`;
+    return this.http
+        .get(url)
+        .map(data => data.json());
+};
+```
+
+```html
+<tag-input [ngModel]="['@item']">
+    <tag-input-dropdown [autocompleteObservable]='requestAutocompleteItems'></tag-input-dropdown>
 </tag-input>
 ```
 
