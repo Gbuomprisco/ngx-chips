@@ -6,7 +6,7 @@ This is a component for Angular >= 2. Design and API are blandly inspired by Ang
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/VJX2uIsBz](http://www.webpackbin.com/VJX2uIsBz). 
+Check out the live demo (with source code) here [http://www.webpackbin.com/EkJFD5jHf](http://www.webpackbin.com/EkJFD5jHf). 
 
 ** The demo will soon be published on its dedicated gh-pages site**
 
