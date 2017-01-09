@@ -368,9 +368,7 @@ public requestAutocompleteItems = (text: string): Observable<Response> => {
 
 ```html
 <tag-input [ngModel]="['@item']">
-    <tag-input-dropdown [autocompleteItems]="['iTem1']" 
-                        [autocompleteObservable]='requestAutocompleteItems'>
-    </tag-input-dropdown>
+    <tag-input-dropdown [autocompleteObservable]='requestAutocompleteItems'></tag-input-dropdown>
 </tag-input>
 ```
 

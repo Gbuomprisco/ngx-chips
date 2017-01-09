@@ -77,7 +77,7 @@
                        [placeholder]="'Enter a new repo'"
                        [secondaryPlaceholder]="'Search in Github'"
                        [onlyFromAutocomplete]="true">
-                <tag-input-dropdown [autocompleteRequest]="requestAutocompleteItems">
+                <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
                     <template let-item="item" let-index="index">
                         {{ item.display }}
                     </template>

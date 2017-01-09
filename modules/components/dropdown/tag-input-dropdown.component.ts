@@ -114,19 +114,11 @@ export class TagInputDropdown {
             this.show();
         });
 
-        if (typeof this.autocompleteItems === Observable) {
+        if (this.autocompleteObservable) {
             this.tagInput
                 .onTextChange
                 .filter((text: string) => !!text.trim().length)
-                .subscribe((text: string) => {
-                    this.tagInput.isLoading = true;
-
-                    this.autocompleteObservable(text)
-                        .subscribe(data => {
-                            this.tagInput.isLoading = false;
-                            this.populateItemsFromHttp(data);
-                        });
-                });
+                .subscribe(this.getItemsFromObservable.bind(this));
         }
     }
 
@@ -268,14 +260,28 @@ export class TagInputDropdown {
     }
 
     /**
-     * @name populateItemsFromHttp
+     * @name populateItems
      * @param data
      */
-    private populateItemsFromHttp(data: any) {
+    private populateItems(data: any) {
         const terms = data.map(item => ({display: item, value: item}));
 
         this.autocompleteItems = [...this.autocompleteItems, ...terms];
 
         this.show();
+    }
+
+    /**
+     * @name getItemsFromObservable
+     * @param text
+     */
+    private getItemsFromObservable(text: string) {
+        this.tagInput.isLoading = true;
+
+        this.autocompleteObservable(text)
+            .subscribe(data => {
+                this.tagInput.isLoading = false;
+                this.populateItems(data);
+            });
     }
 }
