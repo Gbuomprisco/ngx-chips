@@ -6,7 +6,7 @@ This is a component for Angular >= 2. Design and API are blandly inspired by Ang
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/EkJFD5jHf](http://www.webpackbin.com/EkJFD5jHf). 
+Check out the live demo (with source code) here [http://www.webpackbin.com/NyoEofaSM](http://www.webpackbin.com/NyoEofaSM). 
 
 ** The demo will soon be published on its dedicated gh-pages site**
 
@@ -65,7 +65,7 @@ If you do use an array of objects, make sure you:
 
 **Notice**: the items provided to the model won't change, but the items added to the model will have the format { display, value }. If you do provide `identifyBy` and `displayBy`, these will be used as format for the user-entered tags.
 
-
+---
 
 #### Properties (optional)
 **`placeholder`** - [**`?string`**]
@@ -157,7 +157,7 @@ If set to `true`, it will be possible to edit the display value of the tags (def
 
 If set to `true`, it will be possible to add tags with the same value (defaults to `false`)
 
-
+---
 
 ##### Validation (optional)
 **`validators`** - [**`?Validators[]`**] 
@@ -168,7 +168,7 @@ An array of Validators (custom or Angular's) that will validate the tag before a
 **`errorMessages`** - [**`?Object{error: message}`**]
 An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 
-
+---
 
 ##### Autocomplete (optional)
 **`onlyFromAutocomplete`** - [**`?boolean`**]
@@ -186,7 +186,7 @@ Any value you want your tag object to be defined by (defaults to `value`)
 **`displayBy`** - [**`?string`**] 
 The string displayed in a tag object (defaults to `display`)
 
-
+---
 
 #### Outputs (optional)
 **`onAdd`** - [**`?onAdd($event: string)`**]
@@ -236,7 +236,7 @@ Event fired when a tag is edited
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
-**`autocompleteObservable`** - [**`(text: string) => Observable<Response>`**] 
+**`autocompleteObservable`** [experimental] - [**`(text: string) => Observable<Response>`**] 
 
 A function that takes a string (current input value) and returns an Observable (ex. `http.get()`) with an array of items wit the same structure as `autocompleteItems` (see below). Make sure you retain the scope of your class or function when using this property.
 It can be used to popuplate the autocomplete with items coming from an async request.
