@@ -4,7 +4,6 @@
         "noImplicitAny": false,
         "module": "es2015",
         "target": "es5",
-        "outDir": "dist",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "declaration": true,
