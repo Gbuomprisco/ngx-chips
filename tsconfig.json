@@ -28,8 +28,8 @@
     "modules"
   ],
   "exclude": [
-    "node_modules",
-    "dist",
+    "./node_modules",
+    "./dist",
     "**/*.spec.ts"
   ],
   "compileOnSave": false,

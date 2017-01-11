@@ -81,7 +81,7 @@ describe('TagInputComponent', () => {
 
             fixture.detectChanges();
 
-            expect(component.inputForm.form.valid).toEqual(false);
+            expect(component.addItem()).toEqual(undefined);
             expect(component.inputForm.form.controls.item.value).toEqual('');
 
             fixture.detectChanges();

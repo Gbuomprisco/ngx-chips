@@ -342,7 +342,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         const inputValue = this.setInputValue(this.inputForm.value.value);
         const tag = this.createTag(inputValue, inputValue);
 
-        if (!this.inputForm.form.valid) {
+        if (!this.inputForm.form.valid || !inputValue) {
             return;
         }
 
