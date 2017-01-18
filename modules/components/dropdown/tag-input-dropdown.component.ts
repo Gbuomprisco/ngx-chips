@@ -264,9 +264,15 @@ export class TagInputDropdown {
      * @param data
      */
     private populateItems(data: any) {
-        const terms = data.map(item => ({display: item, value: item}));
+        const terms = data.map(item => {
+            if (typeof item === 'string' || !(this.tagInput.identifyBy in item && this.tagInput.displayBy in item)) {
+                return {display: item, value: item};
+            } else {
+                return item;
+            }
+        });
 
-        this.autocompleteItems = [...this.autocompleteItems, ...terms];
+        this.autocompleteItems = terms;
 
         this.show();
     }
