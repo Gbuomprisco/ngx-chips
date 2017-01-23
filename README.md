@@ -2,18 +2,18 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
-**This component works in Angular 2.4.2**. If you have an issues, please do make sure you're not running a different version. Otherwise, please do open a new issue.
+**This component works in Angular 2.4.4**. If you have an issues, please do make sure you're not running a different version. Otherwise, please do open a new issue.
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/NyoEofaSM](http://www.webpackbin.com/NyoEofaSM). 
+Check out the live demo (with source code) here [http://www.webpackbin.com/NyoEofaSM](http://www.webpackbin.com/NyoEofaSM).
 
 ** The demo will soon be published on its dedicated gh-pages site**
 
 ## Install
 
     npm install ng2-tag-input --save
-    
+
 **Notice**: the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
 
 ## Configuration
@@ -88,7 +88,7 @@ Sets the maximum number of items it is possible to enter.
 Sets the tag input static, not allowing deletion/addition of the items entered.
 
 
-**`separatorKeys`** - [**`?number[]`**] 
+**`separatorKeys`** - [**`?number[]`**]
 
 Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
 
@@ -160,7 +160,7 @@ If set to `true`, it will be possible to add tags with the same value (defaults 
 ---
 
 ##### Validation (optional)
-**`validators`** - [**`?Validators[]`**] 
+**`validators`** - [**`?Validators[]`**]
 
 An array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
 
@@ -183,7 +183,7 @@ If set to `true`, it will be possible to add new items only from the autocomplet
 Any value you want your tag object to be defined by (defaults to `value`)
 
 
-**`displayBy`** - [**`?string`**] 
+**`displayBy`** - [**`?string`**]
 The string displayed in a tag object (defaults to `display`)
 
 ---
@@ -236,7 +236,7 @@ Event fired when a tag is edited
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
-**`autocompleteObservable`** [experimental] - [**`(text: string) => Observable<Response>`**] 
+**`autocompleteObservable`** [experimental] - [**`(text: string) => Observable<Response>`**]
 
 A function that takes a string (current input value) and returns an Observable (ex. `http.get()`) with an array of items wit the same structure as `autocompleteItems` (see below). Make sure you retain the scope of your class or function when using this property.
 It can be used to popuplate the autocomplete with items coming from an async request.
@@ -252,12 +252,12 @@ If set to `true`, the dropdown of the autocomplete will be shown as soon as the 
 An array of items to populate the autocomplete dropdown
 
 
-**`offset`** - [**`?string`**] 
+**`offset`** - [**`?string`**]
 
 Offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
 
 
-**`focusFirstElement`** - [**`?boolean`**] 
+**`focusFirstElement`** - [**`?boolean`**]
 
 If set to `true`, the first item of the dropdown will be automatically focused (defaults to `false`)
 
@@ -324,7 +324,7 @@ export class App {
 
 If the value of the model will contain more tags than `maxItems`, `maxItems` will be replaced with the current size of the model.
 
-#### Autocomplete 
+#### Autocomplete
 ```html
 <tag-input [ngModel]="['@item']">
        <tag-input-dropdown [autocompleteItems]="[{display: 'Item1', value: 0}, 'item2', 'item3']">
@@ -334,7 +334,7 @@ If the value of the model will contain more tags than `maxItems`, `maxItems` wil
 
 This will accept items only from the autocomplete dropdown:
 
-```html 
+```html
 <tag-input [ngModel]="['@item']"
            [onlyFromAutocomplete]="true">
     <tag-input-dropdown [showDropdownIfEmpty]="true"
@@ -394,7 +394,7 @@ class MyComponent {
 
         return null;
     }
-    
+
     private endsWith$(control: FormControl) {
         if (control.value.charAt(control.value.length - 1) !== '$') {
             return {
@@ -404,9 +404,9 @@ class MyComponent {
 
         return null;
     }
-    
+
     public validators = [this.startsWithAt, this.endsWith$];
-    
+
     public errorMessages = {
         'startsWithAt@': 'Your items need to start with "@"',
         'endsWith$': 'Your items need to end with "$"'
@@ -510,15 +510,15 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
         useExisting: forwardRef(() => CustomComponent),
         multi: true
     }],
-    
+
     // not needed, but you may want it
     styleUrls: [ './custom.scss' ],
-    
+
     // you can add your own, but for now let's go with this
-    templateUrl: '{{ node_modules }}/ng2-tag-input/dist/modules/components/tag-input.template.html' 
+    templateUrl: '{{ node_modules }}/ng2-tag-input/dist/modules/components/tag-input.template.html'
     // or
     // template: require('ng2-tag-input/dist/modules/components/tag-input.template.html'),
-    
+
     animations: [
         trigger('flyInOut', [
             state('in', style({transform: 'translateX(0)'})),

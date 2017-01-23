@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run build",
@@ -20,17 +20,15 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular/core": "2.4.2",
-    "@angular/forms": "2.4.2",
-    "@angular/http": "2.4.2",
-    "rxjs": "5.0.1",
-    "@angular/common": "2.4.2",
-    "@angular/compiler": "2.4.2",
-    "@angular/compiler-cli": "2.4.2",
-    "@angular/platform-browser": "2.4.2",
-    "@angular/platform-browser-dynamic": "2.4.2",
-    "@types/es6-collections": "^0.5.29",
-    "@types/es6-shim": "0.0.31",
+    "@angular/common": "2.4.4",
+    "@angular/compiler": "2.4.4",
+    "@angular/compiler-cli": "2.4.4",
+    "@angular/core": "2.4.4",
+    "@angular/forms": "2.4.4",
+    "@angular/http": "2.4.4",
+    "@angular/platform-browser": "2.4.4",
+    "@angular/platform-browser-dynamic": "2.4.4",
+    "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.2.34",
     "@types/node": "^6.0.39",
     "angular2-template-loader": "^0.6.0",
@@ -54,29 +52,30 @@
     "precss": "^1.4.0",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.3",
     "sass-loader": "^3.2.3",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "ts-helpers": "1.1.1",
     "ts-node": "^0.7.3",
     "tslint": "^3.13.0",
-    "typescript": "2.0.2",
+    "typescript": "2.1.5",
     "universal-style-loader": "^0.16.3",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2",
     "webpack-merge": "^0.8.4",
-    "zone.js": "0.7.2"
+    "zone.js": "0.7.5"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.6.2"
+    "ng2-material-dropdown": "0.6.3"
   },
   "peerDependencies": {
-    "@angular/core": "2.4.2",
-    "@angular/common": "2.4.2",
-    "@angular/forms": "2.4.2",
-    "@angular/http": "2.4.2",
-    "rxjs": "5.0.1"
+    "@angular/core": "2.4.4",
+    "@angular/common": "2.4.4",
+    "@angular/forms": "2.4.4",
+    "@angular/http": "2.4.4",
+    "rxjs": "5.0.3"
   },
   "keywords": [
     "angular 2",
