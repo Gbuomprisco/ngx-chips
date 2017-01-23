@@ -1,0 +1,23 @@
+:host,
+:host > div,
+:host > div:focus {
+    outline: 0;
+    overflow: hidden;
+    transition: opacity 1s;
+    z-index: 1;
+}
+
+:host.blink {
+    -webkit-animation: blink 0.3s normal forwards ease-in-out;
+    animation: blink 0.3s normal forwards ease-in-out;
+}
+@keyframes blink {
+    0% {
+        opacity: 0.3;
+    }
+}
+
+:host [contenteditable='true'] {
+    outline: 0;
+    user-select: none;
+}

@@ -3,11 +3,18 @@ var path = require('path');
 var precss       = require('precss');
 var autoprefixer = require('autoprefixer');
 
-
 // Webpack Config
 var webpackConfig = {
     entry: {
-        'vendor': ['@angular/core', '@angular/common', "@angular/forms", "rxjs/add/operator/debounceTime"],
+        'vendor': [
+            '@angular/core',
+            '@angular/common',
+            "@angular/forms",
+            "@angular/http",
+            "rxjs/add/operator/debounceTime",
+            "rxjs/add/operator/map",
+            "rxjs/add/operator/filter"
+        ],
         'ng2-tag-input': './modules/ng2-tag-input.module.ts'
     },
 
@@ -22,7 +29,8 @@ var webpackConfig = {
         "@angular/core": true,
         "@angular/common": true,
         "@angular/forms": true,
-        "rxjs/add/operator/debounceTime": true
+        "@angular/http": true,
+        "rxjs": true
     },
 
     plugins: [
@@ -40,7 +48,7 @@ var webpackConfig = {
             // .ts files for TypeScript
             {
                 test: /\.ts$/,
-                loader: 'awesome-typescript-loader'
+                loaders: ['angular2-template-loader', 'awesome-typescript-loader']
             },
             {
                 test: /\.png/,
@@ -53,7 +61,7 @@ var webpackConfig = {
             },
             {
                 test: /\.scss$/,
-                loaders: ["style", "css", "postcss", "sass"]
+                loaders: ['raw', "postcss", "sass"]
             }
         ]
     },
@@ -94,16 +102,7 @@ var defaultConfig = {
     },
 
     resolve: {
-        root: [ path.join(__dirname, 'demo') ],
-        extensions: ['', '.ts', '.js'],
-        alias: {
-            'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
-            'angular2/core': path.join(__dirname, 'node_modules', '@angular', 'core', 'index.js'),
-            'angular2/platform/browser': path.join(__dirname, 'node_modules', '@angular', 'platform-browser', 'index.js'),
-            'angular2/router': path.join(__dirname, 'node_modules', '@angular', 'router', 'index.js'),
-            'angular2/http': path.join(__dirname, 'node_modules', '@angular', 'http', 'index.js'),
-            'angular2/http/testing': path.join(__dirname, 'node_modules', '@angular', 'http', 'testing.js')
-        },
+        extensions: ['', '.ts', '.js', '.scss']
     },
 
     devServer: {

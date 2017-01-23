@@ -1,0 +1,38 @@
+<div (click)="select($event)"
+     (dblclick)="editable ? toggleEditMode($event) : undefined"
+     (mousedown)="rippleState='clicked'"
+     (mouseup)="rippleState='none'"
+     [ngSwitch]="!!template"
+     [attr.tabindex]="-1"
+     [attr.aria-label]="getDisplayValue(model)">
+
+    <div *ngSwitchCase="true" [attr.contenteditable]="editModeActivated">
+        <!-- CUSTOM TEMPLATE -->
+        <template
+            [ngOutletContext]="{ item: model }"
+            [ngTemplateOutlet]="template">
+        </template>
+    </div>
+
+    <div *ngSwitchCase="false">
+        <!-- TAG NAME -->
+        <span [attr.contenteditable]="editModeActivated"
+              spellcheck="false"
+              (keydown.enter)="disableEditMode($event)"
+              (keydown.escape)="disableEditMode($event)"
+              (click)="editModeActivated ? $event.stopPropagation() : undefined"
+              (blur)="toggleEditMode()">
+            {{ getDisplayValue(model) }}
+        </span>
+
+        <!-- 'X' BUTTON -->
+        <delete-icon
+            aria-label="Remove tag"
+            role="button"
+            (click)="remove()"
+            *ngIf="isDeleteIconVisible()">
+        </delete-icon>
+    </div>
+</div>
+
+<tag-ripple [state]="rippleState" *ngIf="isRippleVisible()"></tag-ripple>

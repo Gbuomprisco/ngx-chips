@@ -1,13 +1,13 @@
-var webpack = require('webpack');
-var path = require('path');
-var precss       = require('precss');
-var autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const path = require('path');
+const precss       = require('precss');
+const autoprefixer = require('autoprefixer');
+const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 
 // Webpack Config
-var webpackConfig = {
+const webpackConfig = {
     entry: {
         'polyfills': './demo/polyfills.ts',
-        'vendor':    './demo/vendor.ts',
         'app':       './demo/app.ts'
     },
 
@@ -16,13 +16,14 @@ var webpackConfig = {
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'vendor', 'polyfills'], minChunks: Infinity })
+        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'], minChunks: Infinity }),
+        new ForkCheckerPlugin()
     ],
 
     tslint: {
         emitErrors: false,
         failOnHint: false,
-        resourcePath: 'demo'
+        resourcePath: './'
     },
 
     module: {
@@ -30,7 +31,7 @@ var webpackConfig = {
             // .ts files for TypeScript
             {
                 test: /\.ts$/,
-                loader: 'awesome-typescript-loader'
+                loaders: ['angular2-template-loader', 'awesome-typescript-loader']
             },
             {
                 test: /\.png/,
@@ -43,7 +44,7 @@ var webpackConfig = {
             },
             {
                 test: /\.scss$/,
-                loaders: ["style", "css", "postcss", "sass"]
+                loaders: ['raw', "postcss", "sass"]
             }
         ]
     },
@@ -51,14 +52,12 @@ var webpackConfig = {
     postcss: function () {
         return [precss, autoprefixer];
     }
-
 };
-
 
 // Our Webpack Defaults
 var defaultConfig = {
     devtool: 'cheap-module-source-map',
-    cache: true,
+    cache: false,
     debug: true,
     output: {
         filename: '[name].bundle.js',
@@ -85,23 +84,16 @@ var defaultConfig = {
     },
 
     resolve: {
-        root: [ path.join(__dirname, 'demo') ],
-        extensions: ['', '.ts', '.js'],
-        alias: {
-            'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
-            '@angular/testing': path.join(__dirname, 'node_modules', '@angular', 'core', 'testing.js'),
-            'angular2/core': path.join(__dirname, 'node_modules', '@angular', 'core', 'index.js'),
-            'angular2/platform/browser': path.join(__dirname, 'node_modules', '@angular', 'platform-browser', 'index.js'),
-            'angular2/testing': path.join(__dirname, 'node_modules', '@angular', 'testing', 'index.js'),
-            'angular2/router': path.join(__dirname, 'node_modules', '@angular', 'router', 'index.js'),
-            'angular2/http': path.join(__dirname, 'node_modules', '@angular', 'http', 'index.js'),
-            'angular2/http/testing': path.join(__dirname, 'node_modules', '@angular', 'http', 'testing.js')
-        },
+        extensions: ['', '.ts', '.js', '.scss']
     },
 
     devServer: {
-        historyApiFallback: true,
-        watchOptions: { aggregateTimeout: 300, poll: 1000 }
+        clientLogLevel: "info",
+        watchOptions: {
+            aggregateTimeout: 300,
+            poll: 1000
+        },
+        stats: { colors: true }
     },
 
     node: {

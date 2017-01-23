@@ -50,6 +50,22 @@ export class TagInputComponentWithOutputs {
 
 @Component({
     selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"></tag-input>`
+})
+export class TagInputComponentTagsAsObjects {
+    public items = [{value: 0, display: 'React'}, {value: 1, display: 'Angular'}];
+}
+
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"></tag-input>`
+})
+export class TagInputComponentCustomTagsAsObjects {
+    public items = [{id: 0, name: 'React'}, {id: 1, name: 'Angular'}];
+}
+
+@Component({
+    selector: 'test-app',
     template: `<tag-input
                   [(ngModel)]="items"
                   [validators]="validators"
@@ -99,9 +115,9 @@ export class TagInputComponentWithMaxItems {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items"
-                                 [autocompleteItems]="['item1', 'item2', 'itam3']"
-                                 [autocomplete]="true"></tag-input>`
+    template: `<tag-input [(ngModel)]="items">
+                    <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>         
+               </tag-input>`
 })
 export class TagInputComponentWithAutocomplete {
     public items = getItems();
@@ -110,10 +126,15 @@ export class TagInputComponentWithAutocomplete {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
-                     <div class="custom_class" *ngFor="let item of items" (click)="selectItem(item)">
-                        <span class="tag__name">{{ item }}</span>
-                        <span (click)="remove(item)"><img src="delete.png" /></span>
-                     </div>
+                    <template let-item="item">
+                        <span class="custom-class">
+                            item: {{ item }}
+                        </span>
+    
+                        <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
+                            x
+                        </span>
+                    </template>
                 </tag-input>`
 })
 export class TagInputComponentWithTemplate {
@@ -123,9 +144,9 @@ export class TagInputComponentWithTemplate {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items"
-                           [onlyFromAutocomplete]="true"
-                           [autocompleteItems]="['item1', 'item2', 'itam3']"
-                           [autocomplete]="true"></tag-input>`
+                           [onlyFromAutocomplete]="true">
+                   <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>
+               </tag-input>`
 })
 export class TagInputComponentWithOnlyAutocomplete {
     public items = getItems();
@@ -140,7 +161,9 @@ const COMPONENTS = [
     TagInputComponentWithMaxItems,
     TagInputComponentWithTemplate,
     TagInputComponentWithAutocomplete,
-    TagInputComponentWithOnlyAutocomplete
+    TagInputComponentWithOnlyAutocomplete,
+    TagInputComponentTagsAsObjects,
+    TagInputComponentCustomTagsAsObjects
 ];
 
 @NgModule({

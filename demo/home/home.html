@@ -1,15 +1,34 @@
 <main>
     <div class="home-container">
         <div>
-            <h3>Simple Input with two items (using one-way binding)</h3>
-            <tag-input [ngModel]="items"></tag-input>
+            <h3>Simple Input with two items</h3>
+            <tag-input [(ngModel)]="items"></tag-input>
+        </div>
+
+        <div>
+            <h3>Simple Input with two items as objects</h3>
+            <tag-input [(ngModel)]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
+        </div>
+
+        <div>
+            <h3>Simple Input with not removable items</h3>
+            <tag-input [ngModel]="items" [removable]="false"></tag-input>
+        </div>
+
+        <div>
+            <h3>Simple Input with editable items</h3>
+            <tag-input [ngModel]="items"
+                       [editable]="true"
+                       (onTagEdited)="onTagEdited($event)">
+            </tag-input>
         </div>
 
         <div>
             <h3>Input tag that allows max 3 tags</h3>
             <tag-input [ngModel]="['Javascript', 'Typescript']"
                        [maxItems]="3"
-                       placeholder="Insert a new item"></tag-input>
+                       placeholder="Insert a new item">
+            </tag-input>
         </div>
 
         <div>
@@ -34,19 +53,35 @@
 
         <div>
             <h3>Tags within an autocomplete component</h3>
-            <tag-input [ngModel]="['@item']"
-                       [autocompleteItems]="['Item1', 'item2', 'item3']"
-                       [autocomplete]="true">
+            <tag-input [ngModel]="['@item']">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems"></tag-input-dropdown>
             </tag-input>
         </div>
 
         <div>
             <h3>Tags accepting only items from an autocomplete</h3>
             <tag-input [ngModel]="['@item']"
-                       [onlyFromAutocomplete]="true"
-                       [showDropdownIfEmpty]="true"
-                       [autocompleteItems]="['iTem1', 'item2', 'item3']"
-                       [autocomplete]="true">
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [autocompleteItems]="autocompleteItemsAsObjects">
+                    <template let-item="item" let-index="index">
+                        {{ index }}: {{ item.display }}
+                    </template>
+                </tag-input-dropdown>
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Tags accepting only items from an autocomplete using a remote endpoint</h3>
+            <tag-input [ngModel]="[]"
+                       [placeholder]="'Enter a new repo'"
+                       [secondaryPlaceholder]="'Search in Github'"
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
+                    <template let-item="item" let-index="index">
+                        {{ item.display }}
+                    </template>
+                </tag-input-dropdown>
             </tag-input>
         </div>
 
@@ -62,23 +97,30 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input >
-                <div *ngFor="let item of input.items; trackBy: item"
-                     (click)="input.selectItem(item);$event.stopPropagation();"
-                     (keydown)="input.handleKeydown($event, item)"
-                     [attr.tabindex]="input.readonly ? -1 : 0"
-                     [class.ng2-tag--readonly]="input.readonly"
-                     [attr.aria-label]="item"
-                     class="ng2-tag ng2-tag--custom">
-
-                    <span class="ng2-tag__name">
-                        {{ item }}
+            <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
+                <template item-template let-item="item">
+                    <span>
+                        item: {{ item.display }}
                     </span>
 
                     <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
                         x
                     </span>
-                </div>
+                </template>
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Input with custom item template and custom dropdown item template</h3>
+            <tag-input [ngModel]="['@item']">
+                <template let-item="item">
+                    tag: {{ item }}
+                </template>
+                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects">
+                    <template let-item="item" let-index="index">
+                        dropdown: {{ item }}
+                    </template>
+                </tag-input-dropdown>
             </tag-input>
         </div>
 
@@ -89,6 +131,7 @@
                     (onBlur)="onBlur($event)"
                     (onFocus)="onFocus($event)"
                     (onTextChange)="onTextChange($event)"
+                    (onValidationError)="onValidationError($event)"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
             </form>
@@ -108,10 +151,27 @@
             <h3>Tags with Custom theme dark</h3>
             <form>
                 <tag-input
+                    [addOnPaste]="true"
+                    [pasteSplitPattern]="'-'"
                     [theme]="'dark'"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
             </form>
+        </div>
+
+        <div>
+            <h3>Simple Input that allows dupes</h3>
+            <tag-input [(ngModel)]="items" [allowDupes]="true"></tag-input>
+        </div>
+
+        <div>
+            <h3>List of tags without form</h3>
+
+            <div class="flex default">
+                <tag [model]="'Tag 1'" class='tag'></tag>
+                <tag [model]="'Tag 2'" class='tag'></tag>
+                <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
+            </div>
         </div>
     </div>
 </main>

@@ -1,0 +1,97 @@
+// TAG
+
+@import "../themes/_colors.scss";
+@import "../themes/_variables.scss";
+@import "../themes/_palette.scss";
+
+tag {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    font-family: $font-family;
+    font-weight: $tag-font-weight;
+    font-size: $tag-font-size;
+    letter-spacing: $tag-letter-spacing;
+
+    outline: 0;
+    color: $tag-color;
+    cursor: pointer;
+    border-radius: $tag-border-radius;
+    transition: all 0.25s;
+
+    margin: $tag-margin;
+    padding: $tag-padding;
+
+    height: $tag-height;
+    line-height: $tag-line-height;
+
+    user-select: none;
+    overflow: hidden;
+}
+
+tag.readonly {
+    cursor: default;
+}
+
+tag.readonly:focus {
+    outline: 0;
+}
+
+.default tag.tag--editing,
+.dark tag.tag--editing,
+.minimal tag.tag--editing {
+    background-color: #fff;
+    cursor: text;
+}
+
+tag:focus {
+    outline: 0;
+}
+
+.default tag:not(.tag--editing) {
+    background: map-get($color-primary, 'default');
+}
+
+.default tag:not(.readonly):not(.tag--editing):focus {
+    background: map-get($color-focused, 'default');
+    color: #fff;
+}
+
+.default tag:not(.readonly):not(.tag--editing):active {
+    background: darken(map-get($color-focused, 'default'), 5%);
+    color: #fff;
+}
+
+.default tag:not(:focus):not(.tag--editing):not(:active):not(.readonly):hover {
+    background: darken(map-get($color-primary, 'default'), 5%);
+}
+
+.minimal tag {
+    background: map-get($color-primary, 'minimal');
+    border-radius: 0;
+}
+
+.minimal tag:not(.readonly):focus,
+.minimal tag:not(.readonly):active {
+    background: map-get($color-focused, 'minimal');
+}
+
+.minimal tag:not(:focus):not(.readonly):hover {
+    background: darken(map-get($color-primary, 'minimal'), 5%);
+}
+
+.minimal tag:not(:focus):not(.readonly):hover {
+    background: darken(map-get($color-primary, 'minimal'), 5%);
+}
+
+.dark tag {
+    background: map-get($color-primary, 'dark');
+    color: #f9f9f9;
+}
+
+.dark tag:not(.readonly):focus,
+.dark tag:not(.readonly):active {
+    background: map-get($color-focused, 'dark');
+    color: map-get($color-primary, 'dark');
+}

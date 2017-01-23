@@ -17,7 +17,8 @@ import {
 
 @Component({
     selector: 'tag-input-form',
-    template: require('./tag-input-form.template.html')
+    styleUrls: [ './tag-input-form.style.scss' ],
+    templateUrl: './tag-input-form.template.html'
 })
 export class TagInputForm {
     @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
@@ -93,6 +94,15 @@ export class TagInputForm {
      */
     public getElementPosition(): ClientRect {
         return this.input.nativeElement.getBoundingClientRect();
+    }
+
+    /**
+     * - removes input from the component
+     * @name destroy
+     */
+    public destroy(): void {
+        const input = this.input.nativeElement;
+        input.parentElement.removeChild(input);
     }
 
     /**

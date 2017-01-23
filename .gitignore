@@ -5,3 +5,5 @@
 /coverage
 index.js
 index.js.map
+factories
+*.metadata.json

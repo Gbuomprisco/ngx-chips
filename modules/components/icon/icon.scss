@@ -1,0 +1,48 @@
+@import "../themes/_colors.scss";
+@import "../themes/_variables.scss";
+@import "../themes/_palette.scss";
+
+// ICON
+
+:host(delete-icon) {
+    width: 16px;
+    height: 26px;
+    transition: all 0.15s;
+    display: inline-block;
+}
+
+:host(delete-icon):hover {
+    transform: scale(1.3);
+}
+
+:host(delete-icon) svg {
+    vertical-align: bottom;
+    height: 34px;
+}
+
+:host-context(.default) path {
+    fill: $color-arrow-default;
+}
+
+:host-context(.dark) path {
+    fill: $color-arrow-dark;
+}
+
+:host-context(.minimal) path {
+    fill: $color-arrow-minimal;
+}
+
+:host-context(.default tag:focus) path,
+:host-context(.default tag:active) path{
+    fill: $color-arrow-default-focused;
+}
+
+:host-context(.dark tag:focus) path,
+:host-context(.dark tag:active) path{
+    fill: $color-arrow-dark-focused;
+}
+
+:host-context(.minimal tag:focus) path,
+:host-context(.minimal tag:active) path{
+    fill: $color-arrow-minimal-focused;
+}

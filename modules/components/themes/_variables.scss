@@ -1,0 +1,31 @@
+// STYLES
+@import "./_colors.scss";
+
+$font-family: "Roboto", "Helvetica Neue", sans-serif !default;
+
+// TAG
+$tag-color: #444 !default;
+$tag-border-radius: 16px !default;
+$tag-font-size: 1em !default;
+$tag-font-weight: 400 !default;
+$tag-letter-spacing: 0.05rem !default;
+$tag-margin: 0.1rem 0.2rem !default;
+$tag-padding: 0.08rem 0.45rem !default;
+$tag-height: 32px !default;
+$tag-line-height: 34px !default;
+
+// INPUT
+$input-font-size: 1em;
+$input-padding: 0 0.5rem;
+$input-border: none;
+$input-height: 38px;
+
+// TAGS CONTAINER
+$container-padding: 0.25rem 0.2rem !default;
+$container-height: 32px !default;
+$container-margin: 0.1em 0 !default;
+
+// ERROR MESSAGES
+$error-message-font-size: 0.8em !default;
+$error-message-margin: 0.5em 0 !default;
+$error-message-color: $color-error-default !default;

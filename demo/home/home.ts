@@ -4,16 +4,34 @@ import {
     FormControl
 } from '@angular/forms';
 
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app',
-    template: require('./home.html')
+    templateUrl: './home.html'
 })
 export class Home {
-    constructor() {}
+    constructor(private http: Http) {}
 
     items = ['Javascript', 'Typescript'];
+
+    itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
+
+    autocompleteItems = ['Item1', 'item2', 'item3'];
+
+    autocompleteItemsAsObjects = [
+        {display: 'Item1', value: 0},
+        {display: 'item2', value: 1, data: {custom: 'Ciao'}},
+        'item3'
+    ];
+
+    public requestAutocompleteItems = (text: string): Observable<Response> => {
+        const url = `https://api.github.com/search/repositories?q=${text}`;
+        return this.http
+            .get(url)
+            .map(data => data.json().items.map(item => item.full_name));
+    };
 
     public options = {
         readonly: undefined,
@@ -44,6 +62,14 @@ export class Home {
         console.log('input blurred: current value is ' + item);
     }
 
+    public onTagEdited(item) {
+        console.log('input blurred: current value is ' + item);
+    }
+
+    public onValidationError(item) {
+        console.log('invalid tag ' + item);
+    }
+
     public transform(item: string): string {
         return `@${item}`;
     }
@@ -71,11 +97,7 @@ export class Home {
     public validators = [this.startsWithAt, this.endsWith$];
 
     public errorMessages = {
-        'startsWithAt@': 'Your items need to start with "@"',
-        'endsWith$': 'Your items need to end with "$"'
+        'startsWithAt@': 'Your items need to start with \'@\'',
+        'endsWith$': 'Your items need to end with \'$\''
     };
-
-    ngOnInit() {
-
-    }
 }
