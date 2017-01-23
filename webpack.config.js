@@ -30,7 +30,9 @@ var webpackConfig = {
         "@angular/common": true,
         "@angular/forms": true,
         "@angular/http": true,
-        "rxjs": true
+        "rxjs/add/operator/debounceTime": true,
+        "rxjs/add/operator/map": true,
+        "rxjs/add/operator/filter": true
     },
 
     plugins: [
