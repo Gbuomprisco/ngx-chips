@@ -10,28 +10,34 @@
         "sourceMap": true,
         "moduleResolution": "node",
         "rootDir": ".",
+        "baseUrl": ".",
+        "inlineSources": true,
         "skipLibCheck": true,
         "typeRoots": [ "./node_modules/@types" ],
-        "types": ["node", "es6-shim", "es6-collections", "jasmine"],
-        "suppressImplicitAnyIndexErrors": true
+        "types": ["node", "jasmine"],
+        "suppressImplicitAnyIndexErrors": true,
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "paths": {
+            "@angular/core": ["node_modules/@angular/core"],
+            "@angular/http": ["node_modules/@angular/http"],
+            "@angular/common": ["node_modules/@angular/common"],
+            "@angular/forms": ["node_modules/@angular/forms"],
+            "rxjs/*": ["node_modules/rxjs/*"]
+        }
     },
     "awesomeTypescriptLoaderOptions": {
-        "forkChecker": true
+        "forkChecker": true,
+        "useWebpackText": true
     },
     "angularCompilerOptions": {
         "genDir": "factories",
-        "useWebpackText": true,
-        "skipMetadataEmit": true
+        "strictMetadataEmit": true
     },
     "files": [
         "modules/ng2-tag-input.module.ts"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "**/*.spec.ts",
-        "**/*.ngfactory.ts",
-        "**/*.shim.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false,
