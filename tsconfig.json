@@ -30,7 +30,6 @@
         "useWebpackText": true
     },
     "angularCompilerOptions": {
-        "genDir": "./ngfactory",
         "strictMetadataEmit": true
     },
     "files": [
@@ -42,8 +41,8 @@
     "exclude": [
         "node_modules",
         "dist",
-        "**/*.ngfactory.ts",
-        "**/*.shim.ts"
+        "**/*-ngfactory.ts",
+        "**/*.spec.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false,

@@ -39,13 +39,6 @@
     "files": [
         "modules/ng2-tag-input.module.ts"
     ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "**/*.spec.ts",
-        "**/*.ngfactory.ts",
-        "**/*.shim.ts"
-    ],
     "compileOnSave": false,
     "buildOnSave": false,
     "atom": { "rewriteTsconfig": false }
