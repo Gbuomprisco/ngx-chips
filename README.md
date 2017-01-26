@@ -273,7 +273,7 @@ Minimum text length in order to display the autocomplete dropdown (defaults to `
 Number of items to display in the autocomplete dropdown
 
 
-
+---
 
 
 The property `autocompleteItems` can be an array of strings or objects. Interface for `AutoCompleteModel` (just like `TagModel)` is:
