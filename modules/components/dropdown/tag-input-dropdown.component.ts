@@ -297,7 +297,7 @@ export class TagInputDropdown {
             return typeof item === 'string' ? ({display: item, value: item}) : item;
         });
 
-        this.autocompleteItems = [...this.autocompleteItems, ...terms];
+        this.autocompleteItems = terms;
 
         this.show();
     }
