@@ -76,6 +76,18 @@ export class TagInputDropdown {
     @Input() public autocompleteObservable: (text: string) => Observable<Response>;
 
     /**
+     * - desc minimum text length in order to display the autocomplete dropdown
+     * @name minimumTextLength
+     */
+    @Input() private minimumTextLength: number = 1;
+
+    /**
+     * - number of items to display in the autocomplete dropdown
+     * @name limitItemsTo
+     */
+    @Input() private limitItemsTo: number;
+
+    /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
      * @type {TagModel[]}
@@ -197,17 +209,27 @@ export class TagInputDropdown {
      * @name show
      */
     public show(): void {
-        const value: string = this.tagInput.inputForm.value.value;
+        const value: string = this.tagInput.inputForm.value.value.trim();
         const position: ClientRect = this.tagInput.inputForm.getElementPosition();
         const items = this.getMatchingItems(value);
         const hasItems = items.length > 0;
         const showDropdownIfEmpty = this.showDropdownIfEmpty && !value && hasItems;
+        const hasMinimumText: boolean = value.length >= this.minimumTextLength;
 
-        this.items = items;
+        const showDropdown: boolean = [
+            hasItems || showDropdownIfEmpty,
+            this.isVisible === false,
+            hasMinimumText
+        ].filter(item => item).length === 3;
 
-        if ((hasItems || showDropdownIfEmpty) && !this.isVisible) {
+        const hideDropdown: boolean = this.isVisible && (!hasItems || !hasMinimumText);
+        
+        // set items
+        this.setItems(items);
+
+        if (showDropdown) {
             this.dropdown.toggleMenu(position);
-        } else if (!hasItems && this.isVisible) {
+        } else if (hideDropdown) {
             this.dropdown.hide();
         }
     }
@@ -241,6 +263,13 @@ export class TagInputDropdown {
     }
 
     /**
+     * @name setItems
+     */
+    private setItems(items: TagModel[]) {
+        this.items = items.slice(0, this.limitItemsTo || items.length);
+    }
+
+    /**
      * @name resetItems
      */
     private resetItems(): void {
@@ -265,11 +294,7 @@ export class TagInputDropdown {
      */
     private populateItems(data: any) {
         const terms = data.map(item => {
-            if (typeof item === 'string' || !(this.tagInput.identifyBy in item && this.tagInput.displayBy in item)) {
-                return {display: item, value: item};
-            } else {
-                return item;
-            }
+            return typeof item === 'string' ? ({display: item, value: item}) : item;
         });
 
         this.autocompleteItems = terms;

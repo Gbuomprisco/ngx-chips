@@ -166,6 +166,7 @@ An array of Validators (custom or Angular's) that will validate the tag before a
 
 
 **`errorMessages`** - [**`?Object{error: message}`**]
+
 An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
 
 ---
@@ -184,6 +185,7 @@ Any value you want your tag object to be defined by (defaults to `value`)
 
 
 **`displayBy`** - [**`?string`**]
+
 The string displayed in a tag object (defaults to `display`)
 
 ---
@@ -200,6 +202,7 @@ Event fired when an item has been removed
 
 
 **`onSelect`** - [**`?onSelect($event: string)`**]
+
 Event fired when an item has been selected
 
 
@@ -260,6 +263,17 @@ Offset to adjust the position of the dropdown with absolute values (defaults to 
 **`focusFirstElement`** - [**`?boolean`**]
 
 If set to `true`, the first item of the dropdown will be automatically focused (defaults to `false`)
+
+**`minimumTextLength`** - [**`?number`**]
+
+Minimum text length in order to display the autocomplete dropdown (defaults to `1`)
+
+**`limitItemsTo`** - [**`?number`**]
+
+Number of items to display in the autocomplete dropdown
+
+
+---
 
 
 The property `autocompleteItems` can be an array of strings or objects. Interface for `AutoCompleteModel` (just like `TagModel)` is:
