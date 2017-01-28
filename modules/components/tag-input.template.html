@@ -14,6 +14,7 @@
              (onRemove)="removeItem(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
+             [index]="i"
              [attr.tabindex]="readonly ? -1 : 0"
              [class.readonly]="readonly"
              [readonly]="readonly"

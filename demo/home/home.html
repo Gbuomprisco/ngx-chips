@@ -99,12 +99,12 @@
         <div>
             <h3>Tags custom template</h3>
             <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
-                <template item-template let-item="item">
+                <template item-template let-item="item" let-index="index">
                     <span>
                         item: {{ item.display }}
                     </span>
 
-                    <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
+                    <span (click)="input.removeItem(item, index)" class="ng2-tag__remove-button">
                         x
                     </span>
                 </template>

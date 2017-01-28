@@ -509,6 +509,8 @@ You still don't like them? It's fine, read the next section.
 Thanks to the newly introduced component inheritance, it is possible to finally customize the component with your own settings.
 It is not super straightforward, but you can finally define your own templates and styles. Let's see how it's done.
 
+Unfortunately this won't work with `tag-input-dropdown`. Seeking a solution for this.
+
 The first thing to do, is to define a new component and extend `tag-input`:
 
 ```javascript
