@@ -614,5 +614,5 @@ If you wish to copy the same style as the one used in the component, please have
 ## Ok - cool stuff. But when will you fix the issue I created?
 Do please read this great post by Micheal Bromely: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)
 
-## Contributing
-Contributions are highly welcome! No, there is not guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages.
+## Contributing/Pull Requests
+Contributions are highly welcome! No, there is no guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages...
