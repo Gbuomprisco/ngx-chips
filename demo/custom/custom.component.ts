@@ -9,7 +9,7 @@ import {
     state
 } from '@angular/core';
 
-import { TagInputComponent } from '../../modules/components/tag-input.ts';
+import { TagInputComponent } from '../../modules/components/tag-input';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({

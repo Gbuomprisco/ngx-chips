@@ -14,7 +14,6 @@ import { TagInputComponent } from '../tag-input';
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { TagModel } from '../helpers/accessor';
-import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
@@ -71,9 +70,10 @@ export class TagInputDropdown {
     @Input() public showDropdownIfEmpty: boolean = false;
 
     /**
-     * @name autocompleteEndpoint
+     * @description observable passed as input which populates the autocomplete items
+     * @name autocompleteObservable
      */
-    @Input() public autocompleteObservable: (text: string) => Observable<Response>;
+    @Input() public autocompleteObservable: (text: string) => Observable<any>;
 
     /**
      * - desc minimum text length in order to display the autocomplete dropdown
@@ -223,7 +223,7 @@ export class TagInputDropdown {
         ].filter(item => item).length === 3;
 
         const hideDropdown: boolean = this.isVisible && (!hasItems || !hasMinimumText);
-        
+
         // set items
         this.setItems(items);
 
@@ -292,27 +292,24 @@ export class TagInputDropdown {
      * @name populateItems
      * @param data
      */
-    private populateItems(data: any) {
-        const terms = data.map(item => {
-            return typeof item === 'string' ? ({display: item, value: item}) : item;
+    private populateItems(data: any): void {
+        this.autocompleteItems = data.map(item => {
+            return typeof item === 'string' ? { display: item, value: item } : item;
         });
-
-        this.autocompleteItems = [...this.autocompleteItems, ...terms];
-
-        this.show();
     }
 
     /**
      * @name getItemsFromObservable
      * @param text
      */
-    private getItemsFromObservable(text: string) {
+    private getItemsFromObservable(text: string): void {
         this.tagInput.isLoading = true;
 
         this.autocompleteObservable(text)
             .subscribe(data => {
                 this.tagInput.isLoading = false;
                 this.populateItems(data);
+                this.show();
             });
     }
 }

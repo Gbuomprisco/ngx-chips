@@ -17,7 +17,7 @@ const webpackConfig = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'], minChunks: Infinity }),
-        new ForkCheckerPlugin()
+        //new ForkCheckerPlugin()
     ],
 
     tslint: {
