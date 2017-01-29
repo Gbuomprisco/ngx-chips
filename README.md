@@ -6,7 +6,7 @@ This is a component for Angular >= 2. Design and API are blandly inspired by Ang
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/NyoEofaSM](http://www.webpackbin.com/NyoEofaSM).
+Check out the live demo (with source code) here [http://www.webpackbin.com/Nk8s5TLPz](http://www.webpackbin.com/Nk8s5TLPz).
 
 ** The demo will soon be published on its dedicated gh-pages site**
 
@@ -612,7 +612,7 @@ If you wish to copy the same style as the one used in the component, please have
 ```
 
 ## Ok - cool stuff. But when will you fix the issue I created?
-Do please read this great post by Micheal Bromely: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)
+Do please read this great post by Micheal Bromley: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)
 
 ## Contributing/Pull Requests
 Contributions are highly welcome! No, there is no guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages...
