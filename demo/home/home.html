@@ -64,9 +64,11 @@
             <tag-input [ngModel]="['@item']"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [displayBy]="'value'"
+                                    [identifyBy]="'id'"
                                     [autocompleteItems]="autocompleteItemsAsObjects">
                     <template let-item="item" let-index="index">
-                        {{ index }}: {{ item.display }}
+                        ({{ index }}) {{ item.id }}: {{ item.value }}
                     </template>
                 </tag-input-dropdown>
             </tag-input>

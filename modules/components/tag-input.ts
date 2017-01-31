@@ -369,32 +369,41 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        const displayBy = this.displayBy;
-        const identifyBy = this.identifyBy;
-
         // check if the transformed item is already existing in the list
-        const dupe = this.items.find(item => {
+        const dupe = this.items.find((item: TagModel) => {
+            const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
+            const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
+
             return item === tag[identifyBy] ||
-                item[identifyBy] === tag[identifyBy] ||
-                item[displayBy] === tag[displayBy];
+                item[this.identifyBy] === tag[identifyBy] ||
+                item[this.displayBy] === tag[displayBy];
         });
 
         // if so, give a visual cue and return false
         if (!this.allowDupes && !!dupe && this.blinkIfDupe) {
-            const item = this.tags.find(item => this.getItemValue(item.model) === this.getItemValue(dupe));
-            item.blink();
+            const item = this.tags.find(item => {
+                return this.getItemValue(item.model) === this.getItemValue(dupe);
+            });
+            
+            if (item) {
+                item.blink();
+            }
         }
 
         const fromAutocomplete = isFromAutocomplete && this.onlyFromAutocomplete;
 
-        // 1. there must be no dupe OR dupes are allowed
-        return (dupe === undefined || this.allowDupes === true) &&
+        const assertions = [
+            // 1. there must be no dupe OR dupes are allowed
+            dupe === undefined || this.allowDupes === true,
 
             // 2. check max items has not been reached
-            this.maxItemsReached === false &&
+            this.maxItemsReached === false,
 
             // 3. check item comes from autocomplete or onlyFromAutocomplete is false
-            ((fromAutocomplete) || this.onlyFromAutocomplete === false);
+            ((fromAutocomplete) || this.onlyFromAutocomplete === false)
+        ];
+
+        return assertions.filter(item => item).length > 0;
     }
 
     /**

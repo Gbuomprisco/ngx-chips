@@ -264,13 +264,31 @@ Offset to adjust the position of the dropdown with absolute values (defaults to 
 
 If set to `true`, the first item of the dropdown will be automatically focused (defaults to `false`)
 
+
 **`minimumTextLength`** - [**`?number`**]
 
 Minimum text length in order to display the autocomplete dropdown (defaults to `1`)
 
+
 **`limitItemsTo`** - [**`?number`**]
 
 Number of items to display in the autocomplete dropdown
+
+
+**`identifyBy`** - [**`?string`**]
+
+Just like for `tag-input`, this property defines the property of the value displayed of the object passed to the autocomplete
+
+
+**`displayBy`** - [**`?string`**]
+
+Just like for `tag-input`, this property defines the property of the unique value of the object passed to the autocomplete
+
+
+**`matchingFn`** - [**`?matchingFn(value: string, target: TagModel): boolean`**]
+
+Use this property if you are not happy with the default matching and want to provide your own implementation. The first value is the value
+of the input text, the second value corresponds to the value of each autocomplete item passed to the component
 
 
 ---

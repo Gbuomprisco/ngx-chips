@@ -21,8 +21,8 @@ export class Home {
     autocompleteItems = ['Item1', 'item2', 'item3'];
 
     autocompleteItemsAsObjects = [
-        {display: 'Item1', value: 0},
-        {display: 'item2', value: 1, data: {custom: 'Ciao'}},
+        {value: 'Item1', id: 0},
+        {value: 'item2', id: 1},
         'item3'
     ];
 
