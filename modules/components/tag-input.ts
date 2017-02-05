@@ -203,6 +203,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public allowDupes: boolean = false;
 
     /**
+     * @description if set to true, the newly added tags will be added as strings, and not objects
+     * @name modelAsStrings
+     * @type {boolean}
+     */
+    @Input() public modelAsStrings: boolean = false;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -411,7 +418,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param tag
      */
     public appendNewTag(tag: TagModel): void {
-        this.items = [...this.items, tag];
+        const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
+
+        // push item to array of items
+        this.items = [...this.items, newTag];
+
+        // emit event
         this.onAdd.emit(tag);
     }
 

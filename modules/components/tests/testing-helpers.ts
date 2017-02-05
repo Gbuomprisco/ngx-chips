@@ -152,6 +152,14 @@ export class TagInputComponentWithOnlyAutocomplete {
     public items = getItems();
 }
 
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items" [modelAsStrings]="true"></tag-input>`
+})
+export class TagInputComponentWithModelAsStrings {
+    public items = getItems();
+}
+
 const COMPONENTS = [
     BasicTagInputComponent,
     TagInputComponentWithPlaceholder,
@@ -163,7 +171,8 @@ const COMPONENTS = [
     TagInputComponentWithAutocomplete,
     TagInputComponentWithOnlyAutocomplete,
     TagInputComponentTagsAsObjects,
-    TagInputComponentCustomTagsAsObjects
+    TagInputComponentCustomTagsAsObjects,
+    TagInputComponentWithModelAsStrings
 ];
 
 @NgModule({
