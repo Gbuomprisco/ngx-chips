@@ -17,6 +17,7 @@
         "skipLibCheck": true,
         "moduleResolution": "node",
         "baseUrl": "",
+        "rootDir": ".",
         "types": [
             "node",
             "jasmine",
