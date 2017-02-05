@@ -22,7 +22,8 @@ import {
     TagInputComponentWithTemplate,
     TagInputComponentWithAutocomplete,
     TagInputComponentWithOnlyAutocomplete,
-    TestModule
+    TestModule,
+    TagInputComponentWithModelAsStrings
 } from './testing-helpers';
 
 import { TagInputComponent } from '../tag-input';
@@ -474,6 +475,20 @@ describe('TagInputComponent', () => {
             component.setInputValue('item');
             component.addItem(true);
             expect(component.items.length).toEqual(3);
+
+            discardPeriodicTasks();
+        }));
+    });
+
+    describe('model as strings', () => {
+        it('adds item to the model as a string', fakeAsync(() => {
+            const fixture: ComponentFixture<TagInputComponentWithModelAsStrings> =
+                TestBed.createComponent(TagInputComponentWithModelAsStrings);
+
+            const component: TagInputComponent = getComponent(fixture);
+            component.appendNewTag({display: 'Tag', value: 'Tag'});
+
+            expect(component.items[2]).toEqual('Tag');
 
             discardPeriodicTasks();
         }));

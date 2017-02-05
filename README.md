@@ -158,6 +158,12 @@ If set to `true`, it will be possible to edit the display value of the tags (def
 
 If set to `true`, it will be possible to add tags with the same value (defaults to `false`)
 
+
+**`modelAsStrings`** - [**`?boolean`**]
+
+If set to `true`, all values added will be strings, and not objects (defaults to `false`)
+
+
 ---
 
 ##### Validation (optional)
