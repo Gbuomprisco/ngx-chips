@@ -16,7 +16,6 @@
         "inlineSources": true,
         "skipLibCheck": true,
         "moduleResolution": "node",
-        "rootDir": ".",
         "baseUrl": "",
         "types": [
             "node",

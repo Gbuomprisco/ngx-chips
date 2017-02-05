@@ -298,6 +298,11 @@ Use this property if you are not happy with the default matching and want to pro
 of the input text, the second value corresponds to the value of each autocomplete item passed to the component
 
 
+**`appendToBody`** - [**`?boolean`**]
+
+If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `false`.
+
+
 ---
 
 
