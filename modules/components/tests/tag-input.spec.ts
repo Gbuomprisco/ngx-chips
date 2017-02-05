@@ -459,9 +459,6 @@ describe('TagInputComponent', () => {
             tick();
 
             expect(component.items.length).toEqual(3);
-            const index = component.items.findIndex(tag => item.value === tag);
-            expect(index).toEqual(2);
-
             discardPeriodicTasks();
         }));
 

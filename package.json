@@ -20,14 +20,14 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular/common": "2.4.4",
-    "@angular/compiler": "2.4.4",
-    "@angular/compiler-cli": "2.4.4",
-    "@angular/core": "2.4.4",
-    "@angular/forms": "2.4.4",
-    "@angular/http": "2.4.4",
-    "@angular/platform-browser": "2.4.4",
-    "@angular/platform-browser-dynamic": "2.4.4",
+    "@angular/common": "2.4.6",
+    "@angular/compiler": "2.4.6",
+    "@angular/compiler-cli": "2.4.6",
+    "@angular/core": "2.4.6",
+    "@angular/forms": "2.4.6",
+    "@angular/http": "2.4.6",
+    "@angular/platform-browser": "2.4.6",
+    "@angular/platform-browser-dynamic": "2.4.6",
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.41",
     "@types/node": "^7.0.3",
@@ -71,10 +71,10 @@
     "ng2-material-dropdown": "0.6.4"
   },
   "peerDependencies": {
-    "@angular/core": "2.4.4",
-    "@angular/common": "2.4.4",
-    "@angular/forms": "2.4.4",
-    "rxjs": "5.0.1"
+    "@angular/core": "^2.4.0",
+    "@angular/common": "^2.4.0",
+    "@angular/forms": "^2.4.0",
+    "rxjs": "^5.0.1"
   },
   "keywords": [
     "angular 2",

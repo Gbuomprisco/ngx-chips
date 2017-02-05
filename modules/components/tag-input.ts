@@ -384,7 +384,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             const item = this.tags.find(item => {
                 return this.getItemValue(item.model) === this.getItemValue(dupe);
             });
-            
+
             if (item) {
                 item.blink();
             }
@@ -403,7 +403,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             ((fromAutocomplete) || this.onlyFromAutocomplete === false)
         ];
 
-        return assertions.filter(item => item).length > 0;
+        return assertions.filter(item => item).length === assertions.length;
     }
 
     /**
