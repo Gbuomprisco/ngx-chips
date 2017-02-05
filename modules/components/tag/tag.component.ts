@@ -57,7 +57,7 @@ export class TagComponent {
     /**
      * @name index {number}
      */
-    @Input() index: number;
+    @Input() private index: number;
 
     /**
      * @name onSelect

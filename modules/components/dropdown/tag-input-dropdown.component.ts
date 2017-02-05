@@ -53,12 +53,8 @@ export class TagInputDropdown {
      * @param items
      */
     @Input() public set autocompleteItems(items: TagModel[]) {
-        this._autocompleteItems = items ? items.map((item: TagModel | string) => {
-            if (typeof item === 'string') {
-                return {display: item, value: item};
-            } else {
-                return item;
-            }
+        this._autocompleteItems = items ? items.map((item: TagModel) => {
+            return typeof item !== 'string' ? item : {[this.displayBy]: item, [this.identifyBy]: item};
         }) : [];
     }
 
@@ -86,6 +82,29 @@ export class TagInputDropdown {
      * @name limitItemsTo
      */
     @Input() private limitItemsTo: number;
+    
+    /**
+     * @name displayBy
+     */
+    @Input() public displayBy: string = 'display';
+
+    /**
+     * @name identifyBy
+     */
+    @Input() public identifyBy: string = 'value';
+
+    /**
+     * @description a function a developer can use to implement custom matching for the autocomplete
+     * @name matchingFn
+     */
+    @Input() private matchingFn: (value: string, target: TagModel) => boolean =
+         (value: string, target: TagModel): boolean => {
+            const targetValue = target[this.displayBy].toString();
+
+            return targetValue && targetValue
+                .toLowerCase()
+                .indexOf(value) >= 0 || false;
+    };
 
     /**
      * list of items that match the current value of the input (for autocomplete)
@@ -113,18 +132,15 @@ export class TagInputDropdown {
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
 
     public ngOnInit() {
-        this.onItemClicked().subscribe(item => {
-            this.addNewItem(item);
-        });
+        this.onItemClicked()
+            .subscribe(this.addNewItem.bind(this));
 
         // reset itemsMatching array when the dropdown is hidden
-        this.onHide().subscribe(() => {
-            this.resetItems();
-        });
+        this.onHide()
+            .subscribe(this.resetItems.bind(this));
 
-        this.tagInput.inputForm.onKeyup.subscribe(() => {
-            this.show();
-        });
+        this.tagInput.inputForm.onKeyup
+            .subscribe(this.show.bind(this));
 
         if (this.autocompleteObservable) {
             this.tagInput
@@ -184,24 +200,26 @@ export class TagInputDropdown {
 
     /**
      * @name addNewItem
-     * @param item
+     * @param item {Ng2MenuItem}
      */
-    private addNewItem(item): void {
+    private addNewItem(item: Ng2MenuItem): void {
         if (!item) {
             return;
         }
 
         // add item
         if (this.tagInput.isTagValid(item.value, true)) {
-            this.tagInput.appendNewTag(item.value);
+            const tag: TagModel = this.tagInput.createTag(item.value[this.displayBy], item.value[this.identifyBy]);
+            this.tagInput.appendNewTag(tag);
         }
-
+        
+        // reset input value
         this.tagInput.setInputValue('');
-
-        setTimeout(() => this.tagInput.inputForm.focus(), 0);
 
         // hide dropdown
         this.dropdown.hide();
+
+        setTimeout(() => this.tagInput.inputForm.focus(), 0);
     }
 
     /**
@@ -211,17 +229,18 @@ export class TagInputDropdown {
     public show(): void {
         const value: string = this.tagInput.inputForm.value.value.trim();
         const position: ClientRect = this.tagInput.inputForm.getElementPosition();
-        const items = this.getMatchingItems(value);
-        const hasItems = items.length > 0;
-        const showDropdownIfEmpty = this.showDropdownIfEmpty && !value && hasItems;
+        const items: TagModel[] = this.getMatchingItems(value);
+        const hasItems: boolean = items.length > 0;
+        const showDropdownIfEmpty: boolean = this.showDropdownIfEmpty && hasItems && !value;
         const hasMinimumText: boolean = value.length >= this.minimumTextLength;
 
-        const showDropdown: boolean = [
-            hasItems || showDropdownIfEmpty,
+        const assertions: boolean[] = [
+            hasItems,
             this.isVisible === false,
             hasMinimumText
-        ].filter(item => item).length === 3;
+        ];
 
+        const showDropdown: boolean = (assertions.filter(item => item).length === assertions.length) || showDropdownIfEmpty;
         const hideDropdown: boolean = this.isVisible && (!hasItems || !hasMinimumText);
 
         // set items
@@ -244,28 +263,19 @@ export class TagInputDropdown {
             return [];
         }
 
-        const matchesFn = (item: string): boolean => {
-            return item && item.toString()
-                    .toLowerCase()
-                    .indexOf(value.toLowerCase()) >= 0 || false;
-        };
-
-        const matchesValue = (item: TagModel): boolean => {
-            return typeof item === 'string' ?
-                matchesFn(item) :
-                matchesFn(item[this.tagInput.displayBy]) || matchesFn(item[this.tagInput.identifyBy]);
-        };
-
-        return this.autocompleteItems.filter(item => {
-            const hasValue = !!this.tagInput.tags.find(tag => tag.model === item);
-            return (matchesValue(item) === true) && (hasValue === false);
+        return this.autocompleteItems.filter((item: TagModel) => {
+            const hasValue: boolean = this.tagInput.tags.filter(tag => {
+                return tag.model[this.tagInput.displayBy] === item[this.displayBy];
+            }).length > 0;
+   
+            return this.matchingFn(value, item) && hasValue === false;
         });
     }
 
     /**
      * @name setItems
      */
-    private setItems(items: TagModel[]) {
+    private setItems(items: TagModel[]): void {
         this.items = items.slice(0, this.limitItemsTo || items.length);
     }
 
@@ -294,7 +304,7 @@ export class TagInputDropdown {
      */
     private populateItems(data: any): void {
         this.autocompleteItems = data.map(item => {
-            return typeof item === 'string' ? { display: item, value: item } : item;
+            return typeof item === 'string' ? { [this.displayBy]: item, [this.identifyBy]: item } : item;
         });
     }
 
@@ -308,8 +318,14 @@ export class TagInputDropdown {
         this.autocompleteObservable(text)
             .subscribe(data => {
                 this.tagInput.isLoading = false;
+                
+                // add items
                 this.populateItems(data);
+
+                // show dropdown
                 this.show();
+            }, () => {
+                this.tagInput.isLoading = false;
             });
     }
 }
