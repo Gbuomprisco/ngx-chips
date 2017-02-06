@@ -31,7 +31,7 @@
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.41",
     "@types/node": "^7.0.3",
-    "angular2-template-loader": "^0.6.0",
+    "angular2-template-loader": "0.6.0",
     "autoprefixer": "^6.7.0",
     "awesome-typescript-loader": "3.0.0-beta.18",
     "core-js": "^2.4.1",
