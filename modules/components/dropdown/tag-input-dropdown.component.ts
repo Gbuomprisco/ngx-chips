@@ -49,16 +49,6 @@ export class TagInputDropdown {
     @Input() public focusFirstElement: boolean = false;
 
     /**
-     * @name autocompleteItems
-     * @param items
-     */
-    @Input() public set autocompleteItems(items: TagModel[]) {
-        this._autocompleteItems = items ? items.map((item: TagModel) => {
-            return typeof item !== 'string' ? item : {[this.displayBy]: item, [this.identifyBy]: item};
-        }) : [];
-    }
-
-    /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
      * @type {boolean}
@@ -128,11 +118,21 @@ export class TagInputDropdown {
 
     /**
      * @name autocompleteItems
+     * @param items
+     */
+    public set autocompleteItems(items: TagModel[]) {
+        this._autocompleteItems = items;
+    }
+
+    /**
+     * @name autocompleteItems
      * @desc array of items that will populate the autocomplete
      * @type {Array<string>}
      */
-    public get autocompleteItems(): TagModel[] {
-        return this._autocompleteItems;
+    @Input() public get autocompleteItems(): TagModel[] {
+        return this._autocompleteItems ? this._autocompleteItems.map((item: TagModel) => {
+            return typeof item !== 'string' ? item : {[this.displayBy]: item, [this.identifyBy]: item};
+        }) : [];
     }
 
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
@@ -215,7 +215,7 @@ export class TagInputDropdown {
 
         // add item
         if (this.tagInput.isTagValid(item.value, true)) {
-            const tag: TagModel = this.tagInput.createTag(item.value[this.displayBy], item.value[this.identifyBy]);
+            const tag = this.tagInput.createTag(item.value[this.displayBy], item.value[this.identifyBy]);
             this.tagInput.appendNewTag(tag);
         }
 
@@ -246,7 +246,8 @@ export class TagInputDropdown {
             hasMinimumText
         ];
 
-        const showDropdown: boolean = (assertions.filter(item => item).length === assertions.length) || showDropdownIfEmpty;
+        const showDropdown: boolean = (assertions.filter(item => item).length === assertions.length) ||
+            showDropdownIfEmpty;
         const hideDropdown: boolean = this.isVisible && (!hasItems || !hasMinimumText);
 
         // set items
@@ -254,14 +255,8 @@ export class TagInputDropdown {
 
         if (showDropdown) {
             this.dropdown.show(position);
-
-            // blur input
-            this.tagInput.inputForm.blur();
         } else if (hideDropdown) {
             this.dropdown.hide();
-
-            // focus input
-            this.tagInput.inputForm.focus();
         }
     }
 

@@ -2,7 +2,7 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items</h3>
-            <tag-input [(ngModel)]="items"></tag-input>
+            <tag-input [(ngModel)]="items" [modelAsStrings]="true"></tag-input>
         </div>
 
         <div>
@@ -101,10 +101,13 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
+            <tag-input [ngModel]="['@item']"
+                       [modelAsStrings]="true"
+                       #input
+                       (onTextChange)="onTextChange($event)">
                 <template item-template let-item="item" let-index="index">
                     <span>
-                        item: {{ item.display }}
+                        item: {{ item }}
                     </span>
 
                     <span (click)="input.removeItem(item, index)" class="ng2-tag__remove-button">
