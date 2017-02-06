@@ -511,15 +511,15 @@ If readonly is passed to the tag-input, it won't be possible to select, add and 
 Define your own template, but remember to set up the needed events using the `input` reference.
 
 ```html
-<tag-input [ngModel]="['@item']" #input>
-    <template let-item="item"> <!-- DEFINE HERE YOUR TEMPLATE -->
+<tag-input [ngModel]="['@item']" [modelAsStrings]="true" #input>
+    <template let-item="item" let-index="index"> <!-- DEFINE HERE YOUR TEMPLATE -->
         <span>
             <!-- YOU MAY ACTUALLY DISPLAY WHATEVER YOU WANT IF YOU PASS AN OBJECT AS ITEM -->
-            item: {{ item.display }}
+            <!-- ex. item.myDisplayValue -->
+
+            item: {{ item }}
         </span>
-        <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
-            x
-        </span>
+        <delete-icon (click)="input.removeItem(item, index)"></delete-icon>
     </template>
 </tag-input>
 ```

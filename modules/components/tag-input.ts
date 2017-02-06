@@ -381,15 +381,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
             const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
 
-            return item === tag[identifyBy] ||
+            return this.getItemValue(item) === tag[identifyBy] ||
                 item[this.identifyBy] === tag[identifyBy] ||
                 item[this.displayBy] === tag[displayBy];
         });
 
+        const hasDupe = !!dupe && dupe !== undefined;
+
         // if so, give a visual cue and return false
-        if (!this.allowDupes && !!dupe && this.blinkIfDupe) {
-            const item = this.tags.find(item => {
-                return this.getItemValue(item.model) === this.getItemValue(dupe);
+        if (!this.allowDupes && hasDupe && this.blinkIfDupe) {
+            const item = this.tags.find(_tag => {
+                return this.getItemValue(_tag.model) === this.getItemValue(dupe);
             });
 
             if (item) {
@@ -398,10 +400,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
 
         const fromAutocomplete = isFromAutocomplete && this.onlyFromAutocomplete;
-
         const assertions = [
             // 1. there must be no dupe OR dupes are allowed
-            dupe === undefined || this.allowDupes === true,
+            !hasDupe || this.allowDupes === true,
 
             // 2. check max items has not been reached
             this.maxItemsReached === false,
@@ -446,7 +447,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item
      */
     public selectItem(item: TagModel): void {
-        if (this.readonly || !item || item === this.selectedTag) {
+        if (this.readonly || !item) {
             return;
         }
 
@@ -555,7 +556,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {boolean}
      */
     public hasErrors(): boolean {
-        return this.inputForm && this.inputForm.hasErrors() ? true : false;
+        return this.inputForm && this.inputForm.hasErrors();
     }
 
     /**
@@ -563,7 +564,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {boolean}
      */
     public isInputFocused(): boolean {
-        return this.inputForm && this.inputForm.isInputFocused() ? true : false;
+        return this.inputForm && this.inputForm.isInputFocused();
     }
 
     /**
