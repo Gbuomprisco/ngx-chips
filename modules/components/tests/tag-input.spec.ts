@@ -9,8 +9,9 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { TagModel } from '../helpers/accessor';
+import { TagInputComponent } from '../tag-input';
+const match = jasmine.objectContaining;
 
 import {
     BasicTagInputComponent,
@@ -25,10 +26,6 @@ import {
     TestModule,
     TagInputComponentWithModelAsStrings
 } from './testing-helpers';
-
-import { TagInputComponent } from '../tag-input';
-
-const match = jasmine.objectContaining;
 
 describe('TagInputComponent', () => {
     beforeEach(() => {
@@ -45,6 +42,7 @@ describe('TagInputComponent', () => {
     function getComponent(fixture) {
         fixture.detectChanges();
         tick();
+
         fixture.detectChanges();
         tick();
 

@@ -20,8 +20,11 @@
         "rootDir": ".",
         "types": [
             "node",
-            "jasmine",
-            "es6-shim"
+            "jasmine"
+        ],
+        "lib": [
+            "dom",
+            "es2015"
         ],
         "suppressImplicitAnyIndexErrors": true
     },
