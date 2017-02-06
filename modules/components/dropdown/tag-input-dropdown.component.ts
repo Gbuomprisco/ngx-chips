@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { TagInputComponent } from '../tag-input';
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
+import { Ng2Dropdown, Ng2MenuItem, DropdownStateService } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { TagModel } from '../helpers/accessor';
 import { Observable } from 'rxjs/Observable';
@@ -27,7 +27,7 @@ export class TagInputDropdown {
     /**
      * @name dropdown
      */
-    @ViewChild(Ng2Dropdown) dropdown: Ng2Dropdown;
+    @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
 
     /**
      * @name menuTemplate
@@ -82,7 +82,7 @@ export class TagInputDropdown {
      * @name limitItemsTo
      */
     @Input() private limitItemsTo: number;
-    
+
     /**
      * @name displayBy
      */
@@ -105,6 +105,12 @@ export class TagInputDropdown {
                 .toLowerCase()
                 .indexOf(value) >= 0 || false;
     };
+
+    /**
+     * @name appendToBody
+     * @type {boolean}
+     */
+    @Input() public appendToBody: boolean = true;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
@@ -194,7 +200,7 @@ export class TagInputDropdown {
      * @name state
      * @returns {DropdownStateService}
      */
-    public get state(): any {
+    public get state(): DropdownStateService {
         return this.dropdown.menu.state;
     }
 
@@ -212,7 +218,7 @@ export class TagInputDropdown {
             const tag: TagModel = this.tagInput.createTag(item.value[this.displayBy], item.value[this.identifyBy]);
             this.tagInput.appendNewTag(tag);
         }
-        
+
         // reset input value
         this.tagInput.setInputValue('');
 
@@ -247,9 +253,15 @@ export class TagInputDropdown {
         this.setItems(items);
 
         if (showDropdown) {
-            this.dropdown.toggleMenu(position);
+            this.dropdown.show(position);
+
+            // blur input
+            this.tagInput.inputForm.blur();
         } else if (hideDropdown) {
             this.dropdown.hide();
+
+            // focus input
+            this.tagInput.inputForm.focus();
         }
     }
 
@@ -267,7 +279,7 @@ export class TagInputDropdown {
             const hasValue: boolean = this.tagInput.tags.filter(tag => {
                 return tag.model[this.tagInput.displayBy] === item[this.displayBy];
             }).length > 0;
-   
+
             return this.matchingFn(value, item) && hasValue === false;
         });
     }
@@ -318,7 +330,7 @@ export class TagInputDropdown {
         this.autocompleteObservable(text)
             .subscribe(data => {
                 this.tagInput.isLoading = false;
-                
+
                 // add items
                 this.populateItems(data);
 

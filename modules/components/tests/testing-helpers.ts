@@ -42,8 +42,8 @@ export class BasicTagInputComponent {
 export class TagInputComponentWithOutputs {
     public items = getItems();
 
-    onAdd(item) {}
-    onRemove(item) {}
+    onAdd() {}
+    onRemove() {}
 
     public validators: any = validators;
 }
@@ -76,8 +76,8 @@ export class TagInputComponentCustomTagsAsObjects {
 export class TagInputComponentWithValidation {
     public items = getItems();
     validators: any = validators;
-    onAdd(item) {}
-    onRemove(item) {}
+    onAdd() {}
+    onRemove() {}
 }
 
 @Component({

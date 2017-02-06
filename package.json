@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run build",
@@ -31,7 +31,7 @@
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.41",
     "@types/node": "^7.0.3",
-    "angular2-template-loader": "^0.6.0",
+    "angular2-template-loader": "0.6.0",
     "autoprefixer": "^6.7.0",
     "awesome-typescript-loader": "3.0.0-beta.18",
     "core-js": "^2.4.1",
@@ -68,7 +68,7 @@
     "zone.js": "0.7.6"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.6.4"
+    "ng2-material-dropdown": "0.7.0"
   },
   "peerDependencies": {
     "@angular/core": "^2.4.0",
