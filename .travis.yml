@@ -18,6 +18,7 @@ addons:
 
 script:
   - npm test
+  - npm run codecov
 
 notifications:
   email: false
