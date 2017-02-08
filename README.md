@@ -2,11 +2,12 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
-**This component works in Angular 2.4.4**. If you have an issues, please do make sure you're not running a different version. Otherwise, please do open a new issue.
+**This component is supposed to work with the latest Angular versions**.
+If you have an issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/NyoEofaSM](http://www.webpackbin.com/NyoEofaSM).
+Check out the live demo (with source code) here [http://www.webpackbin.com/416LDqMdz](http://www.webpackbin.com/416LDqMdz).
 
 ** The demo will soon be published on its dedicated gh-pages site**
 
@@ -157,6 +158,12 @@ If set to `true`, it will be possible to edit the display value of the tags (def
 
 If set to `true`, it will be possible to add tags with the same value (defaults to `false`)
 
+
+**`modelAsStrings`** - [**`?boolean`**]
+
+If set to `true`, all values added will be strings, and not objects (defaults to `false`)
+
+
 ---
 
 ##### Validation (optional)
@@ -264,13 +271,36 @@ Offset to adjust the position of the dropdown with absolute values (defaults to 
 
 If set to `true`, the first item of the dropdown will be automatically focused (defaults to `false`)
 
+
 **`minimumTextLength`** - [**`?number`**]
 
 Minimum text length in order to display the autocomplete dropdown (defaults to `1`)
 
+
 **`limitItemsTo`** - [**`?number`**]
 
 Number of items to display in the autocomplete dropdown
+
+
+**`identifyBy`** - [**`?string`**]
+
+Just like for `tag-input`, this property defines the property of the value displayed of the object passed to the autocomplete
+
+
+**`displayBy`** - [**`?string`**]
+
+Just like for `tag-input`, this property defines the property of the unique value of the object passed to the autocomplete
+
+
+**`matchingFn`** - [**`?matchingFn(value: string, target: TagModel): boolean`**]
+
+Use this property if you are not happy with the default matching and want to provide your own implementation. The first value is the value
+of the input text, the second value corresponds to the value of each autocomplete item passed to the component
+
+
+**`appendToBody`** - [**`?boolean`**]
+
+If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `false`.
 
 
 ---
@@ -481,15 +511,15 @@ If readonly is passed to the tag-input, it won't be possible to select, add and 
 Define your own template, but remember to set up the needed events using the `input` reference.
 
 ```html
-<tag-input [ngModel]="['@item']" #input>
-    <template let-item="item"> <!-- DEFINE HERE YOUR TEMPLATE -->
+<tag-input [ngModel]="['@item']" [modelAsStrings]="true" #input>
+    <template let-item="item" let-index="index"> <!-- DEFINE HERE YOUR TEMPLATE -->
         <span>
             <!-- YOU MAY ACTUALLY DISPLAY WHATEVER YOU WANT IF YOU PASS AN OBJECT AS ITEM -->
-            item: {{ item.display }}
+            <!-- ex. item.myDisplayValue -->
+
+            item: {{ item }}
         </span>
-        <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
-            x
-        </span>
+        <delete-icon (click)="input.removeItem(item, index)"></delete-icon>
     </template>
 </tag-input>
 ```
@@ -508,6 +538,8 @@ You still don't like them? It's fine, read the next section.
 
 Thanks to the newly introduced component inheritance, it is possible to finally customize the component with your own settings.
 It is not super straightforward, but you can finally define your own templates and styles. Let's see how it's done.
+
+Unfortunately this won't work with `tag-input-dropdown`. Seeking a solution for this.
 
 The first thing to do, is to define a new component and extend `tag-input`:
 
@@ -608,3 +640,9 @@ If you wish to copy the same style as the one used in the component, please have
     <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
 </div>
 ```
+
+## Ok - cool stuff. But when will you fix the issue I created?
+Do please read this great post by Micheal Bromley: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)
+
+## Contributing/Pull Requests
+Contributions are highly welcome! No, there is no guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages...

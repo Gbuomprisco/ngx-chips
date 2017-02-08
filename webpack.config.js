@@ -10,7 +10,6 @@ var webpackConfig = {
             '@angular/core',
             '@angular/common',
             "@angular/forms",
-            "@angular/http",
             "rxjs/add/operator/debounceTime",
             "rxjs/add/operator/map",
             "rxjs/add/operator/filter"
@@ -29,7 +28,6 @@ var webpackConfig = {
         "@angular/core": true,
         "@angular/common": true,
         "@angular/forms": true,
-        "@angular/http": true,
         "rxjs/add/operator/debounceTime": true,
         "rxjs/add/operator/map": true,
         "rxjs/add/operator/filter": true

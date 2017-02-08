@@ -88,6 +88,13 @@ export class TagInputForm {
         this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
     }
 
+    /**
+     * @name blur
+     */
+    public blur(): void {
+        this.renderer.invokeElementMethod(this.input.nativeElement, 'blur');
+    }
+
 	/**
      * @name getElementPosition
      * @returns {ClientRect}

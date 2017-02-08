@@ -1,7 +1,6 @@
 module.exports = function(config) {
-    var testWebpackConfig = require('./webpack.test.js');
-
-    var options = {
+    const testWebpackConfig = require('./webpack.test.js');
+    const options = {
 
         // base path that will be used to resolve all patterns (e.g. files, exclude)
         basePath: '',
@@ -36,14 +35,23 @@ module.exports = function(config) {
         webpack: testWebpackConfig,
 
         coverageReporter: {
-            type : 'html',
-            dir : './coverage',
-            instrumenterOptions: {
-                istanbul: {
-                    noCompact: true
-                }
-            }
+            reporters: [
+                { type: 'html' },
+                { type: 'text' },
+                { type: 'text-summary' },
+                { type: 'lcov' }
+            ],
+            dir: './coverage'
         },
+
+        plugins: [
+            require('karma-jasmine'),
+            require('karma-webpack'),
+            require("istanbul-instrumenter-loader"),
+            require("karma-coverage"),
+            require('karma-chrome-launcher'),
+            require('karma-sourcemap-loader'),
+        ],
 
         // Webpack please don't spam the console when running in karma!
         webpackServer: { noInfo: true },

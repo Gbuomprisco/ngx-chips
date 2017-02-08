@@ -203,6 +203,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public allowDupes: boolean = false;
 
     /**
+     * @description if set to true, the newly added tags will be added as strings, and not objects
+     * @name modelAsStrings
+     * @type {boolean}
+     */
+    @Input() public modelAsStrings: boolean = false;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -369,32 +376,42 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        const displayBy = this.displayBy;
-        const identifyBy = this.identifyBy;
-
         // check if the transformed item is already existing in the list
-        const dupe = this.items.find(item => {
-            return item === tag[identifyBy] ||
-                item[identifyBy] === tag[identifyBy] ||
-                item[displayBy] === tag[displayBy];
+        const dupe = this.items.find((item: TagModel) => {
+            const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
+            const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
+
+            return this.getItemValue(item) === tag[identifyBy] ||
+                item[this.identifyBy] === tag[identifyBy] ||
+                item[this.displayBy] === tag[displayBy];
         });
 
+        const hasDupe = !!dupe && dupe !== undefined;
+
         // if so, give a visual cue and return false
-        if (!this.allowDupes && !!dupe && this.blinkIfDupe) {
-            const item = this.tags.find(item => this.getItemValue(item.model) === this.getItemValue(dupe));
-            item.blink();
+        if (!this.allowDupes && hasDupe && this.blinkIfDupe) {
+            const item = this.tags.find(_tag => {
+                return this.getItemValue(_tag.model) === this.getItemValue(dupe);
+            });
+
+            if (item) {
+                item.blink();
+            }
         }
 
         const fromAutocomplete = isFromAutocomplete && this.onlyFromAutocomplete;
-
-        // 1. there must be no dupe OR dupes are allowed
-        return (dupe === undefined || this.allowDupes === true) &&
+        const assertions = [
+            // 1. there must be no dupe OR dupes are allowed
+            !hasDupe || this.allowDupes === true,
 
             // 2. check max items has not been reached
-            this.maxItemsReached === false &&
+            this.maxItemsReached === false,
 
             // 3. check item comes from autocomplete or onlyFromAutocomplete is false
-            ((fromAutocomplete) || this.onlyFromAutocomplete === false);
+            ((fromAutocomplete) || this.onlyFromAutocomplete === false)
+        ];
+
+        return assertions.filter(item => item).length === assertions.length;
     }
 
     /**
@@ -402,7 +419,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param tag
      */
     public appendNewTag(tag: TagModel): void {
-        this.items = [...this.items, tag];
+        const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
+
+        // push item to array of items
+        this.items = [...this.items, newTag];
+
+        // emit event
         this.onAdd.emit(tag);
     }
 
@@ -425,7 +447,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item
      */
     public selectItem(item: TagModel): void {
-        if (this.readonly || !item || item === this.selectedTag) {
+        if (this.readonly || !item) {
             return;
         }
 
@@ -534,7 +556,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {boolean}
      */
     public hasErrors(): boolean {
-        return this.inputForm && this.inputForm.hasErrors() ? true : false;
+        return this.inputForm && this.inputForm.hasErrors();
     }
 
     /**
@@ -542,7 +564,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {boolean}
      */
     public isInputFocused(): boolean {
-        return this.inputForm && this.inputForm.isInputFocused() ? true : false;
+        return this.inputForm && this.inputForm.isInputFocused();
     }
 
     /**

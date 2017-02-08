@@ -9,8 +9,9 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { TagModel } from '../helpers/accessor';
+import { TagInputComponent } from '../tag-input';
+const match = jasmine.objectContaining;
 
 import {
     BasicTagInputComponent,
@@ -22,12 +23,9 @@ import {
     TagInputComponentWithTemplate,
     TagInputComponentWithAutocomplete,
     TagInputComponentWithOnlyAutocomplete,
-    TestModule
+    TestModule,
+    TagInputComponentWithModelAsStrings
 } from './testing-helpers';
-
-import { TagInputComponent } from '../tag-input';
-
-const match = jasmine.objectContaining;
 
 describe('TagInputComponent', () => {
     beforeEach(() => {
@@ -44,6 +42,7 @@ describe('TagInputComponent', () => {
     function getComponent(fixture) {
         fixture.detectChanges();
         tick();
+
         fixture.detectChanges();
         tick();
 
@@ -459,9 +458,6 @@ describe('TagInputComponent', () => {
             tick();
 
             expect(component.items.length).toEqual(3);
-            const index = component.items.findIndex(tag => item.value === tag);
-            expect(index).toEqual(2);
-
             discardPeriodicTasks();
         }));
 
@@ -477,6 +473,20 @@ describe('TagInputComponent', () => {
             component.setInputValue('item');
             component.addItem(true);
             expect(component.items.length).toEqual(3);
+
+            discardPeriodicTasks();
+        }));
+    });
+
+    describe('model as strings', () => {
+        it('adds item to the model as a string', fakeAsync(() => {
+            const fixture: ComponentFixture<TagInputComponentWithModelAsStrings> =
+                TestBed.createComponent(TagInputComponentWithModelAsStrings);
+
+            const component: TagInputComponent = getComponent(fixture);
+            component.appendNewTag({display: 'Tag', value: 'Tag'});
+
+            expect(component.items[2]).toEqual('Tag');
 
             discardPeriodicTasks();
         }));

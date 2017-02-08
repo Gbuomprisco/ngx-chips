@@ -2,7 +2,7 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items</h3>
-            <tag-input [(ngModel)]="items"></tag-input>
+            <tag-input [(ngModel)]="items" [modelAsStrings]="true"></tag-input>
         </div>
 
         <div>
@@ -54,7 +54,8 @@
         <div>
             <h3>Tags within an autocomplete component</h3>
             <tag-input [ngModel]="['@item']">
-                <tag-input-dropdown [autocompleteItems]="autocompleteItems">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems"
+                                    [focusFirstElement]="true">
                 </tag-input-dropdown>
             </tag-input>
         </div>
@@ -64,9 +65,11 @@
             <tag-input [ngModel]="['@item']"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [displayBy]="'value'"
+                                    [identifyBy]="'id'"
                                     [autocompleteItems]="autocompleteItemsAsObjects">
                     <template let-item="item" let-index="index">
-                        {{ index }}: {{ item.display }}
+                        ({{ index }}) {{ item.id }}: {{ item.value }}
                     </template>
                 </tag-input-dropdown>
             </tag-input>
@@ -98,13 +101,16 @@
 
         <div>
             <h3>Tags custom template</h3>
-            <tag-input [ngModel]="['@item']" #input (onTextChange)="onTextChange($event)">
-                <template item-template let-item="item">
+            <tag-input [ngModel]="['@item']"
+                       [modelAsStrings]="true"
+                       #input
+                       (onTextChange)="onTextChange($event)">
+                <template item-template let-item="item" let-index="index">
                     <span>
-                        item: {{ item.display }}
+                        item: {{ item }}
                     </span>
 
-                    <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
+                    <span (click)="input.removeItem(item, index)" class="ng2-tag__remove-button">
                         x
                     </span>
                 </template>

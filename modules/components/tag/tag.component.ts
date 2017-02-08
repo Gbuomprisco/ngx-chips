@@ -25,27 +25,39 @@ export class TagComponent {
     @Input() public model: TagModel;
 
     /**
-     * @name readonly
+     * @name readonly {boolean}
      */
     @Input() public readonly: boolean;
 
     /**
-     * @name removable
+     * @name removable {boolean}
      */
     @Input() public removable: boolean;
 
     /**
-     * @name editable
+     * @name editable {boolean}
      */
     @Input() public editable: boolean;
 
     /**
-     * @name template
+     * @name template {TemplateRef<any>}
      */
     @Input() public template: TemplateRef<any>;
 
+    /**
+     * @name displayBy {string}
+     */
     @Input() private displayBy: string;
+
+    /**
+     * @name identifyBy {string}
+     */
     @Input() private identifyBy: string;
+
+    /**
+     * @name index {number}
+     */
+    @Input() private index: number;
 
     /**
      * @name onSelect
@@ -90,12 +102,11 @@ export class TagComponent {
     private rippleState: string = 'none';
 
     /**
-     * @name ripple
+     * @name ripple {TagRipple}
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
 
-    constructor(public element: ElementRef,
-                public renderer: Renderer) {}
+    constructor(public element: ElementRef, public renderer: Renderer) {}
 
     /**
      * @name select
