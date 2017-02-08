@@ -7,7 +7,7 @@ If you have an issues, please do make sure you're not running a different versio
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/Nk8s5TLPz](http://www.webpackbin.com/Nk8s5TLPz).
+Check out the live demo (with source code) here [http://www.webpackbin.com/416LDqMdz](http://www.webpackbin.com/416LDqMdz).
 
 ** The demo will soon be published on its dedicated gh-pages site**
 
