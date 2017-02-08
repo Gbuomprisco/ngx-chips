@@ -7,6 +7,18 @@ module.exports = {
     },
 
     module: {
+        postLoaders: [{
+            test: /\.ts/,
+            include: './modules/',
+            exclude: [
+                /\.(e2e|spec)\.ts$/,
+                /node_modules/
+            ],
+            loader: 'istanbul-instrumenter',
+            query: {
+                esModules: true
+            }
+        }],
         loaders: [
             {
                 test: /\.ts$/,
