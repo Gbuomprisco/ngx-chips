@@ -300,7 +300,7 @@ of the input text, the second value corresponds to the value of each autocomplet
 
 **`appendToBody`** - [**`?boolean`**]
 
-If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `false`.
+If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `true`.
 
 
 ---
