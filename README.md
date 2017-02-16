@@ -544,7 +544,7 @@ Unfortunately this won't work with `tag-input-dropdown`. Seeking a solution for 
 The first thing to do, is to define a new component and extend `tag-input`:
 
 ```javascript
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef,  animate, trigger, state, style, transition, keyframes} from '@angular/core';
 import { TagInputComponent } from 'ng2-tag-input';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
