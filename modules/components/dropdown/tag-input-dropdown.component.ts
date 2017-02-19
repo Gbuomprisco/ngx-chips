@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { TagInputComponent } from '../tag-input';
-import { Ng2Dropdown, Ng2MenuItem, DropdownStateService } from 'ng2-material-dropdown';
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { TagModel } from '../helpers/accessor';
 import { Observable } from 'rxjs/Observable';
@@ -40,20 +40,20 @@ export class TagInputDropdown {
      * @name offset
      * @type {string}
      */
-    @Input() public offset: string = '50 0';
+    @Input() public offset = '50 0';
 
     /**
      * @name focusFirstElement
      * @type {boolean}
      */
-    @Input() public focusFirstElement: boolean = false;
+    @Input() public focusFirstElement = false;
 
     /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
      * @type {boolean}
      */
-    @Input() public showDropdownIfEmpty: boolean = false;
+    @Input() public showDropdownIfEmpty = false;
 
     /**
      * @description observable passed as input which populates the autocomplete items
@@ -65,7 +65,7 @@ export class TagInputDropdown {
      * - desc minimum text length in order to display the autocomplete dropdown
      * @name minimumTextLength
      */
-    @Input() private minimumTextLength: number = 1;
+    @Input() private minimumTextLength = 1;
 
     /**
      * - number of items to display in the autocomplete dropdown
@@ -76,12 +76,12 @@ export class TagInputDropdown {
     /**
      * @name displayBy
      */
-    @Input() public displayBy: string = 'display';
+    @Input() public displayBy = 'display';
 
     /**
      * @name identifyBy
      */
-    @Input() public identifyBy: string = 'value';
+    @Input() public identifyBy = 'value';
 
     /**
      * @description a function a developer can use to implement custom matching for the autocomplete
@@ -93,14 +93,14 @@ export class TagInputDropdown {
 
             return targetValue && targetValue
                 .toLowerCase()
-                .indexOf(value) >= 0 || false;
-    };
+                .indexOf(value.toLowerCase()) >= 0;
+    }
 
     /**
      * @name appendToBody
      * @type {boolean}
      */
-    @Input() public appendToBody: boolean = true;
+    @Input() public appendToBody = true;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
@@ -200,7 +200,7 @@ export class TagInputDropdown {
      * @name state
      * @returns {DropdownStateService}
      */
-    public get state(): DropdownStateService {
+    public get state(): any {
         return this.dropdown.menu.state;
     }
 
