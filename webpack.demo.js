@@ -1,33 +1,37 @@
 const webpack = require('webpack');
 const path = require('path');
-const precss       = require('precss');
+const precss = require('precss');
 const autoprefixer = require('autoprefixer');
-const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// Webpack Config
 const webpackConfig = {
     entry: {
         'polyfills': './demo/polyfills.ts',
-        'app':       './demo/app.ts'
+        'app': './demo/app.ts'
     },
 
     output: {
-        path: './dist'
+        path: path.resolve('./dist')
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin({ name: ['app', 'polyfills'], minChunks: Infinity }),
-        //new ForkCheckerPlugin()
+        new webpack.optimize.CommonsChunkPlugin({name: ['app', 'polyfills'], minChunks: Infinity}),
+        new ExtractTextPlugin("styles.css"),
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                tslint: {
+                    emitErrors: true,
+                    failOnHint: false,
+                    resourcePath: './'
+                },
+
+                postcss: () => [precss, autoprefixer]
+            }
+        }),
     ],
 
-    tslint: {
-        emitErrors: false,
-        failOnHint: false,
-        resourcePath: './'
-    },
-
     module: {
-        loaders: [
+        rules: [
             // .ts files for TypeScript
             {
                 test: /\.ts$/,
@@ -36,29 +40,24 @@ const webpackConfig = {
             {
                 test: /\.png/,
                 loader: "url-loader",
-                query: { mimetype: "image/png" }
+                query: {mimetype: "image/png"}
             },
             {
                 test: /\.html$/,
-                loader: "html"
+                loader: "html-loader"
             },
             {
-                test: /\.scss$/,
-                loaders: ['raw', "postcss", "sass"]
+                test: /\.(css|scss)$/,
+                loaders: ['to-string-loader', 'css-loader', 'sass-loader']
             }
         ]
-    },
-
-    postcss: function () {
-        return [precss, autoprefixer];
     }
 };
 
 // Our Webpack Defaults
-var defaultConfig = {
+const defaultConfig = {
     devtool: 'cheap-module-source-map',
-    cache: false,
-    debug: true,
+    cache: true,
     output: {
         filename: '[name].bundle.js',
         sourceMapFilename: '[name].map',
@@ -66,8 +65,9 @@ var defaultConfig = {
     },
 
     module: {
-        preLoaders: [
+        rules: [
             {
+                enforce: 'pre',
                 test: /\.js$/,
                 loader: 'source-map-loader',
                 exclude: [
@@ -76,15 +76,11 @@ var defaultConfig = {
                     path.join(__dirname, 'node_modules', '@angular')
                 ]
             }
-        ],
-        noParse: [
-            path.join(__dirname, 'node_modules', 'zone.js', 'dist'),
-            path.join(__dirname, 'node_modules', 'angular2', 'bundles')
         ]
     },
 
     resolve: {
-        extensions: ['', '.ts', '.js', '.scss']
+        extensions: ['.ts', '.js', '.scss']
     },
 
     devServer: {
@@ -93,18 +89,9 @@ var defaultConfig = {
             aggregateTimeout: 300,
             poll: 1000
         },
-        stats: { colors: true }
-    },
-
-    node: {
-        global: 1,
-        crypto: 'empty',
-        module: 0,
-        Buffer: 0,
-        clearImmediate: 0,
-        setImmediate: 0
+        stats: {colors: true}
     }
 };
 
-var webpackMerge = require('webpack-merge');
+const webpackMerge = require('webpack-merge');
 module.exports = webpackMerge(defaultConfig, webpackConfig);

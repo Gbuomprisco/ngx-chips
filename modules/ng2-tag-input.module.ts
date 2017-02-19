@@ -41,5 +41,8 @@ export class TagInputModule {}
 export {
     TagInputComponent,
     TagInputForm,
-    TagInputDropdown
+    TagInputDropdown,
+    DeleteIconComponent,
+    TagComponent,
+    TagRipple
 }

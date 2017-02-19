@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 
-import {
-    FormControl
-} from '@angular/forms';
-
+import { FormControl } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
