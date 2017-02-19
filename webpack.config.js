@@ -50,11 +50,8 @@ const webpackConfig = {
                 loader: "html-loader"
             },
             {
-                test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    loaders: ['raw-loader', 'sass-loader']
-                })
+                test: /\.(css|scss)$/,
+                loaders: ['to-string-loader', 'css-loader', 'sass-loader']
             }
         ]
     }
