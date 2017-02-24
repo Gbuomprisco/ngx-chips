@@ -87,7 +87,7 @@ export class TagInputDropdown {
      * @description a function a developer can use to implement custom matching for the autocomplete
      * @name matchingFn
      */
-    @Input() private matchingFn: (value: string, target: TagModel) => boolean =
+    @Input() public matchingFn: (value: string, target: TagModel) => boolean =
          (value: string, target: TagModel): boolean => {
             const targetValue = target[this.displayBy].toString();
 
