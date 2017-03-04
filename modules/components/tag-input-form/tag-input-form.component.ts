@@ -116,7 +116,7 @@ export class TagInputForm {
      * @name onKeyDown
      * @param $event
      */
-    private onKeyDown($event) {
+    public onKeyDown($event) {
         return this.onKeydown.emit($event);
     }
 }

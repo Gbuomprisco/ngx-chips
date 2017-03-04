@@ -92,14 +92,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc maximum number of items that can be added
      * @type {number}
      */
-    @Input() public maxItems: number = undefined;
+    @Input() public maxItems: number;
 
     /**
      * @name readonly
      * @desc if set to true, the user cannot remove/addItem new items
      * @type {boolean}
      */
-    @Input() public readonly: boolean = undefined;
+    @Input() public readonly: boolean;
 
     /**
      * @name transform
@@ -119,7 +119,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     * @name onlyFromAutocomplete
     * @type {Boolean}
     */
-    @Input() public onlyFromAutocomplete: boolean = false;
+    @Input() public onlyFromAutocomplete = false;
 
 	/**
      * @name errorMessages
@@ -131,83 +131,83 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name theme
      * @type {string}
      */
-    @Input() public theme: string = 'default';
+    @Input() public theme = 'default';
 
     /**
      * @name onTextChangeDebounce
      * @type {number}
      */
-    @Input() private onTextChangeDebounce: number = 250;
+    @Input() public onTextChangeDebounce = 250;
 
     /**
      * - custom id assigned to the input
      * @name id
      */
-    @Input() private inputId: string;
+    @Input() public inputId: string;
 
     /**
      * - custom class assigned to the input
      */
-    @Input() private inputClass: string;
+    @Input() public inputClass: string;
 
     /**
      * - option to clear text input when the form is blurred
      * @name clearOnBlur
      */
-    @Input() private clearOnBlur: string;
+    @Input() public clearOnBlur: string;
 
     /**
      * - hideForm
      * @name clearOnBlur
      */
-    @Input() private hideForm: string;
+    @Input() public hideForm: string;
 
     /**
      * @name addOnBlur
      */
-    @Input() private addOnBlur: boolean;
+    @Input() public addOnBlur: boolean;
 
     /**
      * @name addOnPaste
      */
-    @Input() private addOnPaste: boolean;
+    @Input() public addOnPaste: boolean;
 
     /**
      * - pattern used with the native method split() to separate patterns in the string pasted
      * @name pasteSplitPattern
      */
-    @Input() private pasteSplitPattern: string = ',';
+    @Input() public pasteSplitPattern = ',';
 
     /**
      * @name blinkIfDupe
      * @type {boolean}
      */
-    @Input() private blinkIfDupe: boolean = true;
+    @Input() public blinkIfDupe = true;
 
     /**
      * @name removable
      * @type {boolean}
      */
-    @Input() private removable: boolean = true;
+    @Input() public removable = true;
 
     /**
      * @name editable
      * @type {boolean}
      */
-    @Input() private editable: boolean = false;
+    @Input() public editable = false;
 
     /**
      * @name allowDupes
      * @type {boolean}
      */
-    @Input() public allowDupes: boolean = false;
+    @Input() public allowDupes = false;
 
     /**
      * @description if set to true, the newly added tags will be added as strings, and not objects
      * @name modelAsStrings
      * @type {boolean}
      */
-    @Input() public modelAsStrings: boolean = false;
+    @Input() public modelAsStrings = false;
 
     /**
      * @name onAdd
@@ -314,7 +314,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         change: <{(fun): any}[]>[]
     };
 
-    public isLoading: boolean = false;
+    public isLoading = false;
 
     constructor(private renderer: Renderer) {
         super();

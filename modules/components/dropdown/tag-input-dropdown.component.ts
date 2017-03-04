@@ -65,13 +65,13 @@ export class TagInputDropdown {
      * - desc minimum text length in order to display the autocomplete dropdown
      * @name minimumTextLength
      */
-    @Input() private minimumTextLength = 1;
+    @Input() public minimumTextLength = 1;
 
     /**
      * - number of items to display in the autocomplete dropdown
      * @name limitItemsTo
      */
-    @Input() private limitItemsTo: number;
+    @Input() public limitItemsTo: number;
 
     /**
      * @name displayBy
