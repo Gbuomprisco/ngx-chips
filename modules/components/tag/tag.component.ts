@@ -93,13 +93,13 @@ export class TagComponent {
      * @name editModeActivated
      * @type {boolean}
      */
-    private editModeActivated: boolean = false;
+    private editModeActivated = false;
 
     /**
      * @name rippleState
      * @type {string}
      */
-    private rippleState: string = 'none';
+    private rippleState = 'none';
 
     /**
      * @name ripple {TagRipple}

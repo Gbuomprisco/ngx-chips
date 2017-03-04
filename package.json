@@ -63,7 +63,7 @@
     "ts-helpers": "1.1.2",
     "ts-node": "^2.0.0",
     "tslint": "^4.3.1",
-    "typescript": "2.1.6",
+    "typescript": "2.2.1",
     "universal-style-loader": "^0.16.3",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
