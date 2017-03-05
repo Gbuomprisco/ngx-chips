@@ -334,10 +334,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.selectedTag = undefined;
         }
 
-        if (!this.dropdown.showDropdownIfEmpty) {
-            // focus input
-            this.focus(true, false);
-        }
+        // focus input
+        this.focus(true, false);
 
         // emit remove event
         this.onRemove.emit(tag);
@@ -362,10 +360,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         this.setInputValue('');
 
         // focus input
-        if (!this.dropdown.showDropdownIfEmpty) {
-            // focus input
-            this.focus(true, false);
-        }
+        this.focus(true, false);
     }
 
     /**
