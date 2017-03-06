@@ -225,7 +225,7 @@ export class TagInputDropdown {
         // hide dropdown
         this.dropdown.hide();
 
-        setTimeout(() => this.tagInput.inputForm.focus(), 0);
+        this.tagInput.focus(true, false);
     }
 
     /**

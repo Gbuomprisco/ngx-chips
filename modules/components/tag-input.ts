@@ -334,8 +334,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.selectedTag = undefined;
         }
 
-        // focus input right after removing an item
-        this.focus(true);
+        // focus input
+        this.focus(true, false);
 
         // emit remove event
         this.onRemove.emit(tag);
@@ -353,15 +353,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        if (this.isTagValid(tag, isFromAutocomplete)) {
-            this.appendNewTag(tag);
-        } else {
-            this.onValidationError.emit(tag);
-        }
+        const isValid = this.isTagValid(tag, isFromAutocomplete);
+        isValid ? this.appendNewTag(tag) : this.onValidationError.emit(tag);
 
         // reset control and focus input
         this.setInputValue('');
-        this.focus(true);
+
+        // focus input
+        this.focus(true, false);
     }
 
     /**
@@ -525,23 +524,25 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 	/**
      * @name focus
      * @param applyFocus
+     * @param displayAutocomplete
      */
-    public focus(applyFocus = false): void {
+    public focus(applyFocus = false, displayAutocomplete = false): void {
         if (this.readonly) {
             return;
         }
 
-        if (this.dropdown) {
-            this.dropdown.show();
-        }
-
+        const value = this.inputForm.value.value;
         this.selectedTag = undefined;
-
-        this.onFocus.emit(this.inputForm.value.value);
 
         if (applyFocus) {
             this.inputForm.focus();
         }
+
+        if (displayAutocomplete && this.dropdown) {
+            this.dropdown.show();
+        }
+
+        this.onFocus.emit(value);
     }
 
 	/**

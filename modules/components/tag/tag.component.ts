@@ -47,17 +47,17 @@ export class TagComponent {
     /**
      * @name displayBy {string}
      */
-    @Input() private displayBy: string;
+    @Input() public displayBy: string;
 
     /**
      * @name identifyBy {string}
      */
-    @Input() private identifyBy: string;
+    @Input() public identifyBy: string;
 
     /**
      * @name index {number}
      */
-    @Input() private index: number;
+    @Input() public index: number;
 
     /**
      * @name onSelect
@@ -93,13 +93,13 @@ export class TagComponent {
      * @name editModeActivated
      * @type {boolean}
      */
-    private editModeActivated = false;
+    public editModeActivated = false;
 
     /**
      * @name rippleState
      * @type {string}
      */
-    private rippleState = 'none';
+    public rippleState = 'none';
 
     /**
      * @name ripple {TagRipple}
