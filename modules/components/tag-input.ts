@@ -210,6 +210,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public modelAsStrings = false;
 
     /**
+     * @name trimTags
+     * @type {boolean}
+     */
+    @Input() public trimTags = true;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -418,7 +424,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param tag
      */
     public appendNewTag(tag: TagModel): void {
-        const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
+        const trimmedTag = this.trimTags ? {
+            [this.displayBy]: tag[this.displayBy].trim(),
+            [this.identifyBy]: tag[this.identifyBy].trim()
+        } : tag;
+
+        const newTag = this.modelAsStrings ? trimmedTag[this.identifyBy] : trimmedTag;
 
         // push item to array of items
         this.items = [...this.items, newTag];

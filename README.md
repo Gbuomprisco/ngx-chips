@@ -164,6 +164,11 @@ If set to `true`, it will be possible to add tags with the same value (defaults 
 If set to `true`, all values added will be strings, and not objects (defaults to `false`)
 
 
+**`trimTags`** - [**`?boolean`**]
+
+If set to `false`, the tags could contain leading and trailing spaces (defaults to `true`)
+
+
 ---
 
 ##### Validation (optional)
