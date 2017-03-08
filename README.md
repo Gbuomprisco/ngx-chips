@@ -7,9 +7,9 @@ If you have an issues, please do make sure you're not running a different versio
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/416LDqMdz](http://www.webpackbin.com/416LDqMdz).
+Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-input/](http://www.buompris.co/ng2-tag-input/).
 
-** The demo will soon be published on its dedicated gh-pages site**
+** The demo will soon be populated with more examples **
 
 ## Install
 
