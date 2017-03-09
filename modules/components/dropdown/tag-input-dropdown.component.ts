@@ -107,7 +107,7 @@ export class TagInputDropdown {
      * @name items
      * @type {TagModel[]}
      */
-    private items: TagModel[] = [];
+    public items: TagModel[] = [];
 
     /**
      * @name _autocompleteItems
