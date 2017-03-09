@@ -625,7 +625,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name maxItemsReached
      * @returns {boolean}
      */
-    private get maxItemsReached(): boolean {
+    public get maxItemsReached(): boolean {
         return this.maxItems !== undefined && this.items.length >= this.maxItems;
     }
 
