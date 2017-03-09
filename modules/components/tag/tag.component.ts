@@ -165,7 +165,7 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(): void {
+    public toggleEditMode(event?: MouseEvent): void {
         if (this.editModeActivated) {
             this.storeNewValue();
         } else {
@@ -238,7 +238,7 @@ export class TagComponent {
      * @name isRippleVisible
      * @returns {boolean}
      */
-    private isRippleVisible(): boolean {
+    public isRippleVisible(): boolean {
         return !this.readonly && !this.editModeActivated;
     }
 }
