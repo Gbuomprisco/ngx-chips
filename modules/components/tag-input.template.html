@@ -32,7 +32,6 @@
             (onFocus)="focus(false, true)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
-            (onKeypress)="handleKeyPress()"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"

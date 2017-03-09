@@ -737,8 +737,4 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.inputForm.destroy();
         }
     }
-
-    public handleKeyPress(): void {
-
-    }
 }
