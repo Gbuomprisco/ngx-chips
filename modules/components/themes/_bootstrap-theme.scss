@@ -1,0 +1,7 @@
+.ng2-tag-input.bootstrap {
+    border-bottom: 2px solid map-get($color-primary, 'default');
+}
+
+.bootstrap.ng2-tag-input--focused {
+    border-bottom: 2px solid map-get($color-primary, 'bootstrap');
+}

@@ -108,7 +108,7 @@
             <tag-input [ngModel]="['@item']"
                        [inputClass]="'myinput'"
                        [inputId]="'myinputId'"
-                       [separatorKeys]="[32]"
+                       [separatorKeys]="[32, 188]"
                        [transform]="transform">
             </tag-input>
         </div>
@@ -177,6 +177,18 @@
                     [theme]="'dark'"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
+            </form>
+        </div>
+
+        <div>
+            <h3>Tags with Bootstrap theme</h3>
+            <form>
+                <tag-input
+                    [theme]="'bootstrap'"
+                    [validators]="validators"
+                    [ngModel]="['@item']"
+                    name="items">
+                </tag-input>
             </form>
         </div>
 

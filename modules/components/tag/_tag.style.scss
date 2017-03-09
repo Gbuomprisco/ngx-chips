@@ -38,7 +38,8 @@ tag.readonly:focus {
 
 .default tag.tag--editing,
 .dark tag.tag--editing,
-.minimal tag.tag--editing {
+.minimal tag.tag--editing,
+.bootstrap tag.tag--editing {
     background-color: #fff;
     cursor: text;
 }
@@ -92,4 +93,15 @@ tag:focus {
 .dark tag:not(.readonly):active {
     background: map-get($color-focused, 'dark');
     color: map-get($color-primary, 'dark');
+}
+
+.bootstrap tag {
+    background: map-get($color-primary, 'bootstrap');
+    color: #f9f9f9;
+    border-radius: 0.25rem;
+}
+
+.bootstrap tag:not(.readonly):focus,
+.bootstrap tag:not(.readonly):active {
+    background: map-get($color-focused, 'bootstrap');
 }
