@@ -419,14 +419,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         return assertions.filter(item => item).length === assertions.length;
     }
 
+    private tryTrim = (val: any) => typeof val === "string" ? val.trim() : val;
+
     /**
      * @name appendNewTag
      * @param tag
      */
     public appendNewTag(tag: TagModel): void {
         const trimmedTag = this.trimTags ? {
-            [this.displayBy]: tag[this.displayBy].trim(),
-            [this.identifyBy]: tag[this.identifyBy].trim()
+            [this.displayBy]: this.tryTrim(tag[this.displayBy].trim()),
+            [this.identifyBy]: this.tryTrim(tag[this.identifyBy].trim())
         } : tag;
 
         const newTag = this.modelAsStrings ? trimmedTag[this.identifyBy] : trimmedTag;
