@@ -10,6 +10,10 @@ import {
     ViewChild
 } from '@angular/core';
 
+// angular universal hack
+/* tslint:disable-next-line */
+const KeyboardEvent = (global as any).KeyboardEvent;
+
 import { TagModel } from '../helpers/accessor';
 import { TagRipple } from './tag-ripple.component';
 
