@@ -90,11 +90,25 @@
         </div>
 
         <div>
+            <h3>Tags dropdown with last provided</h3>
+            <tag-input [ngModel]="[]"
+                       [placeholder]="'Enter a new repo'"
+                       [secondaryPlaceholder]="'Search in Github'"
+                       [onlyFromAutocomplete]="true">
+                <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
+                    <template let-item="item" let-index="index" let-last="last">
+                        ({{ index }}) {{ item.id }}: {{ item.value }} # {{ last }}
+                    </template>
+                </tag-input-dropdown>
+            </tag-input>
+        </div>
+
+        <div>
             <h3>An input which allows adding items by pressing the key "space" of your keyboard</h3>
             <tag-input [ngModel]="['@item']"
                        [inputClass]="'myinput'"
                        [inputId]="'myinputId'"
-                       [separatorKeys]="[32]"
+                       [separatorKeys]="[32, 188]"
                        [transform]="transform">
             </tag-input>
         </div>
@@ -163,6 +177,18 @@
                     [theme]="'dark'"
                     [ngModel]="['@item']"
                     name="items"></tag-input>
+            </form>
+        </div>
+
+        <div>
+            <h3>Tags with Bootstrap theme</h3>
+            <form>
+                <tag-input
+                    [theme]="'bootstrap'"
+                    [validators]="validators"
+                    [ngModel]="['@item']"
+                    name="items">
+                </tag-input>
             </form>
         </div>
 

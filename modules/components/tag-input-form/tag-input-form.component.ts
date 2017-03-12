@@ -21,25 +21,75 @@ import {
     templateUrl: './tag-input-form.template.html'
 })
 export class TagInputForm {
+    /**
+     * @name onSubmit
+     * @type {EventEmitter}
+     */
     @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
+
+    /**
+     * @name onBlur
+     * @type {EventEmitter}
+     */
     @Output() public onBlur: EventEmitter<any> = new EventEmitter();
+
+    /**
+     * @name onFocus
+     * @type {EventEmitter}
+     */
     @Output() public onFocus: EventEmitter<any> = new EventEmitter();
+
+    /**
+     * @name onKeyup
+     * @type {EventEmitter}
+     */
     @Output() public onKeyup: EventEmitter<any> = new EventEmitter();
+
+    /**
+     * @name onKeydown
+     * @type {EventEmitter}
+     */
     @Output() public onKeydown: EventEmitter<any> = new EventEmitter();
 
     // inputs
+
+    /**
+     * @name placeholder
+     * @type {string}
+     */
     @Input() public placeholder: string;
+
+    /**
+     * @name validators
+     * @type {ValidatorFn[]}
+     */
     @Input() public validators: ValidatorFn[] = [];
 
+    /**
+     * @name inputId
+     * @type {string}
+     */
     @Input() public inputId: string;
+
+    /**
+     * @name inputClass
+     * @type {string}
+     */
     @Input() public inputClass: string;
 
+    /**
+     * @name input
+     */
     @ViewChild('input') public input;
+
+    /**
+     * @name form
+     */
     public form: FormGroup;
 
     constructor(private renderer: Renderer) {}
 
-    ngOnInit() {
+    public ngOnInit() {
         // creating form
         this.form = new FormGroup({
             item: new FormControl('', Validators.compose(this.validators))
@@ -116,7 +166,7 @@ export class TagInputForm {
      * @name onKeyDown
      * @param $event
      */
-    private onKeyDown($event) {
+    public onKeyDown($event) {
         return this.onKeydown.emit($event);
     }
 }

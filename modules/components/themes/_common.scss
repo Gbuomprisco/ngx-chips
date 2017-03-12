@@ -1,5 +1,3 @@
-// tag input
-
 @import "./_progress-bar.scss";
 
 .ng2-tag-input {
@@ -42,8 +40,13 @@
     border-bottom: 2px solid map-get($color-error, 'default');
 }
 
+.bootstrap.ng2-tag-input.ng2-tag-input--invalid {
+    border-bottom: 2px solid map-get($color-error, 'bootstrap');
+}
+
 .default.ng2-tag-input.ng2-tag-input--loading,
 .dark.ng2-tag-input.ng2-tag-input--loading,
-.minimal.ng2-tag-input.ng2-tag-input--loading {
+.minimal.ng2-tag-input.ng2-tag-input--loading,
+.bootstrap.ng2-tag-input.ng2-tag-input--loading{
     border: none;
 }

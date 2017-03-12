@@ -1,6 +1,6 @@
 <!-- CONTAINER -->
 <div ngClass="ng2-tag-input {{ theme }}"
-     (click)="focus(true)"
+     (click)="focus(true, false)"
      [attr.tabindex]="-1"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
@@ -29,10 +29,9 @@
         <tag-input-form
             (onSubmit)="addItem()"
             (onBlur)="blur()"
-            (onFocus)="focus()"
+            (onFocus)="focus(false, true)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
-            (onKeypress)="handleKeyPress()"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"
@@ -50,3 +49,5 @@
         <span>{{ error }}</span>
     </p>
 </div>
+
+<ng-content></ng-content>

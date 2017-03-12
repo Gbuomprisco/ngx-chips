@@ -7,9 +7,9 @@ If you have an issues, please do make sure you're not running a different versio
 
 ## Demo
 
-Check out the live demo (with source code) here [http://www.webpackbin.com/416LDqMdz](http://www.webpackbin.com/416LDqMdz).
+Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-input/](http://www.buompris.co/ng2-tag-input/).
 
-** The demo will soon be published on its dedicated gh-pages site**
+** The demo will soon be populated with more examples **
 
 ## Install
 
@@ -164,6 +164,11 @@ If set to `true`, it will be possible to add tags with the same value (defaults 
 If set to `true`, all values added will be strings, and not objects (defaults to `false`)
 
 
+**`trimTags`** - [**`?boolean`**]
+
+If set to `false`, the tags could contain leading and trailing spaces (defaults to `true`)
+
+
 ---
 
 ##### Validation (optional)
@@ -300,7 +305,7 @@ of the input text, the second value corresponds to the value of each autocomplet
 
 **`appendToBody`** - [**`?boolean`**]
 
-If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `false`.
+If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `true`.
 
 
 ---
@@ -525,9 +530,10 @@ Define your own template, but remember to set up the needed events using the `in
 ```
 
 #### Built-in Themes
-If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 2 new themes: `dark` and `minimal`.
+If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 3 new themes: `bootstrap`, `dark` and `minimal`.
 
 ```html
+<tag-input [(ngModel)]='items' theme='bootstrap'></tag-input>
 <tag-input [(ngModel)]='items' theme='minimal'></tag-input>
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
 ```
@@ -544,7 +550,7 @@ Unfortunately this won't work with `tag-input-dropdown`. Seeking a solution for 
 The first thing to do, is to define a new component and extend `tag-input`:
 
 ```javascript
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef,  animate, trigger, state, style, transition, keyframes} from '@angular/core';
 import { TagInputComponent } from 'ng2-tag-input';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 

@@ -1,4 +1,3 @@
-// COLORS
 $color-primary-default: #efefef !default;
 $color-primary-minimal: #f9f9f9 !default;
 $color-primary-dark: #212121 !default;
@@ -10,6 +9,7 @@ $color-focused-dark: #999999 !default;
 $color-error-default: #f44336 !default;
 $color-error-minimal: $color-error-default !default;
 $color-error-dark: $color-error-default !default;
+$color-error-bootstrap: #d9534f !default;
 
 $color-arrow-default: #444 !default;
 $color-arrow-minimal: $color-arrow-default !default;
@@ -18,3 +18,6 @@ $color-arrow-dark: #fff !default;
 $color-arrow-default-focused: #fff !default;
 $color-arrow-minimal-focused: #000 !default;
 $color-arrow-dark-focused: #000 !default;
+
+$color-bootstrap-default: #0275d8 !default;
+$color-bootstrap-focused: #025aa5 !default;

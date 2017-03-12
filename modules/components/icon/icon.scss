@@ -2,8 +2,6 @@
 @import "../themes/_variables.scss";
 @import "../themes/_palette.scss";
 
-// ICON
-
 :host(delete-icon) {
     width: 16px;
     height: 26px;
@@ -32,17 +30,26 @@
     fill: $color-arrow-minimal;
 }
 
+:host-context(.bootstrap) path {
+    fill: $color-arrow-dark;
+}
+
 :host-context(.default tag:focus) path,
-:host-context(.default tag:active) path{
+:host-context(.default tag:active) path {
     fill: $color-arrow-default-focused;
 }
 
 :host-context(.dark tag:focus) path,
-:host-context(.dark tag:active) path{
+:host-context(.dark tag:active) path {
     fill: $color-arrow-dark-focused;
 }
 
 :host-context(.minimal tag:focus) path,
-:host-context(.minimal tag:active) path{
+:host-context(.minimal tag:active) path {
     fill: $color-arrow-minimal-focused;
+}
+
+:host-context(.bootstrap tag:focus) path,
+:host-context(.bootstrap tag:active) path {
+    fill: $color-arrow-dark;
 }

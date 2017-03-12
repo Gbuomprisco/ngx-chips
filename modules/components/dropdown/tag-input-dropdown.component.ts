@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { TagInputComponent } from '../tag-input';
-import { Ng2Dropdown, Ng2MenuItem, DropdownStateService } from 'ng2-material-dropdown';
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { EventEmitter } from '@angular/core';
 import { TagModel } from '../helpers/accessor';
 import { Observable } from 'rxjs/Observable';
@@ -40,20 +40,20 @@ export class TagInputDropdown {
      * @name offset
      * @type {string}
      */
-    @Input() public offset: string = '50 0';
+    @Input() public offset = '50 0';
 
     /**
      * @name focusFirstElement
      * @type {boolean}
      */
-    @Input() public focusFirstElement: boolean = false;
+    @Input() public focusFirstElement = false;
 
     /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
      * @type {boolean}
      */
-    @Input() public showDropdownIfEmpty: boolean = false;
+    @Input() public showDropdownIfEmpty = false;
 
     /**
      * @description observable passed as input which populates the autocomplete items
@@ -65,49 +65,49 @@ export class TagInputDropdown {
      * - desc minimum text length in order to display the autocomplete dropdown
      * @name minimumTextLength
      */
-    @Input() private minimumTextLength: number = 1;
+    @Input() public minimumTextLength = 1;
 
     /**
      * - number of items to display in the autocomplete dropdown
      * @name limitItemsTo
      */
-    @Input() private limitItemsTo: number;
+    @Input() public limitItemsTo: number;
 
     /**
      * @name displayBy
      */
-    @Input() public displayBy: string = 'display';
+    @Input() public displayBy = 'display';
 
     /**
      * @name identifyBy
      */
-    @Input() public identifyBy: string = 'value';
+    @Input() public identifyBy = 'value';
 
     /**
      * @description a function a developer can use to implement custom matching for the autocomplete
      * @name matchingFn
      */
-    @Input() private matchingFn: (value: string, target: TagModel) => boolean =
+    @Input() public matchingFn: (value: string, target: TagModel) => boolean =
          (value: string, target: TagModel): boolean => {
             const targetValue = target[this.displayBy].toString();
 
             return targetValue && targetValue
                 .toLowerCase()
-                .indexOf(value) >= 0 || false;
-    };
+                .indexOf(value.toLowerCase()) >= 0;
+    }
 
     /**
      * @name appendToBody
      * @type {boolean}
      */
-    @Input() public appendToBody: boolean = true;
+    @Input() public appendToBody = true;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
      * @type {TagModel[]}
      */
-    private items: TagModel[] = [];
+    public items: TagModel[] = [];
 
     /**
      * @name _autocompleteItems
@@ -200,7 +200,7 @@ export class TagInputDropdown {
      * @name state
      * @returns {DropdownStateService}
      */
-    public get state(): DropdownStateService {
+    public get state(): any {
         return this.dropdown.menu.state;
     }
 
@@ -225,7 +225,7 @@ export class TagInputDropdown {
         // hide dropdown
         this.dropdown.hide();
 
-        setTimeout(() => this.tagInput.inputForm.focus(), 0);
+        this.tagInput.focus(true, false);
     }
 
     /**
@@ -261,6 +261,18 @@ export class TagInputDropdown {
     }
 
     /**
+     * @name scrollListener
+     */
+    @HostListener('window:scroll')
+    public scrollListener(): void {
+        if (!this.isVisible) {
+            return;
+        }
+
+        this.updatePosition(this.tagInput.inputForm.getElementPosition());
+    }
+
+    /**
      *
      * @param value
      * @returns {any}
@@ -291,18 +303,6 @@ export class TagInputDropdown {
      */
     private resetItems(): void {
         this.items = [];
-    }
-
-    /**
-     * @name scrollListener
-     */
-    @HostListener('window:scroll')
-    private scrollListener(): void {
-        if (!this.isVisible) {
-            return;
-        }
-
-        this.updatePosition(this.tagInput.inputForm.getElementPosition());
     }
 
     /**

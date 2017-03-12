@@ -1,31 +1,34 @@
-// common
-
 $color-focused: (
     default: $color-focused-default,
     minimal: $color-focused-minimal,
-    dark: $color-focused-dark
+    dark: $color-focused-dark,
+    bootstrap: $color-bootstrap-focused
 );
 
 $color-primary: (
     default: $color-primary-default,
     minimal: $color-primary-minimal,
-    dark: $color-primary-dark
+    dark: $color-primary-dark,
+    bootstrap: $color-bootstrap-default
 );
 
 $color-error: (
     default: $color-error-default,
     minimal: $color-error-minimal,
-    dark: $color-error-dark
+    dark: $color-error-dark,
+    bootstrap: $color-error-bootstrap
 );
 
 $color-arrow: (
     default: $color-arrow-default,
     minimal: $color-arrow-minimal,
-    dark: $color-arrow-dark
+    dark: $color-arrow-dark,
+    bootstrap: $color-arrow-default-focused
 );
 
 $color-arrow-focused: (
     default: $color-arrow-default-focused,
     minimal: $color-arrow-minimal-focused,
-    dark: $color-arrow-dark-focused
+    dark: $color-arrow-dark-focused,
+    bootstrap: $color-arrow-default-focused
 );

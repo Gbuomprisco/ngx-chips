@@ -47,17 +47,17 @@ export class TagComponent {
     /**
      * @name displayBy {string}
      */
-    @Input() private displayBy: string;
+    @Input() public displayBy: string;
 
     /**
      * @name identifyBy {string}
      */
-    @Input() private identifyBy: string;
+    @Input() public identifyBy: string;
 
     /**
      * @name index {number}
      */
-    @Input() private index: number;
+    @Input() public index: number;
 
     /**
      * @name onSelect
@@ -93,13 +93,13 @@ export class TagComponent {
      * @name editModeActivated
      * @type {boolean}
      */
-    private editModeActivated: boolean = false;
+    public editModeActivated = false;
 
     /**
      * @name rippleState
      * @type {string}
      */
-    private rippleState: string = 'none';
+    public rippleState = 'none';
 
     /**
      * @name ripple {TagRipple}
@@ -165,7 +165,7 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(): void {
+    public toggleEditMode(event?: MouseEvent): void {
         if (this.editModeActivated) {
             this.storeNewValue();
         } else {
@@ -238,7 +238,7 @@ export class TagComponent {
      * @name isRippleVisible
      * @returns {boolean}
      */
-    private isRippleVisible(): boolean {
+    public isRippleVisible(): boolean {
         return !this.readonly && !this.editModeActivated;
     }
 }
