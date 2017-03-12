@@ -261,6 +261,18 @@ export class TagInputDropdown {
     }
 
     /**
+     * @name scrollListener
+     */
+    @HostListener('window:scroll')
+    public scrollListener(): void {
+        if (!this.isVisible) {
+            return;
+        }
+
+        this.updatePosition(this.tagInput.inputForm.getElementPosition());
+    }
+
+    /**
      *
      * @param value
      * @returns {any}
@@ -291,18 +303,6 @@ export class TagInputDropdown {
      */
     private resetItems(): void {
         this.items = [];
-    }
-
-    /**
-     * @name scrollListener
-     */
-    @HostListener('window:scroll')
-    private scrollListener(): void {
-        if (!this.isVisible) {
-            return;
-        }
-
-        this.updatePosition(this.tagInput.inputForm.getElementPosition());
     }
 
     /**
