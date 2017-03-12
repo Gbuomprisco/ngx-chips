@@ -419,19 +419,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         return assertions.filter(item => item).length === assertions.length;
     }
 
-    private tryTrim = (val: any) => typeof val === "string" ? val.trim() : val;
-
     /**
      * @name appendNewTag
      * @param tag
      */
     public appendNewTag(tag: TagModel): void {
-        const trimmedTag = this.trimTags ? {
-            [this.displayBy]: this.tryTrim(tag[this.displayBy]),
-            [this.identifyBy]: this.tryTrim(tag[this.identifyBy])
-        } : tag;
-
-        const newTag = this.modelAsStrings ? trimmedTag[this.identifyBy] : trimmedTag;
+        const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
 
         // push item to array of items
         this.items = [...this.items, newTag];
@@ -447,9 +440,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {{}}
      */
     public createTag(display: string, value: any): TagModel {
+        const trim = (val: TagModel): TagModel => typeof val === 'string' ? val.trim() : val;
+
         return {
-            [this.displayBy]: display,
-            [this.identifyBy]: value
+            [this.displayBy]: this.trimTags ? trim(display) : display,
+            [this.identifyBy]: this.trimTags ? trim(value) : value
         };
     }
 
