@@ -433,6 +433,9 @@ describe('TagInputComponent', () => {
 
             expect(component.dropdown.items.length).toEqual(1);
 
+            fixture.detectChanges();
+            tick();
+
             discardPeriodicTasks();
         }));
 
