@@ -681,18 +681,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         });
 
         listen.call(this, constants.KEYDOWN, ($event) => {
-            if (this.separatorKeys.indexOf($event.key) >= 0) {
-                $event.preventDefault();
-                this.addItem();
-            }
-        }, this.separatorKeys.length > 0);
+            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
+            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
 
-        listen.call(this, constants.KEYDOWN, ($event) => {
-            if (this.separatorKeyCodes.indexOf($event.keyCode) >= 0) {
+            if (hasKeyCode || hasKey) {
                 $event.preventDefault();
                 this.addItem();
             }
-        }, this.separatorKeyCodes.length > 0);
+        }, this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0);
 
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
