@@ -697,6 +697,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public ngAfterViewInit() {
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
+
+            if (event.key === 'Backspace' && this.inputForm.value.value === '') {
+                event.preventDefault();
+            }
         });
 
         if (this.onTextChange.observers.length) {
