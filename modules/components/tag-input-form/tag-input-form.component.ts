@@ -16,6 +16,7 @@ import {
 } from '@angular/forms';
 
 @Component({
+    moduleId: module.id,
     selector: 'tag-input-form',
     styleUrls: [ './tag-input-form.style.scss' ],
     templateUrl: './tag-input-form.template.html'

@@ -35,6 +35,7 @@ import 'rxjs/add/operator/debounceTime';
  * A component for entering a list of terms to be used with ngModel.
  */
 @Component({
+    moduleId: module.id,
     selector: 'tag-input',
     providers: [ {
         provide: NG_VALUE_ACCESSOR,

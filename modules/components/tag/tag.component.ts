@@ -18,6 +18,7 @@ import { TagModel } from '../helpers/accessor';
 import { TagRipple } from './tag-ripple.component';
 
 @Component({
+    moduleId: module.id,
     selector: 'tag',
     templateUrl: './tag.template.html',
     styleUrls: [ './tag-component.style.scss' ]

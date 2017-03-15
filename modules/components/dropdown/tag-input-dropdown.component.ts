@@ -20,6 +20,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
 @Component({
+    moduleId: module.id,
     selector: 'tag-input-dropdown',
     templateUrl: './tag-input-dropdown.template.html'
 })
