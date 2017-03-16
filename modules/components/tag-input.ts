@@ -624,7 +624,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item { TagModel }
      */
     public switchPrev(item: TagModel): void {
-        console.log(this.tags, item);
         if (this.tags.first.model !== item) {
             const tags = this.tags.toArray();
             const tagIndex = tags.findIndex(tag => tag.model === item);
