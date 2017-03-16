@@ -693,6 +693,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                     this.tags.last.blur.call(this.tags.last);
                 }
             }
+
+            const hasKey = this.separatorKeys.some(char => inputValue.indexOf(char) >= 0);
+            if (hasKey) {
+                $event.preventDefault();
+                this.addItem();
+            }
         });
 
         listen.call(this, constants.KEYDOWN, ($event) => {
