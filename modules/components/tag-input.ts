@@ -600,14 +600,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public switchNext(item: TagModel): void {
         if (this.tags.last.model === item) {
+            this.tags.last.blur.call(this.tags.last);
             this.focus(true);
             return;
         }
 
         const tags = this.tags.toArray();
         const tagIndex = tags.findIndex(tag => tag.model === item);
+
+        if (tagIndex < 0) {
+            return;
+        }
+
+        const focusedTag = tags[tagIndex];
         const tag = tags[tagIndex + 1];
 
+        focusedTag.blur.call(focusedTag);
         tag.select.call(tag);
     }
 
@@ -616,11 +624,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param item { TagModel }
      */
     public switchPrev(item: TagModel): void {
+        console.log(this.tags, item);
         if (this.tags.first.model !== item) {
             const tags = this.tags.toArray();
             const tagIndex = tags.findIndex(tag => tag.model === item);
+            const focusedTag = tags[tagIndex];
             const tag = tags[tagIndex - 1];
 
+            focusedTag.blur.call(focusedTag);
             tag.select.call(tag);
         }
     }
@@ -673,14 +684,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         listen.call(this, constants.KEYDOWN, ($event) => {
             const itemsLength: number = this.items.length,
                 inputValue: string = this.inputForm.value.value,
-                isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+                isArrowLeftKey = $event.keyCode === 37,
+                isArrowRightKey = $event.keyCode === 39,
+                isBackspaceKey = $event.keyCode === 8,
+                isCorrectKey = isArrowLeftKey || isArrowRightKey || isBackspaceKey;
 
             if (isCorrectKey && !inputValue && itemsLength) {
-                if (this.tags.last.isFocus) {
-                    this.tags.last.keydown($event);
+                const selectedTag = this.tags.find(item => item.isFocused);
+                if (selectedTag) {
+                    this.handleKeydown({event: $event, model: selectedTag.model});
                     return;
                 }
-                this.tags.last.select.call(this.tags.last);
+
+                if (!isArrowRightKey) {
+                    this.tags.last.select.call(this.tags.last);
+                }
             }
         });
 
@@ -689,8 +707,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             const inputValue: string = this.inputForm.value.value;
 
             if (inputValue && itemsLength) {
-                if (this.tags.last.isFocus) {
-                    this.tags.last.blur.call(this.tags.last);
+                const selectedTag = this.tags.find(item => item.isFocused);
+                if (selectedTag) {
+                    selectedTag.blur.call(selectedTag);
                 }
             }
 
