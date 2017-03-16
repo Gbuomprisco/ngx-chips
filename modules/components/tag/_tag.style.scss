@@ -44,7 +44,7 @@ tag.readonly:focus {
     cursor: text;
 }
 
-tag:focus {
+tag.focus {
     outline: 0;
 }
 
@@ -52,7 +52,7 @@ tag:focus {
     background: map-get($color-primary, 'default');
 }
 
-.default tag:not(.readonly):not(.tag--editing):focus {
+.default tag:not(.readonly):not(.tag--editing).focus {
     background: map-get($color-focused, 'default');
     color: #fff;
 }
@@ -62,7 +62,7 @@ tag:focus {
     color: #fff;
 }
 
-.default tag:not(:focus):not(.tag--editing):not(:active):not(.readonly):hover {
+.default tag:not(.focus):not(.tag--editing):not(:active):not(.readonly):hover {
     background: darken(map-get($color-primary, 'default'), 5%);
 }
 
@@ -71,16 +71,16 @@ tag:focus {
     border-radius: 0;
 }
 
-.minimal tag:not(.readonly):focus,
+.minimal tag:not(.readonly).focus,
 .minimal tag:not(.readonly):active {
     background: map-get($color-focused, 'minimal');
 }
 
-.minimal tag:not(:focus):not(.readonly):hover {
+.minimal tag:not(.focus):not(.readonly):hover {
     background: darken(map-get($color-primary, 'minimal'), 5%);
 }
 
-.minimal tag:not(:focus):not(.readonly):hover {
+.minimal tag:not(.focus):not(.readonly):hover {
     background: darken(map-get($color-primary, 'minimal'), 5%);
 }
 
@@ -89,7 +89,7 @@ tag:focus {
     color: #f9f9f9;
 }
 
-.dark tag:not(.readonly):focus,
+.dark tag:not(.readonly).focus,
 .dark tag:not(.readonly):active {
     background: map-get($color-focused, 'dark');
     color: map-get($color-primary, 'dark');
@@ -101,7 +101,7 @@ tag:focus {
     border-radius: 0.25rem;
 }
 
-.bootstrap tag:not(.readonly):focus,
+.bootstrap tag:not(.readonly).focus,
 .bootstrap tag:not(.readonly):active {
     background: map-get($color-focused, 'bootstrap');
 }

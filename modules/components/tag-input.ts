@@ -676,7 +676,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                 isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
             if (isCorrectKey && !inputValue && itemsLength) {
+                if (this.tags.last.isFocus) {
+                    this.tags.last.keydown($event);
+                    return;
+                }
                 this.tags.last.select.call(this.tags.last);
+            }
+        });
+
+        listen.call(this, constants.KEYUP, ($event) => {
+            const itemsLength: number = this.items.length;
+            const inputValue: string = this.inputForm.value.value;
+
+            if (inputValue && itemsLength) {
+                if (this.tags.last.isFocus) {
+                    this.tags.last.blur.call(this.tags.last);
+                }
             }
         });
 
@@ -706,8 +721,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public ngAfterViewInit() {
         this.inputForm.onKeydown.subscribe(event => {
-            this.fireEvents('keydown', event);
-
             if (event.key === 'Backspace' && this.inputForm.value.value === '') {
                 event.preventDefault();
             }
