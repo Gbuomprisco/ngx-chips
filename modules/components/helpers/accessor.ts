@@ -27,6 +27,13 @@ export class TagInputAccessor implements ControlValueAccessor {
      */
     @Input() public identifyBy: string = 'value';
 
+    /** 
+     * @name text
+     * @type {string=} [text=NA]
+     * Assignable Angular expression for data-binding to the element's text.
+     */
+    @Input() public text: string = '';
+    
     public get items(): TagModel[] {
         return this._items;
     };
