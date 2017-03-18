@@ -17,6 +17,7 @@ tag {
     cursor: pointer;
     border-radius: $tag-border-radius;
     transition: all 0.25s;
+    position: relative;
 
     margin: $tag-margin;
     padding: $tag-padding;

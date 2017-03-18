@@ -1,5 +1,5 @@
 <!-- form -->
-<form (submit)="onSubmit.emit()" [formGroup]="form">
+<form (submit)="submit($event)" [formGroup]="form">
     <input #input
            type="text"
            class="ng2-tag-input__text-input"

@@ -2,7 +2,10 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items</h3>
-            <tag-input [(ngModel)]="items" [modelAsStrings]="true"></tag-input>
+            <tag-input [(ngModel)]="items"
+                       (onFocus)="onFocus($event)"
+                       [modelAsStrings]="true">
+            </tag-input>
         </div>
 
         <div>
@@ -55,7 +58,7 @@
             <h3>Tags within an autocomplete component</h3>
             <tag-input [ngModel]="['@item']">
                 <tag-input-dropdown [autocompleteItems]="autocompleteItems"
-                                    [focusFirstElement]="true">
+                                    [focusFirstElement]="false">
                 </tag-input-dropdown>
             </tag-input>
         </div>

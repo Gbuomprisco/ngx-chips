@@ -151,7 +151,7 @@ export class TagInputDropdown {
         if (this.autocompleteObservable) {
             this.tagInput
                 .onTextChange
-                .filter((text: string) => !!text.trim().length)
+                .filter((text: string) => text.trim().length >= this.minimumTextLength)
                 .subscribe(this.getItemsFromObservable.bind(this));
         }
     }
@@ -213,18 +213,11 @@ export class TagInputDropdown {
         }
 
         // add item
-        if (this.tagInput.isTagValid(item.value, true)) {
-            const tag = this.tagInput.createTag(item.value[this.displayBy], item.value[this.identifyBy]);
-            this.tagInput.appendNewTag(tag);
-        }
-
-        // reset input value
-        this.tagInput.setInputValue('');
+        this.tagInput.setInputValue(item.value[this.displayBy]);
+        this.tagInput.addItem(true);
 
         // hide dropdown
         this.dropdown.hide();
-
-        this.tagInput.focus(true, false);
     }
 
     /**
@@ -256,12 +249,6 @@ export class TagInputDropdown {
             this.dropdown.show(position);
         } else if (hideDropdown) {
             this.dropdown.hide();
-        }
-
-        if (this.isVisible) {
-            setTimeout(() => {
-                this.updatePosition();
-            }, 0);
         }
     }
 

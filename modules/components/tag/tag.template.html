@@ -35,4 +35,7 @@
     </div>
 </div>
 
-<tag-ripple [state]="rippleState" *ngIf="isRippleVisible()"></tag-ripple>
+<tag-ripple [state]="rippleState"
+            [attr.tabindex]="-1"
+            *ngIf="isRippleVisible()">
+</tag-ripple>

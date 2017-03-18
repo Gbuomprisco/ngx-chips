@@ -169,4 +169,11 @@ export class TagInputForm {
     public onKeyDown($event) {
         return this.onKeydown.emit($event);
     }
+
+    /**
+     * @name submit
+     */
+    public submit($event: any): void {
+        this.onSubmit.emit($event);
+    }
 }

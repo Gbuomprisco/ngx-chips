@@ -387,8 +387,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
 
             return this.getItemValue(item) === tag[identifyBy] ||
-                item[this.identifyBy] === tag[identifyBy] ||
-                item[this.displayBy] === tag[displayBy];
+                this.getItemValue(item) === tag[displayBy];
         });
 
         const hasDupe = !!dupe && dupe !== undefined;
@@ -544,13 +543,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         if (applyFocus) {
             this.inputForm.focus();
+            this.onFocus.emit(value);
         }
 
         if (displayAutocomplete && this.dropdown) {
             this.dropdown.show();
         }
-
-        this.onFocus.emit(value);
     }
 
 	/**
@@ -736,6 +734,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // if hideForm is set to true, remove the input
         if (this.hideForm) {
             this.inputForm.destroy();
+        }
+
+        if (this.addOnBlur || this.clearOnBlur && this.dropdown.focusFirstElement) {
+            this.dropdown.focusFirstElement = false;
         }
     }
 }

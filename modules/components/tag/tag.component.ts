@@ -13,7 +13,7 @@ import {
 // angular universal hack
 /* tslint:disable-next-line */
 const KeyboardEvent = (global as any).KeyboardEvent;
-
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 import { TagModel } from '../helpers/accessor';
 import { TagRipple } from './tag-ripple.component';
 
@@ -239,10 +239,12 @@ export class TagComponent {
     }
 
     /**
+     * @desc returns whether the ripple is visible or not
+     * only works in Chrome
      * @name isRippleVisible
      * @returns {boolean}
      */
     public isRippleVisible(): boolean {
-        return !this.readonly && !this.editModeActivated;
+        return !this.readonly && !this.editModeActivated && isChrome;
     }
 }
