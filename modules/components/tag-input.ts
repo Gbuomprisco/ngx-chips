@@ -223,6 +223,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public trimTags = true;
 
     /**
+     * @name inputText
+     */
+    @Input() public get inputText(): string {
+        return this.inputTextValue;
+    }
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -311,6 +318,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public selectedTag: TagModel;
 
     /**
+     * @name isLoading
+     * @type {boolean}
+     */
+    public isLoading = false;
+
+    /**
+     * @name inputText
+     * @param text
+     */
+    public set inputText(text: string) {
+        this.inputTextValue = text;
+        this.inputTextChange.emit(text);
+    }
+
+    /**
      * @name tags
      * @desc list of Element items
      */
@@ -327,7 +349,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         change: <{(fun): any}[]>[]
     };
 
-    public isLoading = false;
+    /**
+     * @description emitter for the 2-way data binding inputText value
+     * @name inputTextChange
+     * @type {EventEmitter}
+     */
+    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+
+    /**
+     * @description private variable to bind get/set
+     * @name inputTextValue
+     * @type {string}
+     */
+    private inputTextValue = '';
 
     constructor(private renderer: Renderer) {
         super();

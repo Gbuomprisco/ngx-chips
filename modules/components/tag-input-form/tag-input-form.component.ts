@@ -78,6 +78,22 @@ export class TagInputForm {
     @Input() public inputClass: string;
 
     /**
+     * @name inputText
+     */
+    @Input() public get inputText(): string {
+        return this.inputTextValue;
+    }
+
+    /**
+     * @name inputText
+     * @param text {string}
+     */
+    public set inputText(text: string) {
+        this.inputTextValue = text;
+        this.inputTextChange.emit(text);
+    }
+
+    /**
      * @name input
      */
     @ViewChild('input') public input;
@@ -86,6 +102,17 @@ export class TagInputForm {
      * @name form
      */
     public form: FormGroup;
+
+    /**
+     * @name inputTextChange
+     * @type {EventEmitter}
+     */
+    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+
+    /**
+     * @name inputTextValue
+     */
+    private inputTextValue: string;
 
     constructor(private renderer: Renderer) {}
 
@@ -159,7 +186,7 @@ export class TagInputForm {
      */
     public destroy(): void {
         const input = this.input.nativeElement;
-        input.parentElement.removeChild(input);
+        this.renderer.invokeElementMethod(input.parentElement, 'removeChild', [input]);
     }
 
     /**

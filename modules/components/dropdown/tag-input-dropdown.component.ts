@@ -276,7 +276,7 @@ export class TagInputDropdown {
 
         return this.autocompleteItems.filter((item: TagModel) => {
             const hasValue: boolean = this.tagInput.tags.filter(tag => {
-                return tag.model[this.tagInput.displayBy] === item[this.displayBy];
+                return tag.model[this.tagInput.identifyBy] === item[this.identifyBy];
             }).length > 0;
 
             return this.matchingFn(value, item) && hasValue === false;

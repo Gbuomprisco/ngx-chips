@@ -3,7 +3,6 @@
         <div>
             <h3>Simple Input with two items</h3>
             <tag-input [(ngModel)]="items"
-                       (onFocus)="onFocus($event)"
                        [modelAsStrings]="true">
             </tag-input>
         </div>
@@ -198,6 +197,14 @@
         <div>
             <h3>Simple Input that allows dupes</h3>
             <tag-input [(ngModel)]="items" [allowDupes]="true"></tag-input>
+        </div>
+
+        <div>
+            <h3>Input with two-way data binding for its input text</h3>
+
+            <input [(ngModel)]="inputText" />
+
+            <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
         </div>
 
         <div>

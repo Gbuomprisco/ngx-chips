@@ -1,11 +1,13 @@
 <!-- form -->
 <form (submit)="submit($event)" [formGroup]="form">
     <input #input
+
            type="text"
            class="ng2-tag-input__text-input"
-           formControlName="item"
            tabindex="0"
 
+           [(ngModel)]="inputText"
+           [formControlName]="'item'"
            [ngClass]="inputClass"
            [attr.id]="inputId"
            [attr.placeholder]="placeholder"
