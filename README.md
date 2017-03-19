@@ -530,9 +530,10 @@ Define your own template, but remember to set up the needed events using the `in
 ```
 
 #### Built-in Themes
-If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 3 new themes: `bootstrap`, `dark` and `minimal`.
+If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 4 new themes: `bootstrap3`, `bootstrap`, `dark` and `minimal`.
 
 ```html
+<tag-input [(ngModel)]='items' theme='bootstrap3'></tag-input>
 <tag-input [(ngModel)]='items' theme='bootstrap'></tag-input>
 <tag-input [(ngModel)]='items' theme='minimal'></tag-input>
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
