@@ -89,9 +89,14 @@ Sets the maximum number of items it is possible to enter.
 Sets the tag input static, not allowing deletion/addition of the items entered.
 
 
-**`separatorKeys`** - [**`?number[]`**]
+**`separatorKeyCodes`** - [**`?number[]`**]
 
 Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
+
+
+**`separatorKeys`** - [**`?string[]`**]
+
+Array of input characters with which is possible to define the key for separating terms. Default is empty. Can use with `separatorKeyCodes`, either one method matched will trigger tag separation.
 
 
 **`transform`** - [**`?(item: string) => string`**]

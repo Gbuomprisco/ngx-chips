@@ -158,10 +158,9 @@ export class TagInputDropdown {
 
     /**
      * @name updatePosition
-     * @param position
      */
-    public updatePosition(position) {
-        return this.dropdown.menu.updatePosition(position);
+    public updatePosition(): void {
+        this.dropdown.menu.updatePosition(this.tagInput.inputForm.getElementPosition());
     }
 
     /**
@@ -253,11 +252,29 @@ export class TagInputDropdown {
         // set items
         this.setItems(items);
 
-        if (showDropdown) {
+        if (showDropdown && !this.isVisible) {
             this.dropdown.show(position);
         } else if (hideDropdown) {
             this.dropdown.hide();
         }
+
+        if (this.isVisible) {
+            setTimeout(() => {
+                this.updatePosition();
+            }, 0);
+        }
+    }
+
+    /**
+     * @name scrollListener
+     */
+    @HostListener('window:scroll')
+    public scrollListener(): void {
+        if (!this.isVisible) {
+            return;
+        }
+
+        this.updatePosition();
     }
 
     /**
@@ -291,18 +308,6 @@ export class TagInputDropdown {
      */
     private resetItems(): void {
         this.items = [];
-    }
-
-    /**
-     * @name scrollListener
-     */
-    @HostListener('window:scroll')
-    private scrollListener(): void {
-        if (!this.isVisible) {
-            return;
-        }
-
-        this.updatePosition(this.tagInput.inputForm.getElementPosition());
     }
 
     /**

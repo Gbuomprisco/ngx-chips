@@ -71,7 +71,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc keyboard keys with which a user can separate items
      * @type {Array}
      */
-    @Input() public separatorKeys: number[] = [];
+    @Input() public separatorKeys: string[] = [];
+
+    /**
+     * @name separatorKeyCodes
+     * @desc keyboard key codes with which a user can separate items
+     * @type {Array}
+     */
+    @Input() public separatorKeyCodes: number[] = [];
 
     /**
      * @name placeholder
@@ -424,12 +431,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param tag
      */
     public appendNewTag(tag: TagModel): void {
-        const trimmedTag = this.trimTags ? {
-            [this.displayBy]: tag[this.displayBy].trim(),
-            [this.identifyBy]: tag[this.identifyBy].trim()
-        } : tag;
-
-        const newTag = this.modelAsStrings ? trimmedTag[this.identifyBy] : trimmedTag;
+        const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
 
         // push item to array of items
         this.items = [...this.items, newTag];
@@ -445,9 +447,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {{}}
      */
     public createTag(display: string, value: any): TagModel {
+        const trim = (val: TagModel): TagModel => typeof val === 'string' ? val.trim() : val;
+
         return {
-            [this.displayBy]: display,
-            [this.identifyBy]: value
+            [this.displayBy]: this.trimTags ? trim(display) : display,
+            [this.identifyBy]: this.trimTags ? trim(value) : value
         };
     }
 
@@ -677,11 +681,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         });
 
         listen.call(this, constants.KEYDOWN, ($event) => {
-            if (this.separatorKeys.indexOf($event.keyCode) >= 0) {
+            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
+            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
+
+            if (hasKeyCode || hasKey) {
                 $event.preventDefault();
                 this.addItem();
             }
-        }, this.separatorKeys.length > 0);
+        }, this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0);
 
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
@@ -700,6 +707,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public ngAfterViewInit() {
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
+
+            if (event.key === 'Backspace' && this.inputForm.value.value === '') {
+                event.preventDefault();
+            }
         });
 
         if (this.onTextChange.observers.length) {
