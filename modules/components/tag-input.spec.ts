@@ -9,8 +9,8 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
-import { TagModel } from '../helpers/accessor';
-import { TagInputComponent } from '../tag-input';
+import { TagModel } from './helpers/accessor';
+import { TagInputComponent } from './tag-input';
 const match = jasmine.objectContaining;
 
 import {
@@ -25,7 +25,7 @@ import {
     TagInputComponentWithOnlyAutocomplete,
     TestModule,
     TagInputComponentWithModelAsStrings
-} from './testing-helpers';
+} from './tests/testing-helpers';
 
 describe('TagInputComponent', () => {
     beforeEach(() => {
@@ -432,6 +432,9 @@ describe('TagInputComponent', () => {
             component.inputForm.onKeyup.emit();
 
             expect(component.dropdown.items.length).toEqual(1);
+
+            fixture.detectChanges();
+            tick();
 
             discardPeriodicTasks();
         }));

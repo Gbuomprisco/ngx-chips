@@ -2,7 +2,9 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items</h3>
-            <tag-input [(ngModel)]="items" [modelAsStrings]="true"></tag-input>
+            <tag-input [(ngModel)]="items"
+                       [modelAsStrings]="true">
+            </tag-input>
         </div>
 
         <div>
@@ -53,18 +55,21 @@
 
         <div>
             <h3>Tags within an autocomplete component</h3>
-            <tag-input [ngModel]="['@item']">
-                <tag-input-dropdown [autocompleteItems]="autocompleteItems"
-                                    [focusFirstElement]="true">
+            <tag-input [ngModel]="['@item']"
+                       [addOnBlur]="true"
+                       [clearOnBlur]="true">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems">
                 </tag-input-dropdown>
             </tag-input>
         </div>
 
         <div>
-            <h3>Tags accepting only items from an autocomplete</h3>
+            <h3>Tags accepting only items from an autocomplete (with transform function)</h3>
             <tag-input [ngModel]="['@item']"
+                       [transform]="transform"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [focusFirstElement]="true"
                                     [displayBy]="'value'"
                                     [identifyBy]="'id'"
                                     [autocompleteItems]="autocompleteItemsAsObjects">
@@ -108,7 +113,7 @@
             <tag-input [ngModel]="['@item']"
                        [inputClass]="'myinput'"
                        [inputId]="'myinputId'"
-                       [separatorKeys]="[32]"
+                       [separatorKeys]="[32, 188]"
                        [transform]="transform">
             </tag-input>
         </div>
@@ -181,18 +186,39 @@
         </div>
 
         <div>
+            <h3>Tags with Bootstrap theme</h3>
+            <form>
+                <tag-input
+                    [theme]="'bootstrap'"
+                    [validators]="validators"
+                    [ngModel]="['@item']"
+                    name="items">
+                </tag-input>
+            </form>
+        </div>
+
+        <div>
+            <h3>Tags with Bootstrap 3 (info) theme</h3>
+            <form>
+                <tag-input
+                    [theme]="'bootstrap3-info'"
+                    [ngModel]="['@item']"
+                    name="items">
+                </tag-input>
+            </form>
+        </div>
+
+        <div>
             <h3>Simple Input that allows dupes</h3>
             <tag-input [(ngModel)]="items" [allowDupes]="true"></tag-input>
         </div>
 
         <div>
-            <h3>List of tags without form</h3>
+            <h3>Input with two-way data binding for its input text</h3>
 
-            <div class="flex default">
-                <tag [model]="'Tag 1'" class='tag'></tag>
-                <tag [model]="'Tag 2'" class='tag'></tag>
-                <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
-            </div>
+            <input [(ngModel)]="inputText" />
+
+            <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
         </div>
     </div>
 </main>

@@ -71,7 +71,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc keyboard keys with which a user can separate items
      * @type {Array}
      */
-    @Input() public separatorKeys: number[] = [];
+    @Input() public separatorKeys: string[] = [];
+
+    /**
+     * @name separatorKeyCodes
+     * @desc keyboard key codes with which a user can separate items
+     * @type {Array}
+     */
+    @Input() public separatorKeyCodes: number[] = [];
 
     /**
      * @name placeholder
@@ -92,14 +99,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc maximum number of items that can be added
      * @type {number}
      */
-    @Input() public maxItems: number = undefined;
+    @Input() public maxItems: number;
 
     /**
      * @name readonly
      * @desc if set to true, the user cannot remove/addItem new items
      * @type {boolean}
      */
-    @Input() public readonly: boolean = undefined;
+    @Input() public readonly: boolean;
 
     /**
      * @name transform
@@ -119,7 +126,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     * @name onlyFromAutocomplete
     * @type {Boolean}
     */
-    @Input() public onlyFromAutocomplete: boolean = false;
+    @Input() public onlyFromAutocomplete = false;
 
 	/**
      * @name errorMessages
@@ -131,83 +138,96 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name theme
      * @type {string}
      */
-    @Input() public theme: string = 'default';
+    @Input() public theme = 'default';
 
     /**
      * @name onTextChangeDebounce
      * @type {number}
      */
-    @Input() private onTextChangeDebounce: number = 250;
+    @Input() public onTextChangeDebounce = 250;
 
     /**
      * - custom id assigned to the input
      * @name id
      */
-    @Input() private inputId: string;
+    @Input() public inputId: string;
 
     /**
      * - custom class assigned to the input
      */
-    @Input() private inputClass: string;
+    @Input() public inputClass: string;
 
     /**
      * - option to clear text input when the form is blurred
      * @name clearOnBlur
      */
-    @Input() private clearOnBlur: string;
+    @Input() public clearOnBlur: string;
 
     /**
      * - hideForm
      * @name clearOnBlur
      */
-    @Input() private hideForm: string;
+    @Input() public hideForm: string;
 
     /**
      * @name addOnBlur
      */
-    @Input() private addOnBlur: boolean;
+    @Input() public addOnBlur: boolean;
 
     /**
      * @name addOnPaste
      */
-    @Input() private addOnPaste: boolean;
+    @Input() public addOnPaste: boolean;
 
     /**
      * - pattern used with the native method split() to separate patterns in the string pasted
      * @name pasteSplitPattern
      */
-    @Input() private pasteSplitPattern: string = ',';
+    @Input() public pasteSplitPattern = ',';
 
     /**
      * @name blinkIfDupe
      * @type {boolean}
      */
-    @Input() private blinkIfDupe: boolean = true;
+    @Input() public blinkIfDupe = true;
 
     /**
      * @name removable
      * @type {boolean}
      */
-    @Input() private removable: boolean = true;
+    @Input() public removable = true;
 
     /**
      * @name editable
      * @type {boolean}
      */
-    @Input() private editable: boolean = false;
+    @Input() public editable = false;
 
     /**
      * @name allowDupes
      * @type {boolean}
      */
-    @Input() public allowDupes: boolean = false;
+    @Input() public allowDupes = false;
 
     /**
      * @description if set to true, the newly added tags will be added as strings, and not objects
      * @name modelAsStrings
      * @type {boolean}
      */
-    @Input() public modelAsStrings: boolean = false;
+    @Input() public modelAsStrings = false;
+
+    /**
+     * @name trimTags
+     * @type {boolean}
+     */
+    @Input() public trimTags = true;
+
+    /**
+     * @name inputText
+     */
+    @Input() public get inputText(): string {
+        return this.inputTextValue;
+    }
 
     /**
      * @name onAdd
@@ -298,6 +318,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public selectedTag: TagModel;
 
     /**
+     * @name isLoading
+     * @type {boolean}
+     */
+    public isLoading = false;
+
+    /**
+     * @name inputText
+     * @param text
+     */
+    public set inputText(text: string) {
+        this.inputTextValue = text;
+        this.inputTextChange.emit(text);
+    }
+
+    /**
      * @name tags
      * @desc list of Element items
      */
@@ -314,7 +349,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         change: <{(fun): any}[]>[]
     };
 
-    public isLoading: boolean = false;
+    /**
+     * @description emitter for the 2-way data binding inputText value
+     * @name inputTextChange
+     * @type {EventEmitter}
+     */
+    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+
+    /**
+     * @description private variable to bind get/set
+     * @name inputTextValue
+     * @type {string}
+     */
+    private inputTextValue = '';
 
     constructor(private renderer: Renderer) {
         super();
@@ -334,8 +381,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.selectedTag = undefined;
         }
 
-        // focus input right after removing an item
-        this.focus(true);
+        // focus input
+        this.focus(true, false);
 
         // emit remove event
         this.onRemove.emit(tag);
@@ -345,15 +392,20 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name addItem
      * @desc adds the current text model to the items array
      */
-    public addItem(isFromAutocomplete = false): void {
-        const inputValue = this.setInputValue(this.inputForm.value.value);
-        const tag = this.createTag(inputValue, inputValue);
+    public addItem(isFromAutocomplete = false, item: TagModel = this.inputForm.value.value): void {
+        const display = typeof item === 'string' ? item : item[this.displayBy];
+        const value = typeof item === 'string' ? item : item[this.identifyBy];
+
+        const inputValue = this.setInputValue(display);
 
         if (!this.inputForm.form.valid || !inputValue) {
             return;
         }
 
-        if (this.isTagValid(tag, isFromAutocomplete)) {
+        const tag = this.createTag(inputValue, isFromAutocomplete ? value : inputValue);
+        const isValid = this.isTagValid(tag, isFromAutocomplete);
+
+        if (isValid) {
             this.appendNewTag(tag);
         } else {
             this.onValidationError.emit(tag);
@@ -361,7 +413,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // reset control and focus input
         this.setInputValue('');
-        this.focus(true);
+
+        // focus input
+        this.focus(true, false);
     }
 
     /**
@@ -382,8 +436,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
 
             return this.getItemValue(item) === tag[identifyBy] ||
-                item[this.identifyBy] === tag[identifyBy] ||
-                item[this.displayBy] === tag[displayBy];
+                this.getItemValue(item) === tag[displayBy];
         });
 
         const hasDupe = !!dupe && dupe !== undefined;
@@ -435,9 +488,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {{}}
      */
     public createTag(display: string, value: any): TagModel {
+        const trim = (val: TagModel): TagModel => typeof val === 'string' ? val.trim() : val;
+
         return {
-            [this.displayBy]: display,
-            [this.identifyBy]: value
+            [this.displayBy]: this.trimTags ? trim(display) : display,
+            [this.identifyBy]: this.trimTags ? trim(value) : value
         };
     }
 
@@ -525,22 +580,23 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 	/**
      * @name focus
      * @param applyFocus
+     * @param displayAutocomplete
      */
-    public focus(applyFocus = false): void {
+    public focus(applyFocus = false, displayAutocomplete = false): void {
         if (this.readonly) {
             return;
         }
 
-        if (this.dropdown) {
-            this.dropdown.show();
-        }
-
+        const value = this.inputForm.value.value;
         this.selectedTag = undefined;
-
-        this.onFocus.emit(this.inputForm.value.value);
 
         if (applyFocus) {
             this.inputForm.focus();
+            this.onFocus.emit(value);
+        }
+
+        if (displayAutocomplete && this.dropdown) {
+            this.dropdown.show();
         }
     }
 
@@ -613,7 +669,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name maxItemsReached
      * @returns {boolean}
      */
-    private get maxItemsReached(): boolean {
+    public get maxItemsReached(): boolean {
         return this.maxItems !== undefined && this.items.length >= this.maxItems;
     }
 
@@ -655,21 +711,29 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public ngOnInit() {
         // setting up the keypress listeners
         listen.call(this, constants.KEYDOWN, ($event) => {
-            const itemsLength: number = this.items.length,
-                inputValue: string = this.inputForm.value.value,
-                isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+            const itemsLength = this.items.length;
+            const inputValue = this.inputForm.value.value;
+            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
-            if (isCorrectKey && !inputValue && itemsLength) {
-                this.tags.last.select.call(this.tags.last);
+            if (isCorrectKey &&
+                !inputValue &&
+                itemsLength) {
+                    this.tags.last.select.call(this.tags.last);
             }
         });
 
+        const useSeparatorKeys = this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0;
+
         listen.call(this, constants.KEYDOWN, ($event) => {
-            if (this.separatorKeys.indexOf($event.keyCode) >= 0) {
+            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
+            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
+
+            if (hasKeyCode || hasKey) {
                 $event.preventDefault();
                 this.addItem();
             }
-        }, this.separatorKeys.length > 0);
+
+        }, useSeparatorKeys);
 
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
@@ -688,6 +752,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public ngAfterViewInit() {
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
+
+            if (event.key === 'Backspace' && this.inputForm.value.value === '') {
+                event.preventDefault();
+            }
         });
 
         if (this.onTextChange.observers.length) {
@@ -703,6 +771,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         if (this.clearOnBlur || this.addOnBlur) {
             this.inputForm
                 .onBlur
+                .filter(() => {
+                    return this.dropdown ? this.dropdown.isVisible === false : true;
+                })
                 .subscribe(() => {
                     if (this.addOnBlur) {
                         this.addItem();

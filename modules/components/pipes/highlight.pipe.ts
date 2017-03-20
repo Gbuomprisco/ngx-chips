@@ -6,7 +6,13 @@ const escape = s => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     name: 'highlight'
 })
 export class HighlightPipe implements PipeTransform {
-    transform(value: string, arg: string): string {
+    /**
+     * @name transform
+     * @param value {string}
+     * @param arg {string}
+     * @return {string}
+     */
+    public transform(value: string, arg: string): string {
         if (!arg.trim()) {
             return value;
         }

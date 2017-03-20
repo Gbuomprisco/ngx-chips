@@ -40,8 +40,17 @@
     border-bottom: 2px solid map-get($color-error, 'default');
 }
 
+.bootstrap.ng2-tag-input.ng2-tag-input--invalid {
+    border-bottom: 2px solid map-get($color-error, 'bootstrap');
+}
+
+.bootstrap3-info.ng2-tag-input.ng2-tag-input--invalid {
+    border-color: map-get($color-error, 'bootstrap');
+}
+
 .default.ng2-tag-input.ng2-tag-input--loading,
 .dark.ng2-tag-input.ng2-tag-input--loading,
-.minimal.ng2-tag-input.ng2-tag-input--loading {
+.minimal.ng2-tag-input.ng2-tag-input--loading,
+.bootstrap.ng2-tag-input.ng2-tag-input--loading {
     border: none;
 }

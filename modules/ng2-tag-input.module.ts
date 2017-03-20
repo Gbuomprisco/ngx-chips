@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 
@@ -15,6 +15,7 @@ import { TagRipple } from './components/tag/tag-ripple.component';
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        FormsModule,
         Ng2DropdownModule
     ],
     declarations: [

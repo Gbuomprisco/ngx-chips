@@ -17,6 +17,7 @@ tag {
     cursor: pointer;
     border-radius: $tag-border-radius;
     transition: all 0.25s;
+    position: relative;
 
     margin: $tag-margin;
     padding: $tag-padding;
@@ -38,7 +39,8 @@ tag.readonly:focus {
 
 .default tag.tag--editing,
 .dark tag.tag--editing,
-.minimal tag.tag--editing {
+.minimal tag.tag--editing,
+.bootstrap tag.tag--editing {
     background-color: #fff;
     cursor: text;
 }
@@ -92,4 +94,34 @@ tag:focus {
 .dark tag:not(.readonly):active {
     background: map-get($color-focused, 'dark');
     color: map-get($color-primary, 'dark');
+}
+
+.bootstrap tag {
+    background: map-get($color-primary, 'bootstrap');
+    color: #f9f9f9;
+    border-radius: 0.25rem;
+}
+
+.bootstrap tag:not(.readonly):focus,
+.bootstrap tag:not(.readonly):active {
+    background: map-get($color-focused, 'bootstrap');
+}
+
+.bootstrap3-info tag {
+    background: map-get($color-primary, 'bootstrap3-info');
+    padding: .25em .6em;
+    font-size: 95%;
+    font-weight: 400;
+
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+
+    border-radius: .25em;
+    font-family: inherit;
+}
+
+.bootstrap3-info tag:not(.readonly):focus,
+.bootstrap3-info tag:not(.readonly):active {
+    background: map-get($color-focused, 'bootstrap3-info');
 }

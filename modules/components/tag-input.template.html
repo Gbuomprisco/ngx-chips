@@ -1,6 +1,7 @@
 <!-- CONTAINER -->
+
 <div ngClass="ng2-tag-input {{ theme }}"
-     (click)="focus(true)"
+     (click)="focus(true, false)"
      [attr.tabindex]="-1"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
@@ -9,11 +10,13 @@
     <!-- TAGS -->
     <div class="ng2-tags-container">
         <tag *ngFor="let item of items; let i = index"
-             [@flyInOut]="'in'"
+
              (onSelect)="selectItem(item)"
              (onRemove)="removeItem(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
+
+             [@flyInOut]="'in'"
              [index]="i"
              [attr.tabindex]="readonly ? -1 : 0"
              [class.readonly]="readonly"
@@ -29,10 +32,12 @@
         <tag-input-form
             (onSubmit)="addItem()"
             (onBlur)="blur()"
-            (onFocus)="focus()"
+            (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
-            (onKeypress)="handleKeyPress()"
+
+            [(inputText)]="inputText"
+
             [validators]="validators"
             [hidden]="readonly || maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"
@@ -46,7 +51,8 @@
 
 <!-- ERRORS -->
 <div class="ng2-tag-input__errors-container" *ngIf="hasErrors()">
-    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="ng2-tag-input__error-message">
+    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)"
+       class="ng2-tag-input__error-message">
         <span>{{ error }}</span>
     </p>
 </div>

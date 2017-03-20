@@ -13,6 +13,18 @@ import {
 import { TagModel } from '../helpers/accessor';
 import { TagRipple } from './tag-ripple.component';
 
+// angular universal hacks
+/* tslint:disable-next-line */
+const KeyboardEvent = (global as any).KeyboardEvent;
+
+// mocking navigator
+const navigator = typeof window !== 'undefined' ? window.navigator : {
+    userAgent: 'Chrome',
+    vendor: 'Google Inc'
+};
+
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
 @Component({
     selector: 'tag',
     templateUrl: './tag.template.html',
@@ -47,17 +59,17 @@ export class TagComponent {
     /**
      * @name displayBy {string}
      */
-    @Input() private displayBy: string;
+    @Input() public displayBy: string;
 
     /**
      * @name identifyBy {string}
      */
-    @Input() private identifyBy: string;
+    @Input() public identifyBy: string;
 
     /**
      * @name index {number}
      */
-    @Input() private index: number;
+    @Input() public index: number;
 
     /**
      * @name onSelect
@@ -93,13 +105,13 @@ export class TagComponent {
      * @name editModeActivated
      * @type {boolean}
      */
-    private editModeActivated: boolean = false;
+    public editModeActivated = false;
 
     /**
      * @name rippleState
      * @type {string}
      */
-    private rippleState: string = 'none';
+    public rippleState = 'none';
 
     /**
      * @name ripple {TagRipple}
@@ -165,7 +177,7 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(): void {
+    public toggleEditMode(event?: MouseEvent): void {
         if (this.editModeActivated) {
             this.storeNewValue();
         } else {
@@ -235,10 +247,12 @@ export class TagComponent {
     }
 
     /**
+     * @desc returns whether the ripple is visible or not
+     * only works in Chrome
      * @name isRippleVisible
      * @returns {boolean}
      */
-    private isRippleVisible(): boolean {
-        return !this.readonly && !this.editModeActivated;
+    public isRippleVisible(): boolean {
+        return !this.readonly && !this.editModeActivated && isChrome;
     }
 }
