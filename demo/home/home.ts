@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app',
+    styleUrls: ['./home.scss'],
     templateUrl: './home.html'
 })
 export class Home {

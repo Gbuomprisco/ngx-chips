@@ -1,22 +1,5 @@
 @import "./_progress-bar.scss";
-
-.ng2-tag-input {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    transition: all 0.15s;
-
-    padding: $container-padding;
-    min-height: $container-height;
-
-    cursor: text;
-    position: relative;
-}
-
-.ng2-tag-input:focus {
-    outline: 0;
-}
+@import "./mixins";
 
 .ng2-tags-container {
     flex-wrap: wrap;
@@ -34,23 +17,14 @@
     margin: $error-message-margin;
 }
 
-.default.ng2-tag-input.ng2-tag-input--invalid,
-.minimal.ng2-tag-input.ng2-tag-input--invalid,
-.dark.ng2-tag-input.ng2-tag-input--invalid {
-    border-bottom: 2px solid map-get($color-error, 'default');
-}
-
-.bootstrap.ng2-tag-input.ng2-tag-input--invalid {
-    border-bottom: 2px solid map-get($color-error, 'bootstrap');
-}
-
-.bootstrap3-info.ng2-tag-input.ng2-tag-input--invalid {
+.bootstrap.ng2-tag-input--invalid {
     border-color: map-get($color-error, 'bootstrap');
 }
 
-.default.ng2-tag-input.ng2-tag-input--loading,
-.dark.ng2-tag-input.ng2-tag-input--loading,
-.minimal.ng2-tag-input.ng2-tag-input--loading,
-.bootstrap.ng2-tag-input.ng2-tag-input--loading {
+.bootstrap3-info.ng2-tag-input--invalid {
+    border-color: map-get($color-error, 'bootstrap');
+}
+
+.ng2-tag-input.ng2-tag-input--loading {
     border: none;
 }

@@ -1,3 +1,17 @@
-.ng2-tag-input.minimal {
-    border-bottom: 1px solid transparent;
+$minimal-theme: (
+    container-border-bottom: 1px solid transparent
+);
+
+$minimal-tag-theme: (
+    background: map-get($color-primary, 'minimal'),
+    background-hover: darken(map-get($color-primary, 'minimal'), 5%),
+    background-focused: map-get($color-focused, 'minimal'),
+    background-active: map-get($color-focused, 'minimal'),
+    border-radius: 0,
+    color-active: initial,
+    color-focused: initial
+);
+
+.minimal.ng2-tag-input {
+    @include tag-input-theme($minimal-theme);
 }

@@ -18,7 +18,7 @@
     height: 34px;
 }
 
-:host-context(.default) path {
+:host-context path {
     fill: $color-arrow-default;
 }
 
@@ -34,8 +34,8 @@
     fill: $color-arrow-dark;
 }
 
-:host-context(.default tag:focus) path,
-:host-context(.default tag:active) path {
+:host-context(tag:focus) path,
+:host-context(tag:active) path {
     fill: $color-arrow-default-focused;
 }
 

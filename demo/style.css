@@ -50,3 +50,7 @@ html, body, h1, h2, h3 {
 
     background: #efefef;
 }
+
+tag-input >>> tag {
+    background: red !important;
+}

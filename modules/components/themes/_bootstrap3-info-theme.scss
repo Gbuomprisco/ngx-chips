@@ -1,3 +1,14 @@
+$bootstrap3-info-tag-theme: (
+    background: map-get($color-primary, 'bootstrap3-info'),
+    font-size: 95%,
+    color: #fff,
+    font-weight: 400,
+    border-radius: .25em,
+    font-family: inherit,
+    background-focused: map-get($color-focused, 'bootstrap3-info'),
+    background-active: map-get($color-focused, 'bootstrap3-info')
+);
+
 .ng2-tag-input.bootstrap3-info {
     background-color: #fff;
     border: 1px solid #ccc;

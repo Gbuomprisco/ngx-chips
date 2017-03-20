@@ -1,0 +1,26 @@
+@import "../../modules/components/themes/mixins";
+
+$foundation-primary: #1779ba;
+$foundation-primary-dark: darken($foundation-primary, 10%);
+
+$foundation-theme: (
+    container-border-bottom: 1px solid $foundation-primary
+);
+
+$foundation-tag-theme: (
+    background: $foundation-primary,
+    background-focused: $foundation-primary-dark,
+    background-active: $foundation-primary-dark,
+    background-hover: $foundation-primary-dark,
+    color: #fff,
+    color-hover: #fff,
+    border-radius: 2px
+);
+
+/deep/ .ng2-tag-input.foundation-theme {
+    @include tag-input-theme($foundation-theme);
+}
+
+/deep/ .ng2-tag-input.foundation-theme tag {
+    @include tag-theme($foundation-tag-theme);
+}

@@ -1,6 +1,6 @@
 <!-- CONTAINER -->
 
-<div ngClass="ng2-tag-input {{ theme }}"
+<div ngClass="ng2-tag-input {{ theme || '' }}"
      (click)="focus(true, false)"
      [attr.tabindex]="-1"
      [class.ng2-tag-input--loading]="isLoading"

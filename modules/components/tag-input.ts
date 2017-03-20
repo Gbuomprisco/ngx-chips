@@ -138,7 +138,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name theme
      * @type {string}
      */
-    @Input() public theme = 'default';
+    @Input() public theme: string;
 
     /**
      * @name onTextChangeDebounce
