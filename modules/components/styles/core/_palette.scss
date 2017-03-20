@@ -1,0 +1,39 @@
+$color-focused: (
+    default: $color-focused-default,
+    minimal: $color-focused-minimal,
+    dark: $color-focused-dark,
+    bootstrap: $color-bootstrap-focused,
+    bootstrap3-info: $color-bootstrap3-info-focused
+);
+
+$color-primary: (
+    default: $color-primary-default,
+    minimal: $color-primary-minimal,
+    dark: $color-primary-dark,
+    bootstrap: $color-bootstrap-default,
+    bootstrap3-info: $color-bootstrap3-info-default
+);
+
+$color-error: (
+    default: $color-error-default,
+    minimal: $color-error-minimal,
+    dark: $color-error-dark,
+    bootstrap: $color-error-bootstrap,
+    bootstrap3-info: $color-error-bootstrap3-info
+);
+
+$color-arrow: (
+    default: $color-arrow-default,
+    minimal: $color-arrow-minimal,
+    dark: $color-arrow-dark,
+    bootstrap: $color-arrow-bootstrap,
+    bootstrap3-info: $color-arrow-default-focused
+);
+
+$color-arrow-focused: (
+    default: $color-arrow-default-focused,
+    minimal: $color-arrow-minimal-focused,
+    dark: $color-arrow-dark-focused,
+    bootstrap: $color-arrow-bootstrap,
+    bootstrap3-info: $color-arrow-default-focused
+);
