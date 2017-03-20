@@ -54,14 +54,10 @@
     fill: $color-arrow-dark;
 }
 
-:host-context(.bootstrap3) path {
+:host-context(.bootstrap3-info) path {
     fill: $color-arrow-dark;
 }
 
-:host-context(.bootstrap3) {
+:host-context(.bootstrap3-info) {
     height: inherit;
-}
-:host-context(.bootstrap3) svg {
-    vertical-align: sub;
-    height: 12px;
 }

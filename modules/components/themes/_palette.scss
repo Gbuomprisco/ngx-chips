@@ -3,7 +3,7 @@ $color-focused: (
     minimal: $color-focused-minimal,
     dark: $color-focused-dark,
     bootstrap: $color-bootstrap-focused,
-    bootstrap3: $color-bootstrap3-focused
+    bootstrap3-info: $color-bootstrap3-info-focused
 );
 
 $color-primary: (
@@ -11,7 +11,7 @@ $color-primary: (
     minimal: $color-primary-minimal,
     dark: $color-primary-dark,
     bootstrap: $color-bootstrap-default,
-    bootstrap3: $color-bootstrap3-default
+    bootstrap3-info: $color-bootstrap3-info-default
 );
 
 $color-error: (
@@ -19,7 +19,7 @@ $color-error: (
     minimal: $color-error-minimal,
     dark: $color-error-dark,
     bootstrap: $color-error-bootstrap,
-    bootstrap3: $color-error-bootstrap3
+    bootstrap3-info: $color-error-bootstrap3-info
 );
 
 $color-arrow: (
@@ -27,7 +27,7 @@ $color-arrow: (
     minimal: $color-arrow-minimal,
     dark: $color-arrow-dark,
     bootstrap: $color-arrow-default-focused,
-    bootstrap3: $color-arrow-default-focused
+    bootstrap3-info: $color-arrow-default-focused
 );
 
 $color-arrow-focused: (
@@ -35,5 +35,5 @@ $color-arrow-focused: (
     minimal: $color-arrow-minimal-focused,
     dark: $color-arrow-dark-focused,
     bootstrap: $color-arrow-default-focused,
-    bootstrap3: $color-arrow-default-focused
+    bootstrap3-info: $color-arrow-default-focused
 );
