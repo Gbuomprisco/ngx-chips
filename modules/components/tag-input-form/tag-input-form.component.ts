@@ -78,6 +78,22 @@ export class TagInputForm {
     @Input() public inputClass: string;
 
     /**
+     * @name inputText
+     */
+    @Input() public get inputText(): string {
+        return this.inputTextValue;
+    }
+
+    /**
+     * @name inputText
+     * @param text {string}
+     */
+    public set inputText(text: string) {
+        this.inputTextValue = text;
+        this.inputTextChange.emit(text);
+    }
+
+    /**
      * @name input
      */
     @ViewChild('input') public input;
@@ -86,6 +102,17 @@ export class TagInputForm {
      * @name form
      */
     public form: FormGroup;
+
+    /**
+     * @name inputTextChange
+     * @type {EventEmitter}
+     */
+    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+
+    /**
+     * @name inputTextValue
+     */
+    private inputTextValue: string;
 
     constructor(private renderer: Renderer) {}
 
@@ -120,7 +147,7 @@ export class TagInputForm {
     public getErrorMessages(messages): string[] {
         return Object.keys(messages)
             .filter(err => this.value.hasError(err))
-            .map(err => messages[ err ]);
+            .map(err => messages[err]);
     }
 
     /**
@@ -128,7 +155,9 @@ export class TagInputForm {
      * @returns {boolean}
      */
     public hasErrors(): boolean {
-        return this.form.dirty && this.form.value.item && this.form.invalid;
+        return this.form.dirty &&
+            this.form.value.item &&
+            this.form.invalid;
     }
 
 	/**
@@ -159,7 +188,7 @@ export class TagInputForm {
      */
     public destroy(): void {
         const input = this.input.nativeElement;
-        input.parentElement.removeChild(input);
+        this.renderer.invokeElementMethod(input.parentElement, 'removeChild', [input]);
     }
 
     /**
@@ -168,5 +197,12 @@ export class TagInputForm {
      */
     public onKeyDown($event) {
         return this.onKeydown.emit($event);
+    }
+
+    /**
+     * @name submit
+     */
+    public submit($event: any): void {
+        this.onSubmit.emit($event);
     }
 }

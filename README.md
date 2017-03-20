@@ -198,6 +198,12 @@ If set to `true`, all values added will be strings, and not objects (defaults to
 If set to `false`, the tags could contain leading and trailing spaces (defaults to `true`)
 
 
+**`inputText`** - [**`?string`**]
+
+Property to bind text directly to the form's value.
+You can use it to change the text of the input at any time, or to just bind a value. Remember: use two-way data binding with this property.
+
+
 ---
 
 ##### Validation (optional)

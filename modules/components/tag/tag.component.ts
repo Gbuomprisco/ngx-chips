@@ -10,12 +10,20 @@ import {
     ViewChild
 } from '@angular/core';
 
-// angular universal hack
+import { TagModel } from '../helpers/accessor';
+import { TagRipple } from './tag-ripple.component';
+
+// angular universal hacks
 /* tslint:disable-next-line */
 const KeyboardEvent = (global as any).KeyboardEvent;
 
-import { TagModel } from '../helpers/accessor';
-import { TagRipple } from './tag-ripple.component';
+// mocking navigator
+const navigator = typeof window !== 'undefined' ? window.navigator : {
+    userAgent: 'Chrome',
+    vendor: 'Google Inc'
+};
+
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 @Component({
     selector: 'tag',
@@ -239,10 +247,12 @@ export class TagComponent {
     }
 
     /**
+     * @desc returns whether the ripple is visible or not
+     * only works in Chrome
      * @name isRippleVisible
      * @returns {boolean}
      */
     public isRippleVisible(): boolean {
-        return !this.readonly && !this.editModeActivated;
+        return !this.readonly && !this.editModeActivated && isChrome;
     }
 }

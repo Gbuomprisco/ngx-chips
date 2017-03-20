@@ -13,6 +13,8 @@ export class Home {
 
     items = ['Javascript', 'Typescript'];
 
+    inputText = 'text';
+
     itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
 
     autocompleteItems = ['Item1', 'item2', 'item3'];
