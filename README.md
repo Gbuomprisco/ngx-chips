@@ -2,20 +2,44 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
-**This component is supposed to work with the latest Angular versions**.
-If you have an issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
-
 ## Demo
 
 Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-input/](http://www.buompris.co/ng2-tag-input/).
 
+
 ** The demo will soon be populated with more examples **
 
-## Install
+
+## Installing the component
 
     npm install ng2-tag-input --save
 
 **Notice**: the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
+
+
+## FAQ
+
+#### Does it work with Angular Universal?
+Yes.
+
+
+#### Does it work with Angular's Ahead of time compilation (AOT)?
+Yes.
+
+
+#### What version does it support?
+This component is supposed to work with the latest Angular versions.
+
+If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
+
+
+#### Something's broken?
+Please do open a new issue, but please check first that the same issue has not already been raised :)
+
+
+#### Can I change the style?
+Sorry, not at this time. Maybe open a new PR with a theme you'd like to add, we can consider that.
+
 
 ## Configuration
 
@@ -542,115 +566,6 @@ If you don't like how the default theme looks, or you just need it to fit in a d
 <tag-input [(ngModel)]='items' theme='bootstrap'></tag-input>
 <tag-input [(ngModel)]='items' theme='minimal'></tag-input>
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
-```
-
-You still don't like them? It's fine, read the next section.
-
-## Customization
-
-Thanks to the newly introduced component inheritance, it is possible to finally customize the component with your own settings.
-It is not super straightforward, but you can finally define your own templates and styles. Let's see how it's done.
-
-Unfortunately this won't work with `tag-input-dropdown`. Seeking a solution for this.
-
-The first thing to do, is to define a new component and extend `tag-input`:
-
-```javascript
-import { Component, forwardRef,  animate, trigger, state, style, transition, keyframes} from '@angular/core';
-import { TagInputComponent } from 'ng2-tag-input';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-
-// all this boilerplate is needed
-@Component({
-    selector: 'custom-tag-input', // or whatever you want
-    providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => CustomComponent),
-        multi: true
-    }],
-
-    // not needed, but you may want it
-    styleUrls: [ './custom.scss' ],
-
-    // you can add your own, but for now let's go with this
-    templateUrl: '{{ node_modules }}/ng2-tag-input/dist/modules/components/tag-input.template.html'
-    // or
-    // template: require('ng2-tag-input/dist/modules/components/tag-input.template.html'),
-
-    animations: [
-        trigger('flyInOut', [
-            state('in', style({transform: 'translateX(0)'})),
-            transition(':enter', [
-                animate(200, keyframes([
-                    style({opacity: 0, offset: 0}),
-                    style({opacity: 0.5, offset: 0.3}),
-                    style({opacity: 1, offset: 1.0})
-                ]))
-            ]),
-            transition(':leave', [
-                animate(150, keyframes([
-                    style({opacity: 1, transform: 'translateX(0)', offset: 0}),
-                    style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
-                    style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})
-                ]))
-            ])
-        ])
-    ]
-})
-export class CustomComponent extends TagInputComponent { }
-```
-
-And here is where we define our own styles:
-```sass
-// I'm overwriting the variables
-$tag-color: #222;
-$tag-border-radius: 100px;
-$color-primary-default: #000;
-// have a look at https://github.com/Gbuomprisco/ng2-tag-input/tree/master/modules/components/themes
-// for having an idea on how to change the variables and how they're defined
-
-@import "~ng2-tag-input/dist/modules/components/tag-input.style.scss";
-```
-
-We now need to register this newly created component. Here is how our app module looks like:
-
-```javascript
-
-// .. all other imports
-import { TagInputModule } from 'ng2-tag-input';
-import { CustomComponent } from './custom/custom.component'; // my newly defined component
-
-@NgModule({
-    imports: [
-        BrowserModule,
-        CommonModule,
-        FormsModule,
-
-        TagInputModule, // we need this here
-    ],
-    declarations: [ Home, CustomComponent ], // we need this here
-    bootstrap: [ Home ], // this is just an example
-    entryComponents: [ Home ] // this is just an example
-})
-export class AppModule {}
-platformBrowserDynamic().bootstrapModule(AppModule);
-
-```
-
-## Use tags without a form
-
-It is possible to use `<tag>` components independently from the `tag-input` component.
-In order to do so, pass to the component the input `model` (TagModel).
-
-Notice: by default, these are unstyled. You are free to add the required styles yourself. For example, just add a class `tag`.
-If you wish to copy the same style as the one used in the component, please have a look at source code.
-
-```html
-<div class="flex">
-    <tag [model]="'Tag 1'" class='tag'></tag>
-    <tag [model]="'Tag 2'" class='tag'></tag>
-    <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
-</div>
 ```
 
 ## Ok - cool stuff. But when will you fix the issue I created?
