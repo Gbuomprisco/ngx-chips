@@ -106,6 +106,12 @@ export class TagComponent {
     public rippleState = 'none';
 
     /**
+     * @name isFocused
+     * @type {boolean}
+     */
+    public isFocused = false;
+
+    /**
      * @name ripple {TagRipple}
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
@@ -140,7 +146,20 @@ export class TagComponent {
      * @name focus
      */
     public focus(): void {
-        this.renderer.invokeElementMethod(this.element.nativeElement, 'focus');
+        this.isFocused = true;
+
+        const classList = this.element.nativeElement.classList;
+        classList.add('focus');
+    }
+
+    /**
+     * @name blur
+     */
+    public blur(): void {
+        this.isFocused = false;
+
+        const classList = this.element.nativeElement.classList;
+        classList.remove('focus');
     }
 
     /**
