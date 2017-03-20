@@ -53,3 +53,15 @@
 :host-context(.bootstrap tag:active) path {
     fill: $color-arrow-dark;
 }
+
+:host-context(.bootstrap3) path {
+    fill: $color-arrow-dark;
+}
+
+:host-context(.bootstrap3) {
+    height: inherit;
+}
+:host-context(.bootstrap3) svg {
+    vertical-align: sub;
+    height: 12px;
+}
