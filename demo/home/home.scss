@@ -1,4 +1,4 @@
-@import "../../modules/components/themes/mixins";
+@import "../../modules/components/styles/core/_core.scss";
 
 $foundation-primary: #1779ba;
 $foundation-primary-dark: darken($foundation-primary, 10%);
@@ -17,6 +17,12 @@ $foundation-tag-theme: (
     border-radius: 2px
 );
 
+$foundation-icon-theme: (
+    fill: #fff,
+    fill-focus: #eee,
+    transition: all 0.35s
+);
+
 /deep/ .ng2-tag-input.foundation-theme {
     @include tag-input-theme($foundation-theme);
 }
@@ -24,3 +30,8 @@ $foundation-tag-theme: (
 /deep/ .ng2-tag-input.foundation-theme tag {
     @include tag-theme($foundation-tag-theme);
 }
+
+/deep/ .ng2-tag-input.foundation-theme tag delete-icon {
+    @include icon-theme($foundation-icon-theme);
+}
+

@@ -6,7 +6,6 @@ import { HttpModule } from '@angular/http';
 
 import { TagInputModule } from '../modules/ng2-tag-input.module';
 import { Home } from './home/home';
-import { CustomComponent } from './custom/custom.component';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -18,7 +17,7 @@ import { CommonModule } from '@angular/common';
         ReactiveFormsModule,
         TagInputModule
     ],
-    declarations: [ Home, CustomComponent ],
+    declarations: [ Home ],
     bootstrap: [ Home ],
     entryComponents: [ Home ]
 })

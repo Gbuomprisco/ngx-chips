@@ -20,37 +20,6 @@ html, body, h1, h2, h3 {
     padding: 2em;
 }
 
-.ng2-tag {
-    outline: 0;
-}
-
-.ng2-tag--custom .ng2-tag__remove-button {
-    line-height: 1.6;
-}
-
 .flex {
     display: flex;
-}
-
-.tag {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    outline: 0;
-    color: #222;
-    cursor: pointer;
-    border-radius: 4px;
-
-    margin: 0.1rem;
-    padding: 0.2rem;
-
-    height: 32px;
-    line-height: 34px;
-
-    background: #efefef;
-}
-
-tag-input >>> tag {
-    background: red !important;
 }
