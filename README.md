@@ -6,13 +6,16 @@ This is a component for Angular >= 2. Design and API are blandly inspired by Ang
 
 Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-input/](http://www.buompris.co/ng2-tag-input/).
 
+
 ** The demo will soon be populated with more examples **
 
-## Install
+
+## Installing the component
 
     npm install ng2-tag-input --save
 
 **Notice**: the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
+
 
 ## FAQ
 
@@ -25,7 +28,8 @@ Yes.
 
 
 #### What version does it support?
-**This component is supposed to work with the latest Angular versions**.
+This component is supposed to work with the latest Angular versions.
+
 If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
 
 
