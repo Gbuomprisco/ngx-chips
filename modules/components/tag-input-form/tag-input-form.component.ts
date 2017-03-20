@@ -147,7 +147,7 @@ export class TagInputForm {
     public getErrorMessages(messages): string[] {
         return Object.keys(messages)
             .filter(err => this.value.hasError(err))
-            .map(err => messages[ err ]);
+            .map(err => messages[err]);
     }
 
     /**
@@ -155,7 +155,9 @@ export class TagInputForm {
      * @returns {boolean}
      */
     public hasErrors(): boolean {
-        return this.form.dirty && this.form.value.item && this.form.invalid;
+        return this.form.dirty &&
+            this.form.value.item &&
+            this.form.invalid;
     }
 
 	/**

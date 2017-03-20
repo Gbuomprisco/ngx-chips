@@ -130,9 +130,18 @@ export class TagInputDropdown {
      * @type {Array<string>}
      */
     @Input() public get autocompleteItems(): TagModel[] {
-        return this._autocompleteItems ? this._autocompleteItems.map((item: TagModel) => {
-            return typeof item !== 'string' ? item : {[this.displayBy]: item, [this.identifyBy]: item};
-        }) : [];
+        const items = this._autocompleteItems;
+
+        if (!items) {
+            return [];
+        }
+
+        return items.map((item: TagModel) => {
+            return typeof item === 'string' ? {
+                [this.displayBy]: item,
+                [this.identifyBy]: item
+            } : item;
+        });
     }
 
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
@@ -212,9 +221,12 @@ export class TagInputDropdown {
             return;
         }
 
+        const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
+        const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
+        const model = this.tagInput.createTag(display, value);
+
         // add item
-        this.tagInput.setInputValue(item.value[this.displayBy]);
-        this.tagInput.addItem(true);
+        this.tagInput.addItem(true, model);
 
         // hide dropdown
         this.dropdown.hide();
@@ -275,9 +287,12 @@ export class TagInputDropdown {
         }
 
         return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue: boolean = this.tagInput.tags.filter(tag => {
-                return tag.model[this.tagInput.identifyBy] === item[this.identifyBy];
-            }).length > 0;
+            const hasValue: boolean = this.tagInput.tags.some(tag => {
+                const identifyBy = this.tagInput.identifyBy;
+                const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
+
+                return model === item[this.identifyBy];
+            });
 
             return this.matchingFn(value, item) && hasValue === false;
         });
@@ -301,10 +316,15 @@ export class TagInputDropdown {
      * @name populateItems
      * @param data
      */
-    private populateItems(data: any): void {
+    private populateItems(data: any): TagInputDropdown {
         this.autocompleteItems = data.map(item => {
-            return typeof item === 'string' ? { [this.displayBy]: item, [this.identifyBy]: item } : item;
+            return typeof item === 'string' ? {
+                [this.displayBy]: item,
+                [this.identifyBy]: item
+            } : item;
         });
+
+        return this;
     }
 
     /**
@@ -312,19 +332,28 @@ export class TagInputDropdown {
      * @param text
      */
     private getItemsFromObservable(text: string): void {
-        this.tagInput.isLoading = true;
+        this.setLoadingState(true);
 
         this.autocompleteObservable(text)
             .subscribe(data => {
-                this.tagInput.isLoading = false;
+                // hide loading animation
+                this.setLoadingState(false)
+                    // add items
+                    .populateItems(data)
+                    // show the dropdown
+                    .show();
 
-                // add items
-                this.populateItems(data);
+        }, () => this.setLoadingState(false));
+    }
 
-                // show dropdown
-                this.show();
-            }, () => {
-                this.tagInput.isLoading = false;
-            });
+    /**
+     * @name setLoadingState
+     * @param state
+     * @return {TagInputDropdown}
+     */
+    private setLoadingState(state: boolean): TagInputDropdown {
+        this.tagInput.isLoading = state;
+
+        return this;
     }
 }

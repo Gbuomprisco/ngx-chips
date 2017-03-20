@@ -392,16 +392,24 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name addItem
      * @desc adds the current text model to the items array
      */
-    public addItem(isFromAutocomplete = false): void {
-        const inputValue = this.setInputValue(this.inputForm.value.value);
-        const tag = this.createTag(inputValue, inputValue);
+    public addItem(isFromAutocomplete = false, item: TagModel = this.inputForm.value.value): void {
+        const display = typeof item === 'string' ? item : item[this.displayBy];
+        const value = typeof item === 'string' ? item : item[this.identifyBy];
+
+        const inputValue = this.setInputValue(display);
 
         if (!this.inputForm.form.valid || !inputValue) {
             return;
         }
 
+        const tag = this.createTag(inputValue, isFromAutocomplete ? value : inputValue);
         const isValid = this.isTagValid(tag, isFromAutocomplete);
-        isValid ? this.appendNewTag(tag) : this.onValidationError.emit(tag);
+
+        if (isValid) {
+            this.appendNewTag(tag);
+        } else {
+            this.onValidationError.emit(tag);
+        }
 
         // reset control and focus input
         this.setInputValue('');
@@ -703,14 +711,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public ngOnInit() {
         // setting up the keypress listeners
         listen.call(this, constants.KEYDOWN, ($event) => {
-            const itemsLength: number = this.items.length,
-                inputValue: string = this.inputForm.value.value,
-                isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+            const itemsLength = this.items.length;
+            const inputValue = this.inputForm.value.value;
+            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
-            if (isCorrectKey && !inputValue && itemsLength) {
-                this.tags.last.select.call(this.tags.last);
+            if (isCorrectKey &&
+                !inputValue &&
+                itemsLength) {
+                    this.tags.last.select.call(this.tags.last);
             }
         });
+
+        const useSeparatorKeys = this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0;
 
         listen.call(this, constants.KEYDOWN, ($event) => {
             const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
@@ -720,7 +732,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                 $event.preventDefault();
                 this.addItem();
             }
-        }, this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0);
+
+        }, useSeparatorKeys);
 
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
@@ -758,6 +771,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         if (this.clearOnBlur || this.addOnBlur) {
             this.inputForm
                 .onBlur
+                .filter(() => {
+                    return this.dropdown ? this.dropdown.isVisible === false : true;
+                })
                 .subscribe(() => {
                     if (this.addOnBlur) {
                         this.addItem();
@@ -778,10 +794,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // if hideForm is set to true, remove the input
         if (this.hideForm) {
             this.inputForm.destroy();
-        }
-
-        if (this.addOnBlur || this.clearOnBlur && this.dropdown.focusFirstElement) {
-            this.dropdown.focusFirstElement = false;
         }
     }
 }

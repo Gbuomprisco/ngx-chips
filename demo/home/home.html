@@ -55,18 +55,21 @@
 
         <div>
             <h3>Tags within an autocomplete component</h3>
-            <tag-input [ngModel]="['@item']">
-                <tag-input-dropdown [autocompleteItems]="autocompleteItems"
-                                    [focusFirstElement]="false">
+            <tag-input [ngModel]="['@item']"
+                       [addOnBlur]="true"
+                       [clearOnBlur]="true">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems">
                 </tag-input-dropdown>
             </tag-input>
         </div>
 
         <div>
-            <h3>Tags accepting only items from an autocomplete</h3>
+            <h3>Tags accepting only items from an autocomplete (with transform function)</h3>
             <tag-input [ngModel]="['@item']"
+                       [transform]="transform"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [focusFirstElement]="true"
                                     [displayBy]="'value'"
                                     [identifyBy]="'id'"
                                     [autocompleteItems]="autocompleteItemsAsObjects">
@@ -217,16 +220,6 @@
             <input [(ngModel)]="inputText" />
 
             <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
-        </div>
-
-        <div>
-            <h3>List of tags without form</h3>
-
-            <div class="flex default">
-                <tag [model]="'Tag 1'" class='tag'></tag>
-                <tag [model]="'Tag 2'" class='tag'></tag>
-                <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
-            </div>
         </div>
     </div>
 </main>
