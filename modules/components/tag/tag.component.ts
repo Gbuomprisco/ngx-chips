@@ -10,12 +10,20 @@ import {
     ViewChild
 } from '@angular/core';
 
-// angular universal hack
-/* tslint:disable-next-line */
-const KeyboardEvent = (global as any).KeyboardEvent;
-const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 import { TagModel } from '../helpers/accessor';
 import { TagRipple } from './tag-ripple.component';
+
+// angular universal hacks
+/* tslint:disable-next-line */
+const KeyboardEvent = (global as any).KeyboardEvent;
+
+// mocking navigator
+const navigator = typeof window !== 'undefined' ? window.navigator : {
+    userAgent: 'Chrome',
+    vendor: 'Google Inc'
+};
+
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 @Component({
     selector: 'tag',
