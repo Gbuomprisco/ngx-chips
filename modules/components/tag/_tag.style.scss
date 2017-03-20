@@ -106,3 +106,18 @@ tag:focus {
 .bootstrap tag:not(.readonly):active {
     background: map-get($color-focused, 'bootstrap');
 }
+.bootstrap3 tag {
+    height: 2em;
+    line-height: 0;
+
+    background: map-get($color-primary, 'bootstrap3');
+    padding: .5em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    font-family: inherit;
+}

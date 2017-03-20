@@ -195,6 +195,18 @@
         </div>
 
         <div>
+            <h3>Tags with Bootstrap 3 theme</h3>
+            <form>
+                <tag-input
+                    [theme]="'bootstrap3'"
+                    [validators]="validators"
+                    [ngModel]="['@item']"
+                    name="items">
+                </tag-input>
+            </form>
+        </div>
+
+        <div>
             <h3>Simple Input that allows dupes</h3>
             <tag-input [(ngModel)]="items" [allowDupes]="true"></tag-input>
         </div>
