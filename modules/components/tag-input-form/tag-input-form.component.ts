@@ -60,6 +60,12 @@ export class TagInputForm {
     @Input() public placeholder: string;
 
     /**
+     * @name text
+     * @type {string}
+     */
+    @Input() public text: string;
+
+    /**
      * @name validators
      * @type {ValidatorFn[]}
      */
