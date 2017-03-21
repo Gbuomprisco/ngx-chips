@@ -2,12 +2,9 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
-## Demo
+## [Demo](http://www.buompris.co/ng2-tag-input/)
 
-Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-input/](http://www.buompris.co/ng2-tag-input/).
-
-
-** The demo will soon be populated with more examples **
+Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
 
 
 ## Installing the component
@@ -19,26 +16,26 @@ Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-
 
 ## FAQ
 
-#### Does it work with Angular Universal?
+##### Does it work with Angular Universal?
 Yes.
 
 
-#### Does it work with Angular's Ahead of time compilation (AOT)?
+##### Does it work with Angular's Ahead of time compilation (AOT)?
 Yes.
 
 
-#### What version does it support?
+##### What version does it support?
 This component is supposed to work with the latest Angular versions.
 
 If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
 
 
-#### Something's broken?
+##### Something's broken?
 Please do open a new issue, but please check first that the same issue has not already been raised :)
 
 
-#### Can I change the style?
-Sorry, not at this time. Maybe open a new PR with a theme you'd like to add, we can consider that.
+##### Can I change the style?
+Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
 
 
 ## Configuration
@@ -204,6 +201,11 @@ Property to bind text directly to the form's value.
 You can use it to change the text of the input at any time, or to just bind a value. Remember: use two-way data binding with this property.
 
 
+**`ripple`** - [**`?boolean`**]
+
+Specified whether the ripple effect should be visible or not (defaults to `true`)
+
+
 ---
 
 ##### Validation (optional)
@@ -282,11 +284,10 @@ Event fired when the validation fails
 
 Event fired when a tag is edited
 
-
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
-**`autocompleteObservable`** [experimental] - [**`(text: string) => Observable<Response>`**]
+**`autocompleteObservable`** - [**`(text: string) => Observable<Response>`**]
 
 A function that takes a string (current input value) and returns an Observable (ex. `http.get()`) with an array of items wit the same structure as `autocompleteItems` (see below). Make sure you retain the scope of your class or function when using this property.
 It can be used to popuplate the autocomplete with items coming from an async request.
@@ -373,7 +374,6 @@ export class App {
 
 ```html
 <tag-input [(ngModel)]='items'></tag-input>
-
 ```
 
 ### Advanced usage
@@ -385,21 +385,25 @@ export class App {
 <tag-input [ngModel]="itemsAsObjects"></tag-input>
 ```
 
+
 #### Using an array of with custom `identifyBy` and `displayBy`
 ```html
 // itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
 <tag-input [ngModel]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
 ```
 
-#### Editable tags (experimental)
+
+#### Editable tags
 ```html
 <tag-input [(ngModel)]='items' [editable]='true' (onTagEdited)="onTagEdited($event)"></tag-input>
 ```
+
 
 #### Static Tags (not removable)
 ```html
 <tag-input [(ngModel)]='items' [removable]='false'></tag-input>
 ```
+
 
 #### Max number of items
 ```html
@@ -407,6 +411,7 @@ export class App {
 ```
 
 If the value of the model will contain more tags than `maxItems`, `maxItems` will be replaced with the current size of the model.
+
 
 #### Autocomplete
 ```html
@@ -427,6 +432,7 @@ This will accept items only from the autocomplete dropdown:
 </tag-input>
 ```
 
+
 ##### Define a template for your menu items
 ```html
 <tag-input [ngModel]="['@item']"
@@ -439,6 +445,7 @@ This will accept items only from the autocomplete dropdown:
     </tag-input-dropdown>
 </tag-input>
 ```
+
 
 ##### Populate items using an Observable
 ```javascript
@@ -456,12 +463,14 @@ public requestAutocompleteItems = (text: string): Observable<Response> => {
 </tag-input>
 ```
 
+
 #### Additional keys to separate tags
 If you want to use more keys to separate items, add them to separatorKeys as an array of keyboard key codes.
 
 ```html
-<tag-input [(ngModel)]='items' separatorKeys="[32]"></tag-input>
+<tag-input [(ngModel)]='items' [separatorKeys]="[32]"></tag-input>
 ```
+
 
 #### Validation
 
@@ -507,6 +516,7 @@ Pass them to the tag-input component:
 </tag-input>
 ```
 
+
 #### Items Transformer
 
 Set up a transformer, which is a function that takes the item's string as parameter, and should return
@@ -526,6 +536,7 @@ Every item entered will be prefixed with `@`.
 <tag-input [ngModel]="['@item']" [transform]="transformer"></tag-input>
 ```
 
+
 #### Events
 Set up some methods that will run when its relative event is fired.
 
@@ -540,12 +551,14 @@ Set up some methods that will run when its relative event is fired.
 </tag-input>
 ```
 
+
 #### Readonly
 If readonly is passed to the tag-input, it won't be possible to select, add and remove items.
 
 ```html
 <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
 ```
+
 
 #### Custom items template
 Define your own template, but remember to set up the needed events using the `input` reference.
@@ -564,6 +577,7 @@ Define your own template, but remember to set up the needed events using the `in
 </tag-input>
 ```
 
+
 #### Built-in Themes
 If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 4 new themes: `bootstrap3-info`, `bootstrap`, `dark` and `minimal`.
 
@@ -574,8 +588,12 @@ If you don't like how the default theme looks, or you just need it to fit in a d
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
 ```
 
-## Ok - cool stuff. But when will you fix the issue I created?
-Do please read this great post by Micheal Bromley: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)
+If you do not like these themes, [define your own theme](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
+
 
 ## Contributing/Pull Requests
 Contributions are highly welcome! No, there is no guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages...
+
+
+### Ok - cool stuff. But when will you fix the issue I created?
+Do please read this great post by Micheal Bromley: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)

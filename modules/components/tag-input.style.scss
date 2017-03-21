@@ -1,11 +1,2 @@
-@import "themes/_variables.scss";
-@import "themes/_palette.scss";
-@import "themes/_common.scss";
-
-@import "themes/_default-theme.scss";
-@import "themes/_minimal-theme.scss";
-@import "themes/_dark-theme.scss";
-@import "themes/_bootstrap-theme.scss";
-@import "themes/_bootstrap3-info-theme.scss";
-
-@import "./tag/_tag.style.scss";
+@import "styles/themes/_themes.scss";
+@import "styles/components/_components.scss";

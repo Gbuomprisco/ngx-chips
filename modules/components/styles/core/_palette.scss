@@ -26,7 +26,7 @@ $color-arrow: (
     default: $color-arrow-default,
     minimal: $color-arrow-minimal,
     dark: $color-arrow-dark,
-    bootstrap: $color-arrow-default-focused,
+    bootstrap: $color-arrow-bootstrap,
     bootstrap3-info: $color-arrow-default-focused
 );
 
@@ -34,6 +34,6 @@ $color-arrow-focused: (
     default: $color-arrow-default-focused,
     minimal: $color-arrow-minimal-focused,
     dark: $color-arrow-dark-focused,
-    bootstrap: $color-arrow-default-focused,
+    bootstrap: $color-arrow-bootstrap,
     bootstrap3-info: $color-arrow-default-focused
 );

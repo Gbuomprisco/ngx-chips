@@ -138,7 +138,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name theme
      * @type {string}
      */
-    @Input() public theme = 'default';
+    @Input() public theme: string;
 
     /**
      * @name onTextChangeDebounce
@@ -228,6 +228,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public get inputText(): string {
         return this.inputTextValue;
     }
+
+    /**
+     * @name ripple
+     * @type {boolean}
+     */
+    @Input() public ripple = true;
 
     /**
      * @name onAdd
