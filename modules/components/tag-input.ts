@@ -360,14 +360,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name inputTextChange
      * @type {EventEmitter}
      */
-    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+    @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
 
     /**
      * @description private variable to bind get/set
      * @name inputTextValue
      * @type {string}
      */
-    private inputTextValue = '';
+    public inputTextValue = '';
 
     constructor(private renderer: Renderer) {
         super();

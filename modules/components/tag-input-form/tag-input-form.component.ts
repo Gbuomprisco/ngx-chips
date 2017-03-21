@@ -107,12 +107,12 @@ export class TagInputForm {
      * @name inputTextChange
      * @type {EventEmitter}
      */
-    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+    @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
 
     /**
      * @name inputTextValue
      */
-    private inputTextValue = '';
+    public inputTextValue = '';
 
     constructor(private renderer: Renderer) {}
 
