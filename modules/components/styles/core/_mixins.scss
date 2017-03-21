@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     position: relative;
 
-    transition: if (map-get($theme, transition), all map-get($theme, transition-duration));
+    transition: map-get($theme, transition);
 
     padding: map-get($theme, 'container-padding');
     min-height: map-get($theme, 'container-height');
@@ -12,6 +12,8 @@
     cursor: text;
 
     border-bottom: map-get($theme, 'container-border-bottom');
+    box-shadow: map-get($theme, 'box-shadow');
+    border-radius: map-get($theme, 'border-radius');
 
     &:focus {
         outline: 0;
@@ -37,12 +39,12 @@
         flex-wrap: wrap;
         display: flex;
     }
+}
 
-    .ng2-tag-input__error-message {
-        font-size: map-get($theme, 'error-message-font-size') or $error-message-font-size;
-        color: map-get($theme, 'error-message-color') or $error-message-color;
-        margin: map-get($theme, 'error-message-margin') or $error-message-margin;   
-    }
+@mixin error-message($theme) {
+    font-size: map-get($theme, 'error-message-font-size');
+    color: map-get($theme, 'error-message-color');
+    margin: map-get($theme, 'error-message-margin');
 }
 
 @mixin tag-theme($theme) {
@@ -55,12 +57,10 @@
     font-size: map-get($theme, 'font-size');
     letter-spacing: map-get($theme, 'letter-spacing');
 
-    outline: 0;
     color: map-get($theme, 'color');
-    cursor: pointer;
     border-radius: map-get($theme, 'border-radius');
-    transition: all 0.3s;
-    position: relative;
+
+    transition: map-get($theme, 'transition');
 
     margin: map-get($theme, 'margin');
     padding: map-get($theme, 'padding');
@@ -68,10 +68,13 @@
     height: map-get($theme, 'height');
     line-height: map-get($theme, 'line-height');
 
+    background: map-get($theme, 'background');
+
     user-select: none;
     overflow: hidden;
-
-    background: map-get($theme, 'background');
+    outline: 0;
+    cursor: pointer;
+    position: relative;
 
     &:not(.readonly):not(.tag--editing):focus {
         background: map-get($theme, 'background-focused');
@@ -92,17 +95,14 @@
         cursor: default;
     }
 
-    &.readonly:focus {
+    &.readonly:focus,
+    &:focus {
         outline: 0;
     }
 
     &.tag--editing {
         background-color: map-get($theme, 'background-editing');
         cursor: text;
-    }
-
-    &:focus {
-        outline: 0;
     }
 }
 

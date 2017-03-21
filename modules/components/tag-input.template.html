@@ -17,6 +17,7 @@
              (onTagEdited)="onTagEdited.emit(item)"
 
              [@flyInOut]="'in'"
+             [hasRipple]="ripple"
              [index]="i"
              [attr.tabindex]="readonly ? -1 : 0"
              [class.readonly]="readonly"
@@ -50,9 +51,8 @@
 </div>
 
 <!-- ERRORS -->
-<div class="ng2-tag-input__errors-container" *ngIf="hasErrors()">
-    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)"
-       class="ng2-tag-input__error-message">
+<div *ngIf="hasErrors()" class="error-messages {{ theme || '' }}">
+    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="error-message">
         <span>{{ error }}</span>
     </p>
 </div>

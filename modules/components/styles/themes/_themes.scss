@@ -22,3 +22,15 @@
 .bootstrap.ng2-tag-input {
     @include tag-input-theme($bootstrap-theme);
 }
+
+.bootstrap3-info.ng2-tag-input {
+    @include tag-input-theme($bootstrap3-info-theme);
+}
+
+.error-message {
+    @include error-message($default-theme);
+}
+
+.bootstrap .error-message {
+    @include error-message($bootstrap-theme);
+}

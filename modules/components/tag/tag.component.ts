@@ -72,6 +72,11 @@ export class TagComponent {
     @Input() public index: number;
 
     /**
+     * @name hasRipple
+     */
+    @Input() public hasRipple: boolean;
+
+    /**
      * @name onSelect
      * @type {EventEmitter<TagModel>}
      */
@@ -253,6 +258,9 @@ export class TagComponent {
      * @returns {boolean}
      */
     public isRippleVisible(): boolean {
-        return !this.readonly && !this.editModeActivated && isChrome;
+        return !this.readonly &&
+            !this.editModeActivated &&
+            isChrome &&
+            this.hasRipple;
     }
 }

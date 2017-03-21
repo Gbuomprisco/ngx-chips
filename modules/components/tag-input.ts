@@ -230,6 +230,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name ripple
+     * @type {boolean}
+     */
+    @Input() public ripple = true;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}

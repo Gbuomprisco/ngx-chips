@@ -1,7 +1,8 @@
 $bootstrap-theme: (
     container-border-bottom: 2px solid map-get($color-primary, 'default'),
     container-border-bottom-focused: 2px solid map-get($color-primary, 'bootstrap'),
-    container-border-bottom-invalid: 2px solid map-get($color-error, 'default')
+    container-border-bottom-invalid: 2px solid map-get($color-error, 'bootstrap'),
+    error-message-color: map-get($color-error, 'bootstrap')
 );
 
 $bootstrap-tag-theme: (

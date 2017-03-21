@@ -19,26 +19,26 @@ Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-
 
 ## FAQ
 
-#### Does it work with Angular Universal?
+##### Does it work with Angular Universal?
 Yes.
 
 
-#### Does it work with Angular's Ahead of time compilation (AOT)?
+##### Does it work with Angular's Ahead of time compilation (AOT)?
 Yes.
 
 
-#### What version does it support?
+##### What version does it support?
 This component is supposed to work with the latest Angular versions.
 
 If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
 
 
-#### Something's broken?
+##### Something's broken?
 Please do open a new issue, but please check first that the same issue has not already been raised :)
 
 
-#### Can I change the style?
-Sorry, not at this time. Maybe open a new PR with a theme you'd like to add, we can consider that.
+##### Can I change the style?
+Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
 
 
 ## Configuration
@@ -202,6 +202,11 @@ If set to `false`, the tags could contain leading and trailing spaces (defaults 
 
 Property to bind text directly to the form's value.
 You can use it to change the text of the input at any time, or to just bind a value. Remember: use two-way data binding with this property.
+
+
+**`ripple`** - [**`?boolean`**]
+
+Specified whether the ripple effect should be visible or not (defaults to `true`)
 
 
 ---

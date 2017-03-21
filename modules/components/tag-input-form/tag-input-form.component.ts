@@ -112,7 +112,7 @@ export class TagInputForm {
     /**
      * @name inputTextValue
      */
-    private inputTextValue: string;
+    private inputTextValue = '';
 
     constructor(private renderer: Renderer) {}
 
