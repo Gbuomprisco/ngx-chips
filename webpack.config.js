@@ -19,7 +19,7 @@ const webpackConfig = {
     },
 
     output: {
-        path: './dist',
+        path: path.resolve('./dist'),
         libraryTarget: "umd",
         library: 'ng2-tag-input'
     },
