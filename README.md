@@ -16,26 +16,30 @@ Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
 
 ## FAQ
 
-##### Does it work with Angular Universal?
+### Does it work with Angular Universal?
 Yes.
 
 
-##### Does it work with Angular's Ahead of time compilation (AOT)?
+### Does it work with Angular's Ahead of time compilation (AOT)?
 Yes.
 
 
-##### What version does it support?
+### Does it work with Ionic 2?
+Yes.
+
+
+### What version does it support?
 This component is supposed to work with the latest Angular versions.
 
 If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
 
 
-##### Something's broken?
-Please do open a new issue, but please check first that the same issue has not already been raised :)
-
-
-##### Can I change the style?
+### Can I change the style?
 Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
+
+
+### Something's broken?
+Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
 
 
 ## Configuration
