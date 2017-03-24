@@ -16,14 +16,15 @@
 
     <div *ngSwitchCase="false">
         <!-- TAG NAME -->
-        <span [attr.contenteditable]="editModeActivated"
-              spellcheck="false"
-              (keydown.enter)="disableEditMode($event)"
-              (keydown.escape)="disableEditMode($event)"
-              (click)="editModeActivated ? $event.stopPropagation() : undefined"
-              (blur)="toggleEditMode()">
+        <div [attr.contenteditable]="editModeActivated"
+             class="inline"
+             spellcheck="false"
+             (keydown.enter)="disableEditMode($event)"
+             (keydown.escape)="disableEditMode($event)"
+             (click)="editModeActivated ? $event.stopPropagation() : undefined"
+             (blur)="toggleEditMode()">
             {{ getDisplayValue(model) }}
-        </span>
+        </div>
 
         <!-- 'X' BUTTON -->
         <delete-icon

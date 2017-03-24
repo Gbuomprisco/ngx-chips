@@ -400,20 +400,25 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public addItem(isFromAutocomplete = false, item: TagModel = this.inputForm.value.value): void {
         const display = typeof item === 'string' ? item : item[this.displayBy];
-        const value = typeof item === 'string' ? item : item[this.identifyBy];
-
         const inputValue = this.setInputValue(display);
+        const isFormInvalid = !this.inputForm.form.valid || !inputValue;
 
-        if (!this.inputForm.form.valid || !inputValue) {
+        // return early if the form is invalid
+        if (isFormInvalid) {
             return;
         }
 
-        const tag = this.createTag(inputValue, isFromAutocomplete ? value : inputValue);
+        const tag = this.createTag(isFromAutocomplete ? item : inputValue);
         const isValid = this.isTagValid(tag, isFromAutocomplete);
 
+        // append new tag if everything is valid
         if (isValid) {
             this.appendNewTag(tag);
+
+            // emit event
+            this.onAdd.emit(tag);
         } else {
+            // otherwise, emit validation error event
             this.onValidationError.emit(tag);
         }
 
@@ -431,20 +436,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public isTagValid(tag: TagModel, isFromAutocomplete = false): boolean {
         const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
-
         if (selectedItem && !isFromAutocomplete) {
             return;
         }
 
-        // check if the transformed item is already existing in the list
-        const dupe = this.items.find((item: TagModel) => {
-            const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
-            const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
-
-            return this.getItemValue(item) === tag[identifyBy] ||
-                this.getItemValue(item) === tag[displayBy];
-        });
-
+        const dupe = this.findDupe(tag, isFromAutocomplete);
         const hasDupe = !!dupe && dupe !== undefined;
 
         // if so, give a visual cue and return false
@@ -453,7 +449,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                 return this.getItemValue(_tag.model) === this.getItemValue(dupe);
             });
 
-            if (item) {
+            if (!!item) {
                 item.blink();
             }
         }
@@ -482,23 +478,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // push item to array of items
         this.items = [...this.items, newTag];
-
-        // emit event
-        this.onAdd.emit(tag);
     }
 
     /**
      * @name createTag
-     * @param display
-     * @param value
+     * @param model
      * @returns {{}}
      */
-    public createTag(display: string, value: any): TagModel {
-        const trim = (val: TagModel): TagModel => typeof val === 'string' ? val.trim() : val;
+    public createTag(model: TagModel): TagModel {
+        const trim = (val: TagModel, key: string): TagModel => {
+            return typeof val === 'string' ? val.trim() : val[key];
+        };
 
         return {
-            [this.displayBy]: this.trimTags ? trim(display) : display,
-            [this.identifyBy]: this.trimTags ? trim(value) : value
+            ...typeof model !== 'string' ? model : {},
+            [this.displayBy]: this.trimTags ? trim(model, this.displayBy) : model,
+            [this.identifyBy]: this.trimTags ? trim(model, this.identifyBy) : model
         };
     }
 
@@ -680,6 +675,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name findDupe
+     * @param tag
+     * @param isFromAutocomplete
+     * @return {undefined|TagModel}
+     */
+    private findDupe(tag: TagModel, isFromAutocomplete): TagModel {
+        return this.items.find((item: TagModel) => {
+            const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
+            const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
+
+            return this.getItemValue(item) === tag[identifyBy] ||
+                this.getItemValue(item) === tag[displayBy];
+        });
+    }
+
+    /**
      * @name trackBy
      * @param item
      * @returns {string}
@@ -696,15 +707,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         const text = data.clipboardData.getData('text/plain');
 
         text.split(this.pasteSplitPattern)
-            .map(item => this.createTag(item, item))
-            .forEach(item => {
-                const display = this.transform(item[this.displayBy]);
-                const tag = this.createTag(display, display);
-
-                if (this.isTagValid(tag)) {
-                    this.appendNewTag(tag);
-                }
-            });
+            .map(item => this.createTag(item))
+            .forEach(item => this.addItem(false, item));
 
         this.onPaste.emit(text);
 
@@ -717,14 +721,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public ngOnInit() {
         // setting up the keypress listeners
         listen.call(this, constants.KEYDOWN, ($event) => {
-            const itemsLength = this.items.length;
-            const inputValue = this.inputForm.value.value;
+            const length = this.items.length;
+            const value = this.inputForm.value.value;
             const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
 
-            if (isCorrectKey &&
-                !inputValue &&
-                itemsLength) {
-                    this.tags.last.select.call(this.tags.last);
+            if (isCorrectKey && !value && length) {
+                this.tags.last.select.call(this.tags.last);
             }
         });
 
