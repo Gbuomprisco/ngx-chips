@@ -11,13 +11,7 @@ import {
     ContentChild,
     OnInit,
     TemplateRef,
-    QueryList,
-    animate,
-    trigger,
-    style,
-    transition,
-    keyframes,
-    state, AnimationEntryMetadata
+    QueryList
 } from '@angular/core';
 
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -28,6 +22,7 @@ import { TagComponent } from './tag/tag.component';
 
 import 'rxjs/add/operator/debounceTime';
 
+import { animations } from './animations';
 import * as constants from './helpers/constants';
 import listen from './helpers/listen';
 
@@ -45,7 +40,7 @@ const CUSTOM_ACCESSOR = {
     providers: [ CUSTOM_ACCESSOR ],
     styleUrls: [ './tag-input.style.scss' ],
     templateUrl: './tag-input.template.html',
-    animations: getAnimations()
+    animations: animations
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
@@ -668,10 +663,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name ngOnInit
      */
-    public ngOnInit() {
-        this.setUpKeypressListeners();
-        this.setupSeparatorKeysListener();
-
+    public ngOnInit(): void {
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
         // though, warn the user.
@@ -686,7 +678,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name ngAfterViewInit
      */
-    public ngAfterViewInit() {
+    public ngAfterViewInit(): void {
+        // set up listeners
+
+        this.setUpKeypressListeners();
+        this.setupSeparatorKeysListener();
         this.setUpInputKeydownListeners();
 
         if (this.onTextChange.observers.length) {
@@ -815,7 +811,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name onPasteCallback
      * @param data
      */
-    private onPasteCallback(data: ClipboardEvent) {
+    private onPasteCallback(data: ClipboardEvent): void {
         const text = data.clipboardData.getData('text/plain');
 
         text.split(this.pasteSplitPattern)
@@ -826,32 +822,4 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         setTimeout(() => this.setInputValue(''), 0);
     }
-}
-
-/**
- * @name getAnimations
- * @return {[AnimationEntryMetadata]}
- */
-function getAnimations(): AnimationEntryMetadata[] {
-    return [
-        trigger('flyInOut', [
-            state('in', style({transform: 'translateX(0)'})),
-            transition(':enter', [
-                animate(250, keyframes([
-                    style({opacity: 0, offset: 0, transform: 'translate(0px, 20px)'}),
-                    style({opacity: 0.3, offset: 0.3, transform: 'translate(0px, -10px)'}),
-                    style({opacity: 0.5, offset: 0.5, transform: 'translate(0px, 0px)'}),
-                    style({opacity: 0.75, offset: 0.75, transform: 'translate(0px, 5px)'}),
-                    style({opacity: 1, offset: 1, transform: 'translate(0px, 0px)'})
-                ]))
-            ]),
-            transition(':leave', [
-                animate(150, keyframes([
-                    style({opacity: 1, transform: 'translateX(0)', offset: 0}),
-                    style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
-                    style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})
-                ]))
-            ])
-        ])
-    ];
 }
