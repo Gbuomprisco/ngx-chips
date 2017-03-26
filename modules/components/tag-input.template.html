@@ -3,6 +3,7 @@
 <div ngClass="ng2-tag-input {{ theme || '' }}"
      (click)="focus(true, false)"
      [attr.tabindex]="-1"
+     [class.ng2-tag-input--disabled]="disabled"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
@@ -16,6 +17,7 @@
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
 
+             [disabled]="disabled"
              [@flyInOut]="'in'"
              [hasRipple]="ripple"
              [index]="i"
@@ -38,7 +40,7 @@
             (onKeyup)="fireEvents('keyup', $event)"
 
             [(inputText)]="inputText"
-
+            [disabled]="disabled"
             [validators]="validators"
             [hidden]="readonly || maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"

@@ -213,6 +213,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public ripple = true;
 
     /**
+     * @name disabled
+     * @type {boolean}
+     */
+    @Input() public disabled = false;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -476,7 +482,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name selectItem
+     * @name selectonRemoveItem
      * @desc selects item passed as parameter as the selected tag
      * @param item
      */

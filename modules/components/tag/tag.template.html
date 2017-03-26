@@ -3,6 +3,7 @@
      (mousedown)="rippleState='clicked'"
      (mouseup)="rippleState='none'"
      [ngSwitch]="!!template"
+     [class.disabled]="disabled"
      [attr.tabindex]="-1"
      [attr.aria-label]="getDisplayValue(model)">
 

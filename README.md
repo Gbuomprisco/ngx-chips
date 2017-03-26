@@ -207,8 +207,12 @@ You can use it to change the text of the input at any time, or to just bind a va
 
 **`ripple`** - [**`?boolean`**]
 
-Specified whether the ripple effect should be visible or not (defaults to `true`)
+Specifies whether the ripple effect should be visible or not (defaults to `true`)
 
+
+**`disabled`** - [**`?boolean`**]
+
+If set to `true`, the input will be disabled. Similar to `readonly` but with a visual effect.
 
 ---
 

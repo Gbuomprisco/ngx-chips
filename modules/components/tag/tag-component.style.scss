@@ -17,6 +17,10 @@
     }
 }
 
+:host .disabled {
+    cursor: not-allowed;
+}
+
 :host [contenteditable='true'] {
     outline: 0;
     user-select: none;

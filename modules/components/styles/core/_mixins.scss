@@ -31,6 +31,11 @@
         border: none;
     }
 
+    &.ng2-tag-input--disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
     form {
         margin: map-get($theme, 'container-margin');
     }
