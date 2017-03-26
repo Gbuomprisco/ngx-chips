@@ -16,13 +16,13 @@ export class Home {
 
     inputText = 'text';
 
-    itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
+    itemsAsObjects = [{id: 0, name: 'Angular', extra: 0}, {id: 1, name: 'React', extra: 1}];
 
     autocompleteItems = ['Item1', 'item2', 'item3'];
 
     autocompleteItemsAsObjects = [
-        {value: 'Item1', id: 0},
-        {value: 'item2', id: 1},
+        {value: 'Item1', id: 0, extra: 0},
+        {value: 'item2', id: 1, extra: 1},
         'item3'
     ];
 

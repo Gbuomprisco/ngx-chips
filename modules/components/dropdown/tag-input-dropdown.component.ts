@@ -223,7 +223,7 @@ export class TagInputDropdown {
 
         const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
         const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
-        const model = this.tagInput.createTag(display, value);
+        const model = {...item.value, display, value};
 
         // add item
         this.tagInput.addItem(true, model);

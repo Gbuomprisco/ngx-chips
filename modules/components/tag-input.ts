@@ -11,19 +11,10 @@ import {
     ContentChild,
     OnInit,
     TemplateRef,
-    QueryList,
-    animate,
-    trigger,
-    style,
-    transition,
-    keyframes,
-    state
+    QueryList
 } from '@angular/core';
 
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as constants from './helpers/constants';
-import listen from './helpers/listen';
-
 import { TagInputAccessor, TagModel } from './helpers/accessor';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
@@ -31,39 +22,25 @@ import { TagComponent } from './tag/tag.component';
 
 import 'rxjs/add/operator/debounceTime';
 
+import { animations } from './animations';
+import * as constants from './helpers/constants';
+import listen from './helpers/listen';
+
+const CUSTOM_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => TagInputComponent),
+    multi: true
+};
+
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
 @Component({
     selector: 'tag-input',
-    providers: [ {
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => TagInputComponent),
-        multi: true
-    } ],
+    providers: [ CUSTOM_ACCESSOR ],
     styleUrls: [ './tag-input.style.scss' ],
     templateUrl: './tag-input.template.html',
-    animations: [
-        trigger('flyInOut', [
-            state('in', style({transform: 'translateX(0)'})),
-            transition(':enter', [
-                animate(250, keyframes([
-                    style({opacity: 0, offset: 0, transform: 'translate(0px, 20px)'}),
-                    style({opacity: 0.3, offset: 0.3, transform: 'translate(0px, -10px)'}),
-                    style({opacity: 0.5, offset: 0.5, transform: 'translate(0px, 0px)'}),
-                    style({opacity: 0.75, offset: 0.75, transform: 'translate(0px, 5px)'}),
-                    style({opacity: 1, offset: 1, transform: 'translate(0px, 0px)'})
-                ]))
-            ]),
-            transition(':leave', [
-                animate(150, keyframes([
-                    style({opacity: 1, transform: 'translateX(0)', offset: 0}),
-                    style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
-                    style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})
-                ]))
-            ])
-        ])
-    ]
+    animations: animations
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
@@ -398,22 +375,27 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name addItem
      * @desc adds the current text model to the items array
      */
-    public addItem(isFromAutocomplete = false, item: TagModel = this.inputForm.value.value): void {
-        const display = typeof item === 'string' ? item : item[this.displayBy];
-        const value = typeof item === 'string' ? item : item[this.identifyBy];
-
+    public addItem(isFromAutocomplete = false, item: TagModel = this.formValue): void {
+        const display = this.getItemDisplay(item);
         const inputValue = this.setInputValue(display);
+        const isFormInvalid = !this.inputForm.form.valid || !inputValue;
 
-        if (!this.inputForm.form.valid || !inputValue) {
+        // return early if the form is invalid
+        if (isFormInvalid) {
             return;
         }
 
-        const tag = this.createTag(inputValue, isFromAutocomplete ? value : inputValue);
+        const tag = this.createTag(isFromAutocomplete ? item : inputValue);
         const isValid = this.isTagValid(tag, isFromAutocomplete);
 
+        // append new tag if everything is valid
         if (isValid) {
             this.appendNewTag(tag);
+
+            // emit event
+            this.onAdd.emit(tag);
         } else {
+            // otherwise, emit validation error event
             this.onValidationError.emit(tag);
         }
 
@@ -436,15 +418,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        // check if the transformed item is already existing in the list
-        const dupe = this.items.find((item: TagModel) => {
-            const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
-            const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
-
-            return this.getItemValue(item) === tag[identifyBy] ||
-                this.getItemValue(item) === tag[displayBy];
-        });
-
+        const dupe = this.findDupe(tag, isFromAutocomplete);
         const hasDupe = !!dupe && dupe !== undefined;
 
         // if so, give a visual cue and return false
@@ -453,7 +427,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                 return this.getItemValue(_tag.model) === this.getItemValue(dupe);
             });
 
-            if (item) {
+            if (!!item) {
                 item.blink();
             }
         }
@@ -482,23 +456,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // push item to array of items
         this.items = [...this.items, newTag];
-
-        // emit event
-        this.onAdd.emit(tag);
     }
 
     /**
      * @name createTag
-     * @param display
-     * @param value
+     * @param model
      * @returns {{}}
      */
-    public createTag(display: string, value: any): TagModel {
-        const trim = (val: TagModel): TagModel => typeof val === 'string' ? val.trim() : val;
+    public createTag(model: TagModel): TagModel {
+        const trim = (val: TagModel, key: string): TagModel => {
+            return typeof val === 'string' ? val.trim() : val[key];
+        };
 
         return {
-            [this.displayBy]: this.trimTags ? trim(display) : display,
-            [this.identifyBy]: this.trimTags ? trim(value) : value
+            ...typeof model !== 'string' ? model : {},
+            [this.displayBy]: this.trimTags ? trim(model, this.displayBy) : model,
+            [this.identifyBy]: this.trimTags ? trim(model, this.identifyBy) : model
         };
     }
 
@@ -593,12 +566,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        const value = this.inputForm.value.value;
         this.selectedTag = undefined;
 
         if (applyFocus) {
             this.inputForm.focus();
-            this.onFocus.emit(value);
+            this.onFocus.emit(this.formValue);
         }
 
         if (displayAutocomplete && this.dropdown) {
@@ -610,7 +582,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name blur
      */
     public blur(): void {
-        this.onBlur.emit(this.inputForm.value.value);
+        this.onBlur.emit(this.formValue);
     }
 
     /**
@@ -637,6 +609,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public hasCustomTemplate(): boolean {
         const template = this.templates ? this.templates.first : undefined;
         const menuTemplate = this.dropdown && this.dropdown.templates ? this.dropdown.templates.first : undefined;
+
         return template && template !== menuTemplate;
     }
 
@@ -680,67 +653,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name trackBy
-     * @param item
-     * @returns {string}
+     * @name formValue
+     * @return {any}
      */
-    private trackBy(item: TagModel): string {
-        return item[this.identifyBy];
-    }
-
-    /**
-     * @name onPasteCallback
-     * @param data
-     */
-    private onPasteCallback(data: ClipboardEvent) {
-        const text = data.clipboardData.getData('text/plain');
-
-        text.split(this.pasteSplitPattern)
-            .map(item => this.createTag(item, item))
-            .forEach(item => {
-                const display = this.transform(item[this.displayBy]);
-                const tag = this.createTag(display, display);
-
-                if (this.isTagValid(tag)) {
-                    this.appendNewTag(tag);
-                }
-            });
-
-        this.onPaste.emit(text);
-
-        setTimeout(() => this.setInputValue(''), 0);
+    public get formValue(): string {
+        return this.inputForm.value.value;
     }
 
     /**
      * @name ngOnInit
      */
-    public ngOnInit() {
-        // setting up the keypress listeners
-        listen.call(this, constants.KEYDOWN, ($event) => {
-            const itemsLength = this.items.length;
-            const inputValue = this.inputForm.value.value;
-            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
-
-            if (isCorrectKey &&
-                !inputValue &&
-                itemsLength) {
-                    this.tags.last.select.call(this.tags.last);
-            }
-        });
-
-        const useSeparatorKeys = this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0;
-
-        listen.call(this, constants.KEYDOWN, ($event) => {
-            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
-            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
-
-            if (hasKeyCode || hasKey) {
-                $event.preventDefault();
-                this.addItem();
-            }
-
-        }, useSeparatorKeys);
-
+    public ngOnInit(): void {
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
         // though, warn the user.
@@ -755,51 +678,148 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name ngAfterViewInit
      */
-    public ngAfterViewInit() {
-        this.inputForm.onKeydown.subscribe(event => {
-            this.fireEvents('keydown', event);
+    public ngAfterViewInit(): void {
+        // set up listeners
 
-            if (event.key === 'Backspace' && this.inputForm.value.value === '') {
-                event.preventDefault();
-            }
-        });
+        this.setUpKeypressListeners();
+        this.setupSeparatorKeysListener();
+        this.setUpInputKeydownListeners();
 
         if (this.onTextChange.observers.length) {
-            this.inputForm.form.valueChanges
-                .debounceTime(this.onTextChangeDebounce)
-                .subscribe(() => {
-                    const value = this.inputForm.value.value;
-                    this.onTextChange.emit(value);
-                });
+            this.setUpTextChangeSubscriber();
         }
 
         // if clear on blur is set to true, subscribe to the event and clear the text's form
         if (this.clearOnBlur || this.addOnBlur) {
-            this.inputForm
-                .onBlur
-                .filter(() => {
-                    return this.dropdown ? this.dropdown.isVisible === false : true;
-                })
-                .subscribe(() => {
-                    if (this.addOnBlur) {
-                        this.addItem();
-                    }
-
-                    this.setInputValue('');
-                });
+            this.setUpOnBlurSubscriber();
         }
 
         // if addOnPaste is set to true, register the handler and add items
         if (this.addOnPaste) {
-            const input = this.inputForm.input.nativeElement;
-
-            // attach listener to input
-            this.renderer.listen(input, 'paste', this.onPasteCallback.bind(this));
+            this.setUpOnPasteListener();
         }
 
         // if hideForm is set to true, remove the input
         if (this.hideForm) {
             this.inputForm.destroy();
         }
+    }
+
+    /**
+     * @name setupSeparatorKeysListener
+     */
+    private setupSeparatorKeysListener(): void {
+        const useSeparatorKeys = this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0;
+
+        listen.call(this, constants.KEYDOWN, ($event) => {
+            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
+            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
+
+            if (hasKeyCode || hasKey) {
+                $event.preventDefault();
+                this.addItem();
+            }
+
+        }, useSeparatorKeys);
+    }
+
+    /**
+     * @name setUpKeypressListeners
+     */
+    private setUpKeypressListeners(): void {
+        // setting up the keypress listeners
+        listen.call(this, constants.KEYDOWN, ($event) => {
+            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+
+            if (isCorrectKey &&
+                !this.formValue &&
+                this.items.length) {
+                    this.tags.last.select.call(this.tags.last);
+            }
+        });
+    }
+
+    /**
+     * @name setUpKeydownListeners
+     */
+    private setUpInputKeydownListeners(): void {
+        this.inputForm.onKeydown.subscribe(event => {
+            this.fireEvents('keydown', event);
+
+            if (event.key === 'Backspace' && this.formValue === '') {
+                event.preventDefault();
+            }
+        });
+    }
+
+    /**
+     * @name setUpOnPasteListener
+     */
+    private setUpOnPasteListener(): void {
+        const input = this.inputForm.input.nativeElement;
+
+        // attach listener to input
+        this.renderer.listen(input, 'paste', this.onPasteCallback.bind(this));
+    }
+
+    /**
+     * @name setUpTextChangeSubscriber
+     */
+    private setUpTextChangeSubscriber(): void {
+        this.inputForm.form.valueChanges
+            .debounceTime(this.onTextChangeDebounce)
+            .subscribe(() => this.onTextChange.emit(this.formValue));
+    }
+
+    /**
+     * @name setUpOnBlurSubscriber
+     */
+    private setUpOnBlurSubscriber(): void {
+        this.inputForm
+            .onBlur
+            .filter(() => this.dropdown && this.dropdown.isVisible)
+            .subscribe(() => {
+                if (this.addOnBlur) {
+                    this.addItem();
+                }
+
+                this.setInputValue('');
+            });
+    }
+
+    /**
+     * @name findDupe
+     * @param tag
+     * @param isFromAutocomplete
+     * @return {undefined|TagModel}
+     */
+    private findDupe(tag: TagModel, isFromAutocomplete: boolean): TagModel {
+        const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
+        return this.items.find((item: TagModel) => this.getItemValue(item) === tag[identifyBy]);
+    }
+
+    /**
+     * @name trackBy
+     * @param item
+     * @returns {string}
+     */
+    private trackBy(item: TagModel): string {
+        return item[this.identifyBy];
+    }
+
+    /**
+     * @name onPasteCallback
+     * @param data
+     */
+    private onPasteCallback(data: ClipboardEvent): void {
+        const text = data.clipboardData.getData('text/plain');
+
+        text.split(this.pasteSplitPattern)
+            .map(item => this.createTag(item))
+            .forEach(item => this.addItem(false, item));
+
+        this.onPaste.emit(text);
+
+        setTimeout(() => this.setInputValue(''), 0);
     }
 }
