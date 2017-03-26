@@ -79,7 +79,7 @@ export class TagComponent {
     /**
      * @name disabled
      */
-    @Input() public disabled: boolean;
+    @Input() public disabled = false;
 
     /**
      * @name onSelect

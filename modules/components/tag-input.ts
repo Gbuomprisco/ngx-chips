@@ -216,7 +216,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name disabled
      * @type {boolean}
      */
-    @Input() public disabled = false;
+    @Input() public disabled = undefined;
 
     /**
      * @name onAdd
