@@ -17,13 +17,10 @@ import {
     style,
     transition,
     keyframes,
-    state
+    state, AnimationEntryMetadata
 } from '@angular/core';
 
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as constants from './helpers/constants';
-import listen from './helpers/listen';
-
 import { TagInputAccessor, TagModel } from './helpers/accessor';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
@@ -31,39 +28,24 @@ import { TagComponent } from './tag/tag.component';
 
 import 'rxjs/add/operator/debounceTime';
 
+import * as constants from './helpers/constants';
+import listen from './helpers/listen';
+
+const CUSTOM_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => TagInputComponent),
+    multi: true
+};
+
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
 @Component({
     selector: 'tag-input',
-    providers: [ {
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => TagInputComponent),
-        multi: true
-    } ],
+    providers: [ CUSTOM_ACCESSOR ],
     styleUrls: [ './tag-input.style.scss' ],
     templateUrl: './tag-input.template.html',
-    animations: [
-        trigger('flyInOut', [
-            state('in', style({transform: 'translateX(0)'})),
-            transition(':enter', [
-                animate(250, keyframes([
-                    style({opacity: 0, offset: 0, transform: 'translate(0px, 20px)'}),
-                    style({opacity: 0.3, offset: 0.3, transform: 'translate(0px, -10px)'}),
-                    style({opacity: 0.5, offset: 0.5, transform: 'translate(0px, 0px)'}),
-                    style({opacity: 0.75, offset: 0.75, transform: 'translate(0px, 5px)'}),
-                    style({opacity: 1, offset: 1, transform: 'translate(0px, 0px)'})
-                ]))
-            ]),
-            transition(':leave', [
-                animate(150, keyframes([
-                    style({opacity: 1, transform: 'translateX(0)', offset: 0}),
-                    style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
-                    style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})
-                ]))
-            ])
-        ])
-    ]
+    animations: getAnimations()
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
@@ -398,8 +380,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name addItem
      * @desc adds the current text model to the items array
      */
-    public addItem(isFromAutocomplete = false, item: TagModel = this.inputForm.value.value): void {
-        const display = typeof item === 'string' ? item : item[this.displayBy];
+    public addItem(isFromAutocomplete = false, item: TagModel = this.formValue): void {
+        const display = this.getItemDisplay(item);
         const inputValue = this.setInputValue(display);
         const isFormInvalid = !this.inputForm.form.valid || !inputValue;
 
@@ -436,6 +418,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public isTagValid(tag: TagModel, isFromAutocomplete = false): boolean {
         const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
+
         if (selectedItem && !isFromAutocomplete) {
             return;
         }
@@ -588,12 +571,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        const value = this.inputForm.value.value;
         this.selectedTag = undefined;
 
         if (applyFocus) {
             this.inputForm.focus();
-            this.onFocus.emit(value);
+            this.onFocus.emit(this.formValue);
         }
 
         if (displayAutocomplete && this.dropdown) {
@@ -605,7 +587,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name blur
      */
     public blur(): void {
-        this.onBlur.emit(this.inputForm.value.value);
+        this.onBlur.emit(this.formValue);
     }
 
     /**
@@ -632,6 +614,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public hasCustomTemplate(): boolean {
         const template = this.templates ? this.templates.first : undefined;
         const menuTemplate = this.dropdown && this.dropdown.templates ? this.dropdown.templates.first : undefined;
+
         return template && template !== menuTemplate;
     }
 
@@ -675,19 +658,148 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name formValue
+     * @return {any}
+     */
+    public get formValue(): string {
+        return this.inputForm.value.value;
+    }
+
+    /**
+     * @name ngOnInit
+     */
+    public ngOnInit() {
+        this.setUpKeypressListeners();
+        this.setupSeparatorKeysListener();
+
+        // if the number of items specified in the model is > of the value of maxItems
+        // degrade gracefully and let the max number of items to be the number of items in the model
+        // though, warn the user.
+        const maxItemsReached = this.maxItems !== undefined && this.items && this.items.length > this.maxItems;
+
+        if (maxItemsReached) {
+            this.maxItems = this.items.length;
+            console.warn(constants.MAX_ITEMS_WARNING);
+        }
+    }
+
+    /**
+     * @name ngAfterViewInit
+     */
+    public ngAfterViewInit() {
+        this.setUpInputKeydownListeners();
+
+        if (this.onTextChange.observers.length) {
+            this.setUpTextChangeSubscriber();
+        }
+
+        // if clear on blur is set to true, subscribe to the event and clear the text's form
+        if (this.clearOnBlur || this.addOnBlur) {
+            this.setUpOnBlurSubscriber();
+        }
+
+        // if addOnPaste is set to true, register the handler and add items
+        if (this.addOnPaste) {
+            this.setUpOnPasteListener();
+        }
+
+        // if hideForm is set to true, remove the input
+        if (this.hideForm) {
+            this.inputForm.destroy();
+        }
+    }
+
+    /**
+     * @name setupSeparatorKeysListener
+     */
+    private setupSeparatorKeysListener(): void {
+        const useSeparatorKeys = this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0;
+
+        listen.call(this, constants.KEYDOWN, ($event) => {
+            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
+            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
+
+            if (hasKeyCode || hasKey) {
+                $event.preventDefault();
+                this.addItem();
+            }
+
+        }, useSeparatorKeys);
+    }
+
+    /**
+     * @name setUpKeypressListeners
+     */
+    private setUpKeypressListeners(): void {
+        // setting up the keypress listeners
+        listen.call(this, constants.KEYDOWN, ($event) => {
+            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
+
+            if (isCorrectKey &&
+                !this.formValue &&
+                this.items.length) {
+                    this.tags.last.select.call(this.tags.last);
+            }
+        });
+    }
+
+    /**
+     * @name setUpKeydownListeners
+     */
+    private setUpInputKeydownListeners(): void {
+        this.inputForm.onKeydown.subscribe(event => {
+            this.fireEvents('keydown', event);
+
+            if (event.key === 'Backspace' && this.formValue === '') {
+                event.preventDefault();
+            }
+        });
+    }
+
+    /**
+     * @name setUpOnPasteListener
+     */
+    private setUpOnPasteListener(): void {
+        const input = this.inputForm.input.nativeElement;
+
+        // attach listener to input
+        this.renderer.listen(input, 'paste', this.onPasteCallback.bind(this));
+    }
+
+    /**
+     * @name setUpTextChangeSubscriber
+     */
+    private setUpTextChangeSubscriber(): void {
+        this.inputForm.form.valueChanges
+            .debounceTime(this.onTextChangeDebounce)
+            .subscribe(() => this.onTextChange.emit(this.formValue));
+    }
+
+    /**
+     * @name setUpOnBlurSubscriber
+     */
+    private setUpOnBlurSubscriber(): void {
+        this.inputForm
+            .onBlur
+            .filter(() => this.dropdown && this.dropdown.isVisible)
+            .subscribe(() => {
+                if (this.addOnBlur) {
+                    this.addItem();
+                }
+
+                this.setInputValue('');
+            });
+    }
+
+    /**
      * @name findDupe
      * @param tag
      * @param isFromAutocomplete
      * @return {undefined|TagModel}
      */
-    private findDupe(tag: TagModel, isFromAutocomplete): TagModel {
-        return this.items.find((item: TagModel) => {
-            const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
-            const displayBy = isFromAutocomplete ? this.dropdown.displayBy : this.displayBy;
-
-            return this.getItemValue(item) === tag[identifyBy] ||
-                this.getItemValue(item) === tag[displayBy];
-        });
+    private findDupe(tag: TagModel, isFromAutocomplete: boolean): TagModel {
+        const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
+        return this.items.find((item: TagModel) => this.getItemValue(item) === tag[identifyBy]);
     }
 
     /**
@@ -714,94 +826,32 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         setTimeout(() => this.setInputValue(''), 0);
     }
+}
 
-    /**
-     * @name ngOnInit
-     */
-    public ngOnInit() {
-        // setting up the keypress listeners
-        listen.call(this, constants.KEYDOWN, ($event) => {
-            const length = this.items.length;
-            const value = this.inputForm.value.value;
-            const isCorrectKey = $event.keyCode === 37 || $event.keyCode === 8;
-
-            if (isCorrectKey && !value && length) {
-                this.tags.last.select.call(this.tags.last);
-            }
-        });
-
-        const useSeparatorKeys = this.separatorKeyCodes.length > 0 || this.separatorKeys.length > 0;
-
-        listen.call(this, constants.KEYDOWN, ($event) => {
-            const hasKeyCode = this.separatorKeyCodes.indexOf($event.keyCode) >= 0;
-            const hasKey = this.separatorKeys.indexOf($event.key) >= 0;
-
-            if (hasKeyCode || hasKey) {
-                $event.preventDefault();
-                this.addItem();
-            }
-
-        }, useSeparatorKeys);
-
-        // if the number of items specified in the model is > of the value of maxItems
-        // degrade gracefully and let the max number of items to be the number of items in the model
-        // though, warn the user.
-        const maxItemsReached = this.maxItems !== undefined && this.items && this.items.length > this.maxItems;
-
-        if (maxItemsReached) {
-            this.maxItems = this.items.length;
-            console.warn(constants.MAX_ITEMS_WARNING);
-        }
-    }
-
-    /**
-     * @name ngAfterViewInit
-     */
-    public ngAfterViewInit() {
-        this.inputForm.onKeydown.subscribe(event => {
-            this.fireEvents('keydown', event);
-
-            if (event.key === 'Backspace' && this.inputForm.value.value === '') {
-                event.preventDefault();
-            }
-        });
-
-        if (this.onTextChange.observers.length) {
-            this.inputForm.form.valueChanges
-                .debounceTime(this.onTextChangeDebounce)
-                .subscribe(() => {
-                    const value = this.inputForm.value.value;
-                    this.onTextChange.emit(value);
-                });
-        }
-
-        // if clear on blur is set to true, subscribe to the event and clear the text's form
-        if (this.clearOnBlur || this.addOnBlur) {
-            this.inputForm
-                .onBlur
-                .filter(() => {
-                    return this.dropdown ? this.dropdown.isVisible === false : true;
-                })
-                .subscribe(() => {
-                    if (this.addOnBlur) {
-                        this.addItem();
-                    }
-
-                    this.setInputValue('');
-                });
-        }
-
-        // if addOnPaste is set to true, register the handler and add items
-        if (this.addOnPaste) {
-            const input = this.inputForm.input.nativeElement;
-
-            // attach listener to input
-            this.renderer.listen(input, 'paste', this.onPasteCallback.bind(this));
-        }
-
-        // if hideForm is set to true, remove the input
-        if (this.hideForm) {
-            this.inputForm.destroy();
-        }
-    }
+/**
+ * @name getAnimations
+ * @return {[AnimationEntryMetadata]}
+ */
+function getAnimations(): AnimationEntryMetadata[] {
+    return [
+        trigger('flyInOut', [
+            state('in', style({transform: 'translateX(0)'})),
+            transition(':enter', [
+                animate(250, keyframes([
+                    style({opacity: 0, offset: 0, transform: 'translate(0px, 20px)'}),
+                    style({opacity: 0.3, offset: 0.3, transform: 'translate(0px, -10px)'}),
+                    style({opacity: 0.5, offset: 0.5, transform: 'translate(0px, 0px)'}),
+                    style({opacity: 0.75, offset: 0.75, transform: 'translate(0px, 5px)'}),
+                    style({opacity: 1, offset: 1, transform: 'translate(0px, 0px)'})
+                ]))
+            ]),
+            transition(':leave', [
+                animate(150, keyframes([
+                    style({opacity: 1, transform: 'translateX(0)', offset: 0}),
+                    style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
+                    style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})
+                ]))
+            ])
+        ])
+    ];
 }

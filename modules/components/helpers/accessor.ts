@@ -36,26 +36,45 @@ export class TagInputAccessor implements ControlValueAccessor {
         this._onChangeCallback(this._items);
     }
 
-    onTouched(items) {
+    public onTouched(items) {
         this._onTouchedCallback(items);
     }
 
-    writeValue(items: any[]) {
+    public writeValue(items: any[]) {
         this._items = items || [];
     }
 
-    registerOnChange(fn: any) {
+    public registerOnChange(fn: any) {
         this._onChangeCallback = fn;
     }
 
-    registerOnTouched(fn: any) {
+    public registerOnTouched(fn: any) {
         this._onTouchedCallback = fn;
     }
 
+    /**
+     * @name getItemValue
+     * @param item
+     * @return {TagModel}
+     */
     public getItemValue(item: TagModel): string {
         return isObject(item) ? item[this.identifyBy] : item;
     }
 
+    /**
+     * @name getItemDisplay
+     * @param item
+     * @return {TagModel}
+     */
+    public getItemDisplay(item: TagModel): string {
+        return isObject(item) ? item[this.displayBy] : item;
+    }
+
+    /**
+     * @name getItemsWithout
+     * @param index
+     * @return {TagModel[]}
+     */
     protected getItemsWithout(index: number): TagModel[] {
         return this.items.filter((item, position) => position !== index);
     }
