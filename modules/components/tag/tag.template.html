@@ -8,10 +8,10 @@
 
     <div *ngSwitchCase="true" [attr.contenteditable]="editModeActivated">
         <!-- CUSTOM TEMPLATE -->
-        <template
+        <ng-template
             [ngOutletContext]="{ item: model, index: index }"
             [ngTemplateOutlet]="template">
-        </template>
+        </ng-template>
     </div>
 
     <div *ngSwitchCase="false">

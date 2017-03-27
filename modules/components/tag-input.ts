@@ -178,7 +178,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name editable
      * @type {boolean}
      */
-    @Input() public editable = false;
+    @Input() public editable: boolean = undefined;
 
     /**
      * @name allowDupes
