@@ -162,7 +162,9 @@ export class TagInputComponentWithModelAsStrings {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items" [addOnBlur]="true"></tag-input>`
+    template: `<tag-input [(ngModel)]="items" [addOnBlur]="true">
+                   <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>
+               </tag-input>`
 })
 export class TagInputComponentWithAddOnBlur {
     public items = getItems();

@@ -498,7 +498,7 @@ describe('TagInputComponent', () => {
     });
 
     describe('when addOnBlur is true', () => {
-        it('should add the item on blur', fakeAsync(() => {
+        it('should add an item on blur', fakeAsync(() => {
             const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
                 TestBed.createComponent(TagInputComponentWithAddOnBlur);
 
@@ -508,6 +508,29 @@ describe('TagInputComponent', () => {
             component.inputForm.onBlur.emit();
 
             expect(component.items.length).toEqual(3);
+        }));
+
+        it('should not add an item on blur if the dropdown is visible', fakeAsync(() => {
+            let keyUp: Event = new Event('keyUp');
+            keyUp[ 'keyCode' ] = 73;
+
+            const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
+                TestBed.createComponent(TagInputComponentWithAddOnBlur);
+
+            const component: TagInputComponent = getComponent(fixture);
+
+            component.setInputValue('i');
+            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
+            component.inputForm.onKeyup.emit();
+
+            fixture.detectChanges();
+            tick();
+
+            expect(component.dropdown.isVisible).toEqual(true);
+
+            component.inputForm.onBlur.emit();
+
+            expect(component.items.length).toEqual(2);
         }));
     });
 });
