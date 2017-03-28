@@ -591,6 +591,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
+        this.onTouched();
         this.selectedTag = undefined;
 
         if (applyFocus) {
