@@ -85,6 +85,13 @@ export class TagInputForm {
     }
 
     /**
+     * @name tabindex
+     * @desc pass through the specified tabindex to the input
+     * @type {string}
+     */
+    @Input() public tabindex: string = undefined;
+
+    /**
      * @name inputText
      * @param text {string}
      */

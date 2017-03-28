@@ -1,6 +1,7 @@
 import {
     Component,
     forwardRef,
+    HostBinding,
     Input,
     Output,
     EventEmitter,
@@ -213,6 +214,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public ripple = true;
 
     /**
+     * @name tabindex
+     * @desc pass through the specified tabindex to the input
+     * @type {string}
+     */
+    @Input() public tabindex: string = undefined;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -345,6 +353,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @type {string}
      */
     public inputTextValue = '';
+
+
+    /**
+     * @desc removes the tab index if it is set - it will be passed through to the input
+     * @name tabindexAttr
+     * @type {string}
+     */
+    @HostBinding('attr.tabindex') get tabindexAttr(): string {
+        return this.tabindex !== undefined ? '-1' : undefined;
+    }
 
     constructor(private renderer: Renderer) {
         super();
