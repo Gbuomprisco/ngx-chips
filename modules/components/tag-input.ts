@@ -366,7 +366,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name tabindexAttr
      * @type {string}
      */
-    @HostBinding('attr.tabindex') get tabindexAttr(): string {
+    @HostBinding('attr.tabindex')
+    public get tabindexAttr(): string {
         return this.tabindex !== undefined ? '-1' : undefined;
     }
 
