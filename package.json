@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run build",
@@ -73,7 +73,7 @@
     "zone.js": "0.8.5"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.7.6"
+    "ng2-material-dropdown": "0.7.7"
   },
   "peerDependencies": {
     "@angular/common": "^2.4.0",
