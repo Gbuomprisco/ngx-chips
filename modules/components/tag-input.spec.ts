@@ -25,7 +25,8 @@ import {
     TagInputComponentWithAutocomplete,
     TagInputComponentWithOnlyAutocomplete,
     TestModule,
-    TagInputComponentWithModelAsStrings
+    TagInputComponentWithModelAsStrings,
+    TagInputComponentWithAddOnBlur
 } from './tests/testing-helpers';
 
 describe('TagInputComponent', () => {
@@ -493,6 +494,20 @@ describe('TagInputComponent', () => {
             expect(component.items[2]).toEqual('Tag');
 
             discardPeriodicTasks();
+        }));
+    });
+
+    describe('when addOnBlur is true', () => {
+        it('should add the item on blur', fakeAsync(() => {
+            const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
+                TestBed.createComponent(TagInputComponentWithAddOnBlur);
+
+            const component: TagInputComponent = getComponent(fixture);
+
+            component.setInputValue('New Item');
+            component.inputForm.onBlur.emit();
+
+            expect(component.items.length).toEqual(3);
         }));
     });
 });

@@ -802,7 +802,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     private setUpOnBlurSubscriber(): void {
         this.inputForm
             .onBlur
-            .filter(() => this.dropdown && this.dropdown.isVisible)
             .subscribe(() => {
                 if (this.addOnBlur) {
                     this.addItem();
