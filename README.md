@@ -216,6 +216,10 @@ Specifies whether the ripple effect should be visible or not (defaults to `true`
 
 If set to `true`, the input will be disabled. Similar to `readonly` but with a visual effect.
 
+**`tabindex`** - [**`?string`**]
+
+If set, passes the specified tabindex to the form's input.
+
 ---
 
 ##### Validation (optional)

@@ -3,6 +3,9 @@
 /npm-debug.log
 /typings/
 /coverage
+/modules/**/*.d.ts
+/modules/**/*.js
+/modules/**/*.js.map
 index.js
 index.js.map
 factories
