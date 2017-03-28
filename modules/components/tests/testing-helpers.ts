@@ -126,7 +126,7 @@ export class TagInputComponentWithAutocomplete {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
-                    <template let-item="item">
+                    <ng-template let-item="item">
                         <span class="custom-class">
                             item: {{ item }}
                         </span>
@@ -134,7 +134,7 @@ export class TagInputComponentWithAutocomplete {
                         <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
                             x
                         </span>
-                    </template>
+                    </ng-template>
                 </tag-input>`
 })
 export class TagInputComponentWithTemplate {

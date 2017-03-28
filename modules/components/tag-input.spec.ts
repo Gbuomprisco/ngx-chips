@@ -12,6 +12,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { TagModel } from './helpers/accessor';
 import { TagInputComponent } from './tag-input';
 const match = jasmine.objectContaining;
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
     BasicTagInputComponent,
@@ -31,7 +32,7 @@ describe('TagInputComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            imports: [ BrowserModule, TestModule ]
+            imports: [ BrowserModule, BrowserAnimationsModule, TestModule ]
         });
     });
 
