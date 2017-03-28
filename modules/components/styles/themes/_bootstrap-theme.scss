@@ -1,0 +1,21 @@
+$bootstrap-theme: (
+    container-border-bottom: 2px solid map-get($color-primary, 'default'),
+    container-border-bottom-focused: 2px solid map-get($color-primary, 'bootstrap'),
+    container-border-bottom-invalid: 2px solid map-get($color-error, 'bootstrap'),
+    error-message-color: map-get($color-error, 'bootstrap')
+);
+
+$bootstrap-tag-theme: (
+    border-radius: 0.25rem,
+    background: map-get($color-primary, 'bootstrap'),
+    color: #f9f9f9,
+    color-hover: #f9f9f9,
+    background-focused: map-get($color-focused, 'bootstrap'),
+    background-active: map-get($color-focused, 'bootstrap'),
+    background-hover: darken(map-get($color-primary, 'bootstrap'), 5%)
+);
+
+$bootstrap-icon-theme: (
+    fill: map-get($color-arrow, 'bootstrap'),
+    fill-focus: map-get($color-arrow-focused, 'bootstrap')
+);

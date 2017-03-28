@@ -1,0 +1,25 @@
+html, body, h1, h2, h3 {
+  font-family: "Roboto";
+}
+
+.tag-input-container {
+    width: 50%;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+    margin: 2em 0;
+}
+
+.options label {
+    margin-right: 1em;
+}
+
+.home-container {
+    padding: 2em;
+}
+
+.flex {
+    display: flex;
+}

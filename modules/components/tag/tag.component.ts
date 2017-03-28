@@ -72,6 +72,16 @@ export class TagComponent {
     @Input() public index: number;
 
     /**
+     * @name hasRipple
+     */
+    @Input() public hasRipple: boolean;
+
+    /**
+     * @name disabled
+     */
+    @Input() public disabled = false;
+
+    /**
      * @name onSelect
      * @type {EventEmitter<TagModel>}
      */
@@ -124,7 +134,7 @@ export class TagComponent {
      * @name select
      */
     public select($event?: MouseEvent): void {
-        if (this.readonly) {
+        if (this.readonly || this.disabled) {
             return;
         }
 
@@ -171,6 +181,7 @@ export class TagComponent {
     public blink(): void {
         const classList = this.element.nativeElement.classList;
         classList.add('blink');
+
         setTimeout(() => classList.remove('blink'), 50);
     }
 
@@ -243,7 +254,10 @@ export class TagComponent {
      * @returns {boolean}
      */
     private isDeleteIconVisible(): boolean {
-        return !this.readonly && this.removable && !this.editModeActivated;
+        return !this.readonly &&
+                !this.disabled &&
+                this.removable &&
+                !this.editModeActivated;
     }
 
     /**
@@ -253,6 +267,9 @@ export class TagComponent {
      * @returns {boolean}
      */
     public isRippleVisible(): boolean {
-        return !this.readonly && !this.editModeActivated && isChrome;
+        return !this.readonly &&
+            !this.editModeActivated &&
+            isChrome &&
+            this.hasRipple;
     }
 }

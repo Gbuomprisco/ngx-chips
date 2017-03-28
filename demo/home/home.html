@@ -9,7 +9,9 @@
 
         <div>
             <h3>Simple Input with two items as objects</h3>
-            <tag-input [(ngModel)]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
+            <tag-input [(ngModel)]="itemsAsObjects"
+                       [identifyBy]="'id'"
+                       [displayBy]="'name'"></tag-input>
         </div>
 
         <div>
@@ -29,6 +31,7 @@
             <h3>Input tag that allows max 3 tags</h3>
             <tag-input [ngModel]="['Javascript', 'Typescript']"
                        [maxItems]="3"
+                       [ripple]="false"
                        placeholder="Insert a new item">
             </tag-input>
         </div>
@@ -164,7 +167,7 @@
         </div>
 
         <div>
-            <h3>Tags with Custom theme minimal</h3>
+            <h3>Tags with theme minimal</h3>
             <form>
                 <tag-input
                     [theme]="'minimal'"
@@ -174,7 +177,7 @@
         </div>
 
         <div>
-            <h3>Tags with Custom theme dark</h3>
+            <h3>Tags with theme dark and pasteable items</h3>
             <form>
                 <tag-input
                     [addOnPaste]="true"
@@ -190,11 +193,18 @@
             <form>
                 <tag-input
                     [theme]="'bootstrap'"
-                    [validators]="validators"
                     [ngModel]="['@item']"
                     name="items">
                 </tag-input>
             </form>
+        </div>
+
+        <div>
+            <h3>Tags with user-defined Foundation theme</h3>
+            <tag-input [ngModel]="items"
+                       [theme]="'foundation-theme'"
+                       [modelAsStrings]="true">
+            </tag-input>
         </div>
 
         <div>
@@ -219,6 +229,13 @@
             <input [(ngModel)]="inputText" />
 
             <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
+        </div>
+
+        <div>
+            <h3>Disabled tag input</h3>
+            <tag-input [ngModel]="items"
+                       [disabled]="true">
+            </tag-input>
         </div>
     </div>
 </main>

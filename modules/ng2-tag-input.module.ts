@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
-
 import { DeleteIconComponent } from './components/icon';
 import { TagInputForm } from './components/tag-input-form';
 import { TagInputComponent } from './components';

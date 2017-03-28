@@ -85,6 +85,18 @@ export class TagInputForm {
     }
 
     /**
+     * @name tabindex
+     * @desc pass through the specified tabindex to the input
+     * @type {string}
+     */
+    @Input() public tabindex: string = undefined;
+  
+    /**
+     * @name disabled
+     */
+    @Input() public disabled = false;
+
+    /**
      * @name inputText
      * @param text {string}
      */
@@ -107,12 +119,12 @@ export class TagInputForm {
      * @name inputTextChange
      * @type {EventEmitter}
      */
-    @Output() private inputTextChange: EventEmitter<string> = new EventEmitter();
+    @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
 
     /**
      * @name inputTextValue
      */
-    private inputTextValue: string;
+    public inputTextValue = '';
 
     constructor(private renderer: Renderer) {}
 

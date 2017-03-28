@@ -10,10 +10,10 @@
                   [innerHTML]="item[displayBy] | highlight : tagInput.inputForm.value.value">
             </span>
 
-            <template *ngSwitchDefault
+            <ng-template *ngSwitchDefault
                       [ngTemplateOutlet]="templates.first"
                       [ngOutletContext]="{ item: item, index: index, last: last }">
-            </template>
+            </ng-template>
         </ng2-menu-item>
     </ng2-dropdown-menu>
 </ng2-dropdown>

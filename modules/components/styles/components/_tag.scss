@@ -1,0 +1,24 @@
+tag {
+    @include tag-theme($default-tag-theme);
+}
+
+.minimal tag {
+    @include tag-theme($minimal-tag-theme);
+}
+
+.dark tag {
+    @include tag-theme($dark-tag-theme);
+}
+
+.bootstrap tag {
+    @include tag-theme($bootstrap-tag-theme);
+}
+
+.bootstrap3-info tag {
+    @include tag-theme($bootstrap3-info-tag-theme);
+
+    padding: .25em .6em;
+
+    text-align: center;
+    white-space: nowrap;
+}

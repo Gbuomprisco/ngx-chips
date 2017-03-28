@@ -1,0 +1,59 @@
+$default-theme: (
+    transition: all 0.15s,
+    container-padding: $container-padding,
+    container-margin: $container-margin,
+    container-height: $container-height,
+    container-border-bottom: 2px solid map-get($color-primary, 'default'),
+    container-border-bottom-focused: 2px solid map-get($color-focused, 'default'),
+    container-border-bottom-invalid: 2px solid map-get($color-error, 'default'),
+
+    input-border: $input-border,
+    input-padding: $input-padding,
+    input-font-size: $input-font-size,
+    input-height: $input-height,
+    font-family: $font-family,
+
+    error-message-font-size: $error-message-font-size,
+    error-message-color: $error-message-color,
+    error-message-margin: $error-message-margin
+);
+
+$default-tag-theme: (
+    flex: true,
+
+    font-family: $font-family,
+    font-weight: $tag-font-weight,
+    font-size: $tag-font-size,
+    letter-spacing: $tag-letter-spacing,
+
+    border-radius: $tag-border-radius,
+
+    margin: $tag-margin,
+    padding: $tag-padding,
+    height: $tag-height,
+    line-height: $tag-line-height,
+
+    background: map-get($color-primary, 'default'),
+    background-focused: map-get($color-focused, 'default'),
+    background-active: darken(map-get($color-focused, 'default'), 5%),
+    background-hover: darken(map-get($color-primary, 'default'), 5%),
+    background-editing: #fff,
+
+    color: $tag-color,
+    color-focused: #fff,
+    color-active: #fff,
+    color-hover: initial,
+
+    transition: all 0.3s
+);
+
+$default-icon-theme: (
+    width: 16px,
+    height: 16px,
+
+    transition: all 0.15s,
+    display: inline-block,
+
+    fill: map-get($color-arrow, 'default'),
+    fill-focus: $color-arrow-default-focused
+);
