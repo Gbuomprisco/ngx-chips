@@ -221,6 +221,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public tabindex: string = undefined;
 
     /**
+     * @name disabled
+     * @type {boolean}
+     */
+    @Input() public disabled = undefined;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -494,7 +500,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name selectItem
+     * @name selectonRemoveItem
      * @desc selects item passed as parameter as the selected tag
      * @param item
      */

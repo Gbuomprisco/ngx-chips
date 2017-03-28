@@ -90,6 +90,11 @@ export class TagInputForm {
      * @type {string}
      */
     @Input() public tabindex: string = undefined;
+  
+    /**
+     * @name disabled
+     */
+    @Input() public disabled = false;
 
     /**
      * @name inputText
