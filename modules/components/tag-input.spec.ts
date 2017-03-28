@@ -68,6 +68,17 @@ describe('TagInputComponent', () => {
             expect(component.items.length).toEqual(2);
             expect(component.inputForm.input.nativeElement.getAttribute('placeholder')).toEqual('New Tag');
         }));
+
+        it('should be "touched" on blur', fakeAsync(() => {
+            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
+            const component = <TagInputComponent>getComponent(fixture);
+            const onTouched = jasmine.createSpy('onTouched');
+
+            component.registerOnTouched(onTouched);
+            component.blur();
+
+            expect(onTouched).toHaveBeenCalled();
+        }));
     });
 
     describe('when a new item is added', () => {
