@@ -2,6 +2,8 @@
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
+[![NPM](https://nodei.co/npm/ng2-tag-input.png?downloads=true&stars=true)](https://nodei.co/npm/ng2-tag-input/)
+
 ## [Demo](http://www.buompris.co/ng2-tag-input/)
 
 Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
