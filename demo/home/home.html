@@ -230,5 +230,12 @@
 
             <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
         </div>
+
+        <div>
+            <h3>Disabled tag input</h3>
+            <tag-input [ngModel]="items"
+                       [disabled]="true">
+            </tag-input>
+        </div>
     </div>
 </main>

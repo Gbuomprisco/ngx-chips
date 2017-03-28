@@ -85,6 +85,11 @@ export class TagInputForm {
     }
 
     /**
+     * @name disabled
+     */
+    @Input() public disabled = false;
+
+    /**
      * @name inputText
      * @param text {string}
      */
