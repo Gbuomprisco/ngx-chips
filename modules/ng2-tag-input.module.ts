@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeleteIconComponent } from './components/icon';
 import { TagInputForm } from './components/tag-input-form';
 import { TagInputComponent } from './components';
@@ -16,7 +15,6 @@ import { TagRipple } from './components/tag/tag-ripple.component';
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
-        BrowserAnimationsModule,
         Ng2DropdownModule
     ],
     declarations: [

@@ -73,12 +73,12 @@
     "zone.js": "0.8.5"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.7.6"
+    "ng2-material-dropdown": "0.7.7"
   },
   "peerDependencies": {
-    "@angular/common": "^2.4.0",
-    "@angular/core": "^2.4.0",
-    "@angular/forms": "^2.4.0",
+    "@angular/common": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0",
     "rxjs": "^5.0.1"
   },
   "keywords": [
