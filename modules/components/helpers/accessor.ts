@@ -12,7 +12,7 @@ export function isObject(obj: any): boolean {
 
 export class TagInputAccessor implements ControlValueAccessor {
     private _items: TagModel[] = [];
-    private _onTouchedCallback: (items: TagModel[]) => void;
+    private _onTouchedCallback: () => void;
     private _onChangeCallback: (items: TagModel[]) => void;
 
     /**
@@ -36,8 +36,8 @@ export class TagInputAccessor implements ControlValueAccessor {
         this._onChangeCallback(this._items);
     }
 
-    public onTouched(items) {
-        this._onTouchedCallback(items);
+    public onTouched() {
+        this._onTouchedCallback();
     }
 
     public writeValue(items: any[]) {
