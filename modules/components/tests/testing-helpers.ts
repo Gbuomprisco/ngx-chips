@@ -116,7 +116,7 @@ export class TagInputComponentWithMaxItems {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
-                    <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>         
+                    <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>
                </tag-input>`
 })
 export class TagInputComponentWithAutocomplete {
@@ -130,7 +130,7 @@ export class TagInputComponentWithAutocomplete {
                         <span class="custom-class">
                             item: {{ item }}
                         </span>
-    
+
                         <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
                             x
                         </span>
@@ -160,6 +160,16 @@ export class TagInputComponentWithModelAsStrings {
     public items = getItems();
 }
 
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items" [addOnBlur]="true">
+                   <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>
+               </tag-input>`
+})
+export class TagInputComponentWithAddOnBlur {
+    public items = getItems();
+}
+
 const COMPONENTS = [
     BasicTagInputComponent,
     TagInputComponentWithPlaceholder,
@@ -172,7 +182,8 @@ const COMPONENTS = [
     TagInputComponentWithOnlyAutocomplete,
     TagInputComponentTagsAsObjects,
     TagInputComponentCustomTagsAsObjects,
-    TagInputComponentWithModelAsStrings
+    TagInputComponentWithModelAsStrings,
+    TagInputComponentWithAddOnBlur
 ];
 
 @NgModule({
