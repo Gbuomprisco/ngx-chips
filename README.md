@@ -43,6 +43,8 @@ Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2
 ### Something's broken?
 Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
 
+Please **do not** send private emails - Github Issues are supposed to help whoever might have your same issue, so it is the right place to help each other.
+
 
 ## Configuration
 
