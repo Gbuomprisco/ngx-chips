@@ -1,4 +1,4 @@
-# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input) [![npm](https://img.shields.io/npm/dm/localeval.svg)](https://www.npmjs.com/package/ng2-tag-input)
+# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input)
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
@@ -44,6 +44,8 @@ Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2
 Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
 
 Please **do not** send private emails - Github Issues are supposed to help whoever might have your same issue, so it is the right place to help each other.
+
+Issues not filled out with the provided templates are going to be closed.
 
 
 ## Configuration
