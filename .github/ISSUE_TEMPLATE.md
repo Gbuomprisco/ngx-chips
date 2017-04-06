@@ -38,14 +38,14 @@ please provide the *STEPS TO REPRODUCE* and if possible a *MINIMAL DEMO*
 
 
 
-* **Angular version:** 
+**Angular version:** 
 <!-- Check whether this is still an issue in the most recent Angular version -->
 
 
 
-* **ng2-tag-input version:**
+**ng2-tag-input version:**
 <!-- Check whether this is still an issue in the most recent ng2-tag-input version -->
 
 
-* **Browser:** [all | Chrome XX | Firefox XX | IE XX | Safari XX | Mobile Chrome XX | Android X.X Web Browser | iOS XX Safari | iOS XX UIWebView | iOS XX WKWebView ]
+**Browser:** [all | Chrome XX | Firefox XX | IE XX | Safari XX | Mobile Chrome XX | Android X.X Web Browser | iOS XX Safari | iOS XX UIWebView | iOS XX WKWebView ]
 <!-- All browsers where this could be reproduced -->
