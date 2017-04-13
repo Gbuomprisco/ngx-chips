@@ -16,6 +16,7 @@
              (onRemove)="removeItem(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
+             (onBlur)="onblur($event, i)"
 
              [disabled]="disabled"
              [@flyInOut]="'in'"

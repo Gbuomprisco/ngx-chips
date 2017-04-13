@@ -732,6 +732,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name onblur
+     * @param TagModel
+     * @param index
+     */
+    public onblur(changedElement: TagModel, index: number){
+        this.items[index] = changedElement;
+        this.blur();
+    }
+
+    /**
      * @name setupSeparatorKeysListener
      */
     private setupSeparatorKeysListener(): void {
