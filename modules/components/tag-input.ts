@@ -701,6 +701,82 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
     }
 
+
+    /**
+     * @name DRAG_N_DROP_KEY
+     * @type {string}
+     */
+    private static DRAG_N_DROP_KEY: string = "dragged tag";
+
+    /**
+     * @name ngOisDraggablenInit
+     * @return {boolean}
+     */
+    private isDraggable(): boolean{
+        return this.editable && !this.readonly;
+    }
+
+    /**
+     * @name onDragStarted
+     * @param event
+     * @param index
+     */
+    public onDragStarted(event: any, index: number): void {
+        if (!this.isDraggable()){
+            return;
+        }
+        let draggedElement = this.items[index];
+        event.dataTransfer.setData(TagInputComponent.DRAG_N_DROP_KEY, TagInputComponent.DRAG_N_DROP_KEY + JSON.stringify(draggedElement));
+        if (this.items.length > 1)
+        {
+            this.items.splice(index, 1);
+            this.onRemove.emit(draggedElement);
+        }
+    }
+
+    /**
+     * @name onDragOvered
+     * @param event
+     */
+    public onDragOvered(event: any): void {
+        if (!this.isDraggable()){
+            return;
+        }
+        event.preventDefault();
+    }
+
+    /**
+     * @name onDropped
+     * @param event
+     * @param index
+     */
+    public onDropped(event: any, index: number): void {
+        if (!this.isDraggable()){
+            return;
+        }
+        const str: string = event.dataTransfer.getData(TagInputComponent.DRAG_N_DROP_KEY);
+        if (!str.startsWith(TagInputComponent.DRAG_N_DROP_KEY)){
+            return;
+        }
+        const data =  JSON.parse(str.replace(TagInputComponent.DRAG_N_DROP_KEY, ""));
+        let insertableElement: any;
+        if (typeof data === 'string'){
+            if (this.modelAsStrings){
+                insertableElement = data;
+            } else {
+                insertableElement = {display: data, value: data};
+            }
+        } else {
+            if (this.modelAsStrings){
+                insertableElement = data.value;
+            } else {
+                insertableElement = data;
+            }
+        }
+        this.items.splice(index, 0, insertableElement);
+        this.onAdd.emit(insertableElement);
+    }
+
     /**
      * @name ngAfterViewInit
      */
