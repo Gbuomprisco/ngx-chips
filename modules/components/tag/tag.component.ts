@@ -129,7 +129,7 @@ export class TagComponent {
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
 
-    constructor(public element: ElementRef, public renderer: Renderer, private cdRef:ChangeDetectorRef) {}
+    constructor(public element: ElementRef, public renderer: Renderer, private cdRef: ChangeDetectorRef) {}
 
     /**
      * @name select
@@ -236,6 +236,7 @@ export class TagComponent {
     private disableEditMode($event: KeyboardEvent): void {
         this.editModeActivated = false;
         $event.preventDefault();
+        //http://stackoverflow.com/questions/39787038/how-to-manage-angular2-expression-has-changed-after-it-was-checked-exception-w
         this.cdRef.detectChanges();
     }
 
