@@ -237,5 +237,20 @@
                        [disabled]="true">
             </tag-input>
         </div>
+        
+        <div>
+            <h3>Drag and drop as string</h3>
+            <tag-input [(ngModel)]="dragAndDropStrings"
+                        [modelAsStrings]="true"
+                       [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop as object</h3>
+            <tag-input [(ngModel)]="dragAndDropObjects"
+                       [editable]="true">
+            </tag-input>
+        </div>
     </div>
 </main>

@@ -16,7 +16,11 @@
              (onRemove)="removeItem(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
-
+             draggable="{{editable && !readonly}}"
+             (dragstart)="onDragStarted($event, i)"
+             (drop)="onDropped($event, i)"
+             (dragenter)="onDragOvered($event)"
+             (dragover)="onDragOvered($event)"
              [disabled]="disabled"
              [@flyInOut]="'in'"
              [hasRipple]="ripple"

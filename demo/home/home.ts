@@ -26,6 +26,9 @@ export class Home {
         'item3'
     ];
 
+    dragAndDropObjects = [{display:'Javascript', value: 'Javascript'}, {display:'Typescript', value: 'Typescript'}];
+    dragAndDropStrings = ['Javascript_', 'Typescript_'];
+
     public requestAutocompleteItems = (text: string): Observable<Response> => {
         const url = `https://api.github.com/search/repositories?q=${text}`;
         return this.http
