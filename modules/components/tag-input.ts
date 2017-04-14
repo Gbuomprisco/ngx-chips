@@ -726,11 +726,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         let draggedElement = this.items[index];
         const storedElement = {zone: this.draggZone, value: draggedElement};
         event.dataTransfer.setData(TagInputComponent.DRAG_N_DROP_KEY, JSON.stringify(storedElement));
-        if (this.items.length > 1)
-        {
-            this.items.splice(index, 1);
-            this.onRemove.emit(draggedElement);
-        }
+        this.items.splice(index, 1);
+        this.onRemove.emit(draggedElement);
     }
 
     /**
@@ -750,6 +747,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param index
      */
     public onDropped(event: any, index: number): void {
+        event.preventDefault();
         if (!this.draggZone){
             return;
         }

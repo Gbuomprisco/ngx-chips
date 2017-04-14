@@ -44,6 +44,9 @@
             (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
+            (drop)="onDropped($event, items.length)"
+            (dragenter)="onDragOvered($event)"
+            (dragover)="onDragOvered($event)"
 
             [(inputText)]="inputText"
             [disabled]="disabled"
