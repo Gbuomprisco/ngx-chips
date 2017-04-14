@@ -224,6 +224,10 @@ If set to `true`, the input will be disabled. Similar to `readonly` but with a v
 
 If set, passes the specified tabindex to the form's input.
 
+**`draggZone`** - [**`?string`**]
+
+If set, the input will be draggable. Also the input will be draggable to another form with the same draggZone value.
+
 ---
 
 ##### Validation (optional)
