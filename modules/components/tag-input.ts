@@ -709,7 +709,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     private static DRAG_N_DROP_KEY: string = "dragged tag";
 
     /**
-     * @name ngOisDraggablenInit
+     * @name isDraggable
      * @return {boolean}
      */
     private isDraggable(): boolean{
