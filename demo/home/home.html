@@ -237,19 +237,30 @@
                        [disabled]="true">
             </tag-input>
         </div>
+
+        <div>
+            <h3>Drag and drop</h3>
+            <tag-input  [(ngModel)]="dragAndDropExample"
+                        [modelAsStrings]="true"
+                        [draggZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
         
         <div>
-            <h3>Drag and drop as string</h3>
-            <tag-input [(ngModel)]="dragAndDropStrings"
+            <h3>Drag and drop (as string) can be moved to another tag-input (to the next)</h3>
+            <tag-input  [(ngModel)]="dragAndDropStrings"
                         [modelAsStrings]="true"
-                       [editable]="true">
+                        [draggZone]="'zone'"
+                        [editable]="true">
             </tag-input>
         </div>
 
         <div>
-            <h3>Drag and drop as object</h3>
-            <tag-input [(ngModel)]="dragAndDropObjects"
-                       [editable]="true">
+            <h3>Drag and drop (as object) can be moved to another tag-input (to the previous)</h3>
+            <tag-input  [(ngModel)]="dragAndDropObjects"
+                        [draggZone]="'zone'"
+                        [editable]="true">
             </tag-input>
         </div>
     </div>

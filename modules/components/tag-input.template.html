@@ -16,7 +16,6 @@
              (onRemove)="removeItem(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
-             draggable="{{editable && !readonly}}"
              (dragstart)="onDragStarted($event, i)"
              (drop)="onDropped($event, i)"
              (dragenter)="onDragOvered($event)"
@@ -33,6 +32,7 @@
              [displayBy]="displayBy"
              [identifyBy]="identifyBy"
              [template]="!!hasCustomTemplate() ? templates.first : undefined"
+             draggable="{{draggZone}}"
              [model]="item">
         </tag>
 

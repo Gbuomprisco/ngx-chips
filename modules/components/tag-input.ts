@@ -227,6 +227,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public disabled = undefined;
 
     /**
+     * @name disabled
+     * @type {string}
+     */
+    @Input() public draggZone: string = undefined;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -709,24 +715,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     private static DRAG_N_DROP_KEY: string = "dragged tag";
 
     /**
-     * @name isDraggable
-     * @return {boolean}
-     */
-    private isDraggable(): boolean{
-        return this.editable && !this.readonly;
-    }
-
-    /**
      * @name onDragStarted
      * @param event
      * @param index
      */
     public onDragStarted(event: any, index: number): void {
-        if (!this.isDraggable()){
+        if (!this.draggZone){
             return;
         }
         let draggedElement = this.items[index];
-        event.dataTransfer.setData(TagInputComponent.DRAG_N_DROP_KEY, TagInputComponent.DRAG_N_DROP_KEY + JSON.stringify(draggedElement));
+        const storedElement = {zone: this.draggZone, value: draggedElement};
+        event.dataTransfer.setData(TagInputComponent.DRAG_N_DROP_KEY, JSON.stringify(storedElement));
         if (this.items.length > 1)
         {
             this.items.splice(index, 1);
@@ -739,7 +738,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param event
      */
     public onDragOvered(event: any): void {
-        if (!this.isDraggable()){
+        if (!this.draggZone){
             return;
         }
         event.preventDefault();
@@ -751,14 +750,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param index
      */
     public onDropped(event: any, index: number): void {
-        if (!this.isDraggable()){
+        if (!this.draggZone){
             return;
         }
         const str: string = event.dataTransfer.getData(TagInputComponent.DRAG_N_DROP_KEY);
-        if (!str.startsWith(TagInputComponent.DRAG_N_DROP_KEY)){
+        const droppedElement = JSON.parse(str);
+        if (droppedElement.zone != this.draggZone){
             return;
         }
-        const data =  JSON.parse(str.replace(TagInputComponent.DRAG_N_DROP_KEY, ""));
+        const data =  droppedElement.value;
         let insertableElement: any;
         if (typeof data === 'string'){
             if (this.modelAsStrings){
