@@ -227,7 +227,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public disabled = undefined;
 
     /**
-     * @name disabled
+     * @name draggZone
      * @type {string}
      */
     @Input() public draggZone: string = undefined;
