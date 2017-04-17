@@ -201,11 +201,11 @@ export class TagComponent {
     }
 
     /**
-     * @name onblur
-     * @param newValue
+     * @name onBlurred
+     * @param event
      */
-    public onblur(newValue: string): void {
-        
+    public onBlurred(event: any): void {
+        const newValue: string = event.target.innerText;
         this.toggleEditMode();
         const result = typeof this.model === 'string' ? newValue :
             {[this.identifyBy]: newValue, [this.displayBy]: newValue};
