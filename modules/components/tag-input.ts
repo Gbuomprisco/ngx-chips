@@ -20,6 +20,7 @@ import { TagInputAccessor, TagModel } from './helpers/accessor';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
 import { TagComponent } from './tag/tag.component';
+import { DRAG_AND_DROP_KEY } from './tag-input-constants';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -227,10 +228,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public disabled = undefined;
 
     /**
-     * @name draggZone
+     * @name dragZone
      * @type {string}
      */
-    @Input() public draggZone: string = undefined;
+    @Input() public dragZone: string = undefined;
 
     /**
      * @name onAdd
@@ -707,53 +708,46 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
     }
 
-
-    /**
-     * @name DRAG_N_DROP_KEY
-     * @type {string}
-     */
-    private static DRAG_N_DROP_KEY: string = "dragged tag";
-
     /**
      * @name onDragStarted
      * @param event
      * @param index
      */
     public onDragStarted(event: any, index: number): void {
-        if (!this.draggZone){
+        if (!this.dragZone){
             return;
         }
-        let draggedElement = this.items[index];
-        const storedElement = {zone: this.draggZone, value: draggedElement};
-        event.dataTransfer.setData(TagInputComponent.DRAG_N_DROP_KEY, JSON.stringify(storedElement));
-        this.items.splice(index, 1);
+        const draggedElement: TagModel = this.items[index];
+        const storedElement = {zone: this.dragZone, value: draggedElement};
+        event.dataTransfer.setData(DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
+        this.items = this.getItemsWithout(index);
         this.onRemove.emit(draggedElement);
     }
 
     /**
-     * @name onDragOvered
+     * @name onDragHovered
      * @param event
      */
-    public onDragOvered(event: any): void {
-        if (!this.draggZone){
+    public onDragHovered(event: any): void {
+        if (!this.dragZone){
             return;
         }
         event.preventDefault();
     }
 
     /**
-     * @name onDropped
+     * @name onTagDropped
      * @param event
      * @param index
      */
-    public onDropped(event: any, index: number): void {
+    public onTagDropped(event: any, index: number): void {
         event.preventDefault();
-        if (!this.draggZone){
+        if (!this.dragZone){
             return;
         }
-        const str: string = event.dataTransfer.getData(TagInputComponent.DRAG_N_DROP_KEY);
+        const str: string = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
         const droppedElement = JSON.parse(str);
-        if (droppedElement.zone != this.draggZone){
+        if (droppedElement.zone != this.dragZone){
             return;
         }
         const data =  droppedElement.value;
@@ -771,7 +765,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
                 insertableElement = data;
             }
         }
-        this.items.splice(index, 0, insertableElement);
+        const copiedArray = this.items.filter((i,p)=>true);
+        copiedArray.splice(index, 0, insertableElement);
+        this.items = copiedArray;
         this.onAdd.emit(insertableElement);
     }
 
