@@ -23,7 +23,7 @@
              (keydown.enter)="disableEditMode($event)"
              (keydown.escape)="disableEditMode($event)"
              (click)="editModeActivated ? $event.stopPropagation() : undefined"
-             (blur)="toggleEditMode()">
+             (blur)="onBlurred($event)">
             {{ getDisplayValue(model) }}
         </div>
 

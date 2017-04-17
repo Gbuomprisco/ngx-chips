@@ -7,7 +7,8 @@ import {
     ElementRef,
     Renderer,
     HostListener,
-    ViewChild
+    ViewChild,
+    ChangeDetectorRef
 } from '@angular/core';
 
 import { TagModel } from '../helpers/accessor';
@@ -128,7 +129,7 @@ export class TagComponent {
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
 
-    constructor(public element: ElementRef, public renderer: Renderer) {}
+    constructor(public element: ElementRef, public renderer: Renderer, private cdRef: ChangeDetectorRef) {}
 
     /**
      * @name select
@@ -200,6 +201,18 @@ export class TagComponent {
     }
 
     /**
+     * @name onBlurred
+     * @param event
+     */
+    public onBlurred(event: any): void {
+        const newValue: string = event.target.innerText;
+        this.toggleEditMode();
+        const result = typeof this.model === 'string' ? newValue :
+            {[this.identifyBy]: newValue, [this.displayBy]: newValue};
+        this.onBlur.emit(result);
+    }
+
+    /**
      * @name getDisplayValue
      * @param item
      * @returns {string}
@@ -223,6 +236,8 @@ export class TagComponent {
     private disableEditMode($event: KeyboardEvent): void {
         this.editModeActivated = false;
         $event.preventDefault();
+        //http://stackoverflow.com/questions/39787038/how-to-manage-angular2-expression-has-changed-after-it-was-checked-exception-w
+        this.cdRef.detectChanges();
     }
 
     /**
