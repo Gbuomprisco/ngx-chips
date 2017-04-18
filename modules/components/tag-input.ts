@@ -20,6 +20,7 @@ import { TagInputAccessor, TagModel } from './helpers/accessor';
 import { TagInputForm } from './tag-input-form/tag-input-form.component';
 import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
 import { TagComponent } from './tag/tag.component';
+import { DRAG_AND_DROP_KEY } from './tag-input-constants';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -225,6 +226,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @type {boolean}
      */
     @Input() public disabled = undefined;
+
+    /**
+     * @name dragZone
+     * @type {string}
+     */
+    @Input() public dragZone: string = undefined;
 
     /**
      * @name onAdd
@@ -699,6 +706,69 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             this.maxItems = this.items.length;
             console.warn(constants.MAX_ITEMS_WARNING);
         }
+    }
+
+    /**
+     * @name onDragStarted
+     * @param event
+     * @param index
+     */
+    public onDragStarted(event: any, index: number): void {
+        if (!this.dragZone){
+            return;
+        }
+        const draggedElement: TagModel = this.items[index];
+        const storedElement = {zone: this.dragZone, value: draggedElement};
+        event.dataTransfer.setData(DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
+        this.items = this.getItemsWithout(index);
+        this.onRemove.emit(draggedElement);
+    }
+
+    /**
+     * @name onDragHovered
+     * @param event
+     */
+    public onDragHovered(event: any): void {
+        if (!this.dragZone){
+            return;
+        }
+        event.preventDefault();
+    }
+
+    /**
+     * @name onTagDropped
+     * @param event
+     * @param index
+     */
+    public onTagDropped(event: any, index: number): void {
+        event.preventDefault();
+        if (!this.dragZone){
+            return;
+        }
+        const str: string = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
+        const droppedElement = JSON.parse(str);
+        if (droppedElement.zone != this.dragZone){
+            return;
+        }
+        const data =  droppedElement.value;
+        let insertableElement: any;
+        if (typeof data === 'string'){
+            if (this.modelAsStrings){
+                insertableElement = data;
+            } else {
+                insertableElement = {display: data, value: data};
+            }
+        } else {
+            if (this.modelAsStrings){
+                insertableElement = data.value;
+            } else {
+                insertableElement = data;
+            }
+        }
+        const copiedArray = this.items.filter((i,p)=>true);
+        copiedArray.splice(index, 0, insertableElement);
+        this.items = copiedArray;
+        this.onAdd.emit(insertableElement);
     }
 
     /**

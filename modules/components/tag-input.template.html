@@ -17,7 +17,11 @@
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
              (onBlur)="onTagBlurred($event, i)"
-
+             draggable="{{editable && !readonly}}"
+             (dragstart)="onDragStarted($event, i)"
+             (drop)="onTagDropped($event, i)"
+             (dragenter)="onDragHovered($event)"
+             (dragover)="onDragHovered($event)"
              [disabled]="disabled"
              [@flyInOut]="'in'"
              [hasRipple]="ripple"
@@ -30,6 +34,7 @@
              [displayBy]="displayBy"
              [identifyBy]="identifyBy"
              [template]="!!hasCustomTemplate() ? templates.first : undefined"
+             draggable="{{dragZone}}"
              [model]="item">
         </tag>
 
@@ -39,6 +44,9 @@
             (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
+            (drop)="onTagDropped($event, items.length)"
+            (dragenter)="onDragHovered($event)"
+            (dragover)="onDragHovered($event)"
 
             [(inputText)]="inputText"
             [disabled]="disabled"
