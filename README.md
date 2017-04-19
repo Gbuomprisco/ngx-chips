@@ -54,11 +54,12 @@ Ensure you import the module:
 
 ```javascript
 import { TagInputModule } from 'ng2-tag-input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 
 @NgModule({
-   imports: [ TagInputModule ]
+   imports: [ TagInputModule, BrowserAnimationsModule, ...OtherModules ] // along with your other modules
 })
-export class MyModule {}
+export class AppModule {}
 ```
 
 ### Configuration for SystemJS users
@@ -220,13 +221,16 @@ Specifies whether the ripple effect should be visible or not (defaults to `true`
 
 If set to `true`, the input will be disabled. Similar to `readonly` but with a visual effect.
 
+
 **`tabindex`** - [**`?string`**]
 
 If set, passes the specified tabindex to the form's input.
 
+
 **`dragZone`** - [**`?string`**]
 
 If set, the input will be draggable. Also the input will be draggable to another form with the same dragZone value.
+
 
 ---
 
@@ -248,7 +252,6 @@ An object whose key is the name of the error (ex. required) and the value is the
 If set to `true`, it will be possible to add new items only from the autocomplete dropdown
 
 
-
 ##### Tags as Objects (optional)
 **`identifyBy`** - [**`?any`**]
 
@@ -258,6 +261,7 @@ Any value you want your tag object to be defined by (defaults to `value`)
 **`displayBy`** - [**`?string`**]
 
 The string displayed in a tag object (defaults to `display`)
+
 
 ---
 
@@ -305,6 +309,7 @@ Event fired when the validation fails
 **`onTagEdited`** - [**`?onTagEdited($event: TagModel)`**]
 
 Event fired when a tag is edited
+
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
