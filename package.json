@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -10,7 +10,7 @@
     "start": "npm run server",
     "test": "karma start karma.conf.js",
     "ngc": "ngc -p ./tsconfig.aot.json",
-    "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/modules",
+    "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/",
     "codecov": "codecov",
     "clean": "rm -rf ./dist && rm -rf ./factories"
   },
