@@ -11,9 +11,9 @@ import {
     TagInputDropdown,
     TagComponent,
     TagRipple
-} from 'components';
+} from './components';
 
-import { HighlightPipe } from 'core';
+import { HighlightPipe } from './core';
 
 @NgModule({
     imports: [
