@@ -8,12 +8,11 @@ import {
     Renderer,
     HostListener,
     ViewChild,
-    ChangeDetectorRef,
-    HostBinding
+    ChangeDetectorRef
 } from '@angular/core';
 
-import { TagModel } from 'helpers';
-import { TagRipple } from 'tag';
+import { TagModel } from '../../core';
+import { TagRipple } from '../tag';
 
 // angular universal hacks
 /* tslint:disable-next-line */

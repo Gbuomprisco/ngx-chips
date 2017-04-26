@@ -5,6 +5,7 @@ const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ROOT = path.resolve(__dirname, '.');
 const root = path.join.bind(path, ROOT);
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 // Webpack Config
 const webpackConfig = {
@@ -119,7 +120,8 @@ const defaultConfig = {
             }
         }),
 
-        new ExtractTextPlugin("styles.css")
+        new ExtractTextPlugin("styles.css"),
+        new TsConfigPathsPlugin()
     ]
 };
 

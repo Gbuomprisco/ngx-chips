@@ -1,10 +1,10 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
-    "build": "webpack && tsc -p tsconfig.json && npm run moveassets && npm run ngc",
+    "build": "webpack && npm run moveassets && npm run ngc",
     "watch": "webpack -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3010 --content-base demo",
     "start": "npm run server",
@@ -97,6 +97,19 @@
   },
   "homepage": "https://github.com/Gbuomprisco/ng2-tag-input",
   "main": "./dist/ng2-tag-input.bundle.js",
+  "browser": {
+    "core": "./dist/core",
+    "components": "./dist/components/",
+
+    "helpers": "./dist/core/helpers/",
+    "styles": "./dist/core/styles/",
+    "pipes": "./dist/core/pipes/",
+
+    "dropdown":"./dist/components/dropdown/",
+    "icon": "./dist/components/icon/",
+    "tag": "./dist/components/tag/",
+    "tag-input-form": "./dist/components/tag-input-form/"
+  },
   "files": [
     "dist",
     "index.ts",

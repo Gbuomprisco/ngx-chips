@@ -19,10 +19,10 @@ import 'rxjs/add/operator/debounceTime';
 
 import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
-import { TagInputAccessor, TagModel, listen, constants } from 'core';
-import { TagInputForm } from 'tag-input-form';
-import { TagInputDropdown } from 'dropdown';
-import { TagComponent } from 'tag';
+import { TagInputAccessor, TagModel, listen, constants } from '../core';
+import { TagInputForm } from './tag-input-form';
+import { TagInputDropdown } from './dropdown';
+import { TagComponent } from './tag';
 import { animations } from './animations';
 
 // angular universal hacks
