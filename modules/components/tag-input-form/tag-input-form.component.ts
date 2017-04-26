@@ -12,7 +12,8 @@ import {
     FormControl,
     Validators,
     ValidatorFn,
-    AbstractControl
+    AbstractControl,
+    AsyncValidatorFn
 } from '@angular/forms';
 
 @Component({
@@ -66,6 +67,13 @@ export class TagInputForm {
     @Input() public validators: ValidatorFn[] = [];
 
     /**
+     * @name asyncValidators
+     * @desc array of AsyncValidator that are used to validate the tag before it gets appended to the list
+     * @type {Array}
+     */
+    @Input() public asyncValidators: AsyncValidatorFn[] = [];
+
+    /**
      * @name inputId
      * @type {string}
      */
@@ -90,7 +98,7 @@ export class TagInputForm {
      * @type {string}
      */
     @Input() public tabindex: string = undefined;
-  
+
     /**
      * @name disabled
      */
@@ -131,7 +139,10 @@ export class TagInputForm {
     public ngOnInit() {
         // creating form
         this.form = new FormGroup({
-            item: new FormControl('', Validators.compose(this.validators))
+            item: new FormControl('',
+                Validators.compose(this.validators),
+                Validators.composeAsync(this.asyncValidators)
+            )
         });
     }
 

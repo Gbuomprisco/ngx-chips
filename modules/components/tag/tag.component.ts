@@ -8,11 +8,12 @@ import {
     Renderer,
     HostListener,
     ViewChild,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    HostBinding
 } from '@angular/core';
 
-import { TagModel } from '../helpers/accessor';
-import { TagRipple } from './tag-ripple.component';
+import { TagModel } from 'helpers';
+import { TagRipple } from 'tag';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -236,7 +237,7 @@ export class TagComponent {
     private disableEditMode($event: KeyboardEvent): void {
         this.editModeActivated = false;
         $event.preventDefault();
-        //http://stackoverflow.com/questions/39787038/how-to-manage-angular2-expression-has-changed-after-it-was-checked-exception-w
+        // http://stackoverflow.com/questions/39787038/how-to-manage-angular2-expression-has-changed-after-it-was-checked-exception-w
         this.cdRef.detectChanges();
     }
 

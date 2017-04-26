@@ -5,7 +5,7 @@ import {
     Input,
     Output,
     EventEmitter,
-    Renderer,
+    Renderer2,
     ViewChild,
     ViewChildren,
     ContentChildren,
@@ -15,18 +15,19 @@ import {
     QueryList
 } from '@angular/core';
 
-import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { TagInputAccessor, TagModel } from './helpers/accessor';
-import { TagInputForm } from './tag-input-form/tag-input-form.component';
-import { TagInputDropdown } from './dropdown/tag-input-dropdown.component';
-import { TagComponent } from './tag/tag.component';
-import { DRAG_AND_DROP_KEY } from './tag-input-constants';
-
 import 'rxjs/add/operator/debounceTime';
 
+import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
+
+import { TagInputAccessor, TagModel, listen, constants } from 'core';
+import { TagInputForm } from 'tag-input-form';
+import { TagInputDropdown } from 'dropdown';
+import { TagComponent } from 'tag';
 import { animations } from './animations';
-import * as constants from './helpers/constants';
-import listen from './helpers/listen';
+
+// angular universal hacks
+/* tslint:disable-next-line */
+const DragEvent = (global as any).DragEvent;
 
 const CUSTOM_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
@@ -98,7 +99,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @desc array of Validators that are used to validate the tag before it gets appended to the list
      * @type {Validators[]}
      */
-    @Input() public validators = [];
+    @Input() public validators: ValidatorFn[] = [];
+
+    /**
+     * @name asyncValidators
+     * @desc array of AsyncValidator that are used to validate the tag before it gets appended to the list
+     * @type {Array}
+     */
+    @Input() public asyncValidators: AsyncValidatorFn[] = [];
 
     /**
     * - if set to true, it will only possible to add items from the autocomplete
@@ -328,6 +336,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     public isLoading = false;
 
     /**
+     * @name isDropping
+     * @type {boolean}
+     */
+    public isDropping = false;
+
+    /**
      * @name inputText
      * @param text
      */
@@ -378,7 +392,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         return this.tabindex !== undefined ? '-1' : undefined;
     }
 
-    constructor(private renderer: Renderer) {
+    constructor(private renderer: Renderer2) {
         super();
     }
 
@@ -708,31 +722,40 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         }
     }
 
-    /**
+    /**3
      * @name onDragStarted
      * @param event
      * @param index
      */
-    public onDragStarted(event: any, index: number): void {
-        if (!this.dragZone){
-            return;
-        }
+    public onDragStarted(event: DragEvent, index: number): void {
+        event.stopPropagation();
+
         const draggedElement: TagModel = this.items[index];
         const storedElement = {zone: this.dragZone, value: draggedElement};
-        event.dataTransfer.setData(DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
+
+        event.dataTransfer.setData(constants.DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
+
         this.items = this.getItemsWithout(index);
+
         this.onRemove.emit(draggedElement);
     }
 
     /**
-     * @name onDragHovered
+     * @name onDragOver
      * @param event
      */
-    public onDragHovered(event: any): void {
-        if (!this.dragZone){
-            return;
-        }
+    public onDragOver(event: DragEvent): void {
+        this.isDropping = true;
+
         event.preventDefault();
+    }
+
+    /**
+     * @name onDragEnd
+     * @param index
+     */
+    public onDragEnd(index: number): void {
+        this.isDropping = false;
     }
 
     /**
@@ -740,35 +763,29 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param event
      * @param index
      */
-    public onTagDropped(event: any, index: number): void {
-        event.preventDefault();
-        if (!this.dragZone){
+    public onTagDropped(event: DragEvent, index: number): void {
+        this.isDropping = false;
+
+        const data = event.dataTransfer.getData(constants.DRAG_AND_DROP_KEY);
+        const droppedElement = JSON.parse(data);
+
+        if (droppedElement.zone !== this.dragZone) {
             return;
         }
-        const str: string = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
-        const droppedElement = JSON.parse(str);
-        if (droppedElement.zone != this.dragZone){
-            return;
-        }
-        const data =  droppedElement.value;
-        let insertableElement: any;
-        if (typeof data === 'string'){
-            if (this.modelAsStrings){
-                insertableElement = data;
-            } else {
-                insertableElement = {display: data, value: data};
-            }
+
+        const tag: TagModel = this.createTag(droppedElement.value);
+
+        if (index === undefined) {
+            this.appendNewTag(tag);
         } else {
-            if (this.modelAsStrings){
-                insertableElement = data.value;
-            } else {
-                insertableElement = data;
-            }
+            const items = this.items;
+            this.items = [...items.slice(0, index), tag, ...items.slice(index, items.length)];
         }
-        const copiedArray = this.items.filter((i,p)=>true);
-        copiedArray.splice(index, 0, insertableElement);
-        this.items = copiedArray;
-        this.onAdd.emit(insertableElement);
+
+        this.onAdd.emit(tag);
+
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     /**
@@ -803,8 +820,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     /**
      * @name onTagBlurred
-     * @param TagModel
-     * @param index
+     * @param changedElement {TagModel}
+     * @param index {number}
      */
     public onTagBlurred(changedElement: TagModel, index: number): void {
         this.items[index] = changedElement;

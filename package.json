@@ -1,17 +1,18 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.1.5-beta.0",
+  "version": "1.1.7",
   "description": "Tag Input component for Angular 2",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": "npm run clean && npm run build",
     "build": "webpack && tsc -p tsconfig.json && npm run moveassets && npm run ngc",
     "watch": "webpack -- --watch",
-    "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3000 --content-base demo",
+    "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3010 --content-base demo",
     "start": "npm run server",
     "test": "karma start karma.conf.js",
     "ngc": "ngc -p ./tsconfig.aot.json",
     "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/modules",
-    "codecov": "codecov"
+    "codecov": "codecov",
+    "clean": "rm -rf ./dist && rm -rf ./factories"
   },
   "author": {
     "name": "Giancarlo Buomprisco",

@@ -5,7 +5,7 @@
  * @param action
  * @param condition
  */
-export default function listen(listenerType: string, action: () => any, condition = true): void {
+export function listen(listenerType: string, action: () => any, condition = true): void {
     // if the event provided does not exist, throw an error
     if (!this.listeners.hasOwnProperty(listenerType)) {
         throw new Error('The event entered may be wrong');

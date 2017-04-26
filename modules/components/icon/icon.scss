@@ -1,4 +1,4 @@
-@import "../styles/themes/_themes.scss";
+@import "../../core/styles/themes/_themes.scss";
 
 :host(delete-icon) {
     @include icon-theme($default-icon-theme);
