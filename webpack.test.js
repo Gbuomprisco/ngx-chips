@@ -1,10 +1,24 @@
 const path = require('path');
+const ROOT = path.resolve(__dirname, '.');
+const root = path.join.bind(path, ROOT);
 
 module.exports = {
     devtool: 'cheap-module-source-map',
 
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js'],
+        alias: {
+            'core': root('modules/core'),
+            'components': root('modules/components'),
+            'styles': root('modules/core/styles'),
+            'pipes': root('modules/core/pipes'),
+            'helpers': root('modules/core/helpers'),
+
+            'dropdown': root('modules/components/dropdown'),
+            'icon': root('modules/components/icon'),
+            'tag': root('modules/components/tag'),
+            'tag-input-form': root('modules/components/tag-input-form'),
+        }
     },
 
     module: {

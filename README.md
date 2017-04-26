@@ -235,9 +235,13 @@ If set, the input will be draggable. Also the input will be draggable to another
 ---
 
 ##### Validation (optional)
-**`validators`** - [**`?Validators[]`**]
+**`validators`** - [**`?ValidatorFn[]`**]
 
 An array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+
+**`asyncValidators`** - [**`?AsyncValidatorFn[]`**]
+
+An array of AsyncValidators that will validate the tag before adding it to the list of items. It is possible to use multiple async validators.
 
 
 **`errorMessages`** - [**`?Object{error: message}`**]

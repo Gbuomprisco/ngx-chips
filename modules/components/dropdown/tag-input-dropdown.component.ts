@@ -7,17 +7,17 @@ import {
     ContentChildren,
     Input,
     QueryList,
-    HostListener
+    HostListener,
+    EventEmitter
 } from '@angular/core';
 
-import { TagInputComponent } from '../tag-input';
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { EventEmitter } from '@angular/core';
-import { TagModel } from '../helpers/accessor';
 import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+
+import { TagInputComponent } from 'components';
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
+import { TagModel } from 'core';
 
 @Component({
     selector: 'tag-input-dropdown',

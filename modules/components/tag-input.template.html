@@ -3,6 +3,13 @@
 <div ngClass="ng2-tag-input {{ theme || '' }}"
      (click)="focus(true, false)"
      [attr.tabindex]="-1"
+
+     (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
+     (dragenter)="dragZone ? onDragOver($event) : undefined"
+     (dragover)="dragZone ? onDragOver($event) : undefined"
+     (dragleave)="dragZone ? onDragEnd(undefined) : undefined"
+
+     [class.ng2-tag-input--dropping]="isDropping"
      [class.ng2-tag-input--disabled]="disabled"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
@@ -18,23 +25,27 @@
              (onTagEdited)="onTagEdited.emit(item)"
              (onBlur)="onTagBlurred($event, i)"
              draggable="{{editable && !readonly}}"
-             (dragstart)="onDragStarted($event, i)"
-             (drop)="onTagDropped($event, i)"
-             (dragenter)="onDragHovered($event)"
-             (dragover)="onDragHovered($event)"
+
+             (dragstart)="dragZone ? onDragStarted($event, i) : undefined"
+             (drop)="dragZone ? onTagDropped($event, i) : undefined"
+             (dragenter)="dragZone ? onDragOver($event) : undefined"
+             (dragover)="dragZone ? onDragOver($event) : undefined"
+             (dragleave)="dragZone ? onDragEnd(i) : undefined"
+
+             [attr.tabindex]="readonly ? -1 : 0"
+             [class.readonly]="readonly"
+
              [disabled]="disabled"
              [@flyInOut]="'in'"
              [hasRipple]="ripple"
              [index]="i"
-             [attr.tabindex]="readonly ? -1 : 0"
-             [class.readonly]="readonly"
              [readonly]="readonly"
              [removable]="removable"
              [editable]="editable"
              [displayBy]="displayBy"
              [identifyBy]="identifyBy"
              [template]="!!hasCustomTemplate() ? templates.first : undefined"
-             draggable="{{dragZone}}"
+             [draggable]="dragZone"
              [model]="item">
         </tag>
 
@@ -44,13 +55,11 @@
             (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
-            (drop)="onTagDropped($event, items.length)"
-            (dragenter)="onDragHovered($event)"
-            (dragover)="onDragHovered($event)"
 
             [(inputText)]="inputText"
             [disabled]="disabled"
             [validators]="validators"
+            [asyncValidators]="asyncValidators"
             [hidden]="readonly || maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
