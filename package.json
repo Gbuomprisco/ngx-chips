@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Tag Input component for Angular 2",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -100,7 +100,7 @@
   "main": "./dist/ng2-tag-input.bundle.js",
   "files": [
     "dist",
-    "index.d.ts",
+    "index.ts",
     "tsconfig.json",
     "tsconfig.aot.json"
   ]
