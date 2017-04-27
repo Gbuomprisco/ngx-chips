@@ -19,7 +19,8 @@ import 'rxjs/add/operator/debounceTime';
 
 import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
-import { TagInputAccessor, TagModel, listen, constants } from '../core';
+import { TagInputAccessor, TagModel, listen } from '../core';
+import * as constants from '../core/constants';
 import { TagInputForm } from './tag-input-form';
 import { TagInputDropdown } from './dropdown';
 import { TagComponent } from './tag';
