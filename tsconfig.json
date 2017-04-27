@@ -14,10 +14,9 @@
         "sourceMap": true,
         "inlineSources": true,
         "skipLibCheck": true,
-        "noEmit": false,
         "moduleResolution": "node",
-        "rootDir": ".",
-        "baseUrl": ".",
+        "rootDir": "",
+        "baseUrl": "",
         "types": [
             "node",
             "jasmine"
@@ -46,10 +45,13 @@
         "useWebpackText": true
     },
     "angularCompilerOptions": {
-        "skipMetadataEmit": true
+        "strictMetadataEmit": true
     },
     "files": [
-        "./modules/index.ts"
+        "modules/index.ts"
+    ],
+    "include": [
+        "modules"
     ],
     "exclude": [
         "node_modules",
