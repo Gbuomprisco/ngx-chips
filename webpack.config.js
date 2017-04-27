@@ -6,10 +6,21 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ROOT = path.resolve(__dirname, '.');
 const root = path.join.bind(path, ROOT);
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+
 
 // Webpack Config
 const webpackConfig = {
     entry: {
+        'vendor': [
+            '@angular/core',
+            '@angular/common',
+            "@angular/forms",
+            "rxjs/add/operator/debounceTime",
+            "rxjs/add/operator/map",
+            "rxjs/add/operator/filter",
+            "ng2-material-dropdown"
+        ],
         'ng2-tag-input': './modules/index.ts'
     },
 
@@ -25,7 +36,8 @@ const webpackConfig = {
         "@angular/forms": true,
         "rxjs/add/operator/debounceTime": true,
         "rxjs/add/operator/map": true,
-        "rxjs/add/operator/filter": true
+        "rxjs/add/operator/filter": true,
+        "ng2-material-dropdown": true
     },
 
     module: {
@@ -111,7 +123,11 @@ const defaultConfig = {
         }),
 
         new ExtractTextPlugin("styles.css"),
-        new TsConfigPathsPlugin()
+        new TsConfigPathsPlugin(),
+
+        new CommonsChunkPlugin({
+            name: 'ng2-tag-input'
+        })
     ]
 };
 

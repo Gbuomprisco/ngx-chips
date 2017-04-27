@@ -1,7 +1,4 @@
-import {
-  ControlValueAccessor
-} from '@angular/forms';
-
+import { ControlValueAccessor } from '@angular/forms';
 import { Input } from '@angular/core';
 
 export type TagModel = string | {[key: string]: any};
