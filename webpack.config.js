@@ -99,7 +99,7 @@ const defaultConfig = {
             'tag': root('modules/components/tag'),
             'tag-input-form': root('modules/components/tag-input-form'),
         },
-        modules: [root('src'), root('compiled'), root('node_modules')],
+        modules: [root('modules'), root('factories'), root('node_modules')],
     },
 
     devServer: {

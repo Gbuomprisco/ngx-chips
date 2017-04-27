@@ -9,8 +9,7 @@
         "declaration": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "rootDir": ".",
-        "baseUrl": ".",
+        "baseUrl": "./modules",
         "inlineSources": true,
         "skipLibCheck": true,
         "typeRoots": [ "./node_modules/@types" ],
@@ -27,17 +26,17 @@
             "@angular/forms": ["node_modules/@angular/forms"],
             "rxjs/*": ["node_modules/rxjs/*"],
 
-            "core": ["modules/core"],
-            "components": ["modules/components/"],
+            "core": ["/core"],
+            "components": ["components/"],
 
-            "helpers": ["modules/core/helpers/"],
-            "styles": ["modules/core/styles/"],
-            "pipes": ["modules/core/pipes/"],
+            "helpers": ["core/helpers/"],
+            "styles": ["core/styles/"],
+            "pipes": ["core/pipes/"],
 
-            "dropdown": ["modules/components/dropdown/"],
-            "icon": ["modules/components/icon/"],
-            "tag": ["modules/components/tag/"],
-            "tag-input-form": ["modules/components/tag-input-form/"]
+            "dropdown": ["components/dropdown/"],
+            "icon": ["components/icon/"],
+            "tag": ["components/tag/"],
+            "tag-input-form": ["components/tag-input-form/"]
         }
     },
     "awesomeTypescriptLoaderOptions": {
@@ -48,8 +47,14 @@
         "genDir": "factories",
         "strictMetadataEmit": true
     },
-    "files": [
-        "modules/ng2-tag-input.module.ts"
+    "include": [
+        "./modules"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+"factories",
+        "**/*.spec.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false,
