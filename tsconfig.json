@@ -16,7 +16,8 @@
         "skipLibCheck": true,
         "noEmit": false,
         "moduleResolution": "node",
-        "baseUrl": "./modules",
+        "rootDir": ".",
+        "baseUrl": ".",
         "types": [
             "node",
             "jasmine"
@@ -26,17 +27,17 @@
             "es2015"
         ],
         "paths": {
-            "core": ["core"],
-            "components": ["components/"],
+            "core": ["modules/core"],
+            "components": ["modules/components/"],
 
-            "helpers": ["core/helpers/"],
-            "styles": ["core/styles/"],
-            "pipes": ["core/pipes/"],
+            "helpers": ["modules/core/helpers/"],
+            "styles": ["modules/core/styles/"],
+            "pipes": ["modules/core/pipes/"],
 
-            "dropdown": ["components/dropdown/"],
-            "icon": ["components/icon/"],
-            "tag": ["components/tag/"],
-            "tag-input-form": ["components/tag-input-form/"]
+            "dropdown": ["modules/components/dropdown/"],
+            "icon": ["modules/components/icon/"],
+            "tag": ["modules/components/tag/"],
+            "tag-input-form": ["modules/components/tag-input-form/"]
         },
         "suppressImplicitAnyIndexErrors": true
     },
@@ -45,10 +46,10 @@
         "useWebpackText": true
     },
     "angularCompilerOptions": {
-        "strictMetadataEmit": true
+        "skipMetadataEmit": true
     },
     "files": [
-        "./ng2-tag-input.module.ts"
+        "./modules/index.ts"
     ],
     "exclude": [
         "node_modules",

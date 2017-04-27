@@ -41,16 +41,5 @@ import { HighlightPipe } from './core';
         TagRipple
     ]
 })
-export class TagInputModule {
-
-}
-
-export {
-    TagInputComponent,
-    TagInputForm,
-    TagInputDropdown,
-    DeleteIconComponent,
-    TagComponent,
-    TagRipple
-}
+export class TagInputModule {}
 
