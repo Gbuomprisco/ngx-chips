@@ -10,15 +10,7 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 // Webpack Config
 const webpackConfig = {
     entry: {
-        'vendor': [
-            '@angular/core',
-            '@angular/common',
-            "@angular/forms",
-            "rxjs/add/operator/debounceTime",
-            "rxjs/add/operator/map",
-            "rxjs/add/operator/filter"
-        ],
-        'ng2-tag-input': './modules/ng2-tag-input.module.ts'
+        'ng2-tag-input': './modules/index.ts'
     },
 
     output: {
@@ -88,8 +80,6 @@ const defaultConfig = {
     resolve: {
         extensions: ['.ts', '.js', '.scss'],
         alias: {
-            'core': root('modules/core'),
-            'components': root('modules/components'),
             'styles': root('modules/core/styles'),
             'pipes': root('modules/core/pipes'),
             'helpers': root('modules/core/helpers'),

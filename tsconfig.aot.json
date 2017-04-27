@@ -9,7 +9,7 @@
         "declaration": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "baseUrl": "./modules",
+        "baseUrl": ".",
         "inlineSources": true,
         "skipLibCheck": true,
         "typeRoots": [ "./node_modules/@types" ],
@@ -24,19 +24,7 @@
             "@angular/http": ["node_modules/@angular/http"],
             "@angular/common": ["node_modules/@angular/common"],
             "@angular/forms": ["node_modules/@angular/forms"],
-            "rxjs/*": ["node_modules/rxjs/*"],
-
-            "core": ["/core"],
-            "components": ["components/"],
-
-            "helpers": ["core/helpers/"],
-            "styles": ["core/styles/"],
-            "pipes": ["core/pipes/"],
-
-            "dropdown": ["components/dropdown/"],
-            "icon": ["components/icon/"],
-            "tag": ["components/tag/"],
-            "tag-input-form": ["components/tag-input-form/"]
+            "rxjs/*": ["node_modules/rxjs/*"]
         }
     },
     "awesomeTypescriptLoaderOptions": {
@@ -45,15 +33,14 @@
     },
     "angularCompilerOptions": {
         "genDir": "factories",
-        "strictMetadataEmit": true
+        "skipMetadataEmit": true
     },
-    "include": [
-        "./modules"
+    "files": [
+        "./modules/index.ts"
     ],
     "exclude": [
         "node_modules",
         "dist",
-"factories",
         "**/*.spec.ts"
     ],
     "compileOnSave": false,
