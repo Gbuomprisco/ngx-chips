@@ -16,6 +16,9 @@ import {
 } from '@angular/core';
 
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 
 import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
@@ -25,6 +28,7 @@ import { TagInputForm } from './tag-input-form';
 import { TagInputDropdown } from './dropdown';
 import { TagComponent } from './tag';
 import { animations } from './animations';
+import { Observable } from 'rxjs/Observable';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -243,6 +247,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public dragZone: string = undefined;
 
     /**
+     * @name onRemoving
+     * @type {() => Observable<void>}
+     */
+    @Input() public onRemoving: (tag: TagModel) => Observable<TagModel>;
+
+    /**
+     * @name onAdding
+     * @type {() => Observable<void>}
+     */
+    @Input() public onAdding: (tag: TagModel) => Observable<TagModel>;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -382,7 +398,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public inputTextValue = '';
 
-
     /**
      * @desc removes the tab index if it is set - it will be passed through to the input
      * @name tabindexAttr
@@ -408,7 +423,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         // if the removed tag was selected, set it as undefined
         if (this.selectedTag === tag) {
-            this.selectedTag = undefined;
+            this.selectItem(undefined, false);
         }
 
         // focus input
@@ -419,38 +434,64 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name onRemoveRequested
+     * @param tag
+     * @param index
+     */
+    public onRemoveRequested(tag: TagModel, index: number): void {
+        if (this.onRemoving) {
+            this.onRemoving(tag)
+                .subscribe((model: TagModel) => {
+                    this.removeItem(model, index);
+                });
+        } else {
+            this.removeItem(tag, index);
+        }
+    }
+
+    /**
+     * @name onAddingRequested
+     * @param isFromAutocomplete
+     * @param tag
+     */
+    public onAddingRequested(isFromAutocomplete: boolean, tag: TagModel): void {
+        if (this.onAdding) {
+            this.onAdding(tag)
+                .subscribe((model: TagModel) => {
+                    this.addItem(isFromAutocomplete, model);
+                });
+        } else {
+            this.addItem(isFromAutocomplete, tag);
+        }
+    }
+
+    /**
      * @name addItem
      * @desc adds the current text model to the items array
      */
     public addItem(isFromAutocomplete = false, item: TagModel = this.formValue): void {
-        const display = this.getItemDisplay(item);
-        const inputValue = this.setInputValue(display);
-        const isFormInvalid = !this.inputForm.form.valid || !inputValue;
+        Observable
+            .of(this.getItemDisplay(item))
+            .map(display => this.setInputValue(display))
+            .filter(display => !!display)
+            .filter(display => this.inputForm.form.valid)
+            .map((display: string) => this.createTag(isFromAutocomplete ? item : display))
+            .filter((tag: TagModel) => {
+                const isValid = this.isTagValid(tag, isFromAutocomplete);
 
-        // return early if the form is invalid
-        if (isFormInvalid) {
-            return;
-        }
+                if (!isValid) {
+                    this.onValidationError.emit(tag);
+                }
 
-        const tag = this.createTag(isFromAutocomplete ? item : inputValue);
-        const isValid = this.isTagValid(tag, isFromAutocomplete);
+                return isValid;
+            })
+            .subscribe(this.appendTag.bind(this), undefined, () => {
+                // reset control and focus input
+                this.setInputValue('');
 
-        // append new tag if everything is valid
-        if (isValid) {
-            this.appendNewTag(tag);
-
-            // emit event
-            this.onAdd.emit(tag);
-        } else {
-            // otherwise, emit validation error event
-            this.onValidationError.emit(tag);
-        }
-
-        // reset control and focus input
-        this.setInputValue('');
-
-        // focus input
-        this.focus(true, false);
+                // focus input
+                this.focus(true, false);
+            });
     }
 
     /**
@@ -495,10 +536,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name appendNewTag
+     * @name appendTag
      * @param tag
      */
-    public appendNewTag(tag: TagModel): void {
+    public appendTag(tag: TagModel): void {
         const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
 
         // push item to array of items
@@ -523,19 +564,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name selectonRemoveItem
+     * @name selectItem
      * @desc selects item passed as parameter as the selected tag
      * @param item
+     * @param emit
      */
-    public selectItem(item: TagModel): void {
-        if (this.readonly || !item) {
+    public selectItem(item: TagModel, emit = true): void {
+        if (this.readonly) {
             return;
         }
 
         this.selectedTag = item;
 
-        // emit event
-        this.onSelect.emit(item);
+        if (emit) {
+            this.onSelect.emit(item);
+        }
     }
 
     /**
@@ -560,7 +603,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         switch (constants.KEY_PRESS_ACTIONS[key]) {
             case constants.ACTIONS_KEYS.DELETE:
                 if (this.selectedTag && this.removable) {
-                    this.removeItem(this.selectedTag, this.items.indexOf(this.selectedTag));
+                    const index = this.items.indexOf(this.selectedTag);
+                    this.removeItem(this.selectedTag, index);
                 }
                 break;
             case constants.ACTIONS_KEYS.SWITCH_PREV:
@@ -587,10 +631,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public setInputValue(value: string): string {
         const item = value ? this.transform(value) : '';
-        const control = this.getControl();
 
         // update form value with the transformed item
-        control.setValue(item);
+        this.getControl().setValue(item);
 
         return item;
     }
@@ -613,7 +656,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return;
         }
 
-        this.selectedTag = undefined;
+        this.selectItem(undefined, false);
 
         if (applyFocus) {
             this.inputForm.focus();
@@ -630,6 +673,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public blur(): void {
         this.onTouched();
+
         this.onBlur.emit(this.formValue);
     }
 
@@ -655,8 +699,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name hasCustomTemplate
      */
     public hasCustomTemplate(): boolean {
-        const template = this.templates ? this.templates.first : undefined;
-        const menuTemplate = this.dropdown && this.dropdown.templates ? this.dropdown.templates.first : undefined;
+        const templates = this.templates;
+        const template = templates ? templates.first : undefined;
+        const menuTemplate = this.dropdown && this.dropdown.templates ?
+            this.dropdown.templates.first : undefined;
 
         return template && template !== menuTemplate;
     }
@@ -697,7 +743,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @returns {boolean}
      */
     public get maxItemsReached(): boolean {
-        return this.maxItems !== undefined && this.items.length >= this.maxItems;
+        return this.maxItems !== undefined &&
+            this.items.length >= this.maxItems;
     }
 
     /**
@@ -715,9 +762,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         // if the number of items specified in the model is > of the value of maxItems
         // degrade gracefully and let the max number of items to be the number of items in the model
         // though, warn the user.
-        const maxItemsReached = this.maxItems !== undefined && this.items && this.items.length > this.maxItems;
+        const hasReachedMaxItems = this.maxItems !== undefined &&
+            this.items &&
+            this.items.length > this.maxItems;
 
-        if (maxItemsReached) {
+        if (hasReachedMaxItems) {
             this.maxItems = this.items.length;
             console.warn(constants.MAX_ITEMS_WARNING);
         }
@@ -753,9 +802,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     /**
      * @name onDragEnd
-     * @param index
      */
-    public onDragEnd(index: number): void {
+    public onDragEnd(): void {
         this.isDropping = false;
     }
 
@@ -765,7 +813,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param index
      */
     public onTagDropped(event: DragEvent, index: number): void {
-        this.isDropping = false;
+        this.onDragEnd();
 
         const data = event.dataTransfer.getData(constants.DRAG_AND_DROP_KEY);
         const droppedElement = JSON.parse(data);
@@ -777,7 +825,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         const tag: TagModel = this.createTag(droppedElement.value);
 
         if (index === undefined) {
-            this.appendNewTag(tag);
+            this.appendTag(tag);
         } else {
             const items = this.items;
             this.items = [...items.slice(0, index), tag, ...items.slice(index, items.length)];

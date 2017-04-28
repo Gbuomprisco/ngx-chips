@@ -239,6 +239,7 @@ If set, the input will be draggable. Also the input will be draggable to another
 
 An array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
 
+
 **`asyncValidators`** - [**`?AsyncValidatorFn[]`**]
 
 An array of AsyncValidators that will validate the tag before adding it to the list of items. It is possible to use multiple async validators.
@@ -247,6 +248,18 @@ An array of AsyncValidators that will validate the tag before adding it to the l
 **`errorMessages`** - [**`?Object{error: message}`**]
 
 An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
+
+
+**`onAdding`** - [**`?onAdding(tag: tagModel): Observable<TagModel>`**]
+
+Hook to intercept when an item is being added. Needs to return an Observable.
+* You can modify the tag being added during the interception.
+
+
+**`onRemoving`** - [**`?onRemoving(tag: tagModel): Observable<TagModel>`**]
+
+Hook to intercept when an item is being removed. Needs to return an Observable.
+
 
 ---
 

@@ -20,7 +20,7 @@
         <tag *ngFor="let item of items; let i = index"
 
              (onSelect)="selectItem(item)"
-             (onRemove)="removeItem(item, i)"
+             (onRemove)="onRemoveRequested(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
              (onBlur)="onTagBlurred($event, i)"
@@ -50,7 +50,7 @@
         </tag>
 
         <tag-input-form
-            (onSubmit)="addItem()"
+            (onSubmit)="onAddingRequested()"
             (onBlur)="blur()"
             (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
             (onKeydown)="fireEvents('keydown', $event)"
