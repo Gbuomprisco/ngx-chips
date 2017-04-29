@@ -5,10 +5,10 @@ import {
     EventEmitter,
     TemplateRef,
     ElementRef,
-    Renderer,
     HostListener,
     ViewChild,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    Renderer2
 } from '@angular/core';
 
 import { TagModel } from '../../core';
@@ -129,7 +129,9 @@ export class TagComponent {
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
 
-    constructor(public element: ElementRef, public renderer: Renderer, private cdRef: ChangeDetectorRef) {}
+    constructor(public element: ElementRef,
+                public renderer: Renderer2,
+                private cdRef: ChangeDetectorRef) {}
 
     /**
      * @name select
@@ -159,7 +161,7 @@ export class TagComponent {
      * @name focus
      */
     public focus(): void {
-        this.renderer.invokeElementMethod(this.element.nativeElement, 'focus');
+        this.element.nativeElement.focus();
     }
 
     /**
@@ -189,7 +191,10 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(event?: MouseEvent): void {
+    public toggleEditMode(): void {
+        const classList = this.element.nativeElement.classList;
+        const className = 'tag--editing';
+
         if (this.editModeActivated) {
             this.storeNewValue();
         } else {
@@ -197,7 +202,7 @@ export class TagComponent {
         }
 
         this.editModeActivated = !this.editModeActivated;
-        this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', this.editModeActivated);
+        this.editModeActivated ? classList.add(className) : classList.remove(className);
     }
 
     /**
@@ -219,6 +224,19 @@ export class TagComponent {
      */
     public getDisplayValue(item: TagModel): string {
         return typeof item === 'string' ? item : item[this.displayBy];
+    }
+
+    /**
+     * @desc returns whether the ripple is visible or not
+     * only works in Chrome
+     * @name isRippleVisible
+     * @returns {boolean}
+     */
+    public isRippleVisible(): boolean {
+        return !this.readonly &&
+            !this.editModeActivated &&
+            isChrome &&
+            this.hasRipple;
     }
 
     /**
@@ -273,18 +291,5 @@ export class TagComponent {
                 !this.disabled &&
                 this.removable &&
                 !this.editModeActivated;
-    }
-
-    /**
-     * @desc returns whether the ripple is visible or not
-     * only works in Chrome
-     * @name isRippleVisible
-     * @returns {boolean}
-     */
-    public isRippleVisible(): boolean {
-        return !this.readonly &&
-            !this.editModeActivated &&
-            isChrome &&
-            this.hasRipple;
     }
 }

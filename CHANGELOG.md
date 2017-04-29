@@ -1,3 +1,11 @@
+## 1.2.3
+
+### Features
+- Added `onAdding` and `onRemoving` hooks
+
+### Maintenance
+- removed `Renderer`
+
 ## 1.1.5-beta.0
 
 ### Features
