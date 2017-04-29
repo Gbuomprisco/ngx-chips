@@ -15,11 +15,6 @@ import {
     QueryList
 } from '@angular/core';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-
 import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
 import { TagInputAccessor, TagModel, listen } from '../core';
@@ -28,7 +23,13 @@ import { TagInputForm } from './tag-input-form';
 import { TagInputDropdown } from './dropdown';
 import { TagComponent } from './tag';
 import { animations } from './animations';
-import { Observable } from 'rxjs/Observable';
+
+import { Observable } from 'rxjs';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
 
 // angular universal hacks
 /* tslint:disable-next-line */
