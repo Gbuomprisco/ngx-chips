@@ -468,30 +468,43 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     /**
      * @name addItem
      * @desc adds the current text model to the items array
+     * @param fromAutocomplete
+     * @param item
      */
-    public addItem(isFromAutocomplete = false, item: TagModel = this.formValue): void {
+    public addItem(fromAutocomplete = false, item: TagModel = this.formValue): void {
+        /**
+         * @name reset
+         */
+        const reset = (): void => {
+            // reset control and focus input
+            this.setInputValue('');
+
+            // focus input
+            this.focus(true, false);
+        };
+
+        /**
+         * @name validationFilter
+         * @param tag
+         * @return {boolean}
+         */
+        const validationFilter = (tag: TagModel): boolean => {
+            const isValid = this.isTagValid(tag, fromAutocomplete);
+
+            if (!isValid) {
+                this.onValidationError.emit(tag);
+            }
+
+            return isValid;
+        };
+
         Observable
             .of(this.getItemDisplay(item))
             .map(display => this.setInputValue(display))
-            .filter(display => !!display)
-            .filter(display => this.inputForm.form.valid)
-            .map((display: string) => this.createTag(isFromAutocomplete ? item : display))
-            .filter((tag: TagModel) => {
-                const isValid = this.isTagValid(tag, isFromAutocomplete);
-
-                if (!isValid) {
-                    this.onValidationError.emit(tag);
-                }
-
-                return isValid;
-            })
-            .subscribe(this.appendTag.bind(this), undefined, () => {
-                // reset control and focus input
-                this.setInputValue('');
-
-                // focus input
-                this.focus(true, false);
-            });
+            .filter(display => this.inputForm.form.valid && !!display)
+            .map((display: string) => this.createTag(fromAutocomplete ? item : display))
+            .filter(validationFilter)
+            .subscribe(this.appendTag, undefined, reset);
     }
 
     /**
@@ -499,18 +512,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param tag
      * @param isFromAutocomplete
      */
-    public isTagValid(tag: TagModel, isFromAutocomplete = false): boolean {
+    public isTagValid(tag: TagModel, fromAutocomplete = false): boolean {
         const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
 
-        if (selectedItem && !isFromAutocomplete) {
+        if (selectedItem && !fromAutocomplete) {
             return;
         }
 
-        const dupe = this.findDupe(tag, isFromAutocomplete);
-        const hasDupe = !!dupe && dupe !== undefined;
+        const dupe = this.findDupe(tag, fromAutocomplete);
 
         // if so, give a visual cue and return false
-        if (!this.allowDupes && hasDupe && this.blinkIfDupe) {
+        if (!this.allowDupes && dupe && this.blinkIfDupe) {
             const item = this.tags.find(_tag => {
                 return this.getItemValue(_tag.model) === this.getItemValue(dupe);
             });
@@ -520,16 +532,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             }
         }
 
-        const fromAutocomplete = isFromAutocomplete && this.onlyFromAutocomplete;
+        const isFromAutocomplete = fromAutocomplete && this.onlyFromAutocomplete;
+
         const assertions = [
             // 1. there must be no dupe OR dupes are allowed
-            !hasDupe || this.allowDupes === true,
+            !dupe || this.allowDupes === true,
 
             // 2. check max items has not been reached
             this.maxItemsReached === false,
 
             // 3. check item comes from autocomplete or onlyFromAutocomplete is false
-            ((fromAutocomplete) || this.onlyFromAutocomplete === false)
+            ((isFromAutocomplete) || this.onlyFromAutocomplete === false)
         ];
 
         return assertions.filter(item => item).length === assertions.length;
@@ -537,13 +550,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
     /**
      * @name appendTag
-     * @param tag
+     * @param tag {TagModel}
      */
-    public appendTag(tag: TagModel): void {
-        const newTag = this.modelAsStrings ? tag[this.identifyBy] : tag;
-
-        // push item to array of items
-        this.items = [...this.items, newTag];
+    public appendTag = (tag: TagModel): void => {
+        this.items = [
+            ...this.items,
+            this.modelAsStrings ? tag[this.identifyBy] : tag
+        ];
     }
 
     /**
@@ -588,7 +601,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param $event
      */
     public fireEvents(eventName: string, $event?): void {
-        this.listeners[eventName].forEach(listener => listener.call(this, $event));
+        this.listeners[eventName]
+            .forEach(listener => listener.call(this, $event));
     }
 
     /**
@@ -878,6 +892,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
+     * @name trackBy
+     * @param item
+     * @returns {string}
+     */
+    public trackBy(item: TagModel): string {
+        return item[this.identifyBy];
+    }
+
+    /**
      * @name setupSeparatorKeysListener
      */
     private setupSeparatorKeysListener(): void {
@@ -967,16 +990,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     private findDupe(tag: TagModel, isFromAutocomplete: boolean): TagModel {
         const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;
-        return this.items.find((item: TagModel) => this.getItemValue(item) === tag[identifyBy]);
-    }
-
-    /**
-     * @name trackBy
-     * @param item
-     * @returns {string}
-     */
-    private trackBy(item: TagModel): string {
-        return item[this.identifyBy];
+        return this.items
+            .find((item: TagModel) => {
+                return this.getItemValue(item) === tag[identifyBy];
+            });
     }
 
     /**

@@ -265,8 +265,9 @@
         </div>
 
         <div>
-            <h3>Confirm remove</h3>
+            <h3>Confirm adding and removing tags with Observables</h3>
             <tag-input [ngModel]="['item1']"
+                       [modelAsStrings]="true"
                        [onRemoving]="onRemoving"
                        [onAdding]="onAdding">
             </tag-input>
