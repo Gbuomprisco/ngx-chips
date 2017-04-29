@@ -16,9 +16,9 @@ const webpackConfig = {
             '@angular/core',
             '@angular/common',
             "@angular/forms",
-            "rxjs/add/operator/debounceTime",
-            "rxjs/add/operator/map",
-            "rxjs/add/operator/filter",
+
+            'rxjs',
+
             "ng2-material-dropdown"
         ],
         'ng2-tag-input': './modules/index.ts'
@@ -34,9 +34,9 @@ const webpackConfig = {
         "@angular/core": true,
         "@angular/common": true,
         "@angular/forms": true,
-        "rxjs/add/operator/debounceTime": true,
-        "rxjs/add/operator/map": true,
-        "rxjs/add/operator/filter": true,
+
+        'rxjs': true,
+
         "ng2-material-dropdown": true
     },
 
