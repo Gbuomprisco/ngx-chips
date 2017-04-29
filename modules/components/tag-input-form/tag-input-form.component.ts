@@ -3,7 +3,7 @@ import {
     Input,
     Output,
     EventEmitter,
-    Renderer,
+    Renderer2,
     ViewChild
 } from '@angular/core';
 
@@ -134,7 +134,7 @@ export class TagInputForm {
      */
     public inputTextValue = '';
 
-    constructor(private renderer: Renderer) {}
+    constructor(private renderer: Renderer2) {}
 
     public ngOnInit() {
         // creating form
@@ -187,14 +187,14 @@ export class TagInputForm {
      * @name focus
      */
     public focus(): void {
-        this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
+        this.input.nativeElement.focus();
     }
 
     /**
      * @name blur
      */
     public blur(): void {
-        this.renderer.invokeElementMethod(this.input.nativeElement, 'blur');
+        this.input.nativeElement.blur();
     }
 
 	/**
@@ -211,7 +211,7 @@ export class TagInputForm {
      */
     public destroy(): void {
         const input = this.input.nativeElement;
-        this.renderer.invokeElementMethod(input.parentElement, 'removeChild', [input]);
+        input.parentElement.removeChild(input);
     }
 
     /**
