@@ -499,13 +499,24 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             return isValid;
         };
 
+        /**
+         * @name appendItem
+         * @param tag
+         */
+        const appendItem = (tag: TagModel): void => {
+            this.appendTag(tag);
+
+            // emit event
+            this.onAdd.emit(tag);
+        };
+
         Observable
             .of(this.getItemDisplay(item))
             .map(display => this.setInputValue(display))
             .filter(display => this.inputForm.form.valid && !!display)
             .map((display: string) => this.createTag(fromAutocomplete ? item : display))
             .filter(validationFilter)
-            .subscribe(this.appendTag, undefined, reset);
+            .subscribe(appendItem, undefined, reset);
     }
 
     /**

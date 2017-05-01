@@ -10,6 +10,7 @@
         <div>
             <h3>Simple Input with two items as objects</h3>
             <tag-input [(ngModel)]="itemsAsObjects"
+                       (onAdd)="onAdd($event)"
                        [identifyBy]="'id'"
                        [displayBy]="'name'"></tag-input>
         </div>
