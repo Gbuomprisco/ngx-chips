@@ -1,5 +1,5 @@
 <div (click)="select($event)"
-     (dblclick)="editable ? toggleEditMode($event) : undefined"
+     (dblclick)="editable ? toggleEditMode() : undefined"
      (mousedown)="rippleState='clicked'"
      (mouseup)="rippleState='none'"
      [ngSwitch]="!!template"
