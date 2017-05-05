@@ -7,7 +7,7 @@
      (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
      (dragenter)="dragZone ? onDragOver($event) : undefined"
      (dragover)="dragZone ? onDragOver($event) : undefined"
-     (dragleave)="dragZone ? onDragEnd(undefined) : undefined"
+     (dragleave)="dragZone ? onDragEnd() : undefined"
 
      [class.ng2-tag-input--dropping]="isDropping"
      [class.ng2-tag-input--disabled]="disabled"
@@ -30,7 +30,7 @@
              (drop)="dragZone ? onTagDropped($event, i) : undefined"
              (dragenter)="dragZone ? onDragOver($event) : undefined"
              (dragover)="dragZone ? onDragOver($event) : undefined"
-             (dragleave)="dragZone ? onDragEnd(i) : undefined"
+             (dragleave)="dragZone ? onDragEnd() : undefined"
 
              [attr.tabindex]="readonly ? -1 : 0"
              [class.readonly]="readonly"
