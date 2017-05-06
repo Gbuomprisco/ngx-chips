@@ -455,7 +455,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param isFromAutocomplete
      * @param tag
      */
-    public onAddingRequested(isFromAutocomplete: boolean, tag: TagModel): void {
+    public onAddingRequested(isFromAutocomplete?: boolean, tag?: TagModel): void {
         if (this.onAdding) {
             this.onAdding(tag)
                 .subscribe((model: TagModel) => {
