@@ -27,6 +27,7 @@ const navigator = typeof window !== 'undefined' ? window.navigator : {
 const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 @Component({
+    moduleId: module.id,
     selector: 'tag',
     templateUrl: './tag.template.html',
     styleUrls: [ './tag-component.style.scss' ]

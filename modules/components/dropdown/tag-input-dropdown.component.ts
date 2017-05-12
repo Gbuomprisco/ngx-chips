@@ -20,6 +20,7 @@ import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { TagModel } from '../../core';
 
 @Component({
+    moduleId: module.id,
     selector: 'tag-input-dropdown',
     templateUrl: './tag-input-dropdown.template.html'
 })

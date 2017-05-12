@@ -45,6 +45,7 @@ const CUSTOM_ACCESSOR = {
  * A component for entering a list of terms to be used with ngModel.
  */
 @Component({
+    moduleId: module.id,
     selector: 'tag-input',
     providers: [ CUSTOM_ACCESSOR ],
     styleUrls: [ './tag-input.style.scss' ],
