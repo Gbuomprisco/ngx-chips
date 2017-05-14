@@ -3,7 +3,7 @@ import {
     Input,
     Output,
     EventEmitter,
-    Renderer,
+    Renderer2,
     ViewChild
 } from '@angular/core';
 
@@ -12,7 +12,8 @@ import {
     FormControl,
     Validators,
     ValidatorFn,
-    AbstractControl
+    AbstractControl,
+    AsyncValidatorFn
 } from '@angular/forms';
 
 @Component({
@@ -66,6 +67,13 @@ export class TagInputForm {
     @Input() public validators: ValidatorFn[] = [];
 
     /**
+     * @name asyncValidators
+     * @desc array of AsyncValidator that are used to validate the tag before it gets appended to the list
+     * @type {Array}
+     */
+    @Input() public asyncValidators: AsyncValidatorFn[] = [];
+
+    /**
      * @name inputId
      * @type {string}
      */
@@ -78,6 +86,34 @@ export class TagInputForm {
     @Input() public inputClass: string;
 
     /**
+     * @name inputText
+     */
+    @Input() public get inputText(): string {
+        return this.inputTextValue;
+    }
+
+    /**
+     * @name tabindex
+     * @desc pass through the specified tabindex to the input
+     * @type {string}
+     */
+    @Input() public tabindex: string = undefined;
+
+    /**
+     * @name disabled
+     */
+    @Input() public disabled = false;
+
+    /**
+     * @name inputText
+     * @param text {string}
+     */
+    public set inputText(text: string) {
+        this.inputTextValue = text;
+        this.inputTextChange.emit(text);
+    }
+
+    /**
      * @name input
      */
     @ViewChild('input') public input;
@@ -87,12 +123,26 @@ export class TagInputForm {
      */
     public form: FormGroup;
 
-    constructor(private renderer: Renderer) {}
+    /**
+     * @name inputTextChange
+     * @type {EventEmitter}
+     */
+    @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
+
+    /**
+     * @name inputTextValue
+     */
+    public inputTextValue = '';
+
+    constructor(private renderer: Renderer2) {}
 
     public ngOnInit() {
         // creating form
         this.form = new FormGroup({
-            item: new FormControl('', Validators.compose(this.validators))
+            item: new FormControl('',
+                Validators.compose(this.validators),
+                Validators.composeAsync(this.asyncValidators)
+            )
         });
     }
 
@@ -120,7 +170,7 @@ export class TagInputForm {
     public getErrorMessages(messages): string[] {
         return Object.keys(messages)
             .filter(err => this.value.hasError(err))
-            .map(err => messages[ err ]);
+            .map(err => messages[err]);
     }
 
     /**
@@ -128,21 +178,23 @@ export class TagInputForm {
      * @returns {boolean}
      */
     public hasErrors(): boolean {
-        return this.form.dirty && this.form.value.item && this.form.invalid;
+        return this.form.dirty &&
+            this.form.value.item &&
+            this.form.invalid;
     }
 
 	/**
      * @name focus
      */
     public focus(): void {
-        this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
+        this.input.nativeElement.focus();
     }
 
     /**
      * @name blur
      */
     public blur(): void {
-        this.renderer.invokeElementMethod(this.input.nativeElement, 'blur');
+        this.input.nativeElement.blur();
     }
 
 	/**
@@ -168,5 +220,12 @@ export class TagInputForm {
      */
     public onKeyDown($event) {
         return this.onKeydown.emit($event);
+    }
+
+    /**
+     * @name submit
+     */
+    public submit($event: any): void {
+        this.onSubmit.emit($event);
     }
 }

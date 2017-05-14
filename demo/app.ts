@@ -4,21 +4,22 @@ import {BrowserModule} from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { TagInputModule } from '../modules/ng2-tag-input.module';
+import { TagInputModule } from '../modules';
 import { Home } from './home/home';
-import { CustomComponent } from './custom/custom.component';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         CommonModule,
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
         TagInputModule
     ],
-    declarations: [ Home, CustomComponent ],
+    declarations: [ Home ],
     bootstrap: [ Home ],
     entryComponents: [ Home ]
 })

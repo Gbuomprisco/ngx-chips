@@ -1,0 +1,22 @@
+$dark-theme: (
+    container-border-bottom: 2px solid map-get($color-primary, 'dark')
+);
+
+$dark-tag-theme: (
+    background: map-get($color-primary, 'dark'),
+    color: #f9f9f9,
+    background-focused: map-get($color-focused, 'dark'),
+    background-hover: darken(map-get($color-primary, 'dark'), 10%),
+    color-focused: map-get($color-primary, 'dark'),
+    color-hover: #f9f9f9,
+    border-radius: 3px
+);
+
+$dark-icon-theme: (
+    fill: map-get($color-arrow, 'dark'),
+    fill-focus: map-get($color-arrow-focused, 'dark')
+);
+
+.dark tag:focus {
+    box-shadow: 0 0 0 1px #323232;
+}

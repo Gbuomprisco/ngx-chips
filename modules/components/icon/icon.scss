@@ -1,55 +1,46 @@
-@import "../themes/_colors.scss";
-@import "../themes/_variables.scss";
-@import "../themes/_palette.scss";
+@import "../../core/styles/themes/_themes.scss";
 
 :host(delete-icon) {
-    width: 16px;
-    height: 26px;
-    transition: all 0.15s;
-    display: inline-block;
+    @include icon-theme($default-icon-theme);
 }
 
 :host(delete-icon):hover {
-    transform: scale(1.3);
+    transform: scale(1.5) translateY(-3px);
 }
 
-:host(delete-icon) svg {
-    vertical-align: bottom;
-    height: 34px;
+:host-context(.dark) {
+    @include icon-theme($dark-icon-theme);
 }
 
-:host-context(.default) path {
-    fill: $color-arrow-default;
+:host-context(.minimal) {
+    @include icon-theme($minimal-icon-theme);
 }
 
-:host-context(.dark) path {
-    fill: $color-arrow-dark;
+:host-context(.bootstrap) {
+    @include icon-theme($bootstrap-icon-theme);
 }
 
-:host-context(.minimal) path {
-    fill: $color-arrow-minimal;
+:host-context(tag:focus),
+:host-context(tag:active) {
+    @include icon-theme-focused($default-icon-theme);
 }
 
-:host-context(.bootstrap) path {
-    fill: $color-arrow-dark;
+:host-context(.dark tag:focus),
+:host-context(.dark tag:active) {
+    @include icon-theme-focused($dark-icon-theme);
 }
 
-:host-context(.default tag:focus) path,
-:host-context(.default tag:active) path {
-    fill: $color-arrow-default-focused;
+:host-context(.minimal tag:focus),
+:host-context(.minimal tag:active) {
+    @include icon-theme-focused($minimal-icon-theme);
 }
 
-:host-context(.dark tag:focus) path,
-:host-context(.dark tag:active) path {
-    fill: $color-arrow-dark-focused;
+:host-context(.bootstrap tag:focus),
+:host-context(.bootstrap tag:active) {
+    @include icon-theme-focused($bootstrap-icon-theme);
 }
 
-:host-context(.minimal tag:focus) path,
-:host-context(.minimal tag:active) path {
-    fill: $color-arrow-minimal-focused;
-}
-
-:host-context(.bootstrap tag:focus) path,
-:host-context(.bootstrap tag:active) path {
-    fill: $color-arrow-dark;
+:host-context(.bootstrap3-info) {
+    @include icon-theme-focused($bootstrap3-info-icon-theme);
+    height: inherit;
 }

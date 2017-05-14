@@ -1,15 +1,20 @@
 <!-- form -->
-<form (submit)="onSubmit.emit()" [formGroup]="form">
+<form (submit)="submit($event)" [formGroup]="form">
     <input #input
+
            type="text"
            class="ng2-tag-input__text-input"
-           formControlName="item"
+           autocomplete="off"
            tabindex="0"
 
+           [(ngModel)]="inputText"
+           [formControlName]="'item'"
            [ngClass]="inputClass"
            [attr.id]="inputId"
            [attr.placeholder]="placeholder"
            [attr.aria-label]="placeholder"
+           [attr.tabindex]="tabindex"
+           [attr.disabled]="disabled"
 
            (focus)="onFocus.emit($event)"
            (blur)="onBlur.emit($event)"

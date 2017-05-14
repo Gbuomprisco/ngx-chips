@@ -7,17 +7,17 @@ import {
     ContentChildren,
     Input,
     QueryList,
-    HostListener
+    HostListener,
+    EventEmitter
 } from '@angular/core';
 
-import { TagInputComponent } from '../tag-input';
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { EventEmitter } from '@angular/core';
-import { TagModel } from '../helpers/accessor';
 import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+
+import { TagInputComponent } from '../';
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
+import { TagModel } from '../../core';
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -130,9 +130,18 @@ export class TagInputDropdown {
      * @type {Array<string>}
      */
     @Input() public get autocompleteItems(): TagModel[] {
-        return this._autocompleteItems ? this._autocompleteItems.map((item: TagModel) => {
-            return typeof item !== 'string' ? item : {[this.displayBy]: item, [this.identifyBy]: item};
-        }) : [];
+        const items = this._autocompleteItems;
+
+        if (!items) {
+            return [];
+        }
+
+        return items.map((item: TagModel) => {
+            return typeof item === 'string' ? {
+                [this.displayBy]: item,
+                [this.identifyBy]: item
+            } : item;
+        });
     }
 
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
@@ -151,17 +160,16 @@ export class TagInputDropdown {
         if (this.autocompleteObservable) {
             this.tagInput
                 .onTextChange
-                .filter((text: string) => !!text.trim().length)
+                .filter((text: string) => text.trim().length >= this.minimumTextLength)
                 .subscribe(this.getItemsFromObservable.bind(this));
         }
     }
 
     /**
      * @name updatePosition
-     * @param position
      */
-    public updatePosition(position) {
-        return this.dropdown.menu.updatePosition(position);
+    public updatePosition(): void {
+        this.dropdown.menu.updatePosition(this.tagInput.inputForm.getElementPosition());
     }
 
     /**
@@ -213,19 +221,15 @@ export class TagInputDropdown {
             return;
         }
 
-        // add item
-        if (this.tagInput.isTagValid(item.value, true)) {
-            const tag = this.tagInput.createTag(item.value[this.displayBy], item.value[this.identifyBy]);
-            this.tagInput.appendNewTag(tag);
-        }
+        const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
+        const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
+        const model = {...item.value, display, value};
 
-        // reset input value
-        this.tagInput.setInputValue('');
+        // add item
+        this.tagInput.onAddingRequested(true, model);
 
         // hide dropdown
         this.dropdown.hide();
-
-        this.tagInput.focus(true, false);
     }
 
     /**
@@ -253,7 +257,7 @@ export class TagInputDropdown {
         // set items
         this.setItems(items);
 
-        if (showDropdown) {
+        if (showDropdown && !this.isVisible) {
             this.dropdown.show(position);
         } else if (hideDropdown) {
             this.dropdown.hide();
@@ -269,7 +273,7 @@ export class TagInputDropdown {
             return;
         }
 
-        this.updatePosition(this.tagInput.inputForm.getElementPosition());
+        this.updatePosition();
     }
 
     /**
@@ -283,9 +287,12 @@ export class TagInputDropdown {
         }
 
         return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue: boolean = this.tagInput.tags.filter(tag => {
-                return tag.model[this.tagInput.displayBy] === item[this.displayBy];
-            }).length > 0;
+            const hasValue: boolean = this.tagInput.tags.some(tag => {
+                const identifyBy = this.tagInput.identifyBy;
+                const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
+
+                return model === item[this.identifyBy];
+            });
 
             return this.matchingFn(value, item) && hasValue === false;
         });
@@ -309,10 +316,15 @@ export class TagInputDropdown {
      * @name populateItems
      * @param data
      */
-    private populateItems(data: any): void {
+    private populateItems(data: any): TagInputDropdown {
         this.autocompleteItems = data.map(item => {
-            return typeof item === 'string' ? { [this.displayBy]: item, [this.identifyBy]: item } : item;
+            return typeof item === 'string' ? {
+                [this.displayBy]: item,
+                [this.identifyBy]: item
+            } : item;
         });
+
+        return this;
     }
 
     /**
@@ -320,19 +332,28 @@ export class TagInputDropdown {
      * @param text
      */
     private getItemsFromObservable(text: string): void {
-        this.tagInput.isLoading = true;
+        this.setLoadingState(true);
 
         this.autocompleteObservable(text)
             .subscribe(data => {
-                this.tagInput.isLoading = false;
+                // hide loading animation
+                this.setLoadingState(false)
+                    // add items
+                    .populateItems(data)
+                    // show the dropdown
+                    .show();
 
-                // add items
-                this.populateItems(data);
+        }, () => this.setLoadingState(false));
+    }
 
-                // show dropdown
-                this.show();
-            }, () => {
-                this.tagInput.isLoading = false;
-            });
+    /**
+     * @name setLoadingState
+     * @param state
+     * @return {TagInputDropdown}
+     */
+    private setLoadingState(state: boolean): TagInputDropdown {
+        this.tagInput.isLoading = state;
+
+        return this;
     }
 }

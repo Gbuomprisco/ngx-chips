@@ -4,8 +4,12 @@ import { FormControl } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/filter';
+
 @Component({
     selector: 'app',
+    styleUrls: ['./home.scss'],
     templateUrl: './home.html'
 })
 export class Home {
@@ -13,15 +17,22 @@ export class Home {
 
     items = ['Javascript', 'Typescript'];
 
-    itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
+    inputText = 'text';
+
+    itemsAsObjects = [{id: 0, name: 'Angular', extra: 0}, {id: 1, name: 'React', extra: 1}];
 
     autocompleteItems = ['Item1', 'item2', 'item3'];
 
     autocompleteItemsAsObjects = [
-        {value: 'Item1', id: 0},
-        {value: 'item2', id: 1},
+        {value: 'Item1', id: 0, extra: 0},
+        {value: 'item2', id: 1, extra: 1},
         'item3'
     ];
+
+    dragAndDropExample = ['C#', 'Java'];
+
+    dragAndDropObjects = [{display:'Javascript', value: 'Javascript'}, {display:'Typescript', value: 'Typescript'}];
+    dragAndDropStrings = ['CoffeScript', 'Scala.js'];
 
     public requestAutocompleteItems = (text: string): Observable<Response> => {
         const url = `https://api.github.com/search/repositories?q=${text}`;
@@ -97,4 +108,20 @@ export class Home {
         'startsWithAt@': 'Your items need to start with \'@\'',
         'endsWith$': 'Your items need to end with \'$\''
     };
+
+    public onAdding(tag): Observable<any> {
+        const confirm = window.confirm('Do you really want to add this tag?');
+        return Observable
+            .of(undefined)
+            .filter(() => confirm)
+            .mapTo(tag);
+    }
+
+    public onRemoving(tag): Observable<any> {
+        const confirm = window.confirm('Do you really want to remove this tag?');
+        return Observable
+            .of(undefined)
+            .filter(() => confirm)
+            .mapTo(tag);
+    }
 }

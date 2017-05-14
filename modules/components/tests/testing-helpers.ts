@@ -6,9 +6,14 @@ import {
 } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
-import { TagInputModule } from '../../ng2-tag-input.module';
+import { TagInputModule } from '../../';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 
 function getItems() {
     return ['Javascript', 'Typescript'];
@@ -116,7 +121,7 @@ export class TagInputComponentWithMaxItems {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
-                    <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>         
+                    <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>
                </tag-input>`
 })
 export class TagInputComponentWithAutocomplete {
@@ -126,15 +131,15 @@ export class TagInputComponentWithAutocomplete {
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items">
-                    <template let-item="item">
+                    <ng-template let-item="item">
                         <span class="custom-class">
                             item: {{ item }}
                         </span>
-    
+
                         <span (click)="input.removeItem(item)" class="ng2-tag__remove-button">
                             x
                         </span>
-                    </template>
+                    </ng-template>
                 </tag-input>`
 })
 export class TagInputComponentWithTemplate {
@@ -160,6 +165,34 @@ export class TagInputComponentWithModelAsStrings {
     public items = getItems();
 }
 
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items" [addOnBlur]="true">
+                   <tag-input-dropdown [autocompleteItems]="['item1', 'item2', 'itam3']"></tag-input-dropdown>
+               </tag-input>`
+})
+export class TagInputComponentWithAddOnBlur {
+    public items = getItems();
+}
+
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items" 
+                          [onRemoving]="onRemoving"
+                          [onAdding]="onAdding"></tag-input>`
+})
+export class TagInputComponentWithHooks {
+    public items = getItems();
+
+    public onAdding(tag): Observable<any> {
+        return;
+    }
+
+    public onRemoving(tag): Observable<any> {
+        return;
+    }
+}
+
 const COMPONENTS = [
     BasicTagInputComponent,
     TagInputComponentWithPlaceholder,
@@ -172,7 +205,9 @@ const COMPONENTS = [
     TagInputComponentWithOnlyAutocomplete,
     TagInputComponentTagsAsObjects,
     TagInputComponentCustomTagsAsObjects,
-    TagInputComponentWithModelAsStrings
+    TagInputComponentWithModelAsStrings,
+    TagInputComponentWithAddOnBlur,
+    TagInputComponentWithHooks
 ];
 
 @NgModule({

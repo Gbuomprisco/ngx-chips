@@ -1,21 +1,52 @@
-# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input)
+# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input)
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
-**This component is supposed to work with the latest Angular versions**.
-If you have an issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
+[![NPM](https://nodei.co/npm/ng2-tag-input.png?downloads=true&stars=true)](https://nodei.co/npm/ng2-tag-input/)
 
-## Demo
+## [Demo](http://www.buompris.co/ng2-tag-input/)
 
-Check out the live demo (with source code) here [http://www.buompris.co/ng2-tag-input/](http://www.buompris.co/ng2-tag-input/).
+Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
 
-** The demo will soon be populated with more examples **
 
-## Install
+## Installing the component
 
     npm install ng2-tag-input --save
 
 **Notice**: the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
+
+
+## FAQ
+
+### Does it work with Angular Universal?
+Yes.
+
+
+### Does it work with Angular's Ahead of time compilation (AOT)?
+Yes.
+
+
+### Does it work with Ionic 2?
+Yes.
+
+
+### What version does it support?
+This component is supposed to work with the latest Angular versions.
+
+If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
+
+
+### Can I change the style?
+Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
+
+
+### Something's broken?
+Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
+
+Please **do not** send private emails - Github Issues are supposed to help whoever might have your same issue, so it is the right place to help each other.
+
+Issues not filled out with the provided templates are going to be closed.
+
 
 ## Configuration
 
@@ -23,11 +54,12 @@ Ensure you import the module:
 
 ```javascript
 import { TagInputModule } from 'ng2-tag-input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 
 @NgModule({
-   imports: [ TagInputModule ]
+   imports: [ TagInputModule, BrowserAnimationsModule, ...OtherModules ] // along with your other modules
 })
-export class MyModule {}
+export class AppModule {}
 ```
 
 ### Configuration for SystemJS users
@@ -89,9 +121,14 @@ Sets the maximum number of items it is possible to enter.
 Sets the tag input static, not allowing deletion/addition of the items entered.
 
 
-**`separatorKeys`** - [**`?number[]`**]
+**`separatorKeyCodes`** - [**`?number[]`**]
 
 Array of keyboard keys with which is possible to define the key for separating terms. By default, only Enter is the defined key.
+
+
+**`separatorKeys`** - [**`?string[]`**]
+
+Array of input characters with which is possible to define the key for separating terms. Default is empty. Can use with `separatorKeyCodes`, either one method matched will trigger tag separation.
 
 
 **`transform`** - [**`?(item: string) => string`**]
@@ -169,17 +206,60 @@ If set to `true`, all values added will be strings, and not objects (defaults to
 If set to `false`, the tags could contain leading and trailing spaces (defaults to `true`)
 
 
+**`inputText`** - [**`?string`**]
+
+Property to bind text directly to the form's value.
+You can use it to change the text of the input at any time, or to just bind a value. Remember: use two-way data binding with this property.
+
+
+**`ripple`** - [**`?boolean`**]
+
+Specifies whether the ripple effect should be visible or not (defaults to `true`)
+
+
+**`disabled`** - [**`?boolean`**]
+
+If set to `true`, the input will be disabled. Similar to `readonly` but with a visual effect.
+
+
+**`tabindex`** - [**`?string`**]
+
+If set, passes the specified tabindex to the form's input.
+
+
+**`dragZone`** - [**`?string`**]
+
+If set, the input will be draggable. Also the input will be draggable to another form with the same dragZone value.
+
+
 ---
 
 ##### Validation (optional)
-**`validators`** - [**`?Validators[]`**]
+**`validators`** - [**`?ValidatorFn[]`**]
 
 An array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+
+
+**`asyncValidators`** - [**`?AsyncValidatorFn[]`**]
+
+An array of AsyncValidators that will validate the tag before adding it to the list of items. It is possible to use multiple async validators.
 
 
 **`errorMessages`** - [**`?Object{error: message}`**]
 
 An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
+
+
+**`onAdding`** - [**`?onAdding(tag: tagModel): Observable<TagModel>`**]
+
+Hook to intercept when an item is being added. Needs to return an Observable.
+* You can modify the tag being added during the interception.
+
+
+**`onRemoving`** - [**`?onRemoving(tag: tagModel): Observable<TagModel>`**]
+
+Hook to intercept when an item is being removed. Needs to return an Observable.
+
 
 ---
 
@@ -187,7 +267,6 @@ An object whose key is the name of the error (ex. required) and the value is the
 **`onlyFromAutocomplete`** - [**`?boolean`**]
 
 If set to `true`, it will be possible to add new items only from the autocomplete dropdown
-
 
 
 ##### Tags as Objects (optional)
@@ -199,6 +278,7 @@ Any value you want your tag object to be defined by (defaults to `value`)
 **`displayBy`** - [**`?string`**]
 
 The string displayed in a tag object (defaults to `display`)
+
 
 ---
 
@@ -251,7 +331,7 @@ Event fired when a tag is edited
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
 
-**`autocompleteObservable`** [experimental] - [**`(text: string) => Observable<Response>`**]
+**`autocompleteObservable`** - [**`(text: string) => Observable<Response>`**]
 
 A function that takes a string (current input value) and returns an Observable (ex. `http.get()`) with an array of items wit the same structure as `autocompleteItems` (see below). Make sure you retain the scope of your class or function when using this property.
 It can be used to popuplate the autocomplete with items coming from an async request.
@@ -338,7 +418,6 @@ export class App {
 
 ```html
 <tag-input [(ngModel)]='items'></tag-input>
-
 ```
 
 ### Advanced usage
@@ -350,21 +429,25 @@ export class App {
 <tag-input [ngModel]="itemsAsObjects"></tag-input>
 ```
 
+
 #### Using an array of with custom `identifyBy` and `displayBy`
 ```html
 // itemsAsObjects = [{id: 0, name: 'Angular'}, {id: 1, name: 'React'}];
 <tag-input [ngModel]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
 ```
 
-#### Editable tags (experimental)
+
+#### Editable tags
 ```html
 <tag-input [(ngModel)]='items' [editable]='true' (onTagEdited)="onTagEdited($event)"></tag-input>
 ```
+
 
 #### Static Tags (not removable)
 ```html
 <tag-input [(ngModel)]='items' [removable]='false'></tag-input>
 ```
+
 
 #### Max number of items
 ```html
@@ -372,6 +455,7 @@ export class App {
 ```
 
 If the value of the model will contain more tags than `maxItems`, `maxItems` will be replaced with the current size of the model.
+
 
 #### Autocomplete
 ```html
@@ -392,6 +476,7 @@ This will accept items only from the autocomplete dropdown:
 </tag-input>
 ```
 
+
 ##### Define a template for your menu items
 ```html
 <tag-input [ngModel]="['@item']"
@@ -404,6 +489,7 @@ This will accept items only from the autocomplete dropdown:
     </tag-input-dropdown>
 </tag-input>
 ```
+
 
 ##### Populate items using an Observable
 ```javascript
@@ -421,12 +507,14 @@ public requestAutocompleteItems = (text: string): Observable<Response> => {
 </tag-input>
 ```
 
+
 #### Additional keys to separate tags
 If you want to use more keys to separate items, add them to separatorKeys as an array of keyboard key codes.
 
 ```html
-<tag-input [(ngModel)]='items' separatorKeys="[32]"></tag-input>
+<tag-input [(ngModel)]='items' [separatorKeys]="[32]"></tag-input>
 ```
+
 
 #### Validation
 
@@ -472,6 +560,7 @@ Pass them to the tag-input component:
 </tag-input>
 ```
 
+
 #### Items Transformer
 
 Set up a transformer, which is a function that takes the item's string as parameter, and should return
@@ -491,6 +580,7 @@ Every item entered will be prefixed with `@`.
 <tag-input [ngModel]="['@item']" [transform]="transformer"></tag-input>
 ```
 
+
 #### Events
 Set up some methods that will run when its relative event is fired.
 
@@ -505,12 +595,14 @@ Set up some methods that will run when its relative event is fired.
 </tag-input>
 ```
 
+
 #### Readonly
 If readonly is passed to the tag-input, it won't be possible to select, add and remove items.
 
 ```html
 <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
 ```
+
 
 #### Custom items template
 Define your own template, but remember to set up the needed events using the `input` reference.
@@ -529,126 +621,23 @@ Define your own template, but remember to set up the needed events using the `in
 </tag-input>
 ```
 
+
 #### Built-in Themes
-If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 3 new themes: `bootstrap`, `dark` and `minimal`.
+If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 4 new themes: `bootstrap3-info`, `bootstrap`, `dark` and `minimal`.
 
 ```html
+<tag-input [(ngModel)]='items' theme='bootstrap3-info'></tag-input>
 <tag-input [(ngModel)]='items' theme='bootstrap'></tag-input>
 <tag-input [(ngModel)]='items' theme='minimal'></tag-input>
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
 ```
 
-You still don't like them? It's fine, read the next section.
+If you do not like these themes, [define your own theme](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
 
-## Customization
-
-Thanks to the newly introduced component inheritance, it is possible to finally customize the component with your own settings.
-It is not super straightforward, but you can finally define your own templates and styles. Let's see how it's done.
-
-Unfortunately this won't work with `tag-input-dropdown`. Seeking a solution for this.
-
-The first thing to do, is to define a new component and extend `tag-input`:
-
-```javascript
-import { Component, forwardRef,  animate, trigger, state, style, transition, keyframes} from '@angular/core';
-import { TagInputComponent } from 'ng2-tag-input';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-
-// all this boilerplate is needed
-@Component({
-    selector: 'custom-tag-input', // or whatever you want
-    providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => CustomComponent),
-        multi: true
-    }],
-
-    // not needed, but you may want it
-    styleUrls: [ './custom.scss' ],
-
-    // you can add your own, but for now let's go with this
-    templateUrl: '{{ node_modules }}/ng2-tag-input/dist/modules/components/tag-input.template.html'
-    // or
-    // template: require('ng2-tag-input/dist/modules/components/tag-input.template.html'),
-
-    animations: [
-        trigger('flyInOut', [
-            state('in', style({transform: 'translateX(0)'})),
-            transition(':enter', [
-                animate(200, keyframes([
-                    style({opacity: 0, offset: 0}),
-                    style({opacity: 0.5, offset: 0.3}),
-                    style({opacity: 1, offset: 1.0})
-                ]))
-            ]),
-            transition(':leave', [
-                animate(150, keyframes([
-                    style({opacity: 1, transform: 'translateX(0)', offset: 0}),
-                    style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
-                    style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})
-                ]))
-            ])
-        ])
-    ]
-})
-export class CustomComponent extends TagInputComponent { }
-```
-
-And here is where we define our own styles:
-```sass
-// I'm overwriting the variables
-$tag-color: #222;
-$tag-border-radius: 100px;
-$color-primary-default: #000;
-// have a look at https://github.com/Gbuomprisco/ng2-tag-input/tree/master/modules/components/themes
-// for having an idea on how to change the variables and how they're defined
-
-@import "~ng2-tag-input/dist/modules/components/tag-input.style.scss";
-```
-
-We now need to register this newly created component. Here is how our app module looks like:
-
-```javascript
-
-// .. all other imports
-import { TagInputModule } from 'ng2-tag-input';
-import { CustomComponent } from './custom/custom.component'; // my newly defined component
-
-@NgModule({
-    imports: [
-        BrowserModule,
-        CommonModule,
-        FormsModule,
-
-        TagInputModule, // we need this here
-    ],
-    declarations: [ Home, CustomComponent ], // we need this here
-    bootstrap: [ Home ], // this is just an example
-    entryComponents: [ Home ] // this is just an example
-})
-export class AppModule {}
-platformBrowserDynamic().bootstrapModule(AppModule);
-
-```
-
-## Use tags without a form
-
-It is possible to use `<tag>` components independently from the `tag-input` component.
-In order to do so, pass to the component the input `model` (TagModel).
-
-Notice: by default, these are unstyled. You are free to add the required styles yourself. For example, just add a class `tag`.
-If you wish to copy the same style as the one used in the component, please have a look at source code.
-
-```html
-<div class="flex">
-    <tag [model]="'Tag 1'" class='tag'></tag>
-    <tag [model]="'Tag 2'" class='tag'></tag>
-    <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
-</div>
-```
-
-## Ok - cool stuff. But when will you fix the issue I created?
-Do please read this great post by Micheal Bromley: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)
 
 ## Contributing/Pull Requests
 Contributions are highly welcome! No, there is no guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages...
+
+
+### Ok - cool stuff. But when will you fix the issue I created?
+Do please read this great post by Micheal Bromley: http://www.michaelbromley.co.uk/blog/529/why-i-havent-fixed-your-issue-yet. No, I don't have babies, but am not 24/7 coding :)

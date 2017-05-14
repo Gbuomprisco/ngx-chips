@@ -1,17 +1,5 @@
-@import "../themes/_variables.scss";
+@import "../../core/styles/themes/_themes.scss";
 
 .ng2-tag-input__text-input {
-    border: $input-border;
-
-    display: inline;
-    padding: $input-padding;
-    vertical-align: middle;
-
-    font-size: $input-font-size;
-    height: $input-height;
-    font-family: $font-family;
-}
-
-.ng2-tag-input__text-input:focus {
-    outline: 0;
+    @include tag-input-form-theme($default-theme);
 }

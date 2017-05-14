@@ -9,9 +9,12 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
-import { TagModel } from '../helpers/accessor';
-import { TagInputComponent } from '../tag-input';
+
+import { TagModel } from '../core';
+import { TagInputComponent } from '../components';
+
 const match = jasmine.objectContaining;
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
     BasicTagInputComponent,
@@ -24,14 +27,18 @@ import {
     TagInputComponentWithAutocomplete,
     TagInputComponentWithOnlyAutocomplete,
     TestModule,
-    TagInputComponentWithModelAsStrings
-} from './testing-helpers';
+    TagInputComponentWithModelAsStrings,
+    TagInputComponentWithAddOnBlur,
+    TagInputComponentWithHooks
+} from './tests/testing-helpers';
+
+import { Subject } from 'rxjs/Subject';
 
 describe('TagInputComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            imports: [ BrowserModule, TestModule ]
+            imports: [ BrowserModule, BrowserAnimationsModule, TestModule ]
         });
     });
 
@@ -65,6 +72,17 @@ describe('TagInputComponent', () => {
 
             expect(component.items.length).toEqual(2);
             expect(component.inputForm.input.nativeElement.getAttribute('placeholder')).toEqual('New Tag');
+        }));
+
+        it('should be "touched" on blur', fakeAsync(() => {
+            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
+            const component = <TagInputComponent>getComponent(fixture);
+            const onTouched = jasmine.createSpy('onTouched');
+
+            component.registerOnTouched(onTouched);
+            component.blur();
+
+            expect(onTouched).toHaveBeenCalled();
         }));
     });
 
@@ -433,6 +451,9 @@ describe('TagInputComponent', () => {
 
             expect(component.dropdown.items.length).toEqual(1);
 
+            fixture.detectChanges();
+            tick();
+
             discardPeriodicTasks();
         }));
 
@@ -484,11 +505,93 @@ describe('TagInputComponent', () => {
                 TestBed.createComponent(TagInputComponentWithModelAsStrings);
 
             const component: TagInputComponent = getComponent(fixture);
-            component.appendNewTag({display: 'Tag', value: 'Tag'});
+            component.appendTag({display: 'Tag', value: 'Tag'});
 
             expect(component.items[2]).toEqual('Tag');
 
             discardPeriodicTasks();
+        }));
+    });
+
+    describe('when addOnBlur is true', () => {
+        it('should add an item on blur', fakeAsync(() => {
+            const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
+                TestBed.createComponent(TagInputComponentWithAddOnBlur);
+
+            const component: TagInputComponent = getComponent(fixture);
+
+            component.setInputValue('New Item');
+            component.inputForm.onBlur.emit();
+
+            expect(component.items.length).toEqual(3);
+        }));
+
+        it('should not add an item on blur if the dropdown is visible', fakeAsync(() => {
+            let keyUp: Event = new Event('keyUp');
+            keyUp[ 'keyCode' ] = 73;
+
+            const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
+                TestBed.createComponent(TagInputComponentWithAddOnBlur);
+
+            const component: TagInputComponent = getComponent(fixture);
+
+            component.setInputValue('i');
+            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
+            component.inputForm.onKeyup.emit();
+
+            fixture.detectChanges();
+            tick();
+
+            expect(component.dropdown.isVisible).toEqual(true);
+
+            component.inputForm.onBlur.emit();
+
+            expect(component.items.length).toEqual(2);
+        }));
+    });
+
+    describe('when using hooks onAdding and onRemoving', () => {
+        let fixture: ComponentFixture<TagInputComponentWithHooks>;
+
+        beforeEach(() => {
+            fixture = TestBed.createComponent(TagInputComponentWithHooks);
+        });
+
+        it('intercepts hook onAdding and returns an observable', fakeAsync(() => {
+            const component: TagInputComponent = getComponent(fixture);
+            const subject = new Subject();
+            const tag = component.createTag('tag');
+
+            component.onAdding = () => {
+                return subject;
+            };
+
+            component.onAddingRequested(false, tag);
+
+            expect(component.items.length).toBe(2);
+
+            subject.next(tag);
+
+            expect(component.items.length).toBe(3);
+        }));
+
+        it('intercepts hook onRemoving and returns an observable', fakeAsync(() => {
+            const component: TagInputComponent = getComponent(fixture);
+            const subject = new Subject();
+
+            component.onRemoving = () => {
+                return subject;
+            };
+
+            const tag = component.items[0];
+
+            component.onRemoveRequested(tag, 0);
+
+            expect(component.items.length).toBe(2);
+
+            subject.next(tag);
+
+            expect(component.items.length).toBe(1);
         }));
     });
 });

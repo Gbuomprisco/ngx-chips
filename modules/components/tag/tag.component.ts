@@ -5,13 +5,26 @@ import {
     EventEmitter,
     TemplateRef,
     ElementRef,
-    Renderer,
     HostListener,
-    ViewChild
+    ViewChild,
+    ChangeDetectorRef,
+    Renderer2
 } from '@angular/core';
 
-import { TagModel } from '../helpers/accessor';
-import { TagRipple } from './tag-ripple.component';
+import { TagModel } from '../../core';
+import { TagRipple } from '../tag';
+
+// angular universal hacks
+/* tslint:disable-next-line */
+const KeyboardEvent = (global as any).KeyboardEvent;
+
+// mocking navigator
+const navigator = typeof window !== 'undefined' ? window.navigator : {
+    userAgent: 'Chrome',
+    vendor: 'Google Inc'
+};
+
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 @Component({
     selector: 'tag',
@@ -60,6 +73,16 @@ export class TagComponent {
     @Input() public index: number;
 
     /**
+     * @name hasRipple
+     */
+    @Input() public hasRipple: boolean;
+
+    /**
+     * @name disabled
+     */
+    @Input() public disabled = false;
+
+    /**
      * @name onSelect
      * @type {EventEmitter<TagModel>}
      */
@@ -106,13 +129,15 @@ export class TagComponent {
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
 
-    constructor(public element: ElementRef, public renderer: Renderer) {}
+    constructor(public element: ElementRef,
+                public renderer: Renderer2,
+                private cdRef: ChangeDetectorRef) {}
 
     /**
      * @name select
      */
     public select($event?: MouseEvent): void {
-        if (this.readonly) {
+        if (this.readonly || this.disabled) {
             return;
         }
 
@@ -136,7 +161,7 @@ export class TagComponent {
      * @name focus
      */
     public focus(): void {
-        this.renderer.invokeElementMethod(this.element.nativeElement, 'focus');
+        this.element.nativeElement.focus();
     }
 
     /**
@@ -159,13 +184,17 @@ export class TagComponent {
     public blink(): void {
         const classList = this.element.nativeElement.classList;
         classList.add('blink');
+
         setTimeout(() => classList.remove('blink'), 50);
     }
 
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(event?: MouseEvent): void {
+    public toggleEditMode(): void {
+        const classList = this.element.nativeElement.classList;
+        const className = 'tag--editing';
+
         if (this.editModeActivated) {
             this.storeNewValue();
         } else {
@@ -173,7 +202,19 @@ export class TagComponent {
         }
 
         this.editModeActivated = !this.editModeActivated;
-        this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', this.editModeActivated);
+        this.editModeActivated ? classList.add(className) : classList.remove(className);
+    }
+
+    /**
+     * @name onBlurred
+     * @param event
+     */
+    public onBlurred(event: any): void {
+        const newValue: string = event.target.innerText;
+        this.toggleEditMode();
+        const result = typeof this.model === 'string' ? newValue :
+            {[this.identifyBy]: newValue, [this.displayBy]: newValue};
+        this.onBlur.emit(result);
     }
 
     /**
@@ -183,6 +224,19 @@ export class TagComponent {
      */
     public getDisplayValue(item: TagModel): string {
         return typeof item === 'string' ? item : item[this.displayBy];
+    }
+
+    /**
+     * @desc returns whether the ripple is visible or not
+     * only works in Chrome
+     * @name isRippleVisible
+     * @returns {boolean}
+     */
+    public isRippleVisible(): boolean {
+        return !this.readonly &&
+            !this.editModeActivated &&
+            isChrome &&
+            this.hasRipple;
     }
 
     /**
@@ -200,6 +254,8 @@ export class TagComponent {
     private disableEditMode($event: KeyboardEvent): void {
         this.editModeActivated = false;
         $event.preventDefault();
+
+        this.cdRef.detectChanges();
     }
 
     /**
@@ -231,14 +287,9 @@ export class TagComponent {
      * @returns {boolean}
      */
     private isDeleteIconVisible(): boolean {
-        return !this.readonly && this.removable && !this.editModeActivated;
-    }
-
-    /**
-     * @name isRippleVisible
-     * @returns {boolean}
-     */
-    public isRippleVisible(): boolean {
-        return !this.readonly && !this.editModeActivated;
+        return !this.readonly &&
+                !this.disabled &&
+                this.removable &&
+                !this.editModeActivated;
     }
 }

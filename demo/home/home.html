@@ -2,12 +2,17 @@
     <div class="home-container">
         <div>
             <h3>Simple Input with two items</h3>
-            <tag-input [(ngModel)]="items" [modelAsStrings]="true"></tag-input>
+            <tag-input [(ngModel)]="items"
+                       [modelAsStrings]="true">
+            </tag-input>
         </div>
 
         <div>
             <h3>Simple Input with two items as objects</h3>
-            <tag-input [(ngModel)]="itemsAsObjects" [identifyBy]="'id'" [displayBy]="'name'"></tag-input>
+            <tag-input [(ngModel)]="itemsAsObjects"
+                       (onAdd)="onAdd($event)"
+                       [identifyBy]="'id'"
+                       [displayBy]="'name'"></tag-input>
         </div>
 
         <div>
@@ -27,6 +32,7 @@
             <h3>Input tag that allows max 3 tags</h3>
             <tag-input [ngModel]="['Javascript', 'Typescript']"
                        [maxItems]="3"
+                       [ripple]="false"
                        placeholder="Insert a new item">
             </tag-input>
         </div>
@@ -53,18 +59,21 @@
 
         <div>
             <h3>Tags within an autocomplete component</h3>
-            <tag-input [ngModel]="['@item']">
-                <tag-input-dropdown [autocompleteItems]="autocompleteItems"
-                                    [focusFirstElement]="true">
+            <tag-input [ngModel]="['@item']"
+                       [addOnBlur]="true"
+                       [clearOnBlur]="true">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems">
                 </tag-input-dropdown>
             </tag-input>
         </div>
 
         <div>
-            <h3>Tags accepting only items from an autocomplete</h3>
+            <h3>Tags accepting only items from an autocomplete (with transform function)</h3>
             <tag-input [ngModel]="['@item']"
+                       [transform]="transform"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
+                                    [focusFirstElement]="true"
                                     [displayBy]="'value'"
                                     [identifyBy]="'id'"
                                     [autocompleteItems]="autocompleteItemsAsObjects">
@@ -159,7 +168,7 @@
         </div>
 
         <div>
-            <h3>Tags with Custom theme minimal</h3>
+            <h3>Tags with theme minimal</h3>
             <form>
                 <tag-input
                     [theme]="'minimal'"
@@ -169,7 +178,7 @@
         </div>
 
         <div>
-            <h3>Tags with Custom theme dark</h3>
+            <h3>Tags with theme dark and pasteable items</h3>
             <form>
                 <tag-input
                     [addOnPaste]="true"
@@ -185,7 +194,25 @@
             <form>
                 <tag-input
                     [theme]="'bootstrap'"
-                    [validators]="validators"
+                    [ngModel]="['@item']"
+                    name="items">
+                </tag-input>
+            </form>
+        </div>
+
+        <div>
+            <h3>Tags with user-defined Foundation theme</h3>
+            <tag-input [ngModel]="items"
+                       [theme]="'foundation-theme'"
+                       [modelAsStrings]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Tags with Bootstrap 3 (info) theme</h3>
+            <form>
+                <tag-input
+                    [theme]="'bootstrap3-info'"
                     [ngModel]="['@item']"
                     name="items">
                 </tag-input>
@@ -198,13 +225,53 @@
         </div>
 
         <div>
-            <h3>List of tags without form</h3>
+            <h3>Input with two-way data binding for its input text</h3>
 
-            <div class="flex default">
-                <tag [model]="'Tag 1'" class='tag'></tag>
-                <tag [model]="'Tag 2'" class='tag'></tag>
-                <tag [model]="'Tag 3'" [readonly]="true" class='tag'></tag>
-            </div>
+            <input [(ngModel)]="inputText" />
+
+            <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
         </div>
+
+        <div>
+            <h3>Disabled tag input</h3>
+            <tag-input [ngModel]="items"
+                       [disabled]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop</h3>
+            <tag-input  [(ngModel)]="dragAndDropExample"
+                        [modelAsStrings]="true"
+                        [dragZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop (as string) can be moved to another tag-input (to the next)</h3>
+            <tag-input  [(ngModel)]="dragAndDropStrings"
+                        [modelAsStrings]="true"
+                        [dragZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop (as object) can be moved to another tag-input (to the previous)</h3>
+            <tag-input  [(ngModel)]="dragAndDropObjects"
+                        [dragZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+        <h3>Confirm adding and removing tags with Observables</h3>
+        <tag-input [ngModel]="['item1']"
+                   [modelAsStrings]="true"
+                   [onRemoving]="onRemoving"
+                   [onAdding]="onAdding">
+        </tag-input>
+    </div>
     </div>
 </main>

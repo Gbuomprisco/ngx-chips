@@ -3,6 +3,11 @@ const path = require('path');
 const precss = require('precss');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ROOT = path.resolve(__dirname, '.');
+const root = path.join.bind(path, ROOT);
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+
 
 // Webpack Config
 const webpackConfig = {
@@ -11,15 +16,16 @@ const webpackConfig = {
             '@angular/core',
             '@angular/common',
             "@angular/forms",
-            "rxjs/add/operator/debounceTime",
-            "rxjs/add/operator/map",
-            "rxjs/add/operator/filter"
+
+            'rxjs',
+
+            "ng2-material-dropdown"
         ],
-        'ng2-tag-input': './modules/ng2-tag-input.module.ts'
+        'ng2-tag-input': './modules/index.ts'
     },
 
     output: {
-        path: './dist',
+        path: path.resolve('./dist'),
         libraryTarget: "umd",
         library: 'ng2-tag-input'
     },
@@ -28,9 +34,10 @@ const webpackConfig = {
         "@angular/core": true,
         "@angular/common": true,
         "@angular/forms": true,
-        "rxjs/add/operator/debounceTime": true,
-        "rxjs/add/operator/map": true,
-        "rxjs/add/operator/filter": true
+
+        'rxjs': true,
+
+        "ng2-material-dropdown": true
     },
 
     module: {
@@ -83,7 +90,18 @@ const defaultConfig = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.scss']
+        extensions: ['.ts', '.js', '.scss'],
+        alias: {
+            'styles': root('modules/core/styles'),
+            'pipes': root('modules/core/pipes'),
+            'helpers': root('modules/core/helpers'),
+
+            'dropdown': root('modules/components/dropdown'),
+            'icon': root('modules/components/icon'),
+            'tag': root('modules/components/tag'),
+            'tag-input-form': root('modules/components/tag-input-form'),
+        },
+        modules: [root('modules'), root('factories'), root('node_modules')],
     },
 
     devServer: {
@@ -104,7 +122,12 @@ const defaultConfig = {
             }
         }),
 
-        new ExtractTextPlugin("styles.css")
+        new ExtractTextPlugin("styles.css"),
+        new TsConfigPathsPlugin(),
+
+        new CommonsChunkPlugin({
+            name: 'ng2-tag-input'
+        })
     ]
 };
 

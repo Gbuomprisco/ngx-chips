@@ -1,0 +1,78 @@
+$bootstrap3-info-theme: (
+    container-padding: 4px,
+    container-margin: $container-margin,
+    container-border-bottom-invalid: 1px solid map-get($color-error, 'bootstrap3-info'),
+    input-border: 1px solid #ccc,
+    input-padding: $input-padding,
+    input-font-size: 95%,
+    font-family: inherit,
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    border-radius: 4px
+);
+
+$bootstrap3-info-tag-theme: (
+    background: map-get($color-primary, 'bootstrap3-info'),
+    font-size: 95%,
+    color: #fff,
+    color-hover: #fff,
+    font-weight: 400,
+    border-radius: .25em,
+    font-family: inherit,
+    background-focused: map-get($color-focused, 'bootstrap3-info'),
+    background-active: map-get($color-focused, 'bootstrap3-info'),
+    background-hover: darken(map-get($color-primary, 'bootstrap3-info'), 5%)
+);
+
+$bootstrap3-info-icon-theme: (
+    fill: map-get($color-arrow, 'bootstrap3-info'),
+    fill-focus: map-get($color-arrow, 'bootstrap3-info')
+);
+
+.ng2-tag-input.bootstrap3-info {
+    background-color: #fff;
+    display: inline-block;
+    color: #555;
+    vertical-align: middle;
+    max-width: 100%;
+
+    height: 42px;
+    line-height: 44px;
+}
+
+.ng2-tag-input.bootstrap3-info input {
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0 6px;
+    margin: 0;
+    width: auto;
+    max-width: inherit;
+}
+
+.ng2-tag-input.bootstrap3-info .form-control input::-moz-placeholder {
+    color: #777;
+    opacity: 1;
+}
+
+.ng2-tag-input.bootstrap3-info .form-control input:-ms-input-placeholder {
+    color: #777;
+}
+
+.ng2-tag-input.bootstrap3-info .form-control input::-webkit-input-placeholder {
+    color: #777;
+}
+
+.ng2-tag-input.bootstrap3-info input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.bootstrap3-info.ng2-tag-input.ng2-tag-input--focused {
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.4);
+    border: 1px solid #ccc;
+}
+
+.bootstrap3-info.ng2-tag-input.ng2-tag-input--invalid {
+    box-shadow: inset 0 1px 1px map-get($color-error, 'bootstrap');
+}
