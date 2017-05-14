@@ -924,7 +924,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
             if (hasKeyCode || hasKey) {
                 $event.preventDefault();
-                this.addItem();
+                this.onAddingRequested();
             }
 
         }, useSeparatorKeys);
@@ -982,12 +982,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @name setUpOnBlurSubscriber
      */
     private setUpOnBlurSubscriber(): void {
+        const filterFn = (): boolean => {
+            return !(this.dropdown && this.dropdown.isVisible) && !!this.formValue;
+        };
+
         this.inputForm
             .onBlur
-            .filter(() => !(this.dropdown && this.dropdown.isVisible))
+            .filter(filterFn)
             .subscribe(() => {
                 if (this.addOnBlur) {
-                    this.addItem();
+                    this.onAddingRequested();
                 }
 
                 this.setInputValue('');
@@ -1017,7 +1021,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         text.split(this.pasteSplitPattern)
             .map(item => this.createTag(item))
-            .forEach(item => this.addItem(false, item));
+            .forEach(item => this.onAddingRequested(false, item));
 
         this.onPaste.emit(text);
 
