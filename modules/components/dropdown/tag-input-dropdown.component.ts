@@ -226,7 +226,7 @@ export class TagInputDropdown {
         const model = {...item.value, display, value};
 
         // add item
-        this.tagInput.addItem(true, model);
+        this.tagInput.onAddingRequested(true, model);
 
         // hide dropdown
         this.dropdown.hide();
