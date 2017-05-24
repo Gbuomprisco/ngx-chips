@@ -116,9 +116,9 @@ String that sets the placeholder of the input for entering new terms when there 
 Sets the maximum number of items it is possible to enter.
 
 
-**`readonly`** - [**`?boolean`**]
+~~**`readonly`**~~ - [**`?boolean`**] [REMOVED]
 
-Sets the tag input static, not allowing deletion/addition of the items entered.
+Please add a readonly attribute to each tag model as a truthy value instead.
 
 
 **`separatorKeyCodes`** - [**`?number[]`**]
