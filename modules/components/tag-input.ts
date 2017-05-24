@@ -514,7 +514,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param emit
      */
     public selectItem(item: TagModel, emit = true): void {
-        if (!item || typeof item !== 'string' && item.readonly) {
+        const isReadonly = item && typeof item !== 'string' && item.readonly;
+        if (isReadonly) {
             return;
         }
 
