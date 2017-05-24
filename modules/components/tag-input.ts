@@ -88,13 +88,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     @Input() public maxItems: number;
 
     /**
-     * @name readonly
-     * @desc if set to true, the user cannot remove/addItem new items
-     * @type {boolean}
-     */
-    @Input() public readonly: boolean;
-
-    /**
      * @name transform
      * @desc function passed to the component to transform the value of the items, or reject them instead
      */
@@ -414,27 +407,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
     }
 
     /**
-     * @name removeItem
-     * @desc removes an item from the array of the model
-     * @param tag {TagModel}
-     * @param index {number}
-     */
-    public removeItem(tag: TagModel, index: number): void {
-        this.items = this.getItemsWithout(index);
-
-        // if the removed tag was selected, set it as undefined
-        if (this.selectedTag === tag) {
-            this.selectItem(undefined, false);
-        }
-
-        // focus input
-        this.focus(true, false);
-
-        // emit remove event
-        this.onRemove.emit(tag);
-    }
-
-    /**
      * @name onRemoveRequested
      * @param tag
      * @param index
@@ -464,59 +436,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
         } else {
             this.addItem(isFromAutocomplete, tag);
         }
-    }
-
-    /**
-     * @name addItem
-     * @desc adds the current text model to the items array
-     * @param fromAutocomplete
-     * @param item
-     */
-    public addItem(fromAutocomplete = false, item: TagModel = this.formValue): void {
-        /**
-         * @name reset
-         */
-        const reset = (): void => {
-            // reset control and focus input
-            this.setInputValue('');
-
-            // focus input
-            this.focus(true, false);
-        };
-
-        /**
-         * @name validationFilter
-         * @param tag
-         * @return {boolean}
-         */
-        const validationFilter = (tag: TagModel): boolean => {
-            const isValid = this.isTagValid(tag, fromAutocomplete);
-
-            if (!isValid) {
-                this.onValidationError.emit(tag);
-            }
-
-            return isValid;
-        };
-
-        /**
-         * @name appendItem
-         * @param tag
-         */
-        const appendItem = (tag: TagModel): void => {
-            this.appendTag(tag);
-
-            // emit event
-            this.onAdd.emit(tag);
-        };
-
-        Observable
-            .of(this.getItemDisplay(item))
-            .map(display => this.setInputValue(display))
-            .filter(display => this.inputForm.form.valid && !!display)
-            .map((display: string) => this.createTag(fromAutocomplete ? item : display))
-            .filter(validationFilter)
-            .subscribe(appendItem, undefined, reset);
     }
 
     /**
@@ -595,7 +514,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param emit
      */
     public selectItem(item: TagModel, emit = true): void {
-        if (this.readonly) {
+        if (typeof item !== 'string' && item.readonly) {
             return;
         }
 
@@ -630,7 +549,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
             case constants.ACTIONS_KEYS.DELETE:
                 if (this.selectedTag && this.removable) {
                     const index = this.items.indexOf(this.selectedTag);
-                    this.removeItem(this.selectedTag, index);
+                    this.onRemoveRequested(this.selectedTag, index);
                 }
                 break;
             case constants.ACTIONS_KEYS.SWITCH_PREV:
@@ -678,10 +597,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if (this.readonly) {
-            return;
-        }
-
         this.selectItem(undefined, false);
 
         if (applyFocus) {
@@ -811,8 +726,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
 
         event.dataTransfer.setData(constants.DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
 
-        this.items = this.getItemsWithout(index);
-
+        this.onRemoveRequested(draggedElement, index);
         this.onRemove.emit(draggedElement);
     }
 
@@ -910,6 +824,80 @@ export class TagInputComponent extends TagInputAccessor implements OnInit {
      */
     public trackBy(item: TagModel): string {
         return item[this.identifyBy];
+    }
+
+    /**
+     * @name removeItem
+     * @desc removes an item from the array of the model
+     * @param tag {TagModel}
+     * @param index {number}
+     */
+    private removeItem(tag: TagModel, index: number): void {
+        this.items = this.getItemsWithout(index);
+
+        // if the removed tag was selected, set it as undefined
+        if (this.selectedTag === tag) {
+            this.selectItem(undefined, false);
+        }
+
+        // focus input
+        this.focus(true, false);
+
+        // emit remove event
+        this.onRemove.emit(tag);
+    }
+
+    /**
+     * @name addItem
+     * @desc adds the current text model to the items array
+     * @param fromAutocomplete
+     * @param item
+     */
+    private addItem(fromAutocomplete = false, item: TagModel = this.formValue): void {
+        /**
+         * @name reset
+         */
+        const reset = (): void => {
+            // reset control and focus input
+            this.setInputValue('');
+
+            // focus input
+            this.focus(true, false);
+        };
+
+        /**
+         * @name validationFilter
+         * @param tag
+         * @return {boolean}
+         */
+        const validationFilter = (tag: TagModel): boolean => {
+            const isValid = this.isTagValid(tag, fromAutocomplete);
+
+            if (!isValid) {
+                this.onValidationError.emit(tag);
+            }
+
+            return isValid;
+        };
+
+        /**
+         * @name appendItem
+         * @param tag
+         */
+        const appendItem = (tag: TagModel): void => {
+            this.appendTag(tag);
+
+            // emit event
+            this.onAdd.emit(tag);
+        };
+
+        Observable
+            .of(this.getItemDisplay(item))
+            .map(display => this.setInputValue(display))
+            .filter(display => this.inputForm.form.valid && !!display)
+            .map((display: string) => this.createTag(fromAutocomplete ? item : display))
+            .filter(validationFilter)
+            .subscribe(appendItem, undefined, reset);
     }
 
     /**

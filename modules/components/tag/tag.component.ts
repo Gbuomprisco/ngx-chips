@@ -17,6 +17,7 @@ import { TagRipple } from '../tag';
 // angular universal hacks
 /* tslint:disable-next-line */
 const KeyboardEvent = (global as any).KeyboardEvent;
+const MouseEvent = (global as any).MouseEvent;
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
@@ -36,11 +37,6 @@ export class TagComponent {
      * @name model {TagModel}
      */
     @Input() public model: TagModel;
-
-    /**
-     * @name readonly {boolean}
-     */
-    @Input() public readonly: boolean;
 
     /**
      * @name removable {boolean}
@@ -113,6 +109,13 @@ export class TagComponent {
     @Output() public onTagEdited: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
+     * @name readonly {boolean}
+     */
+    public get readonly(): boolean {
+        return typeof this.model !== 'string' && this.model.readonly === true;
+    };
+
+    /**
      * @name editModeActivated
      * @type {boolean}
      */
@@ -153,7 +156,8 @@ export class TagComponent {
     /**
      * @name remove
      */
-    public remove(): void {
+    public remove($event: MouseEvent): void {
+        $event.stopPropagation();
         this.onRemove.emit(this);
     }
 

@@ -15,10 +15,11 @@
         </ng-template>
     </div>
 
-    <div *ngSwitchCase="false">
+    <div *ngSwitchCase="false" class="tag-wrapper">
         <!-- TAG NAME -->
         <div [attr.contenteditable]="editModeActivated"
-             class="inline"
+             [attr.title]="getDisplayValue(model)"
+             class="tag__text inline"
              spellcheck="false"
              (keydown.enter)="disableEditMode($event)"
              (keydown.escape)="disableEditMode($event)"
@@ -31,7 +32,7 @@
         <delete-icon
             aria-label="Remove tag"
             role="button"
-            (click)="remove()"
+            (click)="remove($event)"
             *ngIf="isDeleteIconVisible()">
         </delete-icon>
     </div>
