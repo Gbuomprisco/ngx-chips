@@ -14,7 +14,7 @@
            [attr.placeholder]="placeholder"
            [attr.aria-label]="placeholder"
            [attr.tabindex]="tabindex"
-           [attr.disabled]="disabled"
+           [attr.disabled]="disabled ? disabled : null"
 
            (focus)="onFocus.emit($event)"
            (blur)="onBlur.emit($event)"

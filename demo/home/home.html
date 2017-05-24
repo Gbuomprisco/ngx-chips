@@ -235,8 +235,11 @@
 
         <div>
             <h3>Disabled tag input</h3>
+
+            Disable: <input type="checkbox" [(ngModel)]="disabled" />
+
             <tag-input [ngModel]="items"
-                       [disabled]="true">
+                       [disabled]="disabled">
             </tag-input>
         </div>
 
