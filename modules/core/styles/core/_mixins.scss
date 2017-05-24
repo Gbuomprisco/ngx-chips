@@ -136,6 +136,7 @@
     height: map-get($theme, 'height');
     transition: map-get($theme, 'transition');
     display: map-get($theme, 'display');
+    text-align: right;
 
     path {
         fill: map-get($theme, 'fill');

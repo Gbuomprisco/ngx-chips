@@ -15,11 +15,13 @@ import 'rxjs/add/operator/filter';
 export class Home {
     constructor(private http: Http) {}
 
+    disabled = true;
+
     items = ['Javascript', 'Typescript'];
 
     inputText = 'text';
 
-    itemsAsObjects = [{id: 0, name: 'Angular', extra: 0}, {id: 1, name: 'React', extra: 1}];
+    itemsAsObjects = [{id: 0, name: 'Angular', readonly: true}, {id: 1, name: 'React'}];
 
     autocompleteItems = ['Item1', 'item2', 'item3'];
 
