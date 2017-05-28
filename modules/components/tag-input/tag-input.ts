@@ -440,10 +440,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name onAddingRequested
-     * @param isFromAutocomplete
-     * @param tag
+     * @param isFromAutocomplete {boolean}
+     * @param tag {TagModel}
      */
-    public onAddingRequested(isFromAutocomplete?: boolean, tag?: TagModel): void {
+    public onAddingRequested(isFromAutocomplete: boolean, tag: TagModel): void {
+        if (!tag) {
+            return;
+        }
+
         if (this.onAdding) {
             this.onAdding(tag)
                 .subscribe((model: TagModel) => {
@@ -929,7 +933,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
             if (hasKeyCode || hasKey) {
                 $event.preventDefault();
-                this.onAddingRequested();
+                this.onAddingRequested(false, this.formValue);
             }
 
         }, useSeparatorKeys);
@@ -996,7 +1000,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             .filter(filterFn)
             .subscribe(() => {
                 if (this.addOnBlur) {
-                    this.onAddingRequested();
+                    this.onAddingRequested(false, this.formValue);
                 }
 
                 this.setInputValue('');

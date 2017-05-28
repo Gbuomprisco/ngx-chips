@@ -3,7 +3,6 @@ import {
     Input,
     Output,
     EventEmitter,
-    Renderer2,
     ViewChild
 } from '@angular/core';
 
@@ -134,7 +133,7 @@ export class TagInputForm {
      */
     public inputTextValue = '';
 
-    constructor(private renderer: Renderer2) {}
+    constructor() {}
 
     public ngOnInit() {
         // creating form

@@ -147,22 +147,25 @@ export class TagInputDropdown {
 
     constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
 
-    public ngOnInit() {
+    /**
+     * @name ngOnInit
+     */
+    public ngOnInit(): void {
         this.onItemClicked()
-            .subscribe(this.addNewItem.bind(this));
+            .subscribe(this.requestAdding);
 
         // reset itemsMatching array when the dropdown is hidden
         this.onHide()
-            .subscribe(this.resetItems.bind(this));
+            .subscribe(this.resetItems);
 
         this.tagInput.inputForm.onKeyup
-            .subscribe(this.show.bind(this));
+            .subscribe(this.show);
 
         if (this.autocompleteObservable) {
             this.tagInput
                 .onTextChange
                 .filter((text: string) => text.trim().length >= this.minimumTextLength)
-                .subscribe(this.getItemsFromObservable.bind(this));
+                .subscribe(this.getItemsFromObservable);
         }
     }
 
@@ -170,7 +173,8 @@ export class TagInputDropdown {
      * @name updatePosition
      */
     public updatePosition(): void {
-        this.dropdown.menu.updatePosition(this.tagInput.inputForm.getElementPosition());
+        const position = this.tagInput.inputForm.getElementPosition();
+        this.dropdown.menu.updatePosition(position);
     }
 
     /**
@@ -214,30 +218,10 @@ export class TagInputDropdown {
     }
 
     /**
-     * @name addNewItem
-     * @param item {Ng2MenuItem}
-     */
-    private addNewItem(item: Ng2MenuItem): void {
-        if (!item) {
-            return;
-        }
-
-        const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
-        const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
-        const model = {...item.value, display, value};
-
-        // add item
-        this.tagInput.onAddingRequested(true, model);
-
-        // hide dropdown
-        this.dropdown.hide();
-    }
-
-    /**
      *
      * @name show
      */
-    public show(): void {
+    public show = (): void => {
         const value: string = this.tagInput.inputForm.value.value.trim();
         const position: ClientRect = this.tagInput.inputForm.getElementPosition();
         const items: TagModel[] = this.getMatchingItems(value);
@@ -278,8 +262,42 @@ export class TagInputDropdown {
     }
 
     /**
+     * @name requestAdding
+     * @param item {Ng2MenuItem}
+     */
+    private requestAdding = (item: Ng2MenuItem): void => {
+        if (!item) {
+            return;
+        }
+
+        const model = this.createTagModel(item);
+
+        // add item
+        this.tagInput.onAddingRequested(true, model);
+
+        // hide dropdown
+        this.dropdown.hide();
+    }
+
+    /**
+     * @name createTagModel
+     * @param item
+     * @return {{}}
+     */
+    private createTagModel(item: Ng2MenuItem): TagModel {
+        const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
+        const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
+
+        return {
+            ...item.value,
+            [this.tagInput.displayBy]: display,
+            [this.tagInput.identifyBy]: value
+        };
+    }
+
+    /**
      *
-     * @param value
+     * @param value {string}
      * @returns {any}
      */
     private getMatchingItems(value: string): TagModel[] {
@@ -309,7 +327,7 @@ export class TagInputDropdown {
     /**
      * @name resetItems
      */
-    private resetItems(): void {
+    private resetItems = (): void => {
         this.items = [];
     }
 
@@ -332,7 +350,7 @@ export class TagInputDropdown {
      * @name getItemsFromObservable
      * @param text
      */
-    private getItemsFromObservable(text: string): void {
+    private getItemsFromObservable = (text: string): void => {
         this.setLoadingState(true);
 
         this.autocompleteObservable(text)

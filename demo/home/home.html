@@ -88,7 +88,7 @@
             <h3>Tags accepting only items from an autocomplete using a remote endpoint</h3>
             <tag-input [ngModel]="[]"
                        [placeholder]="'Enter a new repo'"
-                       [onTextChangeDebounce]="2000"
+                       [onTextChangeDebounce]="500"
                        [secondaryPlaceholder]="'Search in Github'"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
@@ -143,11 +143,12 @@
 
         <div>
             <h3>Input with custom item template and custom dropdown item template</h3>
-            <tag-input [ngModel]="['@item']" #tagInput
-                       [onRemoving]="onRemoving"
-                       [onAdding]="onAdding">
+            {{ itemsAsObjects | json }}
+            <tag-input [(ngModel)]="itemsAsObjects"
+                       [displayBy]="'name'"
+                       [identifyBy]="'id'">
                 <ng-template let-item="item">
-                    tag: {{ item }}
+                    tag: {{ item.name }}
                 </ng-template>
                 <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects"
                                     [displayBy]="'value'"
