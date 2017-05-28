@@ -11,13 +11,14 @@ import {
     EventEmitter
 } from '@angular/core';
 
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
+import { TagModel } from 'core';
+import { TagInputComponent } from 'components';
+
+// rx
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-
-import { TagInputComponent } from '../';
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { TagModel } from '../../core';
 
 @Component({
     selector: 'tag-input-dropdown',

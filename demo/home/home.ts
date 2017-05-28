@@ -14,7 +14,6 @@ import 'rxjs/add/operator/filter';
 })
 export class Home {
     constructor(private http: Http) {}
-
     disabled = true;
 
     items = ['Javascript', 'Typescript'];

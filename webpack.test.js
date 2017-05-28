@@ -14,6 +14,7 @@ module.exports = {
             'pipes': root('modules/core/pipes'),
             'helpers': root('modules/core/helpers'),
 
+            'tag-input': root('modules/components/tag-input'),
             'dropdown': root('modules/components/dropdown'),
             'icon': root('modules/components/icon'),
             'tag': root('modules/components/tag'),

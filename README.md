@@ -255,11 +255,32 @@ An object whose key is the name of the error (ex. required) and the value is the
 Hook to intercept when an item is being added. Needs to return an Observable.
 * You can modify the tag being added during the interception.
 
+Example:
+```javascript
+ public onAdding(tag: TagModel): Observable<TagModel> {
+    const confirm = window.confirm('Do you really want to add this tag?');
+    return Observable
+        .of(undefined)
+        .filter(() => confirm)
+        .mapTo(tag);
+}
+```
+
 
 **`onRemoving`** - [**`?onRemoving(tag: tagModel): Observable<TagModel>`**]
 
 Hook to intercept when an item is being removed. Needs to return an Observable.
+Example:
 
+```javascript
+public onRemoving(tag: TagModel): Observable<TagModel> {
+        const confirm = window.confirm('Do you really want to remove this tag?');
+        return Observable
+            .of(undefined)
+            .filter(() => confirm)
+            .mapTo(tag);
+    }
+```
 
 ---
 

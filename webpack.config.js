@@ -95,7 +95,9 @@ const defaultConfig = {
             'styles': root('modules/core/styles'),
             'pipes': root('modules/core/pipes'),
             'helpers': root('modules/core/helpers'),
-
+            'core': root('modules/core'),
+            'components': root('modules/components'),
+            'tag-input': root('modules/components/tag-input'),
             'dropdown': root('modules/components/dropdown'),
             'icon': root('modules/components/icon'),
             'tag': root('modules/components/tag'),

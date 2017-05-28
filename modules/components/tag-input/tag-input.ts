@@ -1,3 +1,4 @@
+// angular
 import {
     Component,
     forwardRef,
@@ -12,24 +13,39 @@ import {
     ContentChild,
     OnInit,
     TemplateRef,
-    QueryList
+    QueryList,
+    AfterViewInit
 } from '@angular/core';
 
-import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
+import {
+    AsyncValidatorFn,
+    FormControl,
+    NG_VALUE_ACCESSOR,
+    ValidatorFn
+} from '@angular/forms';
 
-import { TagInputAccessor, TagModel, listen } from '../core';
-import * as constants from '../core/constants';
-import { TagInputForm } from './tag-input-form';
-import { TagInputDropdown } from './dropdown';
-import { TagComponent } from './tag';
-import { animations } from './animations';
-
+// rx
 import { Observable } from 'rxjs';
-
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
+
+// ng2-tag-input
+import {
+    TagInputAccessor,
+    TagModel,
+    listen,
+    constants
+} from 'core';
+
+import {
+    TagInputForm,
+    TagInputDropdown,
+    TagComponent
+} from 'components';
+
+import { animations } from './animations';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -51,7 +67,7 @@ const CUSTOM_ACCESSOR = {
     templateUrl: './tag-input.template.html',
     animations: animations
 })
-export class TagInputComponent extends TagInputAccessor implements OnInit {
+export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
