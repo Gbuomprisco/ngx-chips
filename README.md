@@ -120,6 +120,16 @@ Sets the maximum number of items it is possible to enter.
 
 Please add a readonly attribute to each tag model as a truthy value instead.
 
+Example:
+```
+// TagModel
+{
+    display: 'display',
+    value: 124242,
+    readonly: true
+}
+```
+
 
 **`separatorKeyCodes`** - [**`?number[]`**]
 
