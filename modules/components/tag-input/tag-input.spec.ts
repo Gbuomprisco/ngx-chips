@@ -10,8 +10,8 @@ import {
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { TagModel } from '../core';
-import { TagInputComponent } from '../components';
+import { TagModel } from 'core';
+import { TagInputComponent } from 'components';
 
 const match = jasmine.objectContaining;
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

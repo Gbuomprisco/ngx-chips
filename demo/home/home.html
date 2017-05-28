@@ -143,13 +143,17 @@
 
         <div>
             <h3>Input with custom item template and custom dropdown item template</h3>
-            <tag-input [ngModel]="['@item']">
+            <tag-input [ngModel]="['@item']" #tagInput
+                       [onRemoving]="onRemoving"
+                       [onAdding]="onAdding">
                 <ng-template let-item="item">
                     tag: {{ item }}
                 </ng-template>
-                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects"
+                                    [displayBy]="'value'"
+                                    [identifyBy]="'id'">
                     <ng-template let-item="item" let-index="index">
-                        dropdown: {{ item }}
+                        dropdown: {{ item.value }}
                     </ng-template>
                 </tag-input-dropdown>
             </tag-input>

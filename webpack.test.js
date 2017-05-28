@@ -8,6 +8,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
         alias: {
+            'modules': root('modules'),
             'core': root('modules/core'),
             'components': root('modules/components'),
             'styles': root('modules/core/styles'),

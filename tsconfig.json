@@ -26,6 +26,7 @@
             "es2015"
         ],
         "paths": {
+            "modules": ["modules"],
             "core": ["modules/core"],
             "components": ["modules/components"],
 

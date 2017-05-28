@@ -32,7 +32,7 @@ export class Home {
 
     dragAndDropExample = ['C#', 'Java'];
 
-    dragAndDropObjects = [{display:'Javascript', value: 'Javascript'}, {display:'Typescript', value: 'Typescript'}];
+    dragAndDropObjects = [{display: 'Javascript', value: 'Javascript'}, {display: 'Typescript', value: 'Typescript'}];
     dragAndDropStrings = ['CoffeScript', 'Scala.js'];
 
     public requestAutocompleteItems = (text: string): Observable<Response> => {
