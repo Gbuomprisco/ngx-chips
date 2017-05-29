@@ -8,12 +8,14 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.js'],
         alias: {
+            'modules': root('modules'),
             'core': root('modules/core'),
             'components': root('modules/components'),
             'styles': root('modules/core/styles'),
             'pipes': root('modules/core/pipes'),
             'helpers': root('modules/core/helpers'),
 
+            'tag-input': root('modules/components/tag-input'),
             'dropdown': root('modules/components/dropdown'),
             'icon': root('modules/components/icon'),
             'tag': root('modules/components/tag'),

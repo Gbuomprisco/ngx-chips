@@ -11,8 +11,8 @@ import {
     Renderer2
 } from '@angular/core';
 
-import { TagModel } from '../../core';
-import { TagRipple } from '../tag';
+import { TagModel } from 'core';
+import { TagRipple } from 'tag';
 
 // angular universal hacks
 /* tslint:disable-next-line */

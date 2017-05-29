@@ -26,17 +26,19 @@
             "es2015"
         ],
         "paths": {
+            "modules": ["modules"],
             "core": ["modules/core"],
-            "components": ["modules/components/"],
+            "components": ["modules/components"],
 
-            "helpers": ["modules/core/helpers/"],
-            "styles": ["modules/core/styles/"],
-            "pipes": ["modules/core/pipes/"],
+            "helpers": ["modules/core/helpers"],
+            "styles": ["modules/core/styles"],
+            "pipes": ["modules/core/pipes"],
 
-            "dropdown": ["modules/components/dropdown/"],
-            "icon": ["modules/components/icon/"],
-            "tag": ["modules/components/tag/"],
-            "tag-input-form": ["modules/components/tag-input-form/"]
+            "tag-input": ["modules/components/tag-input"],
+            "dropdown": ["modules/components/dropdown"],
+            "icon": ["modules/components/icon"],
+            "tag": ["modules/components/tag"],
+            "tag-input-form": ["modules/components/tag-input-form"]
         },
         "suppressImplicitAnyIndexErrors": true
     },
