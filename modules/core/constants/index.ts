@@ -23,5 +23,5 @@ export const KEY_PRESS_ACTIONS = {
     9: ACTIONS_KEYS.TAB
 };
 
-export const DRAG_AND_DROP_KEY = 'dragged tag';
+export const DRAG_AND_DROP_KEY = 'Text';
 
