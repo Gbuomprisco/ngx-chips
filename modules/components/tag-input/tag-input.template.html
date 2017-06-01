@@ -24,7 +24,7 @@
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit(item)"
              (onBlur)="onTagBlurred($event, i)"
-             draggable="{{editable && !readonly}}"
+             draggable="{{editable}}"
 
              (dragstart)="dragZone ? onDragStarted($event, i) : undefined"
              (drop)="dragZone ? onTagDropped($event, i) : undefined"
@@ -32,8 +32,7 @@
              (dragover)="dragZone ? onDragOver($event) : undefined"
              (dragleave)="dragZone ? onDragEnd() : undefined"
 
-             [attr.tabindex]="readonly ? -1 : 0"
-             [class.readonly]="readonly"
+             [attr.tabindex]="0"
 
              [disabled]="disabled"
              [@flyInOut]="'in'"
@@ -59,7 +58,7 @@
             [disabled]="disabled"
             [validators]="validators"
             [asyncValidators]="asyncValidators"
-            [hidden]="readonly || maxItemsReached"
+            [hidden]="maxItemsReached"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
             [inputId]="inputId"
