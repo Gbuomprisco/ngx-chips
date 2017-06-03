@@ -12,8 +12,8 @@ import {
 } from '@angular/core';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { TagModel } from 'core';
-import { TagInputComponent } from 'components';
+import { TagModel } from '../../core';
+import { TagInputComponent } from '../../components';
 
 // rx
 import { Observable } from 'rxjs/Observable';
