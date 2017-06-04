@@ -37,13 +37,13 @@ import {
     TagModel,
     listen,
     constants
-} from 'core';
+} from '../../core';
 
 import {
     TagInputForm,
     TagInputDropdown,
     TagComponent
-} from 'components';
+} from '../../components';
 
 import { animations } from './animations';
 
