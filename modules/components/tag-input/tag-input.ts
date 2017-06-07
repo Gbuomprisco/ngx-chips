@@ -369,6 +369,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public isDropping = false;
 
     /**
+     * @name isDragging
+     * @type {boolean}
+     */
+    public isDragging = false;
+
+    /**
      * @name inputText
      * @param text
      */
@@ -618,6 +624,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
+        if(this.isDragging) { 
+            return;
+        }        
+        
         this.selectItem(undefined, false);
 
         if (applyFocus) {
@@ -741,6 +751,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public onDragStarted(event: DragEvent, index: number): void {
         event.stopPropagation();
+        
+        this.isDragging = true;
 
         const draggedElement: TagModel = this.items[index];
         const storedElement = {zone: this.dragZone, value: draggedElement};
@@ -765,6 +777,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name onDragEnd
      */
     public onDragEnd(): void {
+        this.isDragging = false;
         this.isDropping = false;
     }
 
