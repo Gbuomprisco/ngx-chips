@@ -624,7 +624,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if(this.isDragging) { 
+        if (this.isDragging) { 
             return;
         }        
         
