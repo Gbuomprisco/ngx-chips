@@ -427,7 +427,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag
      * @param index
      */
-    public onRemoveRequested(tag: TagModel, index: number): void {
+    public onRemoveRequested(tag: TagModel, index: number): void {	
         if (this.onRemoving) {
             this.onRemoving(tag)
                 .subscribe((model: TagModel) => {
@@ -620,11 +620,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public focus(applyFocus = false, displayAutocomplete = false): void {
         this.selectItem(undefined, false);
 
-        if (applyFocus) {
-            this.inputForm.focus();
-            this.onFocus.emit(this.formValue);
+        if (!applyFocus) {
+			return;
         }
-
+		
+		this.inputForm.focus();
+        this.onFocus.emit(this.formValue);
+			
         if (displayAutocomplete && this.dropdown) {
             this.dropdown.show();
         }
@@ -654,6 +656,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public isInputFocused(): boolean {
         return this.inputForm && this.inputForm.isInputFocused();
     }
+	
+    /**
+     * @name onClick
+     */
+	public onClick(): void {	
+		if (!this.isInputFocused()) {
+			return;
+		}
+		
+		this.focus(true, this.dropdown ? this.dropdown.showDropdownIfEmpty : false);
+	}
 
     /**
      * - this is the one way I found to tell if the template has been passed and it is not

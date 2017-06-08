@@ -53,6 +53,7 @@
             (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
+			(click)="onClick()"
 
             [(inputText)]="inputText"
             [disabled]="disabled"
