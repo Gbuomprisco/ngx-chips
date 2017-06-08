@@ -3,12 +3,13 @@
         <div>
             <h3>Simple Input with two items</h3>
             <tag-input [(ngModel)]="items"
+                       (onSelect)="onSelect($event)"
                        [modelAsStrings]="true">
             </tag-input>
         </div>
 
         <div>
-            <h3>Simple Input with two items as objects</h3>
+            <h3>Partially editable input with two items as objects</h3>
             <tag-input [(ngModel)]="itemsAsObjects"
                        [identifyBy]="'id'"
                        [displayBy]="'name'"></tag-input>
@@ -38,7 +39,7 @@
 
         <div>
             <h3>A read-only tag input</h3>
-            <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
+            <tag-input [ngModel]="[{display: 'Javascript', readonly: true}]"></tag-input>
         </div>
 
         <div>
@@ -76,9 +77,9 @@
                                     [displayBy]="'value'"
                                     [identifyBy]="'id'"
                                     [autocompleteItems]="autocompleteItemsAsObjects">
-                    <template let-item="item" let-index="index">
+                    <ng-template let-item="item" let-index="index">
                         ({{ index }}) {{ item.id }}: {{ item.value }}
-                    </template>
+                    </ng-template>
                 </tag-input-dropdown>
             </tag-input>
         </div>
@@ -87,15 +88,16 @@
             <h3>Tags accepting only items from an autocomplete using a remote endpoint</h3>
             <tag-input [ngModel]="[]"
                        [placeholder]="'Enter a new repo'"
+                       [onTextChangeDebounce]="500"
                        [secondaryPlaceholder]="'Search in Github'"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
-                    <template let-item="item" let-index="index">
+                    <ng-template let-item="item" let-index="index">
                         {{ item.display }}
-                    </template>
+                    </ng-template>
                 </tag-input-dropdown>
             </tag-input>
-        </div>
+        </div >
 
         <div>
             <h3>Tags dropdown with last provided</h3>
@@ -104,9 +106,9 @@
                        [secondaryPlaceholder]="'Search in Github'"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [autocompleteObservable]="requestAutocompleteItems">
-                    <template let-item="item" let-index="index" let-last="last">
+                    <ng-template let-item="item" let-index="index" let-last="last">
                         ({{ index }}) {{ item.id }}: {{ item.value }} # {{ last }}
-                    </template>
+                    </ng-template>
                 </tag-input-dropdown>
             </tag-input>
         </div>
@@ -127,7 +129,7 @@
                        [modelAsStrings]="true"
                        #input
                        (onTextChange)="onTextChange($event)">
-                <template item-template let-item="item" let-index="index">
+                <ng-template item-template let-item="item" let-index="index">
                     <span>
                         item: {{ item }}
                     </span>
@@ -135,20 +137,25 @@
                     <span (click)="input.removeItem(item, index)" class="ng2-tag__remove-button">
                         x
                     </span>
-                </template>
+                </ng-template>
             </tag-input>
         </div>
 
         <div>
             <h3>Input with custom item template and custom dropdown item template</h3>
-            <tag-input [ngModel]="['@item']">
-                <template let-item="item">
-                    tag: {{ item }}
-                </template>
-                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects">
-                    <template let-item="item" let-index="index">
-                        dropdown: {{ item }}
-                    </template>
+            {{ itemsAsObjects | json }}
+            <tag-input [(ngModel)]="itemsAsObjects"
+                       [displayBy]="'name'"
+                       [identifyBy]="'id'">
+                <ng-template let-item="item">
+                    tag: {{ item.name }}
+                </ng-template>
+                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects"
+                                    [displayBy]="'value'"
+                                    [identifyBy]="'id'">
+                    <ng-template let-item="item" let-index="index">
+                        dropdown: {{ item.value }}
+                    </ng-template>
                 </tag-input-dropdown>
             </tag-input>
         </div>
@@ -233,8 +240,47 @@
 
         <div>
             <h3>Disabled tag input</h3>
+
+            Disable: <input type="checkbox" [(ngModel)]="disabled" />
+
             <tag-input [ngModel]="items"
-                       [disabled]="true">
+                       [disabled]="disabled">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop</h3>
+            <tag-input  [(ngModel)]="dragAndDropExample"
+                        [modelAsStrings]="true"
+                        [dragZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop (as string) can be moved to another tag-input (to the next)</h3>
+            <tag-input  [(ngModel)]="dragAndDropStrings"
+                        [modelAsStrings]="true"
+                        [dragZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Drag and drop (as object) can be moved to another tag-input (to the previous)</h3>
+            <tag-input  [(ngModel)]="dragAndDropObjects"
+                        [dragZone]="'zone1'"
+                        [editable]="true">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Confirm adding and removing tags with Observables</h3>
+            <tag-input [ngModel]="['item1']"
+                       [dragZone]="'zone1'"
+                       [modelAsStrings]="true"
+                       [onRemoving]="onRemoving"
+                       [onAdding]="onAdding">
             </tag-input>
         </div>
     </div>

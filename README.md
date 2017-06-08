@@ -1,4 +1,4 @@
-# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input) [![npm](https://img.shields.io/npm/dm/localeval.svg)](https://www.npmjs.com/package/ng2-tag-input)
+# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input)
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
@@ -43,6 +43,10 @@ Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2
 ### Something's broken?
 Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
 
+Please **do not** send private emails - Github Issues are supposed to help whoever might have your same issue, so it is the right place to help each other.
+
+Issues not filled out with the provided templates are going to be closed.
+
 
 ## Configuration
 
@@ -50,11 +54,12 @@ Ensure you import the module:
 
 ```javascript
 import { TagInputModule } from 'ng2-tag-input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 
 @NgModule({
-   imports: [ TagInputModule ]
+   imports: [ TagInputModule, BrowserAnimationsModule, ...OtherModules ] // along with your other modules
 })
-export class MyModule {}
+export class AppModule {}
 ```
 
 ### Configuration for SystemJS users
@@ -111,9 +116,19 @@ String that sets the placeholder of the input for entering new terms when there 
 Sets the maximum number of items it is possible to enter.
 
 
-**`readonly`** - [**`?boolean`**]
+~~**`readonly`**~~ - [**`?boolean`**] [REMOVED]
 
-Sets the tag input static, not allowing deletion/addition of the items entered.
+Please add a readonly attribute to each tag model as a truthy value instead.
+
+Example:
+```
+// TagModel
+{
+    display: 'display',
+    value: 124242,
+    readonly: true
+}
+```
 
 
 **`separatorKeyCodes`** - [**`?number[]`**]
@@ -216,21 +231,66 @@ Specifies whether the ripple effect should be visible or not (defaults to `true`
 
 If set to `true`, the input will be disabled. Similar to `readonly` but with a visual effect.
 
+
 **`tabindex`** - [**`?string`**]
 
 If set, passes the specified tabindex to the form's input.
 
+
+**`dragZone`** - [**`?string`**]
+
+If set, the input will be draggable. Also the input will be draggable to another form with the same dragZone value.
+
+
 ---
 
 ##### Validation (optional)
-**`validators`** - [**`?Validators[]`**]
+**`validators`** - [**`?ValidatorFn[]`**]
 
 An array of Validators (custom or Angular's) that will validate the tag before adding it to the list of items. It is possible to use multiple validators.
+
+
+**`asyncValidators`** - [**`?AsyncValidatorFn[]`**]
+
+An array of AsyncValidators that will validate the tag before adding it to the list of items. It is possible to use multiple async validators.
 
 
 **`errorMessages`** - [**`?Object{error: message}`**]
 
 An object whose key is the name of the error (ex. required) and the value is the message you want to display to your users
+
+
+**`onAdding`** - [**`?onAdding(tag: tagModel): Observable<TagModel>`**]
+
+Hook to intercept when an item is being added. Needs to return an Observable.
+* You can modify the tag being added during the interception.
+
+Example:
+```javascript
+ public onAdding(tag: TagModel): Observable<TagModel> {
+    const confirm = window.confirm('Do you really want to add this tag?');
+    return Observable
+        .of(undefined)
+        .filter(() => confirm)
+        .mapTo(tag);
+}
+```
+
+
+**`onRemoving`** - [**`?onRemoving(tag: tagModel): Observable<TagModel>`**]
+
+Hook to intercept when an item is being removed. Needs to return an Observable.
+Example:
+
+```javascript
+public onRemoving(tag: TagModel): Observable<TagModel> {
+        const confirm = window.confirm('Do you really want to remove this tag?');
+        return Observable
+            .of(undefined)
+            .filter(() => confirm)
+            .mapTo(tag);
+    }
+```
 
 ---
 
@@ -238,7 +298,6 @@ An object whose key is the name of the error (ex. required) and the value is the
 **`onlyFromAutocomplete`** - [**`?boolean`**]
 
 If set to `true`, it will be possible to add new items only from the autocomplete dropdown
-
 
 
 ##### Tags as Objects (optional)
@@ -250,6 +309,7 @@ Any value you want your tag object to be defined by (defaults to `value`)
 **`displayBy`** - [**`?string`**]
 
 The string displayed in a tag object (defaults to `display`)
+
 
 ---
 
@@ -297,6 +357,7 @@ Event fired when the validation fails
 **`onTagEdited`** - [**`?onTagEdited($event: TagModel)`**]
 
 Event fired when a tag is edited
+
 
 ## API for TagInputDropdownComponent
 TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.

@@ -2,7 +2,10 @@ import {Component} from '@angular/core';
 
 import { FormControl } from '@angular/forms';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/filter';
 
 @Component({
     selector: 'app',
@@ -11,12 +14,13 @@ import { Observable } from 'rxjs';
 })
 export class Home {
     constructor(private http: Http) {}
+    disabled = true;
 
     items = ['Javascript', 'Typescript'];
 
     inputText = 'text';
 
-    itemsAsObjects = [{id: 0, name: 'Angular', extra: 0}, {id: 1, name: 'React', extra: 1}];
+    itemsAsObjects = [{id: 0, name: 'Angular', readonly: true}, {id: 1, name: 'React'}];
 
     autocompleteItems = ['Item1', 'item2', 'item3'];
 
@@ -25,6 +29,11 @@ export class Home {
         {value: 'item2', id: 1, extra: 1},
         'item3'
     ];
+
+    dragAndDropExample = ['C#', 'Java'];
+
+    dragAndDropObjects = [{display: 'Javascript', value: 'Javascript'}, {display: 'Typescript', value: 'Typescript'}];
+    dragAndDropStrings = ['CoffeScript', 'Scala.js'];
 
     public requestAutocompleteItems = (text: string): Observable<Response> => {
         const url = `https://api.github.com/search/repositories?q=${text}`;
@@ -100,4 +109,20 @@ export class Home {
         'startsWithAt@': 'Your items need to start with \'@\'',
         'endsWith$': 'Your items need to end with \'$\''
     };
+
+    public onAdding(tag): Observable<any> {
+        const confirm = window.confirm('Do you really want to add this tag?');
+        return Observable
+            .of(undefined)
+            .filter(() => confirm)
+            .mapTo(tag);
+    }
+
+    public onRemoving(tag): Observable<any> {
+        const confirm = window.confirm('Do you really want to remove this tag?');
+        return Observable
+            .of(undefined)
+            .filter(() => confirm)
+            .mapTo(tag);
+    }
 }

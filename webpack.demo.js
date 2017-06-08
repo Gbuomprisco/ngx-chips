@@ -3,6 +3,8 @@ const path = require('path');
 const precss = require('precss');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ROOT = path.resolve(__dirname, '.');
+const root = path.join.bind(path, ROOT);
 
 const webpackConfig = {
     entry: {
@@ -80,7 +82,19 @@ const defaultConfig = {
     },
 
     resolve: {
-        extensions: ['.ts', '.js', '.scss']
+        extensions: ['.ts', '.js', '.scss'],
+        alias: {
+            'core': root('modules/core'),
+            'components': root('modules/components'),
+            'styles': root('modules/core/styles'),
+            'pipes': root('modules/core/pipes'),
+            'helpers': root('modules/core/helpers'),
+
+            'dropdown': root('modules/components/dropdown'),
+            'icon': root('modules/components/icon'),
+            'tag': root('modules/components/tag'),
+            'tag-input-form': root('modules/components/tag-input-form'),
+        }
     },
 
     devServer: {

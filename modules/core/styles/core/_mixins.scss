@@ -1,5 +1,5 @@
 @mixin tag-input-theme($theme) {
-    display: flex;
+    display: block;
     flex-direction: row;
     flex-wrap: wrap;
     position: relative;
@@ -17,6 +17,10 @@
 
     &:focus {
         outline: 0;
+    }
+
+    &.ng2-tag-input--dropping {
+        opacity: 0.7;
     }
 
     &.ng2-tag-input--focused {
@@ -132,6 +136,7 @@
     height: map-get($theme, 'height');
     transition: map-get($theme, 'transition');
     display: map-get($theme, 'display');
+    text-align: right;
 
     path {
         fill: map-get($theme, 'fill');

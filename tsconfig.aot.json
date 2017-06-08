@@ -9,8 +9,7 @@
         "declaration": true,
         "sourceMap": true,
         "moduleResolution": "node",
-        "rootDir": ".",
-        "baseUrl": ".",
+        "baseUrl": "",
         "inlineSources": true,
         "skipLibCheck": true,
         "typeRoots": [ "./node_modules/@types" ],
@@ -21,11 +20,18 @@
             "es2015"
         ],
         "paths": {
-            "@angular/core": ["node_modules/@angular/core"],
-            "@angular/http": ["node_modules/@angular/http"],
-            "@angular/common": ["node_modules/@angular/common"],
-            "@angular/forms": ["node_modules/@angular/forms"],
-            "rxjs/*": ["node_modules/rxjs/*"]
+            "core": ["modules/core"],
+            "components": ["modules/components"],
+
+            "helpers": ["modules/core/helpers"],
+            "styles": ["modules/core/styles"],
+            "pipes": ["modules/core/pipes"],
+
+            "tag-input": ["modules/components/tag-input"],
+            "dropdown": ["modules/components/dropdown"],
+            "icon": ["modules/components/icon"],
+            "tag": ["modules/components/tag"],
+            "tag-input-form": ["modules/components/tag-input-form"]
         }
     },
     "awesomeTypescriptLoaderOptions": {
@@ -37,7 +43,15 @@
         "strictMetadataEmit": true
     },
     "files": [
-        "modules/ng2-tag-input.module.ts"
+        "modules/index.ts"
+    ],
+    "include": [
+        "modules"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "**/*.spec.ts"
     ],
     "compileOnSave": false,
     "buildOnSave": false,

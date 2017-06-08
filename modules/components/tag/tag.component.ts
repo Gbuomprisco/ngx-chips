@@ -5,17 +5,19 @@ import {
     EventEmitter,
     TemplateRef,
     ElementRef,
-    Renderer,
     HostListener,
-    ViewChild
+    ViewChild,
+    ChangeDetectorRef,
+    Renderer2
 } from '@angular/core';
 
-import { TagModel } from '../helpers/accessor';
-import { TagRipple } from './tag-ripple.component';
+import { TagModel } from '../../core';
+import { TagRipple } from '../tag';
 
 // angular universal hacks
 /* tslint:disable-next-line */
 const KeyboardEvent = (global as any).KeyboardEvent;
+const MouseEvent = (global as any).MouseEvent;
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
@@ -35,11 +37,6 @@ export class TagComponent {
      * @name model {TagModel}
      */
     @Input() public model: TagModel;
-
-    /**
-     * @name readonly {boolean}
-     */
-    @Input() public readonly: boolean;
 
     /**
      * @name removable {boolean}
@@ -112,6 +109,13 @@ export class TagComponent {
     @Output() public onTagEdited: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
+     * @name readonly {boolean}
+     */
+    public get readonly(): boolean {
+        return typeof this.model !== 'string' && this.model.readonly === true;
+    };
+
+    /**
      * @name editModeActivated
      * @type {boolean}
      */
@@ -128,7 +132,9 @@ export class TagComponent {
      */
     @ViewChild(TagRipple) public ripple: TagRipple;
 
-    constructor(public element: ElementRef, public renderer: Renderer) {}
+    constructor(public element: ElementRef,
+                public renderer: Renderer2,
+                private cdRef: ChangeDetectorRef) {}
 
     /**
      * @name select
@@ -150,7 +156,8 @@ export class TagComponent {
     /**
      * @name remove
      */
-    public remove(): void {
+    public remove($event: MouseEvent): void {
+        $event.stopPropagation();
         this.onRemove.emit(this);
     }
 
@@ -158,7 +165,7 @@ export class TagComponent {
      * @name focus
      */
     public focus(): void {
-        this.renderer.invokeElementMethod(this.element.nativeElement, 'focus');
+        this.element.nativeElement.focus();
     }
 
     /**
@@ -188,7 +195,10 @@ export class TagComponent {
     /**
      * @name toggleEditMode
      */
-    public toggleEditMode(event?: MouseEvent): void {
+    public toggleEditMode(): void {
+        const classList = this.element.nativeElement.classList;
+        const className = 'tag--editing';
+
         if (this.editModeActivated) {
             this.storeNewValue();
         } else {
@@ -196,7 +206,19 @@ export class TagComponent {
         }
 
         this.editModeActivated = !this.editModeActivated;
-        this.renderer.setElementClass(this.element.nativeElement, 'tag--editing', this.editModeActivated);
+        this.editModeActivated ? classList.add(className) : classList.remove(className);
+    }
+
+    /**
+     * @name onBlurred
+     * @param event
+     */
+    public onBlurred(event: any): void {
+        const newValue: string = event.target.innerText;
+        this.toggleEditMode();
+        const result = typeof this.model === 'string' ? newValue :
+            {[this.identifyBy]: newValue, [this.displayBy]: newValue};
+        this.onBlur.emit(result);
     }
 
     /**
@@ -206,6 +228,19 @@ export class TagComponent {
      */
     public getDisplayValue(item: TagModel): string {
         return typeof item === 'string' ? item : item[this.displayBy];
+    }
+
+    /**
+     * @desc returns whether the ripple is visible or not
+     * only works in Chrome
+     * @name isRippleVisible
+     * @returns {boolean}
+     */
+    public isRippleVisible(): boolean {
+        return !this.readonly &&
+            !this.editModeActivated &&
+            isChrome &&
+            this.hasRipple;
     }
 
     /**
@@ -223,6 +258,8 @@ export class TagComponent {
     private disableEditMode($event: KeyboardEvent): void {
         this.editModeActivated = false;
         $event.preventDefault();
+
+        this.cdRef.detectChanges();
     }
 
     /**
@@ -258,18 +295,5 @@ export class TagComponent {
                 !this.disabled &&
                 this.removable &&
                 !this.editModeActivated;
-    }
-
-    /**
-     * @desc returns whether the ripple is visible or not
-     * only works in Chrome
-     * @name isRippleVisible
-     * @returns {boolean}
-     */
-    public isRippleVisible(): boolean {
-        return !this.readonly &&
-            !this.editModeActivated &&
-            isChrome &&
-            this.hasRipple;
     }
 }

@@ -6,9 +6,14 @@ import {
 } from '@angular/forms';
 
 import { NgModule } from '@angular/core';
-import { TagInputModule } from '../../ng2-tag-input.module';
+import { TagInputModule } from 'modules';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 
 function getItems() {
     return ['Javascript', 'Typescript'];
@@ -170,6 +175,24 @@ export class TagInputComponentWithAddOnBlur {
     public items = getItems();
 }
 
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items" 
+                          [onRemoving]="onRemoving"
+                          [onAdding]="onAdding"></tag-input>`
+})
+export class TagInputComponentWithHooks {
+    public items = getItems();
+
+    public onAdding(tag): Observable<any> {
+        return;
+    }
+
+    public onRemoving(tag): Observable<any> {
+        return;
+    }
+}
+
 const COMPONENTS = [
     BasicTagInputComponent,
     TagInputComponentWithPlaceholder,
@@ -183,7 +206,8 @@ const COMPONENTS = [
     TagInputComponentTagsAsObjects,
     TagInputComponentCustomTagsAsObjects,
     TagInputComponentWithModelAsStrings,
-    TagInputComponentWithAddOnBlur
+    TagInputComponentWithAddOnBlur,
+    TagInputComponentWithHooks
 ];
 
 @NgModule({
