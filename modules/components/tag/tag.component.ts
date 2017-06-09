@@ -214,11 +214,13 @@ export class TagComponent {
      * @param event
      */
     public onBlurred(event: any): void {
-        const newValue: string = event.target.innerText;
-        this.toggleEditMode();
-        const result = typeof this.model === 'string' ? newValue :
-            {[this.identifyBy]: newValue, [this.displayBy]: newValue};
-        this.onBlur.emit(result);
+		if (this.editable) {
+			const newValue: string = event.target.innerText;
+			this.toggleEditMode();
+			const result = typeof this.model === 'string' ? newValue :
+				{[this.identifyBy]: newValue, [this.displayBy]: newValue};
+			this.onBlur.emit(result);
+		}
     }
 
     /**

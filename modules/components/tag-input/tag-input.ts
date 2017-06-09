@@ -742,6 +742,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.maxItems = this.items.length;
             console.warn(constants.MAX_ITEMS_WARNING);
         }
+		
+		if (this.onlyFromAutocomplete) {
+			this.editable = false;
+		}
     }
 
     /**3
@@ -820,7 +824,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.setUpKeypressListeners();
         this.setupSeparatorKeysListener();
         this.setUpInputKeydownListeners();
-
+		
         if (this.onTextChange.observers.length) {
             this.setUpTextChangeSubscriber();
         }
