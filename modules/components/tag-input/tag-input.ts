@@ -510,7 +510,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag {TagModel}
      */
     public appendTag = (tag: TagModel, index = this.items.length): void => {
-        this.items.splice(index, 0, tag);
+        const items = [];
+
+        for (let i = 0; i <= this.items.length; i++) {
+            if (i < index) {
+                items.push(this.items[i]);
+            } else if (i === index) {
+                items.push(this.modelAsStrings ? tag[this.identifyBy] : tag);
+            } else {
+                items.push(this.items[i - 1]);
+            }
+        }
+
+        this.items = items;
     }
 
     /**
