@@ -433,7 +433,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag
      * @param index
      */
-    public onRemoveRequested(tag: TagModel, index: number): void {	
+    public onRemoveRequested(tag: TagModel, index: number): void {
         if (this.onRemoving) {
             this.onRemoving(tag)
                 .subscribe((model: TagModel) => {
@@ -624,19 +624,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if (this.isDragging) { 
+        if (this.isDragging) {
             return;
-        }        
-        
+        }
+
         this.selectItem(undefined, false);
 
+        // Checks if applyFocus is false and returns to prevent the dropdown.show() to be
+        // executed if applyFocus is not true
         if (!applyFocus) {
 			return;
         }
-		
+
 		this.inputForm.focus();
         this.onFocus.emit(this.formValue);
-			
+
         if (displayAutocomplete && this.dropdown) {
             this.dropdown.show();
         }
@@ -666,16 +668,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public isInputFocused(): boolean {
         return this.inputForm && this.inputForm.isInputFocused();
     }
-	
+
     /**
      * @name onClick
      */
-	public onClick(): void {	
-		if (!this.isInputFocused()) {
-			return;
+	public onClick(): void {
+	    // Triggers focus again if the input is already focused
+		if (this.isInputFocused()) {
+		    this.focus(true, this.dropdown ? this.dropdown.showDropdownIfEmpty : false);
 		}
-		
-		this.focus(true, this.dropdown ? this.dropdown.showDropdownIfEmpty : false);
 	}
 
     /**
@@ -764,7 +765,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public onDragStarted(event: DragEvent, index: number): void {
         event.stopPropagation();
-        
+
         this.isDragging = true;
 
         const draggedElement: TagModel = this.items[index];
