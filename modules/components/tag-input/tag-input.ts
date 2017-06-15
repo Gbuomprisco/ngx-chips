@@ -510,19 +510,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag {TagModel}
      */
     public appendTag = (tag: TagModel, index = this.items.length): void => {
-        const items = [];
-
-        for (let i = 0; i <= this.items.length; i++) {
-            if (i < index) {
-                items.push(this.items[i]);
-            } else if (i === index) {
-                items.push(this.modelAsStrings ? tag[this.identifyBy] : tag);
-            } else {
-                items.push(this.items[i - 1]);
-            }
-        }
-
-        this.items = items;
+        const items = this.items;
+        this.items = [...items.slice(0, index), tag, ...items.slice(index, items.length)];
     }
 
     /**
@@ -928,7 +917,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             .of(this.getItemDisplay(item))
             .map(display => this.setInputValue(display))
             .filter(display => this.inputForm.form.valid && !!display)
-            .map((display: string) => this.createTag(fromAutocomplete ? item : display))
+            .map((display: string) => this.createTag(item))
             .filter(validationFilter)
             .subscribe(appendItem, undefined, reset);
     }
