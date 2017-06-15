@@ -624,10 +624,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if (this.isDragging) { 
+        if (this.isDragging) {
             return;
-        }        
-        
+        }
+
         this.selectItem(undefined, false);
 
         if (applyFocus) {
@@ -742,7 +742,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.maxItems = this.items.length;
             console.warn(constants.MAX_ITEMS_WARNING);
         }
-		
+
+	    // Setting editable to false to fix problem with tags in IE still being editable when
+	    // onlyFromAutocomplete is true
 		if (this.onlyFromAutocomplete) {
 			this.editable = false;
 		}
@@ -755,7 +757,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public onDragStarted(event: DragEvent, index: number): void {
         event.stopPropagation();
-        
+
         this.isDragging = true;
 
         const draggedElement: TagModel = this.items[index];
@@ -824,7 +826,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.setUpKeypressListeners();
         this.setupSeparatorKeysListener();
         this.setUpInputKeydownListeners();
-		
+
         if (this.onTextChange.observers.length) {
             this.setUpTextChangeSubscriber();
         }
