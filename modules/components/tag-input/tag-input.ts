@@ -917,7 +917,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             .of(this.getItemDisplay(item))
             .map(display => this.setInputValue(display))
             .filter(display => this.inputForm.form.valid && !!display)
-            .map((display: string) => this.createTag(item))
+            .map((display: string) => this.createTag(fromAutocomplete ? item : display))
             .filter(validationFilter)
             .subscribe(appendItem, undefined, reset);
     }
