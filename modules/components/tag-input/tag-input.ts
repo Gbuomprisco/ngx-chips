@@ -62,8 +62,8 @@ const CUSTOM_ACCESSOR = {
  */
 @Component({
     selector: 'tag-input',
-    providers: [ CUSTOM_ACCESSOR ],
-    styleUrls: [ './tag-input.style.scss' ],
+    providers: [CUSTOM_ACCESSOR],
+    styleUrls: ['./tag-input.style.scss'],
     templateUrl: './tag-input.template.html',
     animations: animations
 })
@@ -134,7 +134,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name errorMessages
      * @type {Map<string, string>}
      */
-    @Input() public errorMessages: {[key: string]: string} = {};
+    @Input() public errorMessages: { [key: string]: string } = {};
 
     /**
      * @name theme
@@ -341,7 +341,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @desc reference to the template if provided by the user
      * @type {TemplateRef}
      */
-    @ContentChildren(TemplateRef, {descendants: false}) public templates: QueryList<TemplateRef<any>>;
+    @ContentChildren(TemplateRef, { descendants: false }) public templates: QueryList<TemplateRef<any>>;
 
 	/**
      * @name inputForm
@@ -395,9 +395,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @type []
      */
     private listeners = {
-        [constants.KEYDOWN]: <{(fun): any}[]>[],
-        [constants.KEYUP]: <{(fun): any}[]>[],
-        change: <{(fun): any}[]>[]
+        [constants.KEYDOWN]: <{ (fun): any }[]>[],
+        [constants.KEYUP]: <{ (fun): any }[]>[],
+        change: <{ (fun): any }[]>[]
     };
 
     /**
@@ -449,7 +449,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param isFromAutocomplete {boolean}
      * @param tag {TagModel}
      */
-    public onAddingRequested(isFromAutocomplete: boolean, tag: TagModel): void {
+    public onAddingRequested(isFromAutocomplete: boolean, tag: TagModel, index = undefined): void {
         if (!tag) {
             return;
         }
@@ -457,10 +457,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (this.onAdding) {
             this.onAdding(tag)
                 .subscribe((model: TagModel) => {
-                    this.addItem(isFromAutocomplete, model);
+                    this.addItem(isFromAutocomplete, model, index);
                 });
         } else {
-            this.addItem(isFromAutocomplete, tag);
+            this.addItem(isFromAutocomplete, tag, index);
         }
     }
 
@@ -509,11 +509,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name appendTag
      * @param tag {TagModel}
      */
-    public appendTag = (tag: TagModel): void => {
-        this.items = [
-            ...this.items,
-            this.modelAsStrings ? tag[this.identifyBy] : tag
-        ];
+    public appendTag = (tag: TagModel, index = this.items.length): void => {
+        const items = this.items;
+        const model = this.modelAsStrings ? tag[this.identifyBy] : tag;
+        this.items = [...items.slice(0, index), model, ...items.slice(index, items.length)];
     }
 
     /**
@@ -624,10 +623,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if (this.isDragging) { 
+        if (this.isDragging) {
             return;
-        }        
-        
+        }
+
         this.selectItem(undefined, false);
 
         if (applyFocus) {
@@ -751,16 +750,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public onDragStarted(event: DragEvent, index: number): void {
         event.stopPropagation();
-        
+
         this.isDragging = true;
 
         const draggedElement: TagModel = this.items[index];
-        const storedElement = {zone: this.dragZone, value: draggedElement};
+        const storedElement = { zone: this.dragZone, value: draggedElement };
 
         event.dataTransfer.setData(constants.DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
 
         this.onRemoveRequested(draggedElement, index);
-        this.onRemove.emit(draggedElement);
     }
 
     /**
@@ -796,16 +794,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             return;
         }
 
-        const tag: TagModel = this.createTag(droppedElement.value);
-
-        if (index === undefined) {
-            this.appendTag(tag);
-        } else {
-            const items = this.items;
-            this.items = [...items.slice(0, index), tag, ...items.slice(index, items.length)];
-        }
-
-        this.onAdd.emit(tag);
+        this.onAddingRequested(false, droppedElement.value, index);
 
         event.preventDefault();
         event.stopPropagation();
@@ -887,7 +876,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param fromAutocomplete
      * @param item
      */
-    private addItem(fromAutocomplete = false, item: TagModel = this.formValue): void {
+    private addItem(fromAutocomplete = false, item: TagModel = this.formValue, index = undefined): void {
         /**
          * @name reset
          */
@@ -919,7 +908,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
          * @param tag
          */
         const appendItem = (tag: TagModel): void => {
-            this.appendTag(tag);
+            this.appendTag(tag, index);
 
             // emit event
             this.onAdd.emit(tag);
@@ -963,7 +952,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             if (isCorrectKey &&
                 !this.formValue &&
                 this.items.length) {
-                    this.tags.last.select.call(this.tags.last);
+                this.tags.last.select.call(this.tags.last);
             }
         });
     }
