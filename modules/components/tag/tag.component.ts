@@ -214,11 +214,15 @@ export class TagComponent {
      * @param event
      */
     public onBlurred(event: any): void {
-        const newValue: string = event.target.innerText;
-        this.toggleEditMode();
-        const result = typeof this.model === 'string' ? newValue :
-            {[this.identifyBy]: newValue, [this.displayBy]: newValue};
-        this.onBlur.emit(result);
+        // Checks if it is editable first before handeling the onBlurred event in order to prevent
+        // a bug in IE where tags are still editable with onlyFromAutocomplete set to true
+		if (this.editable) {
+			const newValue: string = event.target.innerText;
+			this.toggleEditMode();
+			const result = typeof this.model === 'string' ? newValue :
+				{[this.identifyBy]: newValue, [this.displayBy]: newValue};
+			this.onBlur.emit(result);
+		}
     }
 
     /**

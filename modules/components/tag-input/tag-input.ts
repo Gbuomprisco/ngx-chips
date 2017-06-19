@@ -741,6 +741,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.maxItems = this.items.length;
             console.warn(constants.MAX_ITEMS_WARNING);
         }
+
+	    // Setting editable to false to fix problem with tags in IE still being editable when
+	    // onlyFromAutocomplete is true
+		if (this.onlyFromAutocomplete) {
+			this.editable = false;
+		}
     }
 
     /**3
