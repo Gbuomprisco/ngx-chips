@@ -1,4 +1,5 @@
 # Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
 
