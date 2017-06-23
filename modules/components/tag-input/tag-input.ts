@@ -373,6 +373,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @type {boolean}
      */
     public isDragging = false;
+    
+    /**
+     * @name isRemoving
+     * @type {boolean}
+     */
+    public isRemoving = false;
 
     /**
      * @name inputText
@@ -630,14 +636,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         this.selectItem(undefined, false);
 
-        // Checks if applyFocus is false and returns to prevent the dropdown.show() to be
-        // executed if applyFocus is not true
-        if (!applyFocus) {
-			return;
+        if (applyFocus) {
+            this.inputForm.focus();
+            this.onFocus.emit(this.formValue);
         }
 
-		this.inputForm.focus();
-        this.onFocus.emit(this.formValue);
+        // Check if isRemoving is true, if it is set it to true and return to prevent the dropdow to show
+		if(this.isRemoving){
+			this.isRemoving = false;
+			return;
+		}
 
         if (displayAutocomplete && this.dropdown) {
             this.dropdown.show();
@@ -881,6 +889,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param index {number}
      */
     private removeItem(tag: TagModel, index: number): void {
+		// set isRemoving to true to prevent dropdown to show when setting the focus back to the input
+        this.isRemoving = true;
         this.items = this.getItemsWithout(index);
 
         // if the removed tag was selected, set it as undefined
