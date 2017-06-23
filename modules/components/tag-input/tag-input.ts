@@ -373,6 +373,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @type {boolean}
      */
     public isDragging = false;
+    
+    /**
+     * @name isRemoving
+     * @type {boolean}
+     */
+    public isRemoving = false;
 
     /**
      * @name inputText
@@ -634,6 +640,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.onFocus.emit(this.formValue);
         }
 
+        // Check if isRemoving is true, if it is set it to true and return to prevent the dropdow to show
+		if(this.isRemoving){
+			this.isRemoving = false;
+			return;
+		}
+
         if (displayAutocomplete && this.dropdown) {
             this.dropdown.show();
         }
@@ -663,6 +675,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public isInputFocused(): boolean {
         return this.inputForm && this.inputForm.isInputFocused();
     }
+
+    /**
+     * @name onClick
+     */
+	public onClick(): void {
+	    // Triggers focus again if the input is already focused
+		if (this.isInputFocused()) {
+		    this.focus(true, this.dropdown ? this.dropdown.showDropdownIfEmpty : false);
+		}
+	}
 
     /**
      * - this is the one way I found to tell if the template has been passed and it is not
@@ -862,6 +884,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param index {number}
      */
     private removeItem(tag: TagModel, index: number): void {
+		// set isRemoving to true to prevent dropdown to show when setting the focus back to the input
+        this.isRemoving = true;
         this.items = this.getItemsWithout(index);
 
         // if the removed tag was selected, set it as undefined
