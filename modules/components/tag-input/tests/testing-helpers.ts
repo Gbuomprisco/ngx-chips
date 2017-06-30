@@ -1,5 +1,3 @@
-import { TagModel } from '../../helpers/accessor';
-
 import { Component } from '@angular/core';
 
 import {
@@ -93,7 +91,7 @@ export class TagInputComponentWithValidation {
 export class TagInputComponentWithTransformer {
     public items = getItems();
 
-    onAdding(value: string): Observable<TagModel> {
+    onAdding(value: string): Observable<object> {
         const item = {display: `prefix: ${value}`, value: `prefix: ${value}`};
         return Observable.of(item);
     }
