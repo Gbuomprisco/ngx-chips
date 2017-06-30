@@ -7,9 +7,9 @@
      (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
      (dragenter)="dragZone ? onDragOver($event) : undefined"
      (dragover)="dragZone ? onDragOver($event) : undefined"
-     (dragleave)="dragZone ? onDragEnd() : undefined"
+     (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
 
-     [class.ng2-tag-input--dropping]="isDropping"
+     [class.ng2-tag-input--dropping]="dragProvider.getState('isDropping')"
      [class.ng2-tag-input--disabled]="disabled"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
@@ -26,11 +26,11 @@
              (onBlur)="onTagBlurred($event, i)"
              draggable="{{editable}}"
 
-             (dragstart)="dragZone ? onDragStarted($event, i) : undefined"
+             (dragstart)="dragZone ? onDragStarted($event, item, i) : undefined"
              (drop)="dragZone ? onTagDropped($event, i) : undefined"
              (dragenter)="dragZone ? onDragOver($event) : undefined"
              (dragover)="dragZone ? onDragOver($event) : undefined"
-             (dragleave)="dragZone ? onDragEnd() : undefined"
+             (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
 
              [attr.tabindex]="0"
 

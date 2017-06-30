@@ -31,9 +31,6 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/merge';
 
 // ng2-tag-input
 import {
@@ -42,6 +39,11 @@ import {
     listen,
     constants
 } from '../../core';
+
+import {
+    DragProvider,
+    DraggedTag
+} from '../../core/providers/drag-provider';
 
 import {
     TagInputForm,
@@ -362,18 +364,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public isLoading = false;
 
     /**
-     * @name isDropping
-     * @type {boolean}
-     */
-    public isDropping = false;
-
-    /**
-     * @name isDragging
-     * @type {boolean}
-     */
-    public isDragging = false;
-
-    /**
      * @name inputText
      * @param text
      */
@@ -423,7 +413,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         return this.tabindex !== undefined ? '-1' : undefined;
     }
 
-    constructor(private renderer: Renderer2) {
+    constructor(private readonly renderer: Renderer2, 
+                private readonly dragProvider: DragProvider) {
         super();
     }
 
@@ -621,7 +612,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if (this.isDragging) {
+        if (this.dragProvider.getState('isDragging')) {
             return;
         }
 
@@ -752,17 +743,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param event
      * @param index
      */
-    public onDragStarted(event: DragEvent, index: number): void {
+    public onDragStarted(event: DragEvent, tag: TagModel, index: number): void {
         event.stopPropagation();
 
-        this.isDragging = true;
-
-        const draggedElement: TagModel = this.items[index];
-        const storedElement = { zone: this.dragZone, value: draggedElement };
-
-        event.dataTransfer.setData(constants.DRAG_AND_DROP_KEY, JSON.stringify(storedElement));
-
-        this.onRemoveRequested(draggedElement, index);
+        const item = { zone: this.dragZone, tag, index } as DraggedTag;
+        
+        this.dragProvider.setSender(this);
+        this.dragProvider.setDraggedItem(event, item);
+        this.dragProvider.setState({isDragging: true});
     }
 
     /**
@@ -770,17 +758,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param event
      */
     public onDragOver(event: DragEvent): void {
-        this.isDropping = true;
+        this.dragProvider.setState({isDropping: true});
+        this.dragProvider.setReceiver(this);
 
         event.preventDefault();
-    }
-
-    /**
-     * @name onDragEnd
-     */
-    public onDragEnd(): void {
-        this.isDragging = false;
-        this.isDropping = false;
     }
 
     /**
@@ -789,16 +770,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param index
      */
     public onTagDropped(event: DragEvent, index: number): void {
-        this.onDragEnd();
+        const item = this.dragProvider.getDraggedItem(event);
 
-        const data = event.dataTransfer.getData(constants.DRAG_AND_DROP_KEY);
-        const droppedElement = JSON.parse(data);
-
-        if (droppedElement.zone !== this.dragZone) {
+        if (item.zone !== this.dragZone) {
             return;
         }
-
-        this.onAddingRequested(false, droppedElement.value, index);
+ 
+        this.dragProvider.onTagDropped(item.tag, item.index, index);
 
         event.preventDefault();
         event.stopPropagation();
