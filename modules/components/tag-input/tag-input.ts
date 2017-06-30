@@ -520,7 +520,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param model
      * @returns {{}}
      */
-    public createTag(model: TagModel): TagModel {
+    public createTag = (model: TagModel): TagModel => {
         const trim = (val: TagModel, key: string): TagModel => {
             return typeof val === 'string' ? val.trim() : val[key];
         };
@@ -921,7 +921,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         };
 
         Observable
-            .of(this.createTag(model))
+            .of(model)
+            .filter(() => model.trim() !== '')
+            .map(this.createTag)
             .filter(validationFilter)
             .subscribe(appendItem, undefined, reset);
     }
