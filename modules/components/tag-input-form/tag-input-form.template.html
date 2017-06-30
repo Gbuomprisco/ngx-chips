@@ -5,7 +5,8 @@
            type="text"
            class="ng2-tag-input__text-input"
            autocomplete="off"
-           tabindex="{{ disabled ? -1 : 0 }}"
+           tabindex="{{ disabled ? -1 : tabindex ? tabindex : 0 }}"
+           minlength="1"
 
            [(ngModel)]="inputText"
            [formControlName]="'item'"
