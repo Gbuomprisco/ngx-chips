@@ -142,9 +142,9 @@ Array of keyboard keys with which is possible to define the key for separating t
 Array of input characters with which is possible to define the key for separating terms. Default is empty. Can use with `separatorKeyCodes`, either one method matched will trigger tag separation.
 
 
-**`transform`** - [**`?(item: string) => string`**]
+~~**`transform`**~~ - [**`?(item: string) => string`**] [REMOVED]
 
-A function that takes as argument the value of an item, and returns a string with the new value when appended. If the method returns null/undefined/false, the item gets rejected.
+Please use `onAdding` instead. Just pass the value, transformed, to the Observable.
 
 
 **`inputId`** - [**`?string`**]
@@ -590,26 +590,6 @@ Pass them to the tag-input component:
            [errorMessages]="errorMessages"
            [validators]="validators">
 </tag-input>
-```
-
-
-#### Items Transformer
-
-Set up a transformer, which is a function that takes the item's string as parameter, and should return
-the transformed string.
-
-```javascript
-class MyComponent {
-    public transformer(item: string): string {
-        return `@${item}`;
-    }
-}
-```
-
-Every item entered will be prefixed with `@`.
-
-```html
-<tag-input [ngModel]="['@item']" [transform]="transformer"></tag-input>
 ```
 
 

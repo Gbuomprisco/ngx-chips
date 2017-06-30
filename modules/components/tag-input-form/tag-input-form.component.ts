@@ -133,15 +133,10 @@ export class TagInputForm {
      */
     public inputTextValue = '';
 
-    constructor() {}
-
     public ngOnInit() {
         // creating form
         this.form = new FormGroup({
-            item: new FormControl('',
-                Validators.compose(this.validators),
-                Validators.composeAsync(this.asyncValidators)
-            )
+            item: new FormControl('', this.validators, this.asyncValidators)
         });
     }
 

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
@@ -73,32 +74,27 @@ export class TagInputComponentCustomTagsAsObjects {
     selector: 'test-app',
     template: `<tag-input
                   [(ngModel)]="items"
-                  [validators]="validators"
-                  (onRemove)="onRemove($event)"
-                  (onAdd)="onAdd($event)">
+                  [validators]="validators">
               </tag-input>`
 })
 export class TagInputComponentWithValidation {
     public items = getItems();
     validators: any = validators;
-    onAdd() {}
-    onRemove() {}
 }
 
 @Component({
     selector: 'test-app',
     template: `<tag-input [(ngModel)]="items"
-                          [validators]="validators"
-                          [transform]="addPrefix">
+                          [onAdding]="onAdding">
                          </tag-input>`
 })
 export class TagInputComponentWithTransformer {
     public items = getItems();
 
-    addPrefix(item: string) {
-        return `prefix: ${item}`;
+    onAdding(value: string): Observable<object> {
+        const item = {display: `prefix: ${value}`, value: `prefix: ${value}`};
+        return Observable.of(item);
     }
-    validators: any = validators.splice(0, 1);
 }
 
 @Component({
