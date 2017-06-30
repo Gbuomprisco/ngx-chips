@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.0.0",
+  "version": "1.3.7",
   "dependencies": {
     "@angular/animations": {
       "version": "4.0.0",
