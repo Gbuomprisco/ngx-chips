@@ -133,16 +133,21 @@ export class Home {
     public onAdding(tag): Observable<any> {
         const confirm = window.confirm('Do you really want to add this tag?');
         return Observable
-            .of(undefined)
-            .filter(() => confirm)
-            .mapTo(tag);
+            .of(tag)
+            .filter(() => confirm);
     }
 
     public onRemoving(tag): Observable<any> {
         const confirm = window.confirm('Do you really want to remove this tag?');
         return Observable
-            .of(undefined)
-            .filter(() => confirm)
-            .mapTo(tag);
+            .of(tag)
+            .filter(() => confirm);
+    }
+
+    public asyncOnAdding(tag): Observable<any> {
+        const confirm = window.confirm('Do you really want to add this tag?');
+        return Observable
+            .of(tag)
+            .filter(() => confirm);
     }
 }

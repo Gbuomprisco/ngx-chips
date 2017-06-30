@@ -923,6 +923,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         Observable
             .of(model)
             .filter(() => model.trim() !== '')
+            .map(() => item)
             .map(this.createTag)
             .filter(validationFilter)
             .subscribe(appendItem, undefined, reset);

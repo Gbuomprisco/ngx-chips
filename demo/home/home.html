@@ -38,11 +38,6 @@
         </div>
 
         <div>
-            <h3>A read-only tag input</h3>
-            <tag-input [ngModel]="[{display: 'Javascript', readonly: true}]"></tag-input>
-        </div>
-
-        <div>
             <h3>An input which requires all tags to start with '@'</h3>
             <tag-input [ngModel]="['@item']"
                        [errorMessages]="errorMessages"
@@ -289,6 +284,18 @@
             <tag-input [ngModel]="['item1']"
                        [errorMessages]="asyncErrorMessages"
                        [asyncValidators]="asyncValidators">
+            </tag-input>
+        </div>
+
+        <div>
+            {{ items | json }}
+            <h3>Autocomplete items using onAdding</h3>
+            <tag-input [(ngModel)]="items" [onlyFromAutocomplete]="true" [onAdding]="asyncOnAdding">
+                <tag-input-dropdown
+                    [autocompleteItems]="autocompleteItemsAsObjects"
+                    [displayBy]="'value'"
+                    [identifyBy]="'id'">
+                </tag-input-dropdown>
             </tag-input>
         </div>
     </div>
