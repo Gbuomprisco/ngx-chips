@@ -79,8 +79,9 @@ export class Home {
         console.log('invalid tag ' + item);
     }
 
-    public transform(item: string): string {
-        return `@${item}`;
+    public transform(value: string): Observable<object> {
+        const item = {display: `@${value}`, value: `@${value}`};
+        return Observable.of(item);
     }
 
     private startsWithAt(control: FormControl) {
@@ -103,7 +104,26 @@ export class Home {
         return null;
     }
 
+    private validateAsync(control: FormControl) {
+        return new Promise(resolve => {
+            const value = control.value;
+            const result = isNaN(value) ? {
+                isNan: true
+            } : null;
+  
+            setTimeout(() => {
+                resolve(result);
+            }, 1);
+        });
+    }
+
+    public asyncErrorMessages = {
+        isNan: 'Please only add numbers'
+    };
+
     public validators = [this.startsWithAt, this.endsWith$];
+
+    public asyncValidators = [this.validateAsync];
 
     public errorMessages = {
         'startsWithAt@': 'Your items need to start with \'@\'',

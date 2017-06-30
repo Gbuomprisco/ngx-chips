@@ -52,8 +52,7 @@
 
         <div>
             <h3>An input which will transform the value of all added tags prepending '@' to the tag</h3>
-            <tag-input [ngModel]="['@item']"
-                       [transform]="transform">
+            <tag-input [ngModel]="['@item']" [onAdding]="transform">
             </tag-input>
         </div>
 
@@ -68,9 +67,8 @@
         </div>
 
         <div>
-            <h3>Tags accepting only items from an autocomplete (with transform function)</h3>
+            <h3>Tags accepting only items from an autocomplete</h3>
             <tag-input [ngModel]="['@item']"
-                       [transform]="transform"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown [showDropdownIfEmpty]="true"
                                     [focusFirstElement]="true"
@@ -119,7 +117,7 @@
                        [inputClass]="'myinput'"
                        [inputId]="'myinputId'"
                        [separatorKeys]="[32, 188]"
-                       [transform]="transform">
+                     >
             </tag-input>
         </div>
 
@@ -281,6 +279,14 @@
                        [modelAsStrings]="true"
                        [onRemoving]="onRemoving"
                        [onAdding]="onAdding">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Form using an async validator</h3>
+            <tag-input [ngModel]="['item1']"
+                       [errorMessages]="asyncErrorMessages"
+                       [asyncValidators]="asyncValidators">
             </tag-input>
         </div>
     </div>

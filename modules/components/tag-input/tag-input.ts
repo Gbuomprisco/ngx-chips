@@ -26,10 +26,14 @@ import {
 
 // rx
 import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/merge';
 
 // ng2-tag-input
 import {
@@ -103,11 +107,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     @Input() public maxItems: number;
 
-    /**
-     * @name transform
-     * @desc function passed to the component to transform the value of the items, or reject them instead
-     */
-    @Input() public transform: (item: string) => string = (item) => item;
 
     /**
      * @name validators
@@ -512,6 +511,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public appendTag = (tag: TagModel, index = this.items.length): void => {
         const items = this.items;
         const model = this.modelAsStrings ? tag[this.identifyBy] : tag;
+
         this.items = [...items.slice(0, index), model, ...items.slice(index, items.length)];
     }
 
@@ -596,17 +596,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     }
 
     /**
-     * @name seyInputValue
+     * @name setInputValue
      * @param value
      * @returns {string}
      */
-    public setInputValue(value: string): string {
-        const item = value ? this.transform(value) : '';
-
+    public setInputValue(value: string): void {
+        const control = this.getControl();
+        
         // update form value with the transformed item
-        this.getControl().setValue(item);
-
-        return item;
+        control.setValue(value);
     }
 
     /**
@@ -882,7 +880,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param fromAutocomplete
      * @param item
      */
-    private addItem(fromAutocomplete = false, item: TagModel = this.formValue, index = undefined): void {
+    private addItem(fromAutocomplete = false, item: TagModel, index = undefined): void {
+        const model = this.getItemDisplay(item);
+        
         /**
          * @name reset
          */
@@ -900,7 +900,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
          * @return {boolean}
          */
         const validationFilter = (tag: TagModel): boolean => {
-            const isValid = this.isTagValid(tag, fromAutocomplete);
+            const isValid = this.isTagValid(tag, fromAutocomplete) && this.inputForm.form.valid;
 
             if (!isValid) {
                 this.onValidationError.emit(tag);
@@ -921,10 +921,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         };
 
         Observable
-            .of(this.getItemDisplay(item))
-            .map(display => this.setInputValue(display))
-            .filter(display => this.inputForm.form.valid && !!display)
-            .map((display: string) => this.createTag(fromAutocomplete ? item : display))
+            .of(this.createTag(model))
             .filter(validationFilter)
             .subscribe(appendItem, undefined, reset);
     }
