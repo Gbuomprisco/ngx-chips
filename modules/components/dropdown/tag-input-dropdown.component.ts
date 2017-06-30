@@ -244,6 +244,8 @@ export class TagInputDropdown {
 
         if (showDropdown && !this.isVisible) {
             this.dropdown.show(position);
+        } else if (this.showDropdownIfEmpty && this.autocompleteObservable) {
+            this.getItemsFromObservable(value);
         } else if (hideDropdown) {
             this.dropdown.hide();
         }
