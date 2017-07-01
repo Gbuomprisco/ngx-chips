@@ -42,6 +42,12 @@ export class Home {
             .map(data => data.json().items.map(item => item.full_name));
     };
 
+    public requestAutocompleteItemsFake = (text: string): Observable<string[]> => {
+        return Observable.of([
+            'item1', 'item2', 'item3'
+        ]);
+    };
+
     public options = {
         readonly: undefined,
         placeholder: '+ Tag'

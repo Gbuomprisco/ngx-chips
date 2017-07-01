@@ -85,14 +85,23 @@
                        [secondaryPlaceholder]="'Search in Github'"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown 
-                        [showDropdownIfEmpty]="true"
                         [autocompleteObservable]="requestAutocompleteItems">
                     <ng-template let-item="item" let-index="index">
                         {{ item.display }}
                     </ng-template>
                 </tag-input-dropdown>
             </tag-input>
-        </div >
+        </div>
+
+        <div>
+            <h3>Tags accepting only items from an autocomplete using an observable and showing dropdown without entering text</h3>
+            <tag-input [ngModel]="items" [onlyFromAutocomplete]="true">
+                <tag-input-dropdown 
+                        [showDropdownIfEmpty]="true"
+                        [autocompleteObservable]="requestAutocompleteItemsFake">
+                </tag-input-dropdown>
+            </tag-input>
+        </div>
 
         <div>
             <h3>Tags dropdown with last provided</h3>
