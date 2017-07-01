@@ -158,15 +158,10 @@ export class TagInputDropdown {
         this.onHide()
             .subscribe(this.resetItems);
 
-        this.tagInput.inputForm.onKeyup
+        this.tagInput
+            .onTextChange
+            .filter((text: string) => text.trim().length >= this.minimumTextLength)
             .subscribe(this.show);
-
-        if (this.autocompleteObservable) {
-            this.tagInput
-                .onTextChange
-                .filter((text: string) => text.trim().length >= this.minimumTextLength)
-                .subscribe(this.getItemsFromObservable);
-        }
     }
 
     /**
@@ -222,8 +217,8 @@ export class TagInputDropdown {
      * @name show
      */
     public show = (): void => {
-        const value: string = this.tagInput.inputForm.value.value.trim();
-        const position: ClientRect = this.tagInput.inputForm.getElementPosition();
+        const value = this.tagInput.formValue.trim();
+        const position = this.calculatePosition();
         const items: TagModel[] = this.getMatchingItems(value);
         const hasItems: boolean = items.length > 0;
         const showDropdownIfEmpty: boolean = this.showDropdownIfEmpty && hasItems && !value;
@@ -242,10 +237,13 @@ export class TagInputDropdown {
         // set items
         this.setItems(items);
 
+        if (this.autocompleteObservable) {
+            this.getItemsFromObservable(value);
+            return;
+        }
+
         if (showDropdown && !this.isVisible) {
             this.dropdown.show(position);
-        } else if (this.showDropdownIfEmpty && this.autocompleteObservable) {
-            this.getItemsFromObservable(value);
         } else if (hideDropdown) {
             this.dropdown.hide();
         }
@@ -261,6 +259,13 @@ export class TagInputDropdown {
         }
 
         this.updatePosition();
+    }
+
+    /**
+     * @name calculatePosition
+     */
+    private calculatePosition(): ClientRect {
+        return this.tagInput.inputForm.getElementPosition();
     }
 
     /**
@@ -355,16 +360,21 @@ export class TagInputDropdown {
     private getItemsFromObservable = (text: string): void => {
         this.setLoadingState(true);
 
-        this.autocompleteObservable(text)
-            .subscribe(data => {
-                // hide loading animation
-                this.setLoadingState(false)
-                    // add items
-                    .populateItems(data)
-                    // show the dropdown
-                    .show();
+        const subscribeFn = (data: any[]) => {
+            // hide loading animation
+            this.setLoadingState(false)
+                // add items
+                .populateItems(data);
 
-        }, () => this.setLoadingState(false));
+            this.setItems(this.getMatchingItems(text));
+
+            if (this.items.length) {
+                this.dropdown.show(this.calculatePosition());
+            }
+        };
+
+        this.autocompleteObservable(text)
+            .subscribe(subscribeFn, () => this.setLoadingState(false));
     }
 
     /**
