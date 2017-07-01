@@ -50,8 +50,7 @@
         <tag-input-form
             (onSubmit)="onAddingRequested(false, formValue)"
             (onBlur)="blur()"
-            (click)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
-            (onFocus)="focus(false, dropdown ? dropdown.showDropdownIfEmpty : false)"
+            (click)="dropdown ? dropdown.show() : undefined"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
 

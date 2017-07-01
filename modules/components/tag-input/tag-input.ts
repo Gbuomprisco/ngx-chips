@@ -622,10 +622,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.inputForm.focus();
             this.onFocus.emit(this.formValue);
         }
-
-        if (displayAutocomplete && this.dropdown) {
-            this.dropdown.show();
-        }
     }
 
 	/**

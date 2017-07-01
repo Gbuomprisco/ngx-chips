@@ -158,15 +158,10 @@ export class TagInputDropdown {
         this.onHide()
             .subscribe(this.resetItems);
 
-        this.tagInput.inputForm.onKeyup
+        this.tagInput
+            .onTextChange
+            .filter((text: string) => text.trim().length >= this.minimumTextLength)
             .subscribe(this.show);
-
-        if (this.autocompleteObservable) {
-            this.tagInput
-                .onTextChange
-                .filter((text: string) => text.trim().length >= this.minimumTextLength)
-                .subscribe(this.getItemsFromObservable);
-        }
     }
 
     /**
@@ -242,7 +237,7 @@ export class TagInputDropdown {
         // set items
         this.setItems(items);
 
-        if (this.showDropdownIfEmpty && this.autocompleteObservable) {
+        if (this.autocompleteObservable) {
             this.getItemsFromObservable(value);
             return;
         }
