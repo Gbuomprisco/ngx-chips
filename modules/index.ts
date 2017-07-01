@@ -5,15 +5,15 @@ import { CommonModule } from '@angular/common';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 
 import {
-    TagInputComponent,
-    TagInputForm,
     DeleteIconComponent,
-    TagInputDropdown,
     TagComponent,
-    TagRipple
+    TagInputComponent,
+    TagInputDropdown,
+    TagInputForm,
+    TagRipple,
 } from './components';
 
-import { HighlightPipe } from './core';
+import { HighlightPipe, DragProvider } from './core';
 
 @NgModule({
     imports: [
@@ -39,6 +39,9 @@ import { HighlightPipe } from './core';
         HighlightPipe,
         TagInputDropdown,
         TagRipple
+    ],
+    providers: [
+        DragProvider
     ]
 })
 export class TagInputModule {}

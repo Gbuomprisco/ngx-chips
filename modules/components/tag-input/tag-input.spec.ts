@@ -416,9 +416,7 @@ describe('TagInputComponent', () => {
 
             // press 'i'
             component.setInputValue('i');
-            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            component.inputForm.onKeyup.emit();
-
+            component.dropdown.show();
             fixture.detectChanges();
             tick();
 
@@ -439,9 +437,7 @@ describe('TagInputComponent', () => {
 
             // press 'i'
             component.setInputValue('i');
-            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            component.inputForm.onKeyup.emit();
-
+            component.dropdown.show();
             fixture.detectChanges();
             tick();
 
@@ -449,9 +445,7 @@ describe('TagInputComponent', () => {
             component.dropdown.items = [];
 
             component.setInputValue('ite');
-            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            component.inputForm.onKeyup.emit();
-
+            component.dropdown.show();
             fixture.detectChanges();
             tick();
 
@@ -462,9 +456,7 @@ describe('TagInputComponent', () => {
             tick();
 
             component.setInputValue('ita');
-            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            component.inputForm.onKeyup.emit();
-
+            component.dropdown.show();
             expect(component.dropdown.items.length).toEqual(1);
 
             fixture.detectChanges();
@@ -482,9 +474,7 @@ describe('TagInputComponent', () => {
 
             // press 'i'
             component.setInputValue('i');
-            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            component.inputForm.onKeyup.emit();
-
+            component.dropdown.show();
             fixture.detectChanges();
             tick();
 
@@ -541,6 +531,8 @@ describe('TagInputComponent', () => {
             component.inputForm.onBlur.emit();
 
             expect(component.items.length).toEqual(3);
+
+            discardPeriodicTasks();
         }));
 
         it('should not add an item on blur if the dropdown is visible', fakeAsync(() => {
@@ -553,8 +545,7 @@ describe('TagInputComponent', () => {
             const component: TagInputComponent = getComponent(fixture);
 
             component.setInputValue('i');
-            component.inputForm.input.nativeElement.dispatchEvent(keyUp);
-            component.inputForm.onKeyup.emit();
+            component.dropdown.show();
 
             fixture.detectChanges();
             tick();
@@ -564,6 +555,8 @@ describe('TagInputComponent', () => {
             component.inputForm.onBlur.emit();
 
             expect(component.items.length).toEqual(2);
+
+            discardPeriodicTasks();
         }));
     });
 
