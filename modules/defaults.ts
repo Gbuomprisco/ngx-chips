@@ -1,10 +1,12 @@
 import { Observable } from 'rxjs/Observable';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
+
 import { 
     SECONDARY_PLACEHOLDER,
     PLACEHOLDER
  } from './core/constants';
 
+import { TagInputDropdown } from './components/dropdown/tag-input-dropdown.component';
 import { TagModel } from './core';
 
 export interface TagInputOptions {
@@ -98,7 +100,7 @@ export const defaults = {
         showDropdownIfEmpty: false,
         minimumTextLength: 1,
         limitItemsTo: undefined,
-        matchingFn: (value: string, target: TagModel): boolean => {
+        matchingFn: function(this: TagInputDropdown, value: string, target: TagModel): boolean {
             const targetValue = target[this.displayBy].toString();
 
             return targetValue && targetValue

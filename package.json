@@ -1,6 +1,6 @@
 {
   "name": "ng2-tag-input",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "description": "Tag Input component for Angular",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -13,7 +13,8 @@
     "ngc": "ngc -p ./tsconfig.aot.json",
     "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/modules/",
     "codecov": "codecov",
-    "clean": "rm -rf ./dist && rm -rf ./factories"
+    "clean": "rm -rf ./dist && rm -rf ./factories",
+    "clean:generated": "find modules \\( -name '*.js' -o -name '*.d.ts' -o -name '*.js.map' -o -name '*.metadata.json'  \\) -type f -delete"
   },
   "author": {
     "name": "Giancarlo Buomprisco",

@@ -18,12 +18,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { TagModel } from '../../core';
+import { TagModel, TagInputDropdownOptions, OptionsProvider } from '../../core';
 import { TagInputComponent } from '../../components';
-import { TagInputModule } from '../../index';
-import { TagInputDropdownOptions } from '../../defaults';
 
-const defaults: Type<TagInputDropdownOptions> = forwardRef(() => TagInputModule.defaults.dropdown);
+const defaults: Type<TagInputDropdownOptions> = forwardRef(() => OptionsProvider.defaults.dropdown);
 
 @Component({
     selector: 'tag-input-dropdown',

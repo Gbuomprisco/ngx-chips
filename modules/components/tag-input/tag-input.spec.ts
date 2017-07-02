@@ -9,12 +9,11 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
+import { Subject } from 'rxjs/Subject';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TagModel } from 'core';
-import { TagInputComponent } from 'components';
-
-const match = jasmine.objectContaining;
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TagInputComponent } from './tag-input';
 
 import {
     BasicTagInputComponent,
@@ -30,15 +29,15 @@ import {
     TagInputComponentWithModelAsStrings,
     TagInputComponentWithAddOnBlur,
     TagInputComponentWithHooks
-} from './tests/testing-helpers';
-
-import { Subject } from 'rxjs/Subject';
+} from './tests/testing-helpers.spec';
 
 describe('TagInputComponent', () => {
+    const match = jasmine.objectContaining;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            imports: [ BrowserModule, BrowserAnimationsModule, TestModule ]
+            imports: [ BrowserAnimationsModule, TestModule ]
         });
     });
 
@@ -58,7 +57,8 @@ describe('TagInputComponent', () => {
 
     describe('Basic behaviours', () => {
         it('should have 2 tags set by ngModel', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
+            const fixture: ComponentFixture<BasicTagInputComponent> = 
+                TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
 
             expect(component.items.length).toEqual(2);
@@ -75,7 +75,8 @@ describe('TagInputComponent', () => {
         }));
 
         it('should be "touched" on blur', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
+            const fixture: ComponentFixture<BasicTagInputComponent> = 
+                TestBed.createComponent(BasicTagInputComponent);
             const component = <TagInputComponent>getComponent(fixture);
             const onTouched = jasmine.createSpy('onTouched');
 
@@ -88,7 +89,8 @@ describe('TagInputComponent', () => {
 
     describe('when a new item is added', () => {
         it('should be added to the list of items and update its parent\'s model', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
+            const fixture: ComponentFixture<BasicTagInputComponent> = 
+                TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
             const value = 'New Item';
 
@@ -145,7 +147,8 @@ describe('TagInputComponent', () => {
         });
 
         it('does not allow dupes', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = TestBed.createComponent(BasicTagInputComponent);
+            const fixture: ComponentFixture<BasicTagInputComponent> = 
+                TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
 
             component.inputForm.form.get('item').setValue('Javascript');

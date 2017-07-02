@@ -27,7 +27,6 @@ import {
 
 // rx
 import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/filter';
@@ -43,8 +42,10 @@ import {
 
 import {
     DragProvider,
-    DraggedTag
-} from '../../core/providers/drag-provider';
+    DraggedTag,
+    OptionsProvider,
+    TagInputOptions
+} from '../../core/providers';
 
 import {
     TagInputForm,
@@ -52,8 +53,6 @@ import {
     TagComponent
 } from '../../components';
 
-import { TagInputModule } from '../../index';
-import { TagInputOptions } from '../../defaults'
 import { animations } from './animations';
 
 // angular universal hacks
@@ -66,7 +65,7 @@ const CUSTOM_ACCESSOR = {
     multi: true
 };
 
-const defaults: Type<TagInputOptions> = forwardRef(() => TagInputModule.defaults.tagInput);
+const defaults: Type<TagInputOptions> = forwardRef(() => OptionsProvider.defaults.tagInput);
 
 /**
  * A component for entering a list of terms to be used with ngModel.
