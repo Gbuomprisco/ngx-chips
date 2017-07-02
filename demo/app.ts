@@ -9,6 +9,12 @@ import { Home } from './home/home';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+TagInputModule.withDefaults({
+    tagInput: {
+        placeholder: 'Add new tag'
+    }
+});
+
 @NgModule({
     imports: [
         BrowserModule,
