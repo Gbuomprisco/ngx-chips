@@ -10,7 +10,6 @@
         "sourceMap": true,
         "moduleResolution": "node",
         "baseUrl": "",
-        "noEmit": true,
         "inlineSources": true,
         "skipLibCheck": true,
         "typeRoots": [ "./node_modules/@types" ],
