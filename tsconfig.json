@@ -9,6 +9,7 @@
         "target": "es5",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "noEmit": true,
         "stripInternal": true,
         "declaration": true,
         "sourceMap": true,
@@ -58,6 +59,7 @@
     "exclude": [
         "node_modules",
         "dist",
+        "**/tests",
         "**/*-ngfactory.ts",
         "**/*.spec.ts"
     ],

@@ -633,6 +633,23 @@ Define your own template, but remember to set up the needed events using the `in
 </tag-input>
 ```
 
+#### Add default values
+If you use many instances of the component and eant to set some values by default for all of them, import the module and use `withDefaults`:
+
+```javascript
+import { TagInputModule } from 'ng2-tag-input';
+
+TagInputModule.withDefaults({
+    tagInput: {
+        placeholder: 'Add a new tag',
+        // add here other default values for tag-input
+    },
+    dropdown: {
+        displayBy: 'my-display-value',
+        // add here other default values for tag-input-dropdown
+    }
+});
+```
 
 #### Built-in Themes
 If you don't like how the default theme looks, or you just need it to fit in a different design, you can choose 4 new themes: `bootstrap3-info`, `bootstrap`, `dark` and `minimal`.
