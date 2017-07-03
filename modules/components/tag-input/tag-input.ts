@@ -14,7 +14,8 @@ import {
     OnInit,
     TemplateRef,
     QueryList,
-    AfterViewInit
+    AfterViewInit,
+    Type
 } from '@angular/core';
 
 import {
@@ -26,7 +27,6 @@ import {
 
 // rx
 import { Observable } from 'rxjs/Observable';
-
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/filter';
@@ -42,8 +42,10 @@ import {
 
 import {
     DragProvider,
-    DraggedTag
-} from '../../core/providers/drag-provider';
+    DraggedTag,
+    OptionsProvider,
+    TagInputOptions
+} from '../../core/providers';
 
 import {
     TagInputForm,
@@ -63,6 +65,8 @@ const CUSTOM_ACCESSOR = {
     multi: true
 };
 
+const defaults: Type<TagInputOptions> = forwardRef(() => OptionsProvider.defaults.tagInput);
+
 /**
  * A component for entering a list of terms to be used with ngModel.
  */
@@ -79,151 +83,150 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @desc keyboard keys with which a user can separate items
      * @type {Array}
      */
-    @Input() public separatorKeys: string[] = [];
+    @Input() public separatorKeys: string[] = new defaults().separatorKeys;
 
     /**
      * @name separatorKeyCodes
      * @desc keyboard key codes with which a user can separate items
      * @type {Array}
      */
-    @Input() public separatorKeyCodes: number[] = [];
+    @Input() public separatorKeyCodes: number[] = new defaults().separatorKeyCodes;
 
     /**
      * @name placeholder
      * @desc the placeholder of the input text
      * @type {string}
      */
-    @Input() public placeholder: string = constants.PLACEHOLDER;
+    @Input() public placeholder: string = new defaults().placeholder;
 
     /**
      * @name secondaryPlaceholder
      * @desc placeholder to appear when the input is empty
      * @type {string}
      */
-    @Input() public secondaryPlaceholder: string = constants.SECONDARY_PLACEHOLDER;
+    @Input() public secondaryPlaceholder: string = new defaults().secondaryPlaceholder;
 
     /**
      * @name maxItems
      * @desc maximum number of items that can be added
      * @type {number}
      */
-    @Input() public maxItems: number;
-
+    @Input() public maxItems: number = new defaults().maxItems;
 
     /**
      * @name validators
      * @desc array of Validators that are used to validate the tag before it gets appended to the list
      * @type {Validators[]}
      */
-    @Input() public validators: ValidatorFn[] = [];
+    @Input() public validators: ValidatorFn[] = new defaults().validators;
 
     /**
      * @name asyncValidators
      * @desc array of AsyncValidator that are used to validate the tag before it gets appended to the list
      * @type {Array}
      */
-    @Input() public asyncValidators: AsyncValidatorFn[] = [];
+    @Input() public asyncValidators: AsyncValidatorFn[] = new defaults().asyncValidators;
 
     /**
     * - if set to true, it will only possible to add items from the autocomplete
     * @name onlyFromAutocomplete
     * @type {Boolean}
     */
-    @Input() public onlyFromAutocomplete = false;
+    @Input() public onlyFromAutocomplete = new defaults().onlyFromAutocomplete;
 
 	/**
      * @name errorMessages
      * @type {Map<string, string>}
      */
-    @Input() public errorMessages: { [key: string]: string } = {};
+    @Input() public errorMessages: { [key: string]: string } = new defaults().errorMessages;
 
     /**
      * @name theme
      * @type {string}
      */
-    @Input() public theme: string;
+    @Input() public theme: string = new defaults().theme;
 
     /**
      * @name onTextChangeDebounce
      * @type {number}
      */
-    @Input() public onTextChangeDebounce = 250;
+    @Input() public onTextChangeDebounce = new defaults().onTextChangeDebounce;
 
     /**
      * - custom id assigned to the input
      * @name id
      */
-    @Input() public inputId: string;
+    @Input() public inputId: string = new defaults().inputId;
 
     /**
      * - custom class assigned to the input
      */
-    @Input() public inputClass: string;
+    @Input() public inputClass: string = new defaults().inputClass;
 
     /**
      * - option to clear text input when the form is blurred
      * @name clearOnBlur
      */
-    @Input() public clearOnBlur: string;
+    @Input() public clearOnBlur: boolean = new defaults().clearOnBlur;
 
     /**
      * - hideForm
      * @name clearOnBlur
      */
-    @Input() public hideForm: string;
+    @Input() public hideForm: boolean = new defaults().hideForm;
 
     /**
      * @name addOnBlur
      */
-    @Input() public addOnBlur: boolean;
+    @Input() public addOnBlur: boolean = new defaults().addOnBlur;
 
     /**
      * @name addOnPaste
      */
-    @Input() public addOnPaste: boolean;
+    @Input() public addOnPaste: boolean = new defaults().addOnPaste;
 
     /**
      * - pattern used with the native method split() to separate patterns in the string pasted
      * @name pasteSplitPattern
      */
-    @Input() public pasteSplitPattern = ',';
+    @Input() public pasteSplitPattern = new defaults().pasteSplitPattern;
 
     /**
      * @name blinkIfDupe
      * @type {boolean}
      */
-    @Input() public blinkIfDupe = true;
+    @Input() public blinkIfDupe = new defaults().blinkIfDupe;
 
     /**
      * @name removable
      * @type {boolean}
      */
-    @Input() public removable = true;
+    @Input() public removable = new defaults().removable;
 
     /**
      * @name editable
      * @type {boolean}
      */
-    @Input() public editable: boolean = undefined;
+    @Input() public editable: boolean = new defaults().editable;
 
     /**
      * @name allowDupes
      * @type {boolean}
      */
-    @Input() public allowDupes = false;
+    @Input() public allowDupes = new defaults().allowDupes;
 
     /**
      * @description if set to true, the newly added tags will be added as strings, and not objects
      * @name modelAsStrings
      * @type {boolean}
      */
-    @Input() public modelAsStrings = false;
+    @Input() public modelAsStrings = new defaults().modelAsStrings;
 
     /**
      * @name trimTags
      * @type {boolean}
      */
-    @Input() public trimTags = true;
+    @Input() public trimTags = new defaults().trimTags;
 
     /**
      * @name inputText
@@ -236,38 +239,38 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name ripple
      * @type {boolean}
      */
-    @Input() public ripple = true;
+    @Input() public ripple: boolean = new defaults().ripple;
 
     /**
      * @name tabindex
      * @desc pass through the specified tabindex to the input
      * @type {string}
      */
-    @Input() public tabindex: string = undefined;
+    @Input() public tabindex: string = new defaults().tabIndex;
 
     /**
      * @name disabled
      * @type {boolean}
      */
-    @Input() public disabled = undefined;
+    @Input() public disabled: boolean = new defaults().disabled;
 
     /**
      * @name dragZone
      * @type {string}
      */
-    @Input() public dragZone: string = undefined;
+    @Input() public dragZone: string = new defaults().dragZone;
 
     /**
      * @name onRemoving
      * @type {() => Observable<void>}
      */
-    @Input() public onRemoving: (tag: TagModel) => Observable<TagModel>;
+    @Input() public onRemoving: (tag: TagModel) => Observable<TagModel> = new defaults().onRemoving;
 
     /**
      * @name onAdding
      * @type {() => Observable<void>}
      */
-    @Input() public onAdding: (tag: TagModel) => Observable<TagModel>;
+    @Input() public onAdding: (tag: TagModel) => Observable<TagModel> = new defaults().onAdding;
 
     /**
      * @name onAdd

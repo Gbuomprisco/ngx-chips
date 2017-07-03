@@ -8,17 +8,20 @@ import {
     Input,
     QueryList,
     HostListener,
-    EventEmitter
+    EventEmitter,
+    Type
 } from '@angular/core';
-
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { TagModel } from '../../core';
-import { TagInputComponent } from '../../components';
 
 // rx
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
+import { TagModel, TagInputDropdownOptions, OptionsProvider } from '../../core';
+import { TagInputComponent } from '../../components';
+
+const defaults: Type<TagInputDropdownOptions> = forwardRef(() => OptionsProvider.defaults.dropdown);
 
 @Component({
     selector: 'tag-input-dropdown',
@@ -41,20 +44,20 @@ export class TagInputDropdown {
      * @name offset
      * @type {string}
      */
-    @Input() public offset = '50 0';
+    @Input() public offset: string = new defaults().offset;
 
     /**
      * @name focusFirstElement
      * @type {boolean}
      */
-    @Input() public focusFirstElement = false;
+    @Input() public focusFirstElement = new defaults().focusFirstElement;
 
     /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
      * @type {boolean}
      */
-    @Input() public showDropdownIfEmpty = false;
+    @Input() public showDropdownIfEmpty = new defaults().showDropdownIfEmpty;
 
     /**
      * @description observable passed as input which populates the autocomplete items
@@ -66,42 +69,35 @@ export class TagInputDropdown {
      * - desc minimum text length in order to display the autocomplete dropdown
      * @name minimumTextLength
      */
-    @Input() public minimumTextLength = 1;
+    @Input() public minimumTextLength = new defaults().minimumTextLength;
 
     /**
      * - number of items to display in the autocomplete dropdown
      * @name limitItemsTo
      */
-    @Input() public limitItemsTo: number;
+    @Input() public limitItemsTo: number = new defaults().limitItemsTo;
 
     /**
      * @name displayBy
      */
-    @Input() public displayBy = 'display';
+    @Input() public displayBy = new defaults().displayBy;
 
     /**
      * @name identifyBy
      */
-    @Input() public identifyBy = 'value';
+    @Input() public identifyBy = new defaults().identifyBy;
 
     /**
      * @description a function a developer can use to implement custom matching for the autocomplete
      * @name matchingFn
      */
-    @Input() public matchingFn: (value: string, target: TagModel) => boolean =
-         (value: string, target: TagModel): boolean => {
-            const targetValue = target[this.displayBy].toString();
-
-            return targetValue && targetValue
-                .toLowerCase()
-                .indexOf(value.toLowerCase()) >= 0;
-    }
+    @Input() public matchingFn: (value: string, target: TagModel) => boolean = new defaults().matchingFn;
 
     /**
      * @name appendToBody
      * @type {boolean}
      */
-    @Input() public appendToBody = true;
+    @Input() public appendToBody = new defaults().appendToBody;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
