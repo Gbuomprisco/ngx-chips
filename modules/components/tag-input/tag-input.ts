@@ -417,7 +417,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     }
 
     constructor(private readonly renderer: Renderer2, 
-                private readonly dragProvider: DragProvider) {
+                public readonly dragProvider: DragProvider) {
         super();
     }
 
