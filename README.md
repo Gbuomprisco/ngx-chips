@@ -381,7 +381,7 @@ An array of items to populate the autocomplete dropdown
 
 **`offset`** - [**`?string`**]
 
-Offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
+Offset to adjust the position of the dropdown with absolute values (defaults to `'50 0'`)
 
 
 **`focusFirstElement`** - [**`?boolean`**]
