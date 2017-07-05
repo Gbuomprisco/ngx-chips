@@ -11,3 +11,4 @@ index.js.map
 factories
 *.metadata.json
 .idea
+.vscode
