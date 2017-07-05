@@ -8,8 +8,6 @@ const root = path.join.bind(path, ROOT);
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 
-
-// Webpack Config
 const webpackConfig = {
     entry: {
         'vendor': [
@@ -21,13 +19,13 @@ const webpackConfig = {
 
             "ng2-material-dropdown"
         ],
-        'ng2-tag-input': './modules/index.ts'
+        'ngx-chips': './modules/index.ts'
     },
 
     output: {
         path: path.resolve('./dist'),
         libraryTarget: "umd",
-        library: 'ng2-tag-input'
+        library: 'ngx-chips'
     },
 
     externals: {
@@ -128,7 +126,7 @@ const defaultConfig = {
         new TsConfigPathsPlugin(),
 
         new CommonsChunkPlugin({
-            name: 'ng2-tag-input'
+            name: 'ngx-chips'
         })
     ]
 };

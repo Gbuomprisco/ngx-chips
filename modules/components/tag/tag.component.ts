@@ -32,7 +32,7 @@ const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigat
     templateUrl: './tag.template.html',
     styleUrls: [ './tag-component.style.scss' ]
 })
-export class TagComponent {
+export class TagComponent {    
     /**
      * @name model {TagModel}
      */
@@ -116,10 +116,10 @@ export class TagComponent {
     };
 
     /**
-     * @name editModeActivated
+     * @name editing
      * @type {boolean}
      */
-    public editModeActivated = false;
+    public editing = false;
 
     /**
      * @name rippleState
@@ -174,8 +174,8 @@ export class TagComponent {
      */
     @HostListener('keydown', ['$event'])
     public keydown(event: KeyboardEvent): void {
-        if (this.editModeActivated) {
-            event.keyCode === 13 ? this.disableEditMode(event) : this.storeNewValue();
+        if (this.editing) {
+            event.keyCode === 13 ? this.disableEditMode(event) : undefined;
             return;
         }
 
@@ -196,17 +196,7 @@ export class TagComponent {
      * @name toggleEditMode
      */
     public toggleEditMode(): void {
-        const classList = this.element.nativeElement.classList;
-        const className = 'tag--editing';
-
-        if (this.editModeActivated) {
-            this.storeNewValue();
-        } else {
-            this.element.nativeElement.querySelector('[contenteditable]').focus();
-        }
-
-        this.editModeActivated = !this.editModeActivated;
-        this.editModeActivated ? classList.add(className) : classList.remove(className);
+        this.editing ? this.disableEditMode() : this.activateEditMode();
     }
 
     /**
@@ -218,10 +208,12 @@ export class TagComponent {
         // a bug in IE where tags are still editable with onlyFromAutocomplete set to true
 		if (this.editable) {
 			const newValue: string = event.target.innerText;
-			this.toggleEditMode();
 			const result = typeof this.model === 'string' ? newValue :
 				{[this.identifyBy]: newValue, [this.displayBy]: newValue};
-			this.onBlur.emit(result);
+
+            this.toggleEditMode();
+
+            this.onBlur.emit(result);
 		}
     }
 
@@ -240,9 +232,9 @@ export class TagComponent {
      * @name isRippleVisible
      * @returns {boolean}
      */
-    public isRippleVisible(): boolean {
+    public get isRippleVisible(): boolean {
         return !this.readonly &&
-            !this.editModeActivated &&
+            !this.editing &&
             isChrome &&
             this.hasRipple;
     }
@@ -252,42 +244,83 @@ export class TagComponent {
      * @returns {string}
      */
     private getContentEditableText(): string {
-        return this.element.nativeElement.querySelector('[contenteditable]').innerText.trim();
+        const input = this.getContentEditable();
+
+        return input ? input.innerText.trim() : '';
+    }
+
+    /**
+     * @name setContentEditableText
+     * @param model
+     */
+    private setContentEditableText(model: TagModel) {
+        const input = this.getContentEditable();
+        const value = this.getDisplayValue(model);
+
+        input.innerText = value;
+    }
+
+    /**
+     * @name
+     */
+    private activateEditMode(): void {
+        const classList = this.element.nativeElement.classList;
+        classList.add('tag--editing');
+
+         this.editing = true;
     }
 
     /**
      * @name disableEditMode
      * @param $event
      */
-    private disableEditMode($event: KeyboardEvent): void {
-        this.editModeActivated = false;
-        $event.preventDefault();
+    private disableEditMode($event?: KeyboardEvent): void {
+        const classList = this.element.nativeElement.classList;
+        const input = this.getContentEditableText();
+        
+        this.editing = false;
+        classList.remove('tag--editing');
 
+        if (!input) {
+            this.setContentEditableText(this.model);
+            return;
+        }
+
+        this.storeNewValue(input);
         this.cdRef.detectChanges();
+
+        if ($event) {
+            $event.preventDefault();
+        }
     }
 
     /**
      * @name storeNewValue
+     * @param input
      */
-    private storeNewValue(): void {
-        const input = this.getContentEditableText();
-
+    private storeNewValue(input: string): void {
         const exists = (model: TagModel) => {
             return typeof model === 'string' ?
                 model === input :
-                model[this.identifyBy] === input;
+                model[this.displayBy] === input;
         };
 
         // if the value changed, replace the value in the model
-        if (exists(this.model)) {
-            const itemValue = this.model[this.identifyBy];
-
-            this.model = typeof this.model === 'string' ? input :
-                {[this.identifyBy]: itemValue, [this.displayBy]: itemValue};
+        if (exists(this.model) === false) {
+            const model = typeof this.model === 'string' ? input :
+                {[this.identifyBy]: input, [this.displayBy]: input};
 
             // emit output
-            this.onTagEdited.emit(this.model);
+            this.model = model;
+            this.onTagEdited.emit(model);
         }
+    }
+
+    /**
+     * @name getContentEditable
+     */
+    private getContentEditable(): HTMLInputElement {
+        return this.element.nativeElement.querySelector('[contenteditable]');
     }
 
     /**
@@ -298,6 +331,6 @@ export class TagComponent {
         return !this.readonly &&
                 !this.disabled &&
                 this.removable &&
-                !this.editModeActivated;
+                !this.editing;
     }
 }

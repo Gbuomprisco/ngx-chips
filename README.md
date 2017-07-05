@@ -1,7 +1,6 @@
 # Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input)
-[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
-This is a component for Angular >= 2. Design and API are blandly inspired by Angular Material's md-chips.
+This is a component for Angular >= 4. Design and API are blandly inspired by Angular Material's md-chips.
 
 [![NPM](https://nodei.co/npm/ng2-tag-input.png?downloads=true&stars=true)](https://nodei.co/npm/ng2-tag-input/)
 
@@ -12,7 +11,7 @@ Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
 
 ## Installing the component
 
-    npm install ng2-tag-input --save
+    npm install ngx-chips --save
 
 **Notice**: the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
 
@@ -38,7 +37,7 @@ If you have any issues, please do make sure you're not running a different versi
 
 
 ### Can I change the style?
-Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
+Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ngx-chips/blob/master/docs/custom-themes.md).
 
 
 ### Something's broken?
@@ -54,36 +53,13 @@ Issues not filled out with the provided templates are going to be closed.
 Ensure you import the module:
 
 ```javascript
-import { TagInputModule } from 'ng2-tag-input';
+import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 
 @NgModule({
    imports: [ TagInputModule, BrowserAnimationsModule, ...OtherModules ] // along with your other modules
 })
 export class AppModule {}
-```
-
-### Configuration for SystemJS users
-
-Many users have reported issues with SystemJS. I got it working with the following additions to the SystemJS configuration:
-
-```javascript
-// packages object
-{
-    'ng2-tag-input': {
-        main: 'dist/ng2-tag-input.bundle.js',
-        format: 'cjs',
-    },
-    'ng2-material-dropdown': {
-        defaultExtension: 'js',
-        main: 'dist/ng2-dropdown.bundle.js',
-        format: 'cjs',
-    },
-    'ng2-tag-input/modules/components/tag-input.template.html': {
-        defaultJSExtension: false
-    }
-    // rest of the configuration
-};
 ```
 
 ## API for TagInputComponent
@@ -361,7 +337,7 @@ Event fired when a tag is edited
 
 
 ## API for TagInputDropdownComponent
-TagInputDropdownComponent is a proxy between `ng2-tag-input` and `ng2-material-dropdown`.
+TagInputDropdownComponent is a proxy between `ngx-chips` and `ng2-material-dropdown`.
 
 **`autocompleteObservable`** - [**`(text: string) => Observable<Response>`**]
 
@@ -381,7 +357,7 @@ An array of items to populate the autocomplete dropdown
 
 **`offset`** - [**`?string`**]
 
-Offset to adjust the position of the dropdown with absolute values (defaults to `'0 0'`)
+Offset to adjust the position of the dropdown with absolute values (defaults to `'50 0'`)
 
 
 **`focusFirstElement`** - [**`?boolean`**]
@@ -637,7 +613,7 @@ Define your own template, but remember to set up the needed events using the `in
 If you use many instances of the component and eant to set some values by default for all of them, import the module and use `withDefaults`:
 
 ```javascript
-import { TagInputModule } from 'ng2-tag-input';
+import { TagInputModule } from 'ngx-chips';
 
 TagInputModule.withDefaults({
     tagInput: {
@@ -661,7 +637,7 @@ If you don't like how the default theme looks, or you just need it to fit in a d
 <tag-input [(ngModel)]='items' theme='dark'></tag-input>
 ```
 
-If you do not like these themes, [define your own theme](https://github.com/gbuomprisco/ng2-tag-input/blob/master/docs/custom-themes.md).
+If you do not like these themes, [define your own theme](https://github.com/gbuomprisco/ngx-chips/blob/master/docs/custom-themes.md).
 
 
 ## Contributing/Pull Requests
