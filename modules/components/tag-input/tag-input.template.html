@@ -22,7 +22,7 @@
              (onSelect)="selectItem(item)"
              (onRemove)="onRemoveRequested(item, i)"
              (onKeyDown)="handleKeydown($event, item)"
-             (onTagEdited)="onTagEdited.emit(item)"
+             (onTagEdited)="onTagEdited.emit($event)"
              (onBlur)="onTagBlurred($event, i)"
              draggable="{{editable}}"
 

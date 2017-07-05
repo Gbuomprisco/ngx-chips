@@ -1,5 +1,5 @@
 <div (click)="select($event)"
-     (dblclick)="editable ? toggleEditMode() : undefined"
+     (dblclick)="editable ? toggleEditMode() : null"
      (mousedown)="rippleState='clicked'"
      (mouseup)="rippleState='none'"
      [ngSwitch]="!!template"
@@ -7,7 +7,7 @@
      [attr.tabindex]="-1"
      [attr.aria-label]="getDisplayValue(model)">
 
-    <div *ngSwitchCase="true" [attr.contenteditable]="editModeActivated">
+    <div *ngSwitchCase="true" [attr.contenteditable]="editing">
         <!-- CUSTOM TEMPLATE -->
         <ng-template
             [ngOutletContext]="{ item: model, index: index }"
@@ -17,13 +17,13 @@
 
     <div *ngSwitchCase="false" class="tag-wrapper">
         <!-- TAG NAME -->
-        <div [attr.contenteditable]="editModeActivated"
+        <div [attr.contenteditable]="editing"
              [attr.title]="getDisplayValue(model)"
              class="tag__text inline"
              spellcheck="false"
              (keydown.enter)="disableEditMode($event)"
              (keydown.escape)="disableEditMode($event)"
-             (click)="editModeActivated ? $event.stopPropagation() : undefined"
+             (click)="editing ? $event.stopPropagation() : undefined"
              (blur)="onBlurred($event)">
             {{ getDisplayValue(model) }}
         </div>
@@ -40,5 +40,5 @@
 
 <tag-ripple [state]="rippleState"
             [attr.tabindex]="-1"
-            *ngIf="isRippleVisible()">
+            *ngIf="isRippleVisible">
 </tag-ripple>
