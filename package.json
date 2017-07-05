@@ -1,5 +1,5 @@
 {
-  "name": "ng2-tag-input",
+  "name": "ngx-chips",
   "version": "1.4.1",
   "description": "Tag Input component for Angular",
   "scripts": {
@@ -88,17 +88,19 @@
     "angular",
     "angular tag input",
     "tag input component",
-    "material tag input"
+    "material tag input",
+    "angular chips component",
+    "material chips"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gbuomprisco/ng2-tag-input"
+    "url": "https://github.com/Gbuomprisco/ngx-chips-input"
   },
   "bugs": {
-    "url": "https://github.com/Gbuomprisco/ng2-tag-input/issues"
+    "url": "https://github.com/Gbuomprisco/ngx-chips/issues"
   },
-  "homepage": "https://github.com/Gbuomprisco/ng2-tag-input",
-  "main": "./dist/ng2-tag-input.bundle.js",
+  "homepage": "https://github.com/Gbuomprisco/ngx-chips-input",
+  "main": "./dist/ngx-chips.bundle.js",
   "files": [
     "dist",
     "index.ts",
