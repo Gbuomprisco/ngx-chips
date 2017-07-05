@@ -67,17 +67,15 @@ const CUSTOM_ACCESSOR = {
 
 const defaults: Type<TagInputOptions> = forwardRef(() => OptionsProvider.defaults.tagInput);
 
-/**
- * A component for entering a list of terms to be used with ngModel.
- */
 @Component({
     selector: 'tag-input',
     providers: [CUSTOM_ACCESSOR],
     styleUrls: ['./tag-input.style.scss'],
     templateUrl: './tag-input.template.html',
-    animations: animations
+    animations
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit {
+    
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -273,6 +271,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     @Input() public onAdding: (tag: TagModel) => Observable<TagModel> = new defaults().onAdding;
 
     /**
+     * @name animationDuration
+     */
+    @Input() public animationDuration = new defaults().animationDuration;
+
+    /**
      * @name onAdd
      * @desc event emitted when adding a new item
      * @type {EventEmitter<string>}
@@ -388,8 +391,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     private listeners = {
         [constants.KEYDOWN]: <{ (fun): any }[]>[],
-        [constants.KEYUP]: <{ (fun): any }[]>[],
-        change: <{ (fun): any }[]>[]
+        [constants.KEYUP]: <{ (fun): any }[]>[]
     };
 
     /**
@@ -415,6 +417,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public get tabindexAttr(): string {
         return this.tabindex !== undefined ? '-1' : undefined;
     }
+
+    /**
+     * @name animationMetadata
+     */
+    public animationMetadata: {value: string, params: object};
 
     constructor(private readonly renderer: Renderer2, 
                 public readonly dragProvider: DragProvider) {
@@ -809,6 +816,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (this.hideForm) {
             this.inputForm.destroy();
         }
+
+        this.animationMetadata = {
+            value: 'in',
+            params: {...this.animationDuration}
+        };
     }
 
     /**
