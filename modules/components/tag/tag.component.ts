@@ -32,7 +32,7 @@ const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigat
     templateUrl: './tag.template.html',
     styleUrls: [ './tag-component.style.scss' ]
 })
-export class TagComponent {
+export class TagComponent {    
     /**
      * @name model {TagModel}
      */
@@ -244,7 +244,7 @@ export class TagComponent {
      * @returns {string}
      */
     private getContentEditableText(): string {
-        const input = this.element.nativeElement.querySelector('[contenteditable]');
+        const input = this.getContentEditable();
 
         return input ? input.innerText.trim() : '';
     }
@@ -254,7 +254,7 @@ export class TagComponent {
      * @param model
      */
     private setContentEditableText(model: TagModel) {
-        const input = this.element.nativeElement.querySelector('[contenteditable]');
+        const input = this.getContentEditable();
         const value = this.getDisplayValue(model);
 
         input.innerText = value;
@@ -265,9 +265,9 @@ export class TagComponent {
      */
     private activateEditMode(): void {
         const classList = this.element.nativeElement.classList;
-        this.editing = true;
-
         classList.add('tag--editing');
+
+         this.editing = true;
     }
 
     /**
@@ -314,6 +314,13 @@ export class TagComponent {
             this.model = model;
             this.onTagEdited.emit(model);
         }
+    }
+
+    /**
+     * @name getContentEditable
+     */
+    private getContentEditable(): HTMLInputElement {
+        return this.element.nativeElement.querySelector('[contenteditable]');
     }
 
     /**
