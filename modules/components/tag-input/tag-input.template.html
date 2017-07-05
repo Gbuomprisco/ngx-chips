@@ -24,7 +24,7 @@
              (onKeyDown)="handleKeydown($event, item)"
              (onTagEdited)="onTagEdited.emit($event)"
              (onBlur)="onTagBlurred($event, i)"
-             draggable="{{editable}}"
+             draggable="{{ editable }}"
 
              (dragstart)="dragZone ? onDragStarted($event, item, i) : undefined"
              (drop)="dragZone ? onTagDropped($event, i) : undefined"
@@ -35,7 +35,7 @@
              [attr.tabindex]="0"
 
              [disabled]="disabled"
-             [@flyInOut]="'in'"
+             [@animation]="animationMetadata"
              [hasRipple]="ripple"
              [index]="i"
              [removable]="removable"
