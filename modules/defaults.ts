@@ -1,3 +1,4 @@
+import { AnimationEntryMetadata } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 
@@ -41,7 +42,11 @@ export interface TagInputOptions {
     onRemoving: () => Observable<TagModel>,
     onAdding: () => Observable<TagModel>,
     displayBy: string,
-    identifyBy: string
+    identifyBy: string,
+    animationDuration: {
+        enter: string,
+        leave: string
+    }
 }
 
 export interface TagInputDropdownOptions {
@@ -89,7 +94,11 @@ export const defaults = {
         onRemoving: undefined,
         onAdding: undefined,
         displayBy: 'display',
-        identifyBy: 'value'
+        identifyBy: 'value',
+        animationDuration: {
+            enter: "250ms",
+            leave: "150ms"
+        }
     },
     dropdown: <TagInputDropdownOptions>{
         displayBy: 'display',

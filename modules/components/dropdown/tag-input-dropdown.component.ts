@@ -269,17 +269,7 @@ export class TagInputDropdown {
      * @param item {Ng2MenuItem}
      */
     private requestAdding = (item: Ng2MenuItem): void => {
-        if (!item) {
-            return;
-        }
-
-        const model = this.createTagModel(item);
-
-        // add item
-        this.tagInput.onAddingRequested(true, model);
-
-        // hide dropdown
-        this.dropdown.hide();
+        this.tagInput.onAddingRequested(true, this.createTagModel(item));
     }
 
     /**

@@ -219,6 +219,12 @@ If set, passes the specified tabindex to the form's input.
 If set, the input will be draggable. Also the input will be draggable to another form with the same dragZone value.
 
 
+**`animationDuration`** - [**`?{enter: string, leave: string}`**]
+
+This option overwrites the default timing values for the animation. If you don't like the animation at all, just set both values to '0ms'.
+
+The default value is `{enter: '250ms', leave: '150ms'}`
+
 ---
 
 ##### Validation (optional)

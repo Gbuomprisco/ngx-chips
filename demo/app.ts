@@ -1,3 +1,4 @@
+import { animations } from './../modules/components/tag-input/animations';
 import { NgModule } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {BrowserModule} from '@angular/platform-browser';
