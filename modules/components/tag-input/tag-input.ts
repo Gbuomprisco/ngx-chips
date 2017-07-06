@@ -622,7 +622,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param displayAutocomplete
      */
     public focus(applyFocus = false, displayAutocomplete = false): void {
-        if (this.dragProvider.getState('isDragging')) {
+        if (this.dragProvider.getState('dragging')) {
             return;
         }
 
@@ -756,15 +756,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         
         this.dragProvider.setSender(this);
         this.dragProvider.setDraggedItem(event, item);
-        this.dragProvider.setState({isDragging: true});
+        this.dragProvider.setState({dragging: true, index});
     }
 
     /**
      * @name onDragOver
      * @param event
      */
-    public onDragOver(event: DragEvent): void {
-        this.dragProvider.setState({isDropping: true});
+    public onDragOver(event: DragEvent, index?: number): void {
+        this.dragProvider.setState({dropping: true});
         this.dragProvider.setReceiver(this);
 
         event.preventDefault();
@@ -781,11 +781,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (item.zone !== this.dragZone) {
             return;
         }
- 
+        
         this.dragProvider.onTagDropped(item.tag, item.index, index);
-
+    
         event.preventDefault();
         event.stopPropagation();
+    }
+
+    /**
+     * @name isDropping
+     */
+    public isDropping(): boolean {
+        return this.dragProvider.getState('dropping') && this.dragProvider.receiver === this;
     }
 
     /**
@@ -899,11 +906,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         };
 
         /**
-         * @name appendItem
+         * @name subscribeFn
          * @param tag
          */
-        const appendItem = (tag: TagModel): void => {
+        const subscribeFn = (tag: TagModel): void => {
             this.appendTag(tag, index);
+
+            if (this.dropdown && this.dropdown.isVisible) {
+                const dropdown = this.dropdown.dropdown;
+                dropdown.hide();
+            }
+            
 
             // emit event
             this.onAdd.emit(tag);
@@ -915,7 +928,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             .map(() => item)
             .map(this.createTag)
             .filter(validationFilter)
-            .subscribe(appendItem, undefined, reset);
+            .subscribe(subscribeFn, undefined, reset);
     }
 
     /**

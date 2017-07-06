@@ -6,6 +6,7 @@ import {
     TemplateRef,
     ElementRef,
     HostListener,
+    HostBinding,
     ViewChild,
     ChangeDetectorRef,
     Renderer2
@@ -122,6 +123,12 @@ export class TagComponent {
     public editing = false;
 
     /**
+     * @name moving
+     * @type {boolean}
+     */
+    @HostBinding('class.moving') public moving: boolean;
+
+    /**
      * @name rippleState
      * @type {string}
      */
@@ -166,6 +173,10 @@ export class TagComponent {
      */
     public focus(): void {
         this.element.nativeElement.focus();
+    }
+
+    public move(): void {
+        this.moving = true;
     }
 
     /**
