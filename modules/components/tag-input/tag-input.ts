@@ -906,15 +906,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         };
 
         /**
-         * @name appendItem
+         * @name subscribeFn
          * @param tag
          */
-        const appendItem = (tag: TagModel): void => {
+        const subscribeFn = (tag: TagModel): void => {
             this.appendTag(tag, index);
 
-            if (this.dropdown) {
-                this.dropdown.dropdown.hide();
+            if (this.dropdown && this.dropdown.isVisible) {
+                const dropdown = this.dropdown.dropdown;
+                dropdown.hide();
             }
+            
 
             // emit event
             this.onAdd.emit(tag);
@@ -926,7 +928,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             .map(() => item)
             .map(this.createTag)
             .filter(validationFilter)
-            .subscribe(appendItem, undefined, reset);
+            .subscribe(subscribeFn, undefined, reset);
     }
 
     /**
