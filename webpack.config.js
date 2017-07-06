@@ -14,6 +14,7 @@ const webpackConfig = {
             '@angular/core',
             '@angular/common',
             "@angular/forms",
+            "@angular/animations",
 
             'rxjs',
 
@@ -32,6 +33,7 @@ const webpackConfig = {
         "@angular/core": true,
         "@angular/common": true,
         "@angular/forms": true,
+        "@angular/animations": true,
 
         'rxjs': true,
 

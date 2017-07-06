@@ -917,7 +917,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 dropdown.hide();
             }
             
-
             // emit event
             this.onAdd.emit(tag);
         };
