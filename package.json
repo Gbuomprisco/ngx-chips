@@ -1,10 +1,10 @@
 {
   "name": "ngx-chips",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Tag Input component for Angular",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
-    "build": "webpack && npm run tsc && npm run moveassets && npm run ngc",
+    "build": "webpack && npm run tsc && npm run ngc && npm run moveassets",
     "watch": "webpack -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3010 --content-base demo",
     "start": "npm run server",
@@ -13,7 +13,8 @@
     "ngc": "ngc -p ./tsconfig.aot.json",
     "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/modules/",
     "codecov": "codecov",
-    "clean": "rm -rf ./dist && rm -rf ./factories",
+    "clean": "npm run clean:dist && npm run clean:generated",
+    "clean:dist": "rm -rf ./dist && rm -rf ./factories",
     "clean:generated": "find modules \\( -name '*.js' -o -name '*.d.ts' -o -name '*.js.map' -o -name '*.metadata.json'  \\) -type f -delete"
   },
   "author": {
