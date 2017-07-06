@@ -11,14 +11,23 @@ export declare interface DraggedTag {
 
 import { DRAG_AND_DROP_KEY } from '../../core/constants';
 
+export declare interface State {
+    dragging: boolean,
+    dropping: boolean,
+    index: number
+}
+
+export declare type StateProperty = keyof State;
+
 @Injectable()
 export class DragProvider {
-    private sender: TagInputComponent;
-    private receiver: TagInputComponent;
+    public sender: TagInputComponent;
+    public receiver: TagInputComponent;
 
-    public state = {
-        isDragging: false,
-        isDropping: false
+    public state: State = {
+        dragging: false,
+        dropping: false,
+        index: undefined
     };
 
     /**
@@ -73,7 +82,7 @@ export class DragProvider {
      * @name setState
      * @param state
      */
-    public setState(state: {isDragging?: boolean, isDropping?: boolean}): void {
+    public setState(state: {[K in StateProperty]?: State[K]}): void {
         this.state = {...this.state, ...state};
     }
 
@@ -81,14 +90,18 @@ export class DragProvider {
      * @name getState
      * @param key
      */
-    public getState(key: string): boolean {
-        return this.state[key];
+    public getState(key?: StateProperty): State | State[StateProperty] {
+        return key ? this.state[key] : this.state;
     }
 
     /**
      * @name onDragEnd
      */
     public onDragEnd(): void {
-        this.setState({isDragging: false, isDropping: false});
+        this.setState({
+            dragging: false,
+            dropping: false,
+            index: undefined
+        });
     }
 }

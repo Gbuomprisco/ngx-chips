@@ -502,6 +502,7 @@ describe('TagInputComponent', () => {
             expect(component.items.length).toEqual(2);
 
             component.setInputValue(value);
+
             component.onAddingRequested(true, value);
             expect(component.items.length).toEqual(3);
 
