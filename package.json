@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "description": "Tag Input component for Angular",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -83,10 +83,7 @@
     "@angular/common": "^4.2.0",
     "@angular/core": "^4.2.0",
     "@angular/forms": "^4.2.0",
-<<<<<<< HEAD
-=======
     "@angular/animations": "^4.2.0",
->>>>>>> 657052b86ef62001d0744943bf1f9e7edb929ce9
     "rxjs": "^5.0.1"
   },
   "keywords": [
