@@ -5,7 +5,6 @@
      [attr.tabindex]="-1"
 
      (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
-     (dragenter)="dragZone ? onDragOver($event) : undefined"
      (dragover)="dragZone ? onDragOver($event) : undefined"
      (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
 
@@ -30,7 +29,7 @@
              (drop)="dragZone ? onTagDropped($event, i) : undefined"
              (dragenter)="dragZone ? onDragOver($event) : undefined"
              (dragover)="dragZone ? onDragOver($event, i) : undefined"
-             (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
+             (dragleave)="dragZone ? onDragLeave($event, i) : undefined"
 
              [attr.tabindex]="0"
              [disabled]="disabled"
