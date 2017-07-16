@@ -1,3 +1,4 @@
+import { styles } from './../../../factories/modules/core/styles/core/_core.scss.shim.ngstyle';
 // angular
 import {
     Component,
@@ -762,12 +763,40 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name onDragOver
      * @param event
+     * @param index
      */
     public onDragOver(event: DragEvent, index?: number): void {
+        event.preventDefault();
+
         this.dragProvider.setState({dropping: true});
         this.dragProvider.setReceiver(this);
 
-        event.preventDefault();
+        const draggedItemIndex = this.dragProvider.getState('index');
+        
+        if (index === undefined || draggedItemIndex === undefined) {
+            return;
+        }
+
+        draggedItemIndex !== undefined
+
+        const hovered = this.tags.toArray()[index];
+        const { left } = event.srcElement.getBoundingClientRect();
+
+        if (draggedItemIndex < index) {
+            hovered.move(left);
+        } else if (draggedItemIndex > index) {
+            hovered.move(left);
+        }
+    }
+
+    /**
+     * @name onDragLeave
+     * @param event
+     * @param index
+     */
+    public onDragLeave(event: DragEvent, index: number): void {
+        const hovered = this.tags.toArray()[index];
+        hovered.resetStyle();
     }
 
     /**

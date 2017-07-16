@@ -123,12 +123,6 @@ export class TagComponent {
     public editing = false;
 
     /**
-     * @name moving
-     * @type {boolean}
-     */
-    @HostBinding('class.moving') public moving: boolean;
-
-    /**
      * @name rippleState
      * @type {string}
      */
@@ -175,8 +169,14 @@ export class TagComponent {
         this.element.nativeElement.focus();
     }
 
-    public move(): void {
-        this.moving = true;
+    public move(value: number): void {
+        this.renderer.setStyle(this.element.nativeElement, 'position', `absolute`);
+        this.renderer.setStyle(this.element.nativeElement, 'left', `${value}px`);
+    }
+
+    public resetStyle(): void {
+        this.renderer.setStyle(this.element.nativeElement, 'position', `static`);
+        this.renderer.setStyle(this.element.nativeElement, 'left', 0);
     }
 
     /**
