@@ -156,7 +156,6 @@ export class TagInputDropdown {
 
         this.tagInput
             .onTextChange
-            .filter((text: string) => text.trim().length >= this.minimumTextLength)
             .subscribe(this.show);
     }
 
@@ -216,9 +215,9 @@ export class TagInputDropdown {
         const value = this.tagInput.formValue.trim();
         const position = this.calculatePosition();
         const items: TagModel[] = this.getMatchingItems(value);
-        const hasItems: boolean = items.length > 0;
-        const showDropdownIfEmpty: boolean = this.showDropdownIfEmpty && hasItems && !value;
-        const hasMinimumText: boolean = value.length >= this.minimumTextLength;
+        const hasItems = items.length > 0;
+        const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
+        const hasMinimumText = value.trim().length >= this.minimumTextLength;
 
         const assertions: boolean[] = [
             hasItems,
@@ -226,9 +225,9 @@ export class TagInputDropdown {
             hasMinimumText
         ];
 
-        const showDropdown: boolean = (assertions.filter(item => item).length === assertions.length) ||
+        const showDropdown = (assertions.filter(item => item).length === assertions.length) ||
             showDropdownIfEmpty;
-        const hideDropdown: boolean = this.isVisible && (!hasItems || !hasMinimumText);
+        const hideDropdown = this.isVisible && !(hasItems || hasMinimumText);
 
         // set items
         this.setItems(items);
@@ -238,7 +237,7 @@ export class TagInputDropdown {
             return;
         }
 
-        if (showDropdown && !this.isVisible) {
+        if (showDropdown) {
             this.dropdown.show(position);
         } else if (hideDropdown) {
             this.dropdown.hide();
@@ -356,6 +355,8 @@ export class TagInputDropdown {
 
             if (this.items.length) {
                 this.dropdown.show(this.calculatePosition());
+            } else if (!this.showDropdownIfEmpty && this.isVisible) {
+                this.dropdown.hide();
             }
         };
 
