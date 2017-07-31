@@ -497,9 +497,9 @@ This will accept items only from the autocomplete dropdown:
            [onlyFromAutocomplete]="true">
     <tag-input-dropdown [showDropdownIfEmpty]="true"
                         [autocompleteItems]="['iTem1', 'item2', 'item3']">
-        <template let-item="item" let-index="index">
+        <ng-template let-item="item" let-index="index">
             {{ index }}: {{ item.display }}
-        </template>
+        </ng-template>
     </tag-input-dropdown>
 </tag-input>
 ```
@@ -603,7 +603,7 @@ Define your own template, but remember to set up the needed events using the `in
 
 ```html
 <tag-input [ngModel]="['@item']" [modelAsStrings]="true" #input>
-    <template let-item="item" let-index="index"> <!-- DEFINE HERE YOUR TEMPLATE -->
+    <ng-template let-item="item" let-index="index"> <!-- DEFINE HERE YOUR TEMPLATE -->
         <span>
             <!-- YOU MAY ACTUALLY DISPLAY WHATEVER YOU WANT IF YOU PASS AN OBJECT AS ITEM -->
             <!-- ex. item.myDisplayValue -->
@@ -611,7 +611,7 @@ Define your own template, but remember to set up the needed events using the `in
             item: {{ item }}
         </span>
         <delete-icon (click)="input.removeItem(item, index)"></delete-icon>
-    </template>
+    </ng-template>
 </tag-input>
 ```
 
