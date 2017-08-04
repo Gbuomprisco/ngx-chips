@@ -111,6 +111,7 @@
 
     &.tag--editing {
         background-color: map-get($theme, 'background-editing');
+        border: map-get($theme, 'border-editing');
         cursor: text;
     }
 }

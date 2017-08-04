@@ -441,29 +441,29 @@ describe('TagInputComponent', () => {
             // press 'i'
             component.setInputValue('i');
             component.dropdown.show();
+
             fixture.detectChanges();
             tick();
 
             expect(component.dropdown.items.length).toEqual(3);
-            component.dropdown.items = [];
+            component.dropdown.dropdown.hide();
 
             component.setInputValue('ite');
             component.dropdown.show();
+
             fixture.detectChanges();
             tick();
 
             expect(component.dropdown.items.length).toEqual(2);
-            component.dropdown.items = [];
-
-            fixture.detectChanges();
-            tick();
+            component.dropdown.dropdown.hide();
 
             component.setInputValue('ita');
             component.dropdown.show();
-            expect(component.dropdown.items.length).toEqual(1);
 
             fixture.detectChanges();
             tick();
+
+            expect(component.dropdown.items.length).toEqual(1);
 
             discardPeriodicTasks();
         }));

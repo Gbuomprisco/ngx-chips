@@ -39,6 +39,8 @@ $default-tag-theme: (
     background-hover: darken(map-get($color-primary, 'default'), 5%),
     background-editing: #fff,
 
+    border-editing: 1px solid #ccc,
+
     color: $tag-color,
     color-focused: #fff,
     color-active: #fff,

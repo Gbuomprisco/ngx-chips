@@ -16,6 +16,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { TagModel, TagInputDropdownOptions, OptionsProvider } from '../../core';
@@ -141,7 +142,7 @@ export class TagInputDropdown {
         });
     }
 
-    constructor(@Inject(forwardRef(() => TagInputComponent)) private tagInput: TagInputComponent) {}
+    constructor(@Inject(forwardRef(() => TagInputComponent)) public tagInput: TagInputComponent) {}
 
     /**
      * @name ngOnInit
@@ -156,6 +157,7 @@ export class TagInputDropdown {
 
         this.tagInput
             .onTextChange
+            .filter((value: string) => value.length > 0)
             .subscribe(this.show);
     }
 
@@ -225,22 +227,18 @@ export class TagInputDropdown {
             hasMinimumText
         ];
 
-        const showDropdown = (assertions.filter(item => item).length === assertions.length) ||
+        const show = (assertions.filter(item => item).length === assertions.length) ||
             showDropdownIfEmpty;
-        const hideDropdown = this.isVisible && !(hasItems || hasMinimumText);
 
-        // set items
-        this.setItems(items);
+        if (!show) {
+            this.dropdown.hide();
+        } else {
+            this.setItems(items);
+            this.dropdown.show(position);
+        }
 
         if (this.autocompleteObservable) {
             this.getItemsFromObservable(value);
-            return;
-        }
-
-        if (showDropdown) {
-            this.dropdown.show(position);
-        } else if (hideDropdown) {
-            this.dropdown.hide();
         }
     }
 
@@ -254,6 +252,14 @@ export class TagInputDropdown {
         }
 
         this.updatePosition();
+    }
+
+    /**
+     * @name onWindowBlur
+     */
+    @HostListener('window:blur')
+    public onWindowBlur(): void {
+        this.dropdown.hide();
     }
 
     /**
@@ -274,7 +280,7 @@ export class TagInputDropdown {
     /**
      * @name createTagModel
      * @param item
-     * @return {{}}
+     * @return {TagModel}
      */
     private createTagModel(item: Ng2MenuItem): TagModel {
         const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
@@ -297,8 +303,10 @@ export class TagInputDropdown {
             return [];
         }
 
+        const dupesAllowed = this.tagInput.allowDupes;
+
         return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue: boolean = this.tagInput.tags.some(tag => {
+            const hasValue: boolean = dupesAllowed ? true : this.tagInput.tags.some(tag => {
                 const identifyBy = this.tagInput.identifyBy;
                 const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
 
@@ -361,6 +369,7 @@ export class TagInputDropdown {
         };
 
         this.autocompleteObservable(text)
+            .first()
             .subscribe(subscribeFn, () => this.setLoadingState(false));
     }
 
