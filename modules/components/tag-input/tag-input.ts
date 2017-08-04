@@ -421,7 +421,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name animationMetadata
      */
-    public animationMetadata: {value: string, params: object};
+    public animationMetadata: { value: string, params: object };
 
     constructor(private readonly renderer: Renderer2, 
                 public readonly dragProvider: DragProvider) {
@@ -436,6 +436,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public onRemoveRequested(tag: TagModel, index: number): void {
         if (this.onRemoving) {
             this.onRemoving(tag)
+                .first()
                 .subscribe((model: TagModel) => {
                     this.removeItem(model, index);
                 });
@@ -456,6 +457,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         if (this.onAdding) {
             this.onAdding(tag)
+                .first()
                 .subscribe((model: TagModel) => {
                     this.addItem(isFromAutocomplete, model, index);
                 });
@@ -739,9 +741,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
 	    // Setting editable to false to fix problem with tags in IE still being editable when
 	    // onlyFromAutocomplete is true
-		if (this.onlyFromAutocomplete) {
-			this.editable = false;
-		}
+		this.editable = this.onlyFromAutocomplete ? false : this.editable;
     }
 
     /**3
@@ -910,12 +910,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
          * @param tag
          */
         const subscribeFn = (tag: TagModel): void => {
-            this.appendTag(tag, index);
-
             if (this.dropdown && this.dropdown.isVisible) {
-                const dropdown = this.dropdown.dropdown;
-                dropdown.hide();
+                this.dropdown.dropdown.hide();
             }
+
+            this.appendTag(tag, index);
             
             // emit event
             this.onAdd.emit(tag);
@@ -923,6 +922,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         Observable
             .of(model)
+            .first()
             .filter(() => model.trim() !== '')
             .map(() => item)
             .map(this.createTag)

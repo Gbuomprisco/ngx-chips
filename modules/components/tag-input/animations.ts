@@ -14,6 +14,12 @@ import {
  */
 export const animations = [
     trigger('animation', [
+        state('in', style({
+            opacity: 1
+        })),
+        state('out', style({
+            opacity: 0
+        })),
         transition(':enter', [
             animate("{{ enter }}", keyframes([
                 style({opacity: 0, offset: 0, transform: 'translate(0px, 20px)'}),

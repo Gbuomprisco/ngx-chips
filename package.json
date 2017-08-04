@@ -77,7 +77,7 @@
     "zone.js": "0.8.10"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.7.9-beta"
+    "ng2-material-dropdown": "0.7.9-beta-3"
   },
   "peerDependencies": {
     "@angular/common": "^4.2.0",
