@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Tag Input component for Angular",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
@@ -24,15 +24,15 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular/animations": "^4.2.3",
-    "@angular/common": "^4.2.3",
-    "@angular/compiler": "^4.2.3",
-    "@angular/compiler-cli": "^4.2.3",
-    "@angular/core": "^4.2.3",
-    "@angular/forms": "^4.2.3",
-    "@angular/http": "^4.2.3",
-    "@angular/platform-browser": "^4.2.3",
-    "@angular/platform-browser-dynamic": "^4.2.3",
+    "@angular/animations": "^4.3.0",
+    "@angular/common": "^4.3.0",
+    "@angular/compiler": "^4.3.0",
+    "@angular/compiler-cli": "^4.3.0",
+    "@angular/core": "^4.3.0",
+    "@angular/forms": "^4.3.0",
+    "@angular/http": "^4.3.0",
+    "@angular/platform-browser": "^4.3.0",
+    "@angular/platform-browser-dynamic": "^4.3.0",
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.41",
     "@types/node": "^7.0.3",
@@ -77,7 +77,7 @@
     "zone.js": "0.8.10"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.7.7"
+    "ng2-material-dropdown": "0.7.9-beta"
   },
   "peerDependencies": {
     "@angular/common": "^4.2.0",
