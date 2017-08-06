@@ -907,14 +907,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
          * @param tag
          */
         const subscribeFn = (tag: TagModel): void => {
-            if (this.dropdown && this.dropdown.isVisible) {
-                this.dropdown.dropdown.hide();
-            }
-
             this.appendTag(tag, index);
             
             // emit event
             this.onAdd.emit(tag);
+
+            if (!this.dropdown) {
+                return;
+            }
+
+            this.dropdown.hide();
+            this.dropdown.showDropdownIfEmpty ? this.dropdown.show() : undefined;
         };
 
         Observable
