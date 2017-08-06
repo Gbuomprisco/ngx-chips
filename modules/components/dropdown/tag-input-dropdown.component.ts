@@ -148,16 +148,16 @@ export class TagInputDropdown {
      * @name ngOnInit
      */
     public ngOnInit(): void {
-        this.onItemClicked()
-            .subscribe(this.requestAdding);
+        this.onItemClicked().subscribe(this.requestAdding);
 
         // reset itemsMatching array when the dropdown is hidden
-        this.onHide()
-            .subscribe(this.resetItems);
+        this.onHide().subscribe(this.resetItems);
+
+        const DEBOUNCE_TIME = 200;
 
         this.tagInput
             .onTextChange
-            .filter((value: string) => value.length > 0)
+            .debounceTime(DEBOUNCE_TIME)
             .subscribe(this.show);
     }
 
@@ -166,6 +166,7 @@ export class TagInputDropdown {
      */
     public updatePosition(): void {
         const position = this.tagInput.inputForm.getElementPosition();
+
         this.dropdown.menu.updatePosition(position);
     }
 
@@ -214,32 +215,42 @@ export class TagInputDropdown {
      * @name show
      */
     public show = (): void => {
-        const value = this.tagInput.formValue.trim();
+        const value = this.getFormValue();
+
+        if (this.autocompleteObservable && this.showDropdownIfEmpty) {
+            return this.getItemsFromObservable(value);
+        }
+
+        if (!this.showDropdownIfEmpty && !value) {
+            return this.dropdown.hide();
+        }
+
         const position = this.calculatePosition();
-        const items: TagModel[] = this.getMatchingItems(value);
+        const items = this.getMatchingItems(value);
         const hasItems = items.length > 0;
+        const isHidden = this.isVisible === false;
         const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
         const hasMinimumText = value.trim().length >= this.minimumTextLength;
+        const assertions = [];
 
-        const assertions: boolean[] = [
-            hasItems,
-            this.isVisible === false,
-            hasMinimumText
-        ];
+        const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
+        const shouldHide = this.isVisible && !hasItems;
 
-        const show = (assertions.filter(item => item).length === assertions.length) ||
-            showDropdownIfEmpty;
+        this.setItems(items);
 
-        if (!show) {
-            this.dropdown.hide();
-        } else {
-            this.setItems(items);
+        if (shouldShow) {
             this.dropdown.show(position);
+        } else if (shouldHide) {
+            this.hide();
         }
+    }
 
-        if (this.autocompleteObservable) {
-            this.getItemsFromObservable(value);
-        }
+    /**
+     * @name hide
+     */
+    public hide(): void {
+        this.resetItems();
+        this.dropdown.hide();
     }
 
     /**
@@ -260,6 +271,13 @@ export class TagInputDropdown {
     @HostListener('window:blur')
     public onWindowBlur(): void {
         this.dropdown.hide();
+    }
+
+    /**
+     * @name getFormValue
+     */
+    private getFormValue(): string {
+        return this.tagInput.formValue.trim();
     }
 
     /**
