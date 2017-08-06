@@ -178,6 +178,16 @@
         </div>
 
         <div>
+            <h3>Tags within a form group</h3>
+            <form [formGroup]="form">
+                <tag-input
+                    [formControlName]="'chips'"
+                    name="items">
+                </tag-input>
+            </form>
+        </div>
+
+        <div>
             <h3>Tags with theme minimal</h3>
             <form>
                 <tag-input

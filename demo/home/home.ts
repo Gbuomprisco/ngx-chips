@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -13,7 +13,14 @@ import 'rxjs/add/operator/filter';
     templateUrl: './home.html'
 })
 export class Home {
-    constructor(private http: Http) {}
+    form: FormGroup;
+
+    constructor(private http: Http) {
+        this.form = new FormBuilder().group({
+            chips: [['chip'], []]
+        });
+    }
+
     disabled = true;
 
     items = ['Javascript', 'Typescript'];

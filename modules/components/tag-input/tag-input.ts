@@ -742,6 +742,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 	    // Setting editable to false to fix problem with tags in IE still being editable when
 	    // onlyFromAutocomplete is true
 		this.editable = this.onlyFromAutocomplete ? false : this.editable;
+
+        this.setAnimationMetadata();
     }
 
     /**3
@@ -823,11 +825,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (this.hideForm) {
             this.inputForm.destroy();
         }
-
-        this.animationMetadata = {
-            value: 'in',
-            params: {...this.animationDuration}
-        };
     }
 
     /**
@@ -1044,5 +1041,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.onPaste.emit(text);
 
         setTimeout(() => this.setInputValue(''), 0);
+    }
+
+    private setAnimationMetadata(): void {
+        this.animationMetadata = {
+            value: 'in',
+            params: {...this.animationDuration}
+        };
     }
 }
