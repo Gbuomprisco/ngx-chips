@@ -253,9 +253,8 @@ Example:
  public onAdding(tag: TagModel): Observable<TagModel> {
     const confirm = window.confirm('Do you really want to add this tag?');
     return Observable
-        .of(undefined)
-        .filter(() => confirm)
-        .mapTo(tag);
+        .of(tag)
+        .filter(() => confirm);
 }
 ```
 
@@ -269,9 +268,8 @@ Example:
 public onRemoving(tag: TagModel): Observable<TagModel> {
         const confirm = window.confirm('Do you really want to remove this tag?');
         return Observable
-            .of(undefined)
-            .filter(() => confirm)
-            .mapTo(tag);
+            .of(tag)
+            .filter(() => confirm);
     }
 ```
 
@@ -356,6 +354,11 @@ It can be used to popuplate the autocomplete with items coming from an async req
 If set to `true`, the dropdown of the autocomplete will be shown as soon as the user focuses on the form
 
 
+**`keepOpen`** - [**`?boolean`**]
+
+To use in conjunction with `showDropdownIfEmpty`. If set to `false`, the dropdown will not reopen automatically after adding a new tag. (defaults to `true`).
+
+
 **`autocompleteItems`** - [**`?string[] | AutoCompleteModel[]`**]
 
 An array of items to populate the autocomplete dropdown
@@ -400,6 +403,7 @@ of the input text, the second value corresponds to the value of each autocomplet
 **`appendToBody`** - [**`?boolean`**]
 
 If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `true`.
+
 
 
 ---
