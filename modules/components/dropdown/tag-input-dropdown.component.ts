@@ -101,6 +101,13 @@ export class TagInputDropdown {
     @Input() public appendToBody = new defaults().appendToBody;
 
     /**
+     * @name keepOpen
+     * @description option to leave dropdown open when adding a new item
+     * @type {boolean}
+     */
+    @Input() public keepOpen = new defaults().keepOpen;
+
+    /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
      * @type {TagModel[]}
@@ -158,6 +165,13 @@ export class TagInputDropdown {
         this.tagInput
             .onTextChange
             .debounceTime(DEBOUNCE_TIME)
+            .filter((value: string) => {
+                if (this.keepOpen === false) {
+                    return value.length > 0;
+                }
+
+                return true;
+            })
             .subscribe(this.show);
     }
 
@@ -217,7 +231,7 @@ export class TagInputDropdown {
     public show = (): void => {
         const value = this.getFormValue();
 
-        if (this.autocompleteObservable && this.showDropdownIfEmpty) {
+        if (this.autocompleteObservable) {
             return this.getItemsFromObservable(value);
         }
 
