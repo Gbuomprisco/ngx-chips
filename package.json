@@ -106,6 +106,7 @@
     "dist",
     "index.ts",
     "tsconfig.json",
-    "tsconfig.aot.json"
+    "tsconfig.aot.json",
+    "README.md"
   ]
 }
