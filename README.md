@@ -1,52 +1,20 @@
-# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ng2-tag-input.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ng2-tag-input.svg)](https://badge.fury.io/js/ng2-tag-input)
+# Tag Input Component for Angular [![Build Status](https://travis-ci.org/Gbuomprisco/ngx-chips.svg?branch=develop)](https://travis-ci.org/Gbuomprisco/ng2-tag-input) [![npm version](https://badge.fury.io/js/ngx-chips.svg)](https://badge.fury.io/js/ngx-chips)
 
-This is a component for Angular >= 4. Design and API are blandly inspired by Angular Material's md-chips.
+This is a component for Angular >= 4. Design and API are blandly inspired by Angular Material's md-chips. Formerly called ng2-tag-input.
 
-[![NPM](https://nodei.co/npm/ng2-tag-input.png?downloads=true&stars=true)](https://nodei.co/npm/ng2-tag-input/)
+[![NPM](https://nodei.co/npm/ngx-chips.png?downloads=true&stars=true)](https://nodei.co/npm/ngx-chips/)
 
 ## [Demo](http://www.buompris.co/ng2-tag-input/)
 
 Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
 
 
-## Installing the component
+## Getting Started
 
-    npm install ngx-chips --save
+    npm install ngx-chips --save // OR
+    yarn add ngx-chips
 
-**Notice**: the latest version on NPM may not reflect the branch `master`. Send me an email or open an issue and tag me if you need it to be published.
-
-
-## FAQ
-
-### Does it work with Angular Universal?
-Yes.
-
-
-### Does it work with Angular's Ahead of time compilation (AOT)?
-Yes.
-
-
-### Does it work with Ionic 2?
-Yes.
-
-
-### What version does it support?
-This component is supposed to work with the latest Angular versions.
-
-If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
-
-
-### Can I change the style?
-Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ngx-chips/blob/master/docs/custom-themes.md).
-
-
-### Something's broken?
-Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
-
-Please **do not** send private emails - Github Issues are supposed to help whoever might have your same issue, so it is the right place to help each other.
-
-Issues not filled out with the provided templates are going to be closed.
-
+**Notice**: the latest version on NPM may not reflect the branch `master`. Open an issue and tag me if you need it to be published.
 
 ## Configuration
 
@@ -66,7 +34,7 @@ export class AppModule {}
 
 #### Inputs
 
-##### Model (required)
+##### ngModel OR use FormGroup/formControlName (required)
 - **`ngModel`** - [**`string[] | TagModel[]`**] - Model of the component. Accepts an array of strings as input OR an array of objects.
 
 If you do use an array of objects, make sure you:
@@ -649,6 +617,39 @@ If you don't like how the default theme looks, or you just need it to fit in a d
 
 If you do not like these themes, [define your own theme](https://github.com/gbuomprisco/ngx-chips/blob/master/docs/custom-themes.md).
 
+
+## FAQ
+
+### Does it work with Angular Universal?
+Yes.
+
+
+### Does it work with Angular's Ahead of time compilation (AOT)?
+Yes.
+
+
+### Does it work with Ionic 2?
+Yes.
+
+
+### What version does it support?
+This component is supposed to work with the latest Angular versions.
+
+If you have any issues, please do make sure you're not running a different version (or check this repo's package.json). Otherwise, please do open a new issue.
+
+
+### Can I change the style?
+Yes - check out [how to create custom themes](https://github.com/gbuomprisco/ngx-chips/blob/master/docs/custom-themes.md).
+
+
+### Something's broken?
+Please do open a new issue, but please check first that the same issue has not already been raised and that you are using the latest version :)
+
+Please **do not** send private emails - Github Issues are supposed to help whoever might have your same issue, so it is the right place to help each other.
+
+Issues not filled out with the provided templates are going to be closed. Please provide as much information as possible: do include a plunkr so that I can see what the problem is without having to replicate your environment on my laptop. The time I can spend on this is very limited.
+
+No features requests will be considered, unless they are Pull Requests. I feel the component is already quite bloated, and I'd like on solving bugs and making this more reliable for everyone.
 
 ## Contributing/Pull Requests
 Contributions are highly welcome! No, there is no guideline on how to do it. Just make sure to lint and unit test your changes. We'll figure out the rest with a couple of messages...
