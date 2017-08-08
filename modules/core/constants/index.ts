@@ -24,4 +24,6 @@ export const KEY_PRESS_ACTIONS = {
 };
 
 export const DRAG_AND_DROP_KEY = 'Text';
+export const NEXT = 'NEXT';
+export const PREV = 'PREV';
 

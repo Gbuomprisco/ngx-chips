@@ -96,12 +96,12 @@ export class TagInputForm {
      * @desc pass through the specified tabindex to the input
      * @type {string}
      */
-    @Input() public tabindex: string = undefined;
+    @Input() public tabindex: string = '';
 
     /**
      * @name disabled
      */
-    @Input() public disabled = false;
+    @Input() public disabled: boolean = false;
 
     /**
      * @name inputText
@@ -131,7 +131,7 @@ export class TagInputForm {
     /**
      * @name inputTextValue
      */
-    public inputTextValue = '';
+    public inputTextValue: string = '';
 
     public ngOnInit() {
         // creating form
@@ -144,7 +144,7 @@ export class TagInputForm {
      * @name value
      * @returns {AbstractControl}
      */
-    public get value(): AbstractControl {
+    public get value(): AbstractControl | null {
         return this.form.get('item');
     }
 
@@ -162,9 +162,11 @@ export class TagInputForm {
      * @returns {string[]}
      */
     public getErrorMessages(messages): string[] {
-        return Object.keys(messages)
-            .filter(err => this.value.hasError(err))
-            .map(err => messages[err]);
+        const value = this.value;
+
+        return value ? Object.keys(messages)
+            .filter(err => value.hasError(err))
+            .map(err => messages[err]) : [];
     }
 
     /**

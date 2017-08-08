@@ -14,7 +14,7 @@ import { DRAG_AND_DROP_KEY } from '../../core/constants';
 export declare interface State {
     dragging: boolean,
     dropping: boolean,
-    index: number
+    index: number | undefined
 }
 
 export declare type StateProperty = keyof State;

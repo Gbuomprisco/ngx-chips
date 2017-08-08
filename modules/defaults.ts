@@ -35,8 +35,8 @@ export interface TagInputOptions {
     tabIndex: string;
     disabled: boolean;
     dragZone: string;
-    onRemoving: () => Observable<TagModel>;
-    onAdding: () => Observable<TagModel>;
+    onRemoving?: (tag: TagModel) => Observable<TagModel>;
+    onAdding?: (tag: TagModel) => Observable<TagModel>;
     displayBy: string;
     identifyBy: string;
     animationDuration: {
@@ -62,7 +62,7 @@ export const defaults = {
     tagInput: <TagInputOptions>{
         separatorKeys: [],
         separatorKeyCodes: [],
-        maxItems: undefined,
+        maxItems: Infinity,
         placeholder: PLACEHOLDER,
         secondaryPlaceholder: SECONDARY_PLACEHOLDER,
         validators: [],
@@ -71,23 +71,23 @@ export const defaults = {
         errorMessages: {},
         theme: '',
         onTextChangeDebounce: 250,
-        inputId: undefined,
-        inputClass: undefined,
-        clearOnBlur: undefined,
-        hideForm: undefined,
-        addOnBlur: undefined,
-        addOnPaste: undefined,
+        inputId: '',
+        inputClass: '',
+        clearOnBlur: false,
+        hideForm: false,
+        addOnBlur: false,
+        addOnPaste: false,
         pasteSplitPattern: ',',
         blinkIfDupe: true,
         removable: true,
-        editable: undefined,
+        editable: false,
         allowDupes: false,
         modelAsStrings: false,
         trimTags: true,
         ripple: true,
-        tabIndex: undefined,
+        tabIndex: '',
         disabled: false,
-        dragZone: undefined,
+        dragZone: '',
         onRemoving: undefined,
         onAdding: undefined,
         displayBy: 'display',
@@ -105,7 +105,7 @@ export const defaults = {
         focusFirstElement: false,
         showDropdownIfEmpty: false,
         minimumTextLength: 1,
-        limitItemsTo: undefined,
+        limitItemsTo: Infinity,
         keepOpen: true,
         matchingFn
     }
