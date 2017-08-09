@@ -2699,6 +2699,10 @@ ng2-material-dropdown@0.7.9-beta-3:
   version "0.7.9-beta-3"
   resolved "https://registry.yarnpkg.com/ng2-material-dropdown/-/ng2-material-dropdown-0.7.9-beta-3.tgz#f3ed894765e4f6d94f8366e5baecb68854463ca6"
 
+ngx-long-press@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-long-press/-/ngx-long-press-0.0.1.tgz#2bc0a42595825b55895cb9461617d6a475a3550a"
+
 no-case@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.1.tgz#7aeba1c73a52184265554b7dc03baf720df80081"

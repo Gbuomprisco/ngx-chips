@@ -35,7 +35,12 @@ const webpackConfig = {
         "@angular/forms": true,
         "@angular/animations": true,
 
-        'rxjs': true,
+        'rxjs/Observable': true,
+        'rxjs/add/operator/of': true,
+        'rxjs/add/operator/map': true,
+        'rxjs/add/operator/debounceTime': true,
+        'rxjs/add/operator/first': true,
+        'rxjs/add/operator/filter': true,
 
         "ng2-material-dropdown": true
     },

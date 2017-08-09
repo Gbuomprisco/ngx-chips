@@ -179,7 +179,7 @@ export class TagInputDropdown {
      * @name updatePosition
      */
     public updatePosition(): void {
-        const position = this.tagInput.inputForm.getElementPosition();
+        const position = this.tagInput.form.getElementPosition();
 
         this.dropdown.menu.updatePosition(position);
     }
@@ -298,7 +298,7 @@ export class TagInputDropdown {
      * @name calculatePosition
      */
     private calculatePosition(): ClientRect {
-        return this.tagInput.inputForm.getElementPosition();
+        return this.tagInput.form.getElementPosition();
     }
 
     /**
@@ -306,6 +306,10 @@ export class TagInputDropdown {
      * @param item {Ng2MenuItem}
      */
     private requestAdding = (item: Ng2MenuItem): void => {
+        if (!item) {
+            return;
+        }
+
         this.tagInput.onAddingRequested(true, this.createTagModel(item));
     }
 

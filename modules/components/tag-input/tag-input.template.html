@@ -70,7 +70,7 @@
 
 <!-- ERRORS -->
 <div *ngIf="hasErrors()" class="error-messages {{ theme || '' }}">
-    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="error-message">
+    <p *ngFor="let error of form.getErrorMessages(errorMessages)" class="error-message">
         <span>{{ error }}</span>
     </p>
 </div>
