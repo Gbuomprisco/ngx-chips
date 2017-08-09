@@ -155,25 +155,13 @@ export class TagInputDropdown {
      * @name ngOnInit
      */
     public ngOnInit(): void {
-        this.onItemClicked().subscribe(this.requestAdding);
+        this.onItemClicked()
+            .subscribe(this.requestAdding);
 
-        // reset itemsMatching array when the dropdown is hidden
-        this.onHide().subscribe(this.resetItems);
+        this.onHide()
+            .subscribe(this.resetItems);
 
-        const DEBOUNCE_TIME = 200;
-        const filterFn = (value: string): boolean => {
-            if (this.keepOpen === false) {
-                return value.length > 0;
-            }
-
-            return true;
-        };
-
-        this.tagInput
-            .onTextChange
-            .debounceTime(DEBOUNCE_TIME)
-            .filter(filterFn)
-            .subscribe(this.onChange);
+        this.setupTextChangeSubscription();
     }
 
     /**
@@ -273,7 +261,7 @@ export class TagInputDropdown {
      */
     @HostListener('window:blur')
     public onWindowBlur(): void {
-        this.dropdown.hide();
+        this.hide();
     }
 
     /**
@@ -325,10 +313,6 @@ export class TagInputDropdown {
      * @param item {Ng2MenuItem}
      */
     private requestAdding = (item: Ng2MenuItem): void => {
-        if (!item) {
-            return;
-        }
-
         this.tagInput.onAddingRequested(true, this.createTagModel(item));
     }
 
@@ -338,8 +322,9 @@ export class TagInputDropdown {
      * @return {TagModel}
      */
     private createTagModel(item: Ng2MenuItem): TagModel {
-        const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
-        const value = typeof item.value === 'string' ? item.value : item.value[this.identifyBy];
+        const isString = typeof item.value === 'string';
+        const display = isString ? item.value : item.value[this.displayBy];
+        const value = isString ? item.value : item.value[this.identifyBy];
 
         return {
             ...item.value,
@@ -430,6 +415,27 @@ export class TagInputDropdown {
                 subscribeFn, 
                 () => this.setLoadingState(false)
             );
+    }
+
+    /**
+     * @name setupTextChangeSubscription
+     */
+    private setupTextChangeSubscription(): void {
+        const DEBOUNCE_TIME = 200;
+
+        const filterFn = (value: string): boolean => {
+            if (this.keepOpen === false) {
+                return value.length > 0;
+            }
+
+            return true;
+        };
+
+        this.tagInput
+            .onTextChange
+            .debounceTime(DEBOUNCE_TIME)
+            .filter(filterFn)
+            .subscribe(this.onChange);
     }
 
     /**
