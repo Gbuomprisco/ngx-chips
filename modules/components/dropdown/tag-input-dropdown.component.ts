@@ -161,18 +161,19 @@ export class TagInputDropdown {
         this.onHide().subscribe(this.resetItems);
 
         const DEBOUNCE_TIME = 200;
+        const filterFn = (value: string): boolean => {
+            if (this.keepOpen === false) {
+                return value.length > 0;
+            }
+
+            return true;
+        };
 
         this.tagInput
             .onTextChange
             .debounceTime(DEBOUNCE_TIME)
-            .filter((value: string) => {
-                if (this.keepOpen === false) {
-                    return value.length > 0;
-                }
-
-                return true;
-            })
-            .subscribe(this.show);
+            .filter(filterFn)
+            .subscribe(this.onChange);
     }
 
     /**
@@ -225,38 +226,26 @@ export class TagInputDropdown {
     }
 
     /**
-     *
+     * @description method called when something changed (ex. form text, click on input, etc.)
+     * @name onChange
+     */
+    public onChange = (): void => {
+        if (this.autocompleteObservable) {
+            return this.getItemsFromObservable();
+        }
+
+        if (!this.showDropdownIfEmpty && !this.getFormValue()) {
+            return this.hide();
+        }
+
+        this.toggle();
+    }
+
+    /**
      * @name show
      */
-    public show = (): void => {
-        const value = this.getFormValue();
-
-        if (this.autocompleteObservable) {
-            return this.getItemsFromObservable(value);
-        }
-
-        if (!this.showDropdownIfEmpty && !value) {
-            return this.dropdown.hide();
-        }
-
-        const position = this.calculatePosition();
-        const items = this.getMatchingItems(value);
-        const hasItems = items.length > 0;
-        const isHidden = this.isVisible === false;
-        const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
-        const hasMinimumText = value.trim().length >= this.minimumTextLength;
-        const assertions = [];
-
-        const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
-        const shouldHide = this.isVisible && !hasItems;
-
-        this.setItems(items);
-
-        if (shouldShow) {
-            this.dropdown.show(position);
-        } else if (shouldHide) {
-            this.hide();
-        }
+    public show(): void {
+        this.dropdown.show(this.calculatePosition());
     }
 
     /**
@@ -285,6 +274,36 @@ export class TagInputDropdown {
     @HostListener('window:blur')
     public onWindowBlur(): void {
         this.dropdown.hide();
+    }
+
+    /**
+     * @name toggle
+     */
+    private toggle(): void {
+        const value = this.getFormValue();
+        const items = this.getMatchingItems(value);
+        const shouldHide = this.isVisible && items.length === 0;
+
+        this.setItems(items);
+
+        if (this.shouldDropdownShow(value)) {
+            this.show();
+        } else if (shouldHide) {
+            this.hide();
+        }
+    }
+
+    /**
+     * @name shouldDropdownShow
+     * @param value
+     */
+    private shouldDropdownShow(value = this.getFormValue()): boolean {
+        const hasItems = this.items.length > 0;
+        const isHidden = this.isVisible === false;
+        const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
+        const hasMinimumText = value.trim().length >= this.minimumTextLength;
+
+        return isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
     }
 
     /**
@@ -384,9 +403,10 @@ export class TagInputDropdown {
 
     /**
      * @name getItemsFromObservable
-     * @param text
      */
-    private getItemsFromObservable = (text: string): void => {
+    private getItemsFromObservable = (): void => {
+        const text = this.getFormValue();
+
         this.setLoadingState(true);
 
         const subscribeFn = (data: any[]) => {
@@ -406,7 +426,10 @@ export class TagInputDropdown {
 
         this.autocompleteObservable(text)
             .first()
-            .subscribe(subscribeFn, () => this.setLoadingState(false));
+            .subscribe(
+                subscribeFn, 
+                () => this.setLoadingState(false)
+            );
     }
 
     /**

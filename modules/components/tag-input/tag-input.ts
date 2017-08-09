@@ -921,7 +921,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             }
 
             this.dropdown.hide();
-            this.dropdown.showDropdownIfEmpty ? this.dropdown.show() : undefined;
+            this.dropdown.showDropdownIfEmpty ? this.dropdown.onChange() : undefined;
         };
 
         Observable

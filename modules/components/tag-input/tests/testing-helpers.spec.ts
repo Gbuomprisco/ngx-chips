@@ -126,7 +126,7 @@ export class TagInputComponentWithAutocomplete {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items">
+    template: `<tag-input [(ngModel)]="items" #input>
                     <ng-template let-item="item">
                         <span class="custom-class">
                             item: {{ item }}
@@ -180,11 +180,11 @@ export class TagInputComponentWithAddOnBlur {
 export class TagInputComponentWithHooks {
     public items = getItems();
 
-    public onAdding(tag): Observable<any> {
+    public onAdding(tag) {
         return;
     }
 
-    public onRemoving(tag): Observable<any> {
+    public onRemoving(tag) {
         return;
     }
 }

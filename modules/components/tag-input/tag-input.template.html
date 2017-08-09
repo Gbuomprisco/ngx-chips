@@ -49,7 +49,7 @@
         <tag-input-form
             (onSubmit)="onAddingRequested(false, formValue)"
             (onBlur)="blur()"
-            (click)="dropdown ? dropdown.show() : undefined"
+            (click)="dropdown ? dropdown.onChange() : undefined"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
 

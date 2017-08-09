@@ -45,7 +45,7 @@ describe('TagInputComponent', () => {
         TestBed.compileComponents();
     }));
 
-    function getComponent(fixture): TagInputComponent {
+    function getComponent(fixture) {
         fixture.detectChanges();
         tick();
 
@@ -94,7 +94,7 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'New Item';
 
-            component.setInputValue(value);
+            (component as any).setInputValue(value);
             expect(component.form.form.valid).toEqual(true);
 
             component.onAddingRequested(false, value);
@@ -113,7 +113,7 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             const value = 'New Item';
-            component.setInputValue(value);
+            (component as any).setInputValue(value);
 
             component.onAddingRequested(false, value);
 
@@ -209,7 +209,7 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'Ab';
 
-            component.setInputValue(value);
+            (component as any).setInputValue(value);
             expect(component.form.form.valid).toBe(false);
 
             component.onAddingRequested(false, value);
@@ -221,7 +221,7 @@ describe('TagInputComponent', () => {
             const invalid = 'Abcde';
 
             // addItem element with > 3 chars without @
-            component.setInputValue('Abcde');
+            (component as any).setInputValue('Abcde');
             component.onAddingRequested(false, invalid);
 
             fixture.detectChanges();
@@ -232,7 +232,7 @@ describe('TagInputComponent', () => {
             const valid = '@Abcde';
 
             // addItem element with > 3 chars with @
-            component.setInputValue(valid);
+            (component as any).setInputValue(valid);
 
             expect(component.form.form.valid).toBe(true);
             
@@ -251,18 +251,18 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'Javascript';
 
-            component.setInputValue(value);
+            (component as any).setInputValue(value);
             expect(component.form.form.valid).toBe(false);
             
             const invalid = '@J';
 
-            component.setInputValue(invalid);
+            (component as any).setInputValue(invalid);
             expect(component.form.form.valid).toBe(false);
 
             const valid = '@Javascript';
 
             // addItem element with > 3 chars AND @
-            component.setInputValue(valid);
+            (component as any).setInputValue(valid);
             expect(component.form.form.valid).toBe(true);
 
             discardPeriodicTasks();
@@ -273,7 +273,7 @@ describe('TagInputComponent', () => {
                 TestBed.createComponent(TagInputComponentWithTransformer);
             const component = getComponent(fixture);
 
-            component.setInputValue('@');
+            (component as any).setInputValue('@');
             component.onAddingRequested(false, '@');
 
             fixture.detectChanges();
@@ -418,8 +418,8 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             // press 'i'
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setInputValue('i');
+            component.dropdown.onChange();
             fixture.detectChanges();
             tick();
 
@@ -439,8 +439,8 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             // press 'i'
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setInputValue('i');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
@@ -448,8 +448,8 @@ describe('TagInputComponent', () => {
             expect(component.dropdown.items.length).toEqual(3);
             component.dropdown.dropdown.hide();
 
-            component.setInputValue('ite');
-            component.dropdown.show();
+            (component as any).setInputValue('ite');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
@@ -457,8 +457,8 @@ describe('TagInputComponent', () => {
             expect(component.dropdown.items.length).toEqual(2);
             component.dropdown.dropdown.hide();
 
-            component.setInputValue('ita');
-            component.dropdown.show();
+            (component as any).setInputValue('ita');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
@@ -476,8 +476,8 @@ describe('TagInputComponent', () => {
             expect(component.dropdown).toBeDefined();
 
             // press 'i'
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setInputValue('i');
+            component.dropdown.onChange();
             fixture.detectChanges();
             tick();
 
@@ -497,11 +497,11 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'item';
 
-            component.setInputValue(value);
+            (component as any).setInputValue(value);
             component.onAddingRequested(false, value);
             expect(component.items.length).toEqual(2);
 
-            component.setInputValue(value);
+            (component as any).setInputValue(value);
 
             component.onAddingRequested(true, value);
             expect(component.items.length).toEqual(3);
@@ -531,7 +531,7 @@ describe('TagInputComponent', () => {
 
             const component: TagInputComponent = getComponent(fixture);
 
-            component.setInputValue('New Item');
+            (component as any).setInputValue('New Item');
             component.form.onBlur.emit();
 
             expect(component.items.length).toEqual(3);
@@ -548,8 +548,8 @@ describe('TagInputComponent', () => {
 
             const component: TagInputComponent = getComponent(fixture);
 
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setInputValue('i');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
