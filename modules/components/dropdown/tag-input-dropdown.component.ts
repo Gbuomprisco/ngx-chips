@@ -137,16 +137,12 @@ export class TagInputDropdown {
     @Input() public get autocompleteItems(): TagModel[] {
         const items = this._autocompleteItems;
 
-        if (!items) {
-            return [];
-        }
-
-        return items.map((item: TagModel) => {
+        return items ? items.map((item: TagModel) => {
             return typeof item === 'string' ? {
                 [this.displayBy]: item,
                 [this.identifyBy]: item
             } : item;
-        });
+        }) : [];
     }
 
     constructor(@Inject(forwardRef(() => TagInputComponent)) public tagInput: TagInputComponent) {}
@@ -159,7 +155,7 @@ export class TagInputDropdown {
             .subscribe(this.requestAdding);
 
         this.onHide()
-            .subscribe(this.resetItems);
+            .subscribe(() => this.setItems([]));
 
         this.setupTextChangeSubscription();
     }
@@ -240,7 +236,7 @@ export class TagInputDropdown {
      * @name hide
      */
     public hide(): void {
-        this.resetItems();
+        this.setItems([]);
         this.dropdown.hide();
     }
 
@@ -343,17 +339,16 @@ export class TagInputDropdown {
             return [];
         }
 
-        const dupesAllowed = this.tagInput.allowDupes;
-
-        return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue: boolean = dupesAllowed ? true : this.tagInput.tags.some(tag => {
+        const exists = (item: TagModel): boolean => this.tagInput.allowDupes ? false : 
+            this.tagInput.tags.some(tag => {
                 const identifyBy = this.tagInput.identifyBy;
                 const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
 
                 return model === item[this.identifyBy];
             });
 
-            return this.matchingFn(value, item) && hasValue === false;
+        return this.autocompleteItems.filter((item: TagModel) => {
+            return this.matchingFn(value, item) && exists(item) === false;
         });
     }
 
@@ -362,13 +357,6 @@ export class TagInputDropdown {
      */
     private setItems(items: TagModel[]): void {
         this.items = items.slice(0, this.limitItemsTo || items.length);
-    }
-
-    /**
-     * @name resetItems
-     */
-    private resetItems = (): void => {
-        this.items = [];
     }
 
     /**
