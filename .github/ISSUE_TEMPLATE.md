@@ -4,7 +4,7 @@ IF YOU DON'T FILL OUT THE FOLLOWING INFORMATION WE WILL CLOSE YOUR ISSUE WITHOUT
 -->
 
 PLEASE MAKE SURE THAT:
-- you searched similar issues online
+- you searched similar issues online (9/10 issues in this repo are solved by googling, so please...do it)
 - you provide an online demo I can see without having to replicate your environment
 - you help me by debugging your issue, and if you can't, do go on filling out this form
 
