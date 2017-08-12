@@ -1,36 +1,27 @@
 <!-- CONTAINER -->
 
 <div ngClass="ng2-tag-input {{ theme || '' }}"
-     (click)="focus(true, false)"
+     (click)="focus()"
      [attr.tabindex]="-1"
 
-     (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
-     (dragenter)="dragZone ? onDragOver($event) : undefined"
-     (dragover)="dragZone ? onDragOver($event) : undefined"
-     (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
-
-     [class.ng2-tag-input--dropping]="isDropping()"
+     [drag]="dragZone || null"
      [class.ng2-tag-input--disabled]="disabled"
      [class.ng2-tag-input--loading]="isLoading"
-     [class.ng2-tag-input--invalid]="hasErrors()"
-     [class.ng2-tag-input--focused]="isInputFocused()">
+     [class.ng2-tag-input--invalid]="form?.hasErrors()"
+     [class.ng2-tag-input--focused]="form?.isInputFocused()">
 
     <!-- TAGS -->
     <div class="ng2-tags-container">
         <tag *ngFor="let item of items; let i = index; trackBy: trackBy"
-
              (onSelect)="selectItem(item)"
              (onRemove)="onRemoveRequested(item, i)"
-             (onKeyDown)="handleKeydown($event, item)"
+             (onKeyDown)="handleKeydown($event)"
              (onTagEdited)="onTagEdited.emit($event)"
              (onBlur)="onTagBlurred($event, i)"
              draggable="{{ editable }}"
-
-             (dragstart)="dragZone ? onDragStarted($event, item, i) : undefined"
-             (drop)="dragZone ? onTagDropped($event, i) : undefined"
-             (dragenter)="dragZone ? onDragOver($event) : undefined"
-             (dragover)="dragZone ? onDragOver($event, i) : undefined"
-             (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
+             [drag]="dragZone || null"
+             [index]="i"
+             [item]="item"
 
              [attr.tabindex]="0"
              [disabled]="disabled"
@@ -50,14 +41,14 @@
             (onSubmit)="onAddingRequested(false, formValue)"
             (onBlur)="blur()"
             (click)="dropdown ? dropdown.onChange() : undefined"
-            (onKeydown)="fireEvents('keydown', $event)"
-            (onKeyup)="fireEvents('keyup', $event)"
+            (onKeydown)="callEvent('keydown', $event)"
+            (onKeyup)="callEvent('keyup', $event)"
 
             [(inputText)]="inputText"
             [disabled]="disabled"
             [validators]="validators"
             [asyncValidators]="asyncValidators"
-            [hidden]="maxItemsReached"
+            [hidden]="isOverMaxItems()"
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
             [inputId]="inputId"
@@ -69,8 +60,10 @@
 </div>
 
 <!-- ERRORS -->
-<div *ngIf="hasErrors()" class="error-messages {{ theme || '' }}">
-    <p *ngFor="let error of form.getErrorMessages(errorMessages)" class="error-message">
+<div *ngIf="form?.hasErrors()" 
+     class="error-messages {{ theme || '' }}">
+    <p *ngFor="let error of form.getErrorMessages(errorMessages)"
+        class="error-message">
         <span>{{ error }}</span>
     </p>
 </div>

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
 
 @Component({
     selector: 'app',
@@ -117,12 +118,12 @@ export class Home {
         return null;
     }
 
-    private validateAsync(control: FormControl) {
+    private validateAsync(control: FormControl): Promise<object> {
         return new Promise(resolve => {
             const value = control.value;
             const result = isNaN(value) ? {
                 isNan: true
-            } : null;
+            } : undefined;
   
             setTimeout(() => {
                 resolve(result);

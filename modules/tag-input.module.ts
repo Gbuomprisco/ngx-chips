@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ng2DropdownModule } from 'ng2-material-dropdown'
-import { HighlightPipe, DragProvider, Options, OptionsProvider } from './core';
+import { HighlightPipe, DraggableDirective, DragProvider, Options, OptionsProvider } from './core';
 
 import {
     DeleteIconComponent,
@@ -14,13 +14,14 @@ import {
 } from './components';
 
 const COMPONENTS = [
-    TagInputComponent,
     DeleteIconComponent,
     TagInputForm,
     TagComponent,
     HighlightPipe,
     TagInputDropdown,
-    TagRipple
+    TagRipple,
+    DraggableDirective,
+    TagInputComponent
 ];
 
 const optionsProvider = new OptionsProvider();

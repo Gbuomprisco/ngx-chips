@@ -1,4 +1,5 @@
-import { TagInputComponent } from './../../components/tag-input/tag-input';
+import { DraggableDirective } from './../directives/draggable.directive';
+import { TagInputComponent } from './../../components';
 import { TagModel } from '../accessor';
 
 import { Injectable } from '@angular/core';
@@ -73,9 +74,6 @@ export class DragProvider {
      */
     public onTagDropped(tag: TagModel, indexDragged: number, indexDropped: number): void {
         this.onDragEnd();
-
-        this.sender.onRemoveRequested(tag, indexDragged);
-        this.receiver.onAddingRequested(false, tag, indexDropped);
     }
 
     /**
