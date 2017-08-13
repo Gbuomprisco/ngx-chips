@@ -1,15 +1,15 @@
 import {
     Component,
-    ViewChild,
-    forwardRef,
-    Inject,
-    TemplateRef,
     ContentChildren,
+    EventEmitter,
+    forwardRef,
+    HostListener,
+    Injector,
     Input,
     QueryList,
-    HostListener,
-    EventEmitter,
-    Type
+    TemplateRef,
+    Type,
+    ViewChild,
 } from '@angular/core';
 
 // rx
@@ -115,6 +115,11 @@ export class TagInputDropdown {
     public items: TagModel[] = [];
 
     /**
+     * @name tagInput
+     */
+    public tagInput: TagInputComponent = this.injector.get(TagInputComponent);
+
+    /**
      * @name _autocompleteItems
      * @type {Array}
      * @private
@@ -145,7 +150,7 @@ export class TagInputDropdown {
         }) : [];
     }
 
-    constructor(@Inject(forwardRef(() => TagInputComponent)) public tagInput: TagInputComponent) {}
+    constructor(private readonly injector: Injector) {}
 
     /**
      * @name ngOnInit
