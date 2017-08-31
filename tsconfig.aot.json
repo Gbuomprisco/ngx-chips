@@ -32,7 +32,8 @@
             "icon": ["modules/components/icon"],
             "tag": ["modules/components/tag"],
             "tag-input-form": ["modules/components/tag-input-form"]
-        }
+        },
+        "outDir": "./dist/modules"
     },
     "awesomeTypescriptLoaderOptions": {
         "forkChecker": true,
@@ -40,7 +41,8 @@
     },
     "angularCompilerOptions": {
         "genDir": "factories",
-        "strictMetadataEmit": true
+        "strictMetadataEmit": true,
+        "skipTemplateCodegen": true
     },
     "files": [
         "modules/index.ts"

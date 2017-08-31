@@ -9,7 +9,6 @@ import {
 import {
     FormGroup,
     FormControl,
-    Validators,
     ValidatorFn,
     AbstractControl,
     AsyncValidatorFn
@@ -17,8 +16,33 @@ import {
 
 @Component({
     selector: 'tag-input-form',
-    styleUrls: [ './tag-input-form.style.scss' ],
-    templateUrl: './tag-input-form.template.html'
+    template: `
+      <!-- form -->
+      <form (submit)="submit($event)" [formGroup]="form">
+        <input #input
+
+               type="text"
+               class="ng2-tag-input__text-input"
+               autocomplete="off"
+               tabindex="{{ disabled ? -1 : tabindex ? tabindex : 0 }}"
+               minlength="1"
+
+               [(ngModel)]="inputText"
+               [formControlName]="'item'"
+               [ngClass]="inputClass"
+               [attr.id]="inputId"
+               [attr.placeholder]="placeholder"
+               [attr.aria-label]="placeholder"
+               [attr.tabindex]="tabindex"
+               [attr.disabled]="disabled ? disabled : null"
+
+               (focus)="onFocus.emit($event)"
+               (blur)="onBlur.emit($event)"
+               (keydown)="onKeyDown($event)"
+               (keyup)="onKeyup.emit($event)"
+        />
+      </form>
+    `
 })
 export class TagInputForm {
     /**

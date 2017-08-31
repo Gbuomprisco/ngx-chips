@@ -4,18 +4,16 @@
   "description": "Tag Input component for Angular",
   "scripts": {
     "prepublish": "npm run clean && npm run build",
-    "build": "webpack && npm run tsc && npm run ngc && npm run moveassets",
+    "build": "webpack && npm run ngc && npm run moveassets && npm run sass",
     "watch": "webpack -- --watch",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3010 --content-base demo",
     "start": "npm run server",
     "test": "karma start karma.conf.js",
-    "tsc": "tsc -p tsconfig.json",
     "ngc": "ngc -p ./tsconfig.aot.json",
-    "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/modules/",
+    "moveassets": "rsync -a --include='*.scss' --include='*/' --exclude='*' ./modules/ ./dist/modules/",
     "codecov": "codecov",
-    "clean": "npm run clean:dist && npm run clean:generated",
-    "clean:dist": "rm -rf ./dist && rm -rf ./factories",
-    "clean:generated": "find modules \\( -name '*.js' -o -name '*.d.ts' -o -name '*.js.map' -o -name '*.metadata.json'  \\) -type f -delete"
+    "clean": "rm -rf ./dist",
+    "sass": "node-sass ./modules/tag-input.module.scss dist/ngx-chips.css"
   },
   "author": {
     "name": "Giancarlo Buomprisco",
@@ -36,7 +34,7 @@
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.41",
     "@types/node": "^7.0.3",
-    "angular2-template-loader": "0.6.2",
+    "angular2-template-loader": "^0.6.2",
     "autoprefixer": "^6.7.0",
     "awesome-typescript-loader": "3.1.3",
     "codecov": "^2.1.0",
@@ -72,18 +70,18 @@
     "universal-style-loader": "^0.16.3",
     "url-loader": "^0.5.7",
     "webpack": "^2.3.0",
-    "webpack-dev-server": "https://registry.npmjs.org/webpack-dev-server/-/webpack-dev-server-2.4.2.tgz",
+    "webpack-dev-server": "^2.4.2",
     "webpack-merge": "^4.1.0",
     "zone.js": "0.8.10"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.7.10"
+    "@mattlewis92/ng2-material-dropdown": "^0.8.1"
   },
   "peerDependencies": {
+    "@angular/animations": "^4.2.0",
     "@angular/common": "^4.2.0",
     "@angular/core": "^4.2.0",
     "@angular/forms": "^4.2.0",
-    "@angular/animations": "^4.2.0",
     "rxjs": "^5.0.1"
   },
   "keywords": [
@@ -102,11 +100,9 @@
   },
   "homepage": "https://github.com/Gbuomprisco/ngx-chips",
   "main": "./dist/ngx-chips.bundle.js",
+  "module": "./dist/modules/index.js",
+  "typings": "./dist/modules/index.d.ts",
   "files": [
-    "dist",
-    "index.ts",
-    "tsconfig.json",
-    "tsconfig.aot.json",
-    "README.md"
+    "dist"
   ]
 }

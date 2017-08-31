@@ -120,10 +120,10 @@ export class Home {
     private validateAsync(control: FormControl) {
         return new Promise(resolve => {
             const value = control.value;
-            const result = isNaN(value) ? {
+            const result: any = isNaN(value) ? {
                 isNan: true
             } : null;
-  
+
             setTimeout(() => {
                 resolve(result);
             }, 1);
