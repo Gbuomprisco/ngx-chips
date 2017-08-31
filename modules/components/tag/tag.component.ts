@@ -30,10 +30,54 @@ const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigat
 
 @Component({
     selector: 'tag',
-    templateUrl: './tag.template.html',
-    styleUrls: [ './tag-component.style.scss' ]
+    template: `
+      <div (click)="select($event)"
+           (dblclick)="toggleEditMode()"
+           (mousedown)="rippleState='clicked'"
+           (mouseup)="rippleState='none'"
+           [ngSwitch]="!!template"
+           [class.disabled]="disabled"
+           [attr.tabindex]="-1"
+           [attr.aria-label]="getDisplayValue(model)">
+
+        <div *ngSwitchCase="true" [attr.contenteditable]="editing">
+          <!-- CUSTOM TEMPLATE -->
+          <ng-template
+            [ngOutletContext]="{ item: model, index: index }"
+            [ngTemplateOutlet]="template">
+          </ng-template>
+        </div>
+
+        <div *ngSwitchCase="false" class="tag-wrapper">
+          <!-- TAG NAME -->
+          <div [attr.contenteditable]="editing"
+               [attr.title]="getDisplayValue(model)"
+               class="tag__text inline"
+               spellcheck="false"
+               (keydown.enter)="disableEditMode($event)"
+               (keydown.escape)="disableEditMode($event)"
+               (click)="editing ? $event.stopPropagation() : undefined"
+               (blur)="onBlurred($event)">
+            {{ getDisplayValue(model) }}
+          </div>
+
+          <!-- 'X' BUTTON -->
+          <delete-icon
+            aria-label="Remove tag"
+            role="button"
+            (click)="remove($event)"
+            *ngIf="isDeleteIconVisible()">
+          </delete-icon>
+        </div>
+      </div>
+
+      <tag-ripple [state]="rippleState"
+                  [attr.tabindex]="-1"
+                  *ngIf="isRippleVisible">
+      </tag-ripple>
+    `
 })
-export class TagComponent {    
+export class TagComponent {
     /**
      * @name model {TagModel}
      */
@@ -292,7 +336,7 @@ export class TagComponent {
     private disableEditMode($event?: KeyboardEvent): void {
         const classList = this.element.nativeElement.classList;
         const input = this.getContentEditableText();
-        
+
         this.editing = false;
         classList.remove('tag--editing');
 

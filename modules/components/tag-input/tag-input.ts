@@ -70,8 +70,86 @@ const defaults: Type<TagInputOptions> = forwardRef(() => OptionsProvider.default
 @Component({
     selector: 'tag-input',
     providers: [CUSTOM_ACCESSOR],
-    styleUrls: ['./tag-input.style.scss'],
-    templateUrl: './tag-input.template.html',
+    template: `
+      <!-- CONTAINER -->
+
+      <div ngClass="ng2-tag-input {{ theme || '' }}"
+           (click)="focus(true, false)"
+           [attr.tabindex]="-1"
+
+           (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
+           (dragenter)="dragZone ? onDragOver($event) : undefined"
+           (dragover)="dragZone ? onDragOver($event) : undefined"
+           (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
+
+           [class.ng2-tag-input--dropping]="isDropping()"
+           [class.ng2-tag-input--disabled]="disabled"
+           [class.ng2-tag-input--loading]="isLoading"
+           [class.ng2-tag-input--invalid]="hasErrors()"
+           [class.ng2-tag-input--focused]="isInputFocused()">
+
+        <!-- TAGS -->
+        <div class="ng2-tags-container">
+          <tag *ngFor="let item of items; let i = index; trackBy: trackBy"
+
+               (onSelect)="selectItem(item)"
+               (onRemove)="onRemoveRequested(item, i)"
+               (onKeyDown)="handleKeydown($event, item)"
+               (onTagEdited)="onTagEdited.emit($event)"
+               (onBlur)="onTagBlurred($event, i)"
+               draggable="{{ editable }}"
+
+               (dragstart)="dragZone ? onDragStarted($event, item, i) : undefined"
+               (drop)="dragZone ? onTagDropped($event, i) : undefined"
+               (dragenter)="dragZone ? onDragOver($event) : undefined"
+               (dragover)="dragZone ? onDragOver($event, i) : undefined"
+               (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
+
+               [attr.tabindex]="0"
+               [disabled]="disabled"
+               [@animation]="animationMetadata"
+               [hasRipple]="ripple"
+               [index]="i"
+               [removable]="removable"
+               [editable]="editable"
+               [displayBy]="displayBy"
+               [identifyBy]="identifyBy"
+               [template]="!!hasCustomTemplate() ? templates.first : undefined"
+               [draggable]="dragZone"
+               [model]="item">
+          </tag>
+
+          <tag-input-form
+            (onSubmit)="onAddingRequested(false, formValue)"
+            (onBlur)="blur()"
+            (click)="dropdown ? dropdown.show() : undefined"
+            (onKeydown)="fireEvents('keydown', $event)"
+            (onKeyup)="fireEvents('keyup', $event)"
+
+            [(inputText)]="inputText"
+            [disabled]="disabled"
+            [validators]="validators"
+            [asyncValidators]="asyncValidators"
+            [hidden]="maxItemsReached"
+            [placeholder]="items.length ? placeholder : secondaryPlaceholder"
+            [inputClass]="inputClass"
+            [inputId]="inputId"
+            [tabindex]="tabindex">
+          </tag-input-form>
+        </div>
+
+        <div class="progress-bar" *ngIf="isLoading"></div>
+      </div>
+
+      <!-- ERRORS -->
+      <div *ngIf="hasErrors()" class="error-messages {{ theme || '' }}">
+        <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="error-message">
+          <span>{{ error }}</span>
+        </p>
+      </div>
+
+      <ng-content></ng-content>
+    `,
     animations
 })
 export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit {
@@ -422,11 +500,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public animationMetadata: { value: string, params: object };
 
-    constructor(private readonly renderer: Renderer2, 
+    constructor(private readonly renderer: Renderer2,
                 public readonly dragProvider: DragProvider) {
         super();
     }
-    
+
     /**
      * @name ngAfterViewInit
      */
@@ -616,7 +694,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public setInputValue(value: string): void {
         const control = this.getControl();
-        
+
         // update form value with the transformed item
         control.setValue(value);
     }
@@ -713,7 +791,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         event.stopPropagation();
 
         const item = { zone: this.dragZone, tag, index } as DraggedTag;
-        
+
         this.dragProvider.setSender(this);
         this.dragProvider.setDraggedItem(event, item);
         this.dragProvider.setState({dragging: true, index});
@@ -741,9 +819,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (item.zone !== this.dragZone) {
             return;
         }
-        
+
         this.dragProvider.onTagDropped(item.tag, item.index, index);
-    
+
         event.preventDefault();
         event.stopPropagation();
     }
@@ -820,13 +898,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name moveToTag
-     * @param item 
-     * @param direction 
+     * @param item
+     * @param direction
      */
     private moveToTag(item: TagModel, direction: string): void {
         const isLast = this.tags.last.model === item;
         const isFirst = this.tags.first.model === item;
-        const stopSwitch = (direction === constants.NEXT && isLast) || 
+        const stopSwitch = (direction === constants.NEXT && isLast) ||
             (direction === constants.PREV && isFirst);
 
         if (stopSwitch) {
@@ -848,7 +926,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     private getTagIndex(item: TagModel): number {
         const tags = this.tags.toArray();
 
-        return tags.findIndex(tag => tag.model === item);        
+        return tags.findIndex(tag => tag.model === item);
     }
 
     /**
@@ -890,7 +968,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     private addItem(fromAutocomplete = false, item: TagModel, index?: number): void {
         const model = this.getItemDisplay(item);
-        
+
         /**
          * @name reset
          */
@@ -923,7 +1001,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
          */
         const subscribeFn = (tag: TagModel): void => {
             this.appendTag(tag, index);
-            
+
             // emit event
             this.onAdd.emit(tag);
 

@@ -1,46 +1,46 @@
 @import "../../core/styles/themes/_themes.scss";
 
-:host(delete-icon) {
+delete-icon {
     @include icon-theme($default-icon-theme);
 }
 
-:host(delete-icon):hover {
+delete-icon:hover {
     transform: scale(1.5) translateY(-3px);
 }
 
-:host-context(.dark) {
+.ng2-tag-input.dark delete-icon {
     @include icon-theme($dark-icon-theme);
 }
 
-:host-context(.minimal) {
+.ng2-tag-input.minimal delete-icon {
     @include icon-theme($minimal-icon-theme);
 }
 
-:host-context(.bootstrap) {
+.ng2-tag-input.bootstrap delete-icon {
     @include icon-theme($bootstrap-icon-theme);
 }
 
-:host-context(tag:focus),
-:host-context(tag:active) {
+tag:focus,
+tag:active {
     @include icon-theme-focused($default-icon-theme);
 }
 
-:host-context(.dark tag:focus),
-:host-context(.dark tag:active) {
+.ng2-tag-input.dark tag:focus,
+.ng2-tag-input.dark tag:active {
     @include icon-theme-focused($dark-icon-theme);
 }
 
-:host-context(.minimal tag:focus),
-:host-context(.minimal tag:active) {
+.ng2-tag-input.minimal tag:focus,
+.ng2-tag-input.minimal tag:active {
     @include icon-theme-focused($minimal-icon-theme);
 }
 
-:host-context(.bootstrap tag:focus),
-:host-context(.bootstrap tag:active) {
+.ng2-tag-input.bootstrap tag:focus,
+.ng2-tag-input.bootstrap tag:active {
     @include icon-theme-focused($bootstrap-icon-theme);
 }
 
-:host-context(.bootstrap3-info) {
+.ng2-tag-input.bootstrap3-info {
     @include icon-theme-focused($bootstrap3-info-icon-theme);
     height: inherit;
 }

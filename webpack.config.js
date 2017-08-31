@@ -10,16 +10,6 @@ const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 
 const webpackConfig = {
     entry: {
-        'vendor': [
-            '@angular/core',
-            '@angular/common',
-            "@angular/forms",
-            "@angular/animations",
-
-            'rxjs',
-
-            "ng2-material-dropdown"
-        ],
         'ngx-chips': './modules/index.ts'
     },
 
@@ -29,23 +19,18 @@ const webpackConfig = {
         library: 'ngx-chips'
     },
 
-    externals: {
-        "@angular/core": true,
-        "@angular/common": true,
-        "@angular/forms": true,
-        "@angular/animations": true,
-
-        'rxjs': true,
-
-        "ng2-material-dropdown": true
-    },
+    externals: [
+      /^@angular\/.*/,
+      /^rxjs.*/,
+      '@mattlewis92/ng2-material-dropdown'
+    ],
 
     module: {
         rules: [
             // .ts files for TypeScript
             {
                 test: /\.ts$/,
-                loaders: ['angular2-template-loader', 'awesome-typescript-loader']
+                loaders: ['awesome-typescript-loader']
             },
             {
                 test: /\.png/,

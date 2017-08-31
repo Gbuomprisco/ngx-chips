@@ -49,8 +49,12 @@ const webpackConfig = {
                 loader: "html-loader"
             },
             {
-                test: /\.(css|scss)$/,
+                test: /demo\/.*\.scss$/,
                 loaders: ['to-string-loader', 'css-loader', 'sass-loader']
+            },
+            {
+                test: /modules\/.*\.scss$/,
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
             }
         ]
     }

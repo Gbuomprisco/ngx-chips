@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
 
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
+import { Ng2Dropdown, Ng2MenuItem } from '@mattlewis92/ng2-material-dropdown';
 import { TagModel, TagInputDropdownOptions, OptionsProvider } from '../../core';
 import { TagInputComponent } from '../../components';
 
@@ -26,7 +26,27 @@ const defaults: Type<TagInputDropdownOptions> = forwardRef(() => OptionsProvider
 
 @Component({
     selector: 'tag-input-dropdown',
-    templateUrl: './tag-input-dropdown.template.html'
+    template: `
+      <ng2-dropdown>
+        <ng2-dropdown-menu [focusFirstElement]="focusFirstElement"
+                           [appendToBody]="appendToBody"
+                           [offset]="offset">
+          <ng2-menu-item *ngFor="let item of items; let index = index; let last = last"
+                         [value]="item"
+                         [ngSwitch]="!!templates.length">
+
+            <span *ngSwitchCase="false"
+                  [innerHTML]="item[displayBy] | highlight : tagInput.inputForm.value.value">
+            </span>
+
+            <ng-template *ngSwitchDefault
+                         [ngTemplateOutlet]="templates.first"
+                         [ngOutletContext]="{ item: item, index: index, last: last }">
+            </ng-template>
+          </ng2-menu-item>
+        </ng2-dropdown-menu>
+      </ng2-dropdown>
+    `
 })
 export class TagInputDropdown {
     /**

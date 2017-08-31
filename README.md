@@ -30,6 +30,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 export class AppModule {}
 ```
 
+Add the stylesheet somewhere in your app
+```html
+<link href="node_modules/ngx-chips/dist/ngx-chips.css" rel="stylesheet" type="text/css">
+```
+
 ## API for TagInputComponent
 
 #### Inputs

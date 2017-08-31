@@ -1,17 +1,17 @@
-:host,
-:host > div,
-:host > div:focus {
+tag,
+tag > div,
+tag > div:focus {
     outline: 0;
     overflow: hidden;
     transition: opacity 1s;
     z-index: 1;
 }
 
-:host {
+tag {
     max-width: 400px;
 }
 
-:host.blink {
+tag.blink {
     -webkit-animation: blink 0.3s normal forwards ease-in-out;
     animation: blink 0.3s normal forwards ease-in-out;
 }
@@ -21,11 +21,11 @@
     }
 }
 
-:host .disabled {
+tag .disabled {
     cursor: not-allowed;
 }
 
-:host [contenteditable='true'] {
+tag [contenteditable='true'] {
     outline: 0;
 }
 
