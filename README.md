@@ -498,7 +498,7 @@ public requestAutocompleteItems = (text: string): Observable<Response> => {
 If you want to use more keys to separate items, add them to separatorKeys as an array of keyboard key codes.
 
 ```html
-<tag-input [(ngModel)]='items' [separatorKeys]="[32]"></tag-input>
+<tag-input [(ngModel)]='items' [separatorKeyCodes]="[32]"></tag-input>
 ```
 
 
