@@ -588,7 +588,7 @@ Define your own template, but remember to set up the needed events using the `in
 ```
 
 #### Add default values
-If you use many instances of the component and eant to set some values by default for all of them, import the module and use `withDefaults`:
+If you use many instances of the component and want to set some values by default for all of them, import the module and use `withDefaults`:
 
 ```javascript
 import { TagInputModule } from 'ngx-chips';
