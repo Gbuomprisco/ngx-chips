@@ -21,7 +21,7 @@ Let's say we created the file `foundation-themes.scss`. We will need to:
 In order to get the mixins to style the component, you should first import them:
 
 ```scss
-@import "~node_modules/ng2-tag-input/dist/modules/core/styles/core/_core.scss";
+@import "~node_modules/ngx-chips/dist/modules/core/styles/core/_core.scss";
 ```
 
 In order to understand what to define in your theme - [check out the sass mixins](https://github.com/gbuomprisco/ng2-tag-input/blob/master/modules/components/styles/core/_mixins.scss)
