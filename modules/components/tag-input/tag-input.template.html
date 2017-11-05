@@ -24,7 +24,7 @@
              [item]="item"
 
              [attr.tabindex]="0"
-             [disabled]="disabled"
+             [disabled]="disable"
              [@animation]="animationMetadata"
              [hasRipple]="ripple"
              [index]="i"
@@ -45,7 +45,7 @@
             (onKeyup)="callEvent('keyup', $event)"
 
             [(inputText)]="inputText"
-            [disabled]="disabled"
+            [disabled]="disable"
             [validators]="validators"
             [asyncValidators]="asyncValidators"
             [hidden]="isOverMaxItems()"

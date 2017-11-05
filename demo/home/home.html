@@ -38,7 +38,7 @@
         </div>
 
         <div>
-            <h3>An input which requires all tags to start with '@'</h3>
+            <h3>An input which requires all tags to start with '@' and end with '$'</h3>
             <tag-input [ngModel]="['@item']"
                        [errorMessages]="errorMessages"
                        [validators]="validators">
@@ -181,6 +181,7 @@
             <h3>Tags within a form group</h3>
             <form [formGroup]="form">
                 <tag-input
+                    [disable]="true"
                     [formControlName]="'chips'"
                     name="items">
                 </tag-input>

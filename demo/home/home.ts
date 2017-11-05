@@ -118,10 +118,10 @@ export class Home {
         return null;
     }
 
-    private validateAsync(control: FormControl): Promise<object> {
+    private validateAsync(control: FormControl): Promise<any> {
         return new Promise(resolve => {
             const value = control.value;
-            const result = isNaN(value) ? {
+            const result: any = isNaN(value) ? {
                 isNan: true
             } : undefined;
   

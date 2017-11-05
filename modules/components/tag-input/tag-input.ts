@@ -246,10 +246,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     @Input() public tabindex: string = new defaults().tabIndex;
 
     /**
-     * @name disabled
+     * @name disable
      * @type {boolean}
      */
-    @Input() public disabled: boolean = new defaults().disabled;
+    @Input() public disable: boolean = new defaults().disable;
 
     /**
      * @name dragZone

@@ -130,6 +130,11 @@
     &:focus {
         outline: 0;
     }
+
+    &[disabled=true] {
+        opacity: 0.5;
+        background: #fff;
+    }
 }
 
 @mixin icon-theme($theme) {
