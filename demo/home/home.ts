@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
 
 @Component({
     selector: 'app',
@@ -122,7 +123,7 @@ export class Home {
             const value = control.value;
             const result: any = isNaN(value) ? {
                 isNan: true
-            } : null;
+            } : undefined;
   
             setTimeout(() => {
                 resolve(result);

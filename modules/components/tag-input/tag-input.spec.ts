@@ -45,7 +45,7 @@ describe('TagInputComponent', () => {
         TestBed.compileComponents();
     }));
 
-    function getComponent(fixture) {
+    function getComponent<T>(fixture: ComponentFixture<T>): TagInputComponent {
         fixture.detectChanges();
         tick();
 
@@ -71,7 +71,7 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             expect(component.items.length).toEqual(2);
-            expect(component.inputForm.input.nativeElement.getAttribute('placeholder')).toEqual('New Tag');
+            expect(component.form.input.nativeElement.getAttribute('placeholder')).toEqual('New Tag');
         }));
 
         it('should be "touched" on blur', fakeAsync(() => {
@@ -94,35 +94,17 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'New Item';
 
-            component.setInputValue(value);
-            expect(component.inputForm.form.valid).toEqual(true);
+            (component as any).setFormValue(value);
+            expect(component.form.form.valid).toEqual(true);
 
             component.onAddingRequested(false, value);
             
             tick();
             fixture.detectChanges();
 
-            expect(component.inputForm.form.controls.item.value).toEqual('');
+            expect(component.form.form.controls.item.value).toEqual('');
             expect(fixture.componentInstance.items.length).toEqual(3);
             expect(component.items.length).toEqual(3);
-        }));
-
-        it('should not be allowed if max-items is set up', fakeAsync(() => {
-            const fixture: ComponentFixture<TagInputComponentWithMaxItems> =
-                TestBed.createComponent(TagInputComponentWithMaxItems);
-            const component = getComponent(fixture);
-
-            const value = 'New Item';
-            component.setInputValue(value);
-
-            component.onAddingRequested(false, value);
-
-            fixture.detectChanges();
-
-            expect(fixture.componentInstance.items.length).toEqual(2);
-            expect(component.items.length).toEqual(2);
-
-            discardPeriodicTasks();
         }));
 
         it('emits the event onAdd', () => {
@@ -133,13 +115,11 @@ describe('TagInputComponent', () => {
             fakeAsync(() => {
                 const component = getComponent(fixture);
 
-                component.inputForm.form.get('item').setValue(itemName);
-
                 component.onAdd.subscribe(item => {
                     expect(item).toEqual(itemName);
                 });
 
-                component.onAddingRequested();
+                component.onAddingRequested(false, itemName);
                 tick();
 
                 discardPeriodicTasks();
@@ -150,9 +130,9 @@ describe('TagInputComponent', () => {
             const fixture: ComponentFixture<BasicTagInputComponent> = 
                 TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
+            const value = 'Javascript';
 
-            component.inputForm.form.get('item').setValue('Javascript');
-            component.onAddingRequested();
+            component.onAddingRequested(false, value);
             expect(component.items.length).toEqual(2);
 
             tick(1000);
@@ -179,7 +159,7 @@ describe('TagInputComponent', () => {
             fixture.detectChanges();
 
             expect(component.items.length).toEqual(1);
-            expect(component.inputForm.isInputFocused()).toEqual(true);
+            expect(component.form.isInputFocused()).toEqual(true);
         }));
 
         it('emits the event onRemove', fakeAsync(() => {
@@ -209,8 +189,8 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'Ab';
 
-            component.setInputValue(value);
-            expect(component.inputForm.form.valid).toBe(false);
+            (component as any).setFormValue(value);
+            expect(component.form.form.valid).toBe(false);
 
             component.onAddingRequested(false, value);
             fixture.detectChanges();
@@ -221,20 +201,20 @@ describe('TagInputComponent', () => {
             const invalid = 'Abcde';
 
             // addItem element with > 3 chars without @
-            component.setInputValue('Abcde');
+            (component as any).setFormValue('Abcde');
             component.onAddingRequested(false, invalid);
 
             fixture.detectChanges();
             tick();
 
-            expect(component.inputForm.form.valid).toBe(false);
+            expect(component.form.form.valid).toBe(false);
             
             const valid = '@Abcde';
 
             // addItem element with > 3 chars with @
-            component.setInputValue(valid);
+            (component as any).setFormValue(valid);
 
-            expect(component.inputForm.form.valid).toBe(true);
+            expect(component.form.form.valid).toBe(true);
             
             component.onAddingRequested(false, valid);
             fixture.detectChanges();
@@ -251,19 +231,19 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'Javascript';
 
-            component.setInputValue(value);
-            expect(component.inputForm.form.valid).toBe(false);
+            (component as any).setFormValue(value);
+            expect(component.form.form.valid).toBe(false);
             
             const invalid = '@J';
 
-            component.setInputValue(invalid);
-            expect(component.inputForm.form.valid).toBe(false);
+            (component as any).setFormValue(invalid);
+            expect(component.form.form.valid).toBe(false);
 
             const valid = '@Javascript';
 
             // addItem element with > 3 chars AND @
-            component.setInputValue(valid);
-            expect(component.inputForm.form.valid).toBe(true);
+            (component as any).setFormValue(valid);
+            expect(component.form.form.valid).toBe(true);
 
             discardPeriodicTasks();
         }));
@@ -273,7 +253,7 @@ describe('TagInputComponent', () => {
                 TestBed.createComponent(TagInputComponentWithTransformer);
             const component = getComponent(fixture);
 
-            component.setInputValue('@');
+            (component as any).setFormValue('@');
             component.onAddingRequested(false, '@');
 
             fixture.detectChanges();
@@ -290,7 +270,7 @@ describe('TagInputComponent', () => {
         let keyUp: Event = new Event('keyup'),
             keyDown: Event = new Event('keydown'),
             fixture: ComponentFixture<BasicTagInputComponent>,
-            component;
+            component: TagInputComponent;
 
         keyDown[ 'keyCode' ] = 37;
 
@@ -300,12 +280,10 @@ describe('TagInputComponent', () => {
 
         it('it handles navigation/deletion of tags', fakeAsync(() => {
             component = getComponent(fixture);
-
-            // selected tag is undefined
-            expect(component.selectedTag).toEqual(undefined);
+            component.focus();
 
             // press backspace
-            component.inputForm.input.nativeElement.dispatchEvent(keyDown);
+            component.form.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
             expect(component.selectedTag).toEqual('Typescript');
@@ -315,11 +293,11 @@ describe('TagInputComponent', () => {
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
             expect(component.selectedTag).toEqual(undefined);
-            expect(component.inputForm.isInputFocused()).toEqual(true);
+            expect(component.form.isInputFocused()).toEqual(true);
 
             keyDown[ 'keyCode' ] = 8;
             // then starts from back again
-            component.inputForm.input.nativeElement.dispatchEvent(keyDown);
+            component.form.input.nativeElement.dispatchEvent(keyDown);
 
             expect(component.selectedTag).toEqual('Typescript');
 
@@ -334,10 +312,12 @@ describe('TagInputComponent', () => {
 
         it('it navigates back and forth between tags', fakeAsync(() => {
             component = getComponent(fixture);
+            component.focus();
+
             keyDown[ 'keyCode' ] = 37;
 
             // press left arrow
-            component.inputForm.input.nativeElement.dispatchEvent(keyDown);
+            component.form.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
             expect(component.selectedTag).toEqual('Typescript');
@@ -356,13 +336,15 @@ describe('TagInputComponent', () => {
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
             expect(component.selectedTag).toEqual(undefined);
-            expect(component.inputForm.isInputFocused()).toEqual(true);
+            expect(component.form.isInputFocused()).toEqual(true);
 
             discardPeriodicTasks();
         }));
 
         it('it focuses input when pressing tab', fakeAsync(() => {
             component = getComponent(fixture);
+            component.focus();
+
             keyUp[ 'keyCode' ] = 9;
 
             // press left arrow
@@ -375,7 +357,7 @@ describe('TagInputComponent', () => {
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(undefined);
 
-            expect(component.inputForm.isInputFocused()).toEqual(true);
+            expect(component.form.isInputFocused()).toEqual(true);
 
             discardPeriodicTasks();
         }));
@@ -418,8 +400,8 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             // press 'i'
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setFormValue('i');
+            component.dropdown.onChange();
             fixture.detectChanges();
             tick();
 
@@ -439,8 +421,8 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             // press 'i'
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setFormValue('i');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
@@ -448,8 +430,8 @@ describe('TagInputComponent', () => {
             expect(component.dropdown.items.length).toEqual(3);
             component.dropdown.dropdown.hide();
 
-            component.setInputValue('ite');
-            component.dropdown.show();
+            (component as any).setFormValue('ite');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
@@ -457,8 +439,8 @@ describe('TagInputComponent', () => {
             expect(component.dropdown.items.length).toEqual(2);
             component.dropdown.dropdown.hide();
 
-            component.setInputValue('ita');
-            component.dropdown.show();
+            (component as any).setFormValue('ita');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
@@ -476,8 +458,8 @@ describe('TagInputComponent', () => {
             expect(component.dropdown).toBeDefined();
 
             // press 'i'
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setFormValue('i');
+            component.dropdown.onChange();
             fixture.detectChanges();
             tick();
 
@@ -497,11 +479,11 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
             const value = 'item';
 
-            component.setInputValue(value);
+            (component as any).setFormValue(value);
             component.onAddingRequested(false, value);
             expect(component.items.length).toEqual(2);
 
-            component.setInputValue(value);
+            (component as any).setFormValue(value);
 
             component.onAddingRequested(true, value);
             expect(component.items.length).toEqual(3);
@@ -516,7 +498,7 @@ describe('TagInputComponent', () => {
                 TestBed.createComponent(TagInputComponentWithModelAsStrings);
 
             const component: TagInputComponent = getComponent(fixture);
-            component.appendTag({display: 'Tag', value: 'Tag'});
+            component.onAddingRequested(false, {display: 'Tag', value: 'Tag'});
 
             expect(component.items[2]).toEqual('Tag');
 
@@ -531,8 +513,8 @@ describe('TagInputComponent', () => {
 
             const component: TagInputComponent = getComponent(fixture);
 
-            component.setInputValue('New Item');
-            component.inputForm.onBlur.emit();
+            (component as any).setFormValue('New Item');
+            component.form.onBlur.emit();
 
             expect(component.items.length).toEqual(3);
 
@@ -548,15 +530,15 @@ describe('TagInputComponent', () => {
 
             const component: TagInputComponent = getComponent(fixture);
 
-            component.setInputValue('i');
-            component.dropdown.show();
+            (component as any).setFormValue('i');
+            component.dropdown.onChange();
 
             fixture.detectChanges();
             tick();
 
             expect(component.dropdown.isVisible).toEqual(true);
 
-            component.inputForm.onBlur.emit();
+            component.form.onBlur.emit();
 
             expect(component.items.length).toEqual(2);
 
@@ -574,7 +556,7 @@ describe('TagInputComponent', () => {
         it('intercepts hook onAdding and returns an observable', fakeAsync(() => {
             const component: TagInputComponent = getComponent(fixture);
             const subject = new Subject();
-            const tag = component.createTag('tag');
+            const tag = (component as any).createTag('tag');
 
             component.onAdding = () => {
                 return subject;

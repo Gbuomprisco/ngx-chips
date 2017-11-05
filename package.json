@@ -9,6 +9,7 @@
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3010 --content-base demo",
     "start": "npm run server",
     "test": "karma start karma.conf.js",
+    "ci": "npm run test -- --singleRun=false",
     "tsc": "tsc -p tsconfig.json",
     "ngc": "ngc -p ./tsconfig.aot.json",
     "moveassets": "rsync -a --include='*.scss' --include='*.html' --include='*.metadata.json' --include='*/' --exclude='*' modules/ dist/modules/",
