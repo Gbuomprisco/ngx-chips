@@ -172,9 +172,11 @@ You can use it to change the text of the input at any time, or to just bind a va
 Specifies whether the ripple effect should be visible or not (defaults to `true`)
 
 
-**`disabled`** - [**`?boolean`**]
+**`disable`** - [**`?boolean`**]
 
 If set to `true`, the input will be disabled. Similar to `readonly` but with a visual effect.
+
+*Notice**: this attribute was changed from 'disabled' to 'disable' in order to comply with Angular's compiler.
 
 
 **`tabindex`** - [**`?string`**]

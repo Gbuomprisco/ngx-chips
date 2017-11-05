@@ -33,7 +33,7 @@ export interface TagInputOptions {
     trimTags: boolean;
     ripple: boolean;
     tabIndex: string;
-    disabled: boolean;
+    disable: boolean;
     dragZone: string;
     onRemoving?: (tag: TagModel) => Observable<TagModel>;
     onAdding?: (tag: TagModel) => Observable<TagModel>;
@@ -86,7 +86,7 @@ export const defaults = {
         trimTags: true,
         ripple: true,
         tabIndex: '',
-        disabled: false,
+        disable: false,
         dragZone: '',
         onRemoving: undefined,
         onAdding: undefined,
