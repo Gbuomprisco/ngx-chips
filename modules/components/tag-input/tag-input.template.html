@@ -10,7 +10,7 @@
      (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
 
      [class.ng2-tag-input--dropping]="isDropping()"
-     [class.ng2-tag-input--disabled]="disabled"
+     [class.ng2-tag-input--disabled]="disable"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
