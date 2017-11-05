@@ -219,8 +219,9 @@ export class TagInputDropdown {
      * @description method called when something changed (ex. form text, click on input, etc.)
      * @name onChange
      */
+
     public onChange = (): void => {
-        if (this.autocompleteObservable) {
+        if (this.autocompleteObservable && hasMinimumText) {
             return this.getItemsFromObservable();
         }
 
