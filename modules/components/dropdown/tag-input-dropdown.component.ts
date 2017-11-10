@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/debounceTime';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { TagModel, TagInputDropdownOptions, OptionsProvider } from '../../core';
@@ -235,25 +236,24 @@ export class TagInputDropdown {
      */
     public show = (): void => {
         const value = this.getFormValue();
+        const hasMinimumText = value.trim().length >= this.minimumTextLength;
+        const position = this.calculatePosition();
+        const items = this.getMatchingItems(value);
+        const hasItems = items.length > 0;
+        const isHidden = this.isVisible === false;
+        const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
+        const assertions = [];
 
-        if (this.autocompleteObservable) {
+        const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
+        const shouldHide = this.isVisible && !hasItems;
+
+        if (this.autocompleteObservable && hasMinimumText) {
             return this.getItemsFromObservable(value);
         }
 
         if (!this.showDropdownIfEmpty && !value) {
             return this.dropdown.hide();
         }
-
-        const position = this.calculatePosition();
-        const items = this.getMatchingItems(value);
-        const hasItems = items.length > 0;
-        const isHidden = this.isVisible === false;
-        const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
-        const hasMinimumText = value.trim().length >= this.minimumTextLength;
-        const assertions = [];
-
-        const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
-        const shouldHide = this.isVisible && !hasItems;
 
         this.setItems(items);
 

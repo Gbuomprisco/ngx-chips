@@ -1,19 +1,5 @@
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    ViewChild
-} from '@angular/core';
-
-import {
-    FormGroup,
-    FormControl,
-    Validators,
-    ValidatorFn,
-    AbstractControl,
-    AsyncValidatorFn
-} from '@angular/forms';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 @Component({
     selector: 'tag-input-form',
@@ -136,7 +122,7 @@ export class TagInputForm {
     public ngOnInit() {
         // creating form
         this.form = new FormGroup({
-            item: new FormControl('', this.validators, this.asyncValidators)
+            item: new FormControl({value: '', disabled: this.disabled}, this.validators, this.asyncValidators)
         });
     }
 

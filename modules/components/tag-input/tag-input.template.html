@@ -10,7 +10,7 @@
      (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
 
      [class.ng2-tag-input--dropping]="isDropping()"
-     [class.ng2-tag-input--disabled]="disabled"
+     [class.ng2-tag-input--disabled]="disable"
      [class.ng2-tag-input--loading]="isLoading"
      [class.ng2-tag-input--invalid]="hasErrors()"
      [class.ng2-tag-input--focused]="isInputFocused()">
@@ -33,7 +33,7 @@
              (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
 
              [attr.tabindex]="0"
-             [disabled]="disabled"
+             [disabled]="disable"
              [@animation]="animationMetadata"
              [hasRipple]="ripple"
              [index]="i"
@@ -54,7 +54,7 @@
             (onKeyup)="fireEvents('keyup', $event)"
 
             [(inputText)]="inputText"
-            [disabled]="disabled"
+            [disabled]="disable"
             [validators]="validators"
             [asyncValidators]="asyncValidators"
             [hidden]="maxItemsReached"
