@@ -167,12 +167,14 @@ export class TagInputDropdown {
         this.onHide().subscribe(this.resetItems);
 
         const DEBOUNCE_TIME = 200;
+        const KEEP_OPEN = this.keepOpen;
 
         this.tagInput
             .onTextChange
+            .asObservable()
             .debounceTime(DEBOUNCE_TIME)
             .filter((value: string) => {
-                if (this.keepOpen === false) {
+                if (KEEP_OPEN === false) {
                     return value.length > 0;
                 }
 
