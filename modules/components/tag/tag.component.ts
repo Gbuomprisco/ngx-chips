@@ -221,13 +221,13 @@ export class TagComponent {
         // a bug in IE where tags are still editable with onlyFromAutocomplete set to true
 		if (!this.editable) {
 			return;
-		}
+        }
+        
+        this.disableEditMode();
 
         const value: string = event.target.innerText;
         const result = typeof this.model === 'string' ? value :
-            {[this.identifyBy]: value, [this.displayBy]: value};
-
-        this.disableEditMode();
+            {...this.model, [this.displayBy]: value};
 
         this.onBlur.emit(result);
     }
@@ -320,15 +320,24 @@ export class TagComponent {
                 model[this.displayBy] === input;
         };
 
-        // if the value changed, replace the value in the model
-        if (exists(this.model) === false) {
-            const model = typeof this.model === 'string' ? input :
-                {[this.identifyBy]: input, [this.displayBy]: input};
+        const hasId = () => {
+            return this.model[this.identifyBy] !== this.model[this.displayBy];
+        };
 
-            // emit output
-            this.model = model;
-            this.onTagEdited.emit(model);
+        // if the value changed, replace the value in the model
+        if (exists(this.model)) {
+            return;
         }
+
+        const model = typeof this.model === 'string' ? input :
+            {
+                [this.identifyBy]: hasId() ? this.model[this.identifyBy] : input, 
+                [this.displayBy]: input
+            };
+
+        // emit output
+        this.model = model;
+        this.onTagEdited.emit(model);
     }
 
     /**
