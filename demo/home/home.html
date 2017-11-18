@@ -22,9 +22,19 @@
 
         <div>
             <h3>Simple Input with editable items</h3>
-            <tag-input [ngModel]="items"
+            <tag-input [(ngModel)]="items"
                        [editable]="true"
                        (onTagEdited)="onTagEdited($event)">
+            </tag-input>
+        </div>
+
+        <div>
+            <h3>Simple Input with editable items as objects</h3>
+            {{itemsAsObjects|json}}
+            <tag-input [(ngModel)]="itemsAsObjects"
+                       [editable]="true"
+                       [identifyBy]="'id'"
+                       [displayBy]="'name'">
             </tag-input>
         </div>
 
