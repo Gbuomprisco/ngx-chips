@@ -345,14 +345,14 @@ export class TagInputDropdown {
         const dupesAllowed = this.tagInput.allowDupes;
 
         return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue: boolean = dupesAllowed ? true : this.tagInput.tags.some(tag => {
+            const hasValue: boolean = dupesAllowed ? false : this.tagInput.tags.some(tag => {
                 const identifyBy = this.tagInput.identifyBy;
                 const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
 
                 return model === item[this.identifyBy];
             });
 
-            return this.matchingFn(value, item) && hasValue === false;
+            return this.matchingFn(value, item) && (hasValue === false);
         });
     }
 
