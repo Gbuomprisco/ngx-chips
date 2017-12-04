@@ -1,4 +1,4 @@
-import { TagInputComponent } from './../../components/tag-input/tag-input';
+import { TagInputComponent } from '../../components/tag-input/tag-input';
 import { TagModel } from '../accessor';
 
 import { Injectable } from '@angular/core';
@@ -33,7 +33,7 @@ export class DragProvider {
     /**
      * @name setDraggedItem
      * @param event
-     * @param tag 
+     * @param tag
      */
     public setDraggedItem(event: DragEvent, tag: DraggedTag): void {
         event.dataTransfer.setData(DRAG_AND_DROP_KEY, JSON.stringify(tag));
@@ -41,7 +41,7 @@ export class DragProvider {
 
     /**
      * @name getDraggedItem
-     * @param event 
+     * @param event
      */
     public getDraggedItem(event: DragEvent): DraggedTag {
         const data = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
@@ -51,15 +51,15 @@ export class DragProvider {
 
     /**
      * @name setSender
-     * @param sender 
+     * @param sender
      */
     public setSender(sender: TagInputComponent): void {
         this.sender = sender;
     }
-    
+
     /**
      * @name setReceiver
-     * @param receiver 
+     * @param receiver
      */
     public setReceiver(receiver: TagInputComponent): void {
         this.receiver = receiver;
@@ -67,9 +67,9 @@ export class DragProvider {
 
     /**
      * @name onTagDropped
-     * @param tag 
-     * @param indexDragged 
-     * @param indexDropped 
+     * @param tag
+     * @param indexDragged
+     * @param indexDropped
      */
     public onTagDropped(tag: TagModel, indexDragged: number, indexDropped: number): void {
         this.onDragEnd();

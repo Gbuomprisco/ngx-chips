@@ -1,2 +1,2 @@
-export * from './tag-ripple.component';
-export * from './tag.component';
+export { TagRipple } from './tag-ripple.component';
+export { TagComponent } from './tag.component';

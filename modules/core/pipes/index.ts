@@ -1,1 +1,1 @@
-export * from './highlight.pipe';
+export { HighlightPipe } from './highlight.pipe';

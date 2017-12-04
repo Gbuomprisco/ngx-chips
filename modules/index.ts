@@ -1,2 +1,4 @@
-export * from './tag-input.module';
-export * from './components';
+export { TagInputModule } from './tag-input.module';
+export {
+    TagInputDropdown, DeleteIconComponent, TagInputForm, TagRipple, TagComponent, TagInputComponent
+} from './components';

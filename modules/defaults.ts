@@ -1,4 +1,3 @@
-import { AnimationEntryMetadata } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 
@@ -113,9 +112,9 @@ export const defaults = {
 
 /**
  * @name matchingFn
- * @param this 
- * @param value 
- * @param target 
+ * @param this
+ * @param value
+ * @param target
  */
 function matchingFn(this: TagInputDropdown, value: string, target: TagModel): boolean {
     const targetValue = target[this.displayBy].toString();
