@@ -1,1 +1,1 @@
-export * from './icon';
+export { DeleteIconComponent } from './icon';

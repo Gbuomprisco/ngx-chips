@@ -1,7 +1,6 @@
-import { defaults } from './../defaults';
 import { ControlValueAccessor } from '@angular/forms';
 import { Input } from '@angular/core';
-import { OptionsProvider } from './providers';
+import { OptionsProvider } from './providers/options-provider';
 
 export type TagModel = string | {[key: string]: any};
 

@@ -1,7 +1,7 @@
 import * as constants from './constants';
 export { constants };
 
-export * from './helpers';
-export * from './pipes';
-export * from './accessor';
-export * from './providers';
+export { listen } from './helpers';
+export { HighlightPipe } from './pipes';
+export { TagModel, isObject, TagInputAccessor } from './accessor';
+export { DraggedTag, State, StateProperty, DragProvider, Options, OptionsProvider } from './providers';
