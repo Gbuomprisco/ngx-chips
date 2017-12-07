@@ -12,8 +12,8 @@ import {
     Renderer2
 } from '@angular/core';
 
-import { TagModel } from '../../core';
-import { TagRipple } from '../tag';
+import { TagModel } from '../../core/accessor';
+import { TagRipple } from '../tag/tag-ripple.component';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -33,7 +33,7 @@ const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigat
     templateUrl: './tag.template.html',
     styleUrls: [ './tag-component.style.scss' ]
 })
-export class TagComponent {    
+export class TagComponent {
     /**
      * @name model {TagModel}
      */
@@ -222,7 +222,7 @@ export class TagComponent {
 		if (!this.editable) {
 			return;
         }
-        
+
         this.disableEditMode();
 
         const value: string = event.target.innerText;
@@ -292,7 +292,7 @@ export class TagComponent {
     private disableEditMode($event?: KeyboardEvent): void {
         const classList = this.element.nativeElement.classList;
         const input = this.getContentEditableText();
-        
+
         this.editing = false;
         classList.remove('tag--editing');
 
@@ -331,7 +331,7 @@ export class TagComponent {
 
         const model = typeof this.model === 'string' ? input :
             {
-                [this.identifyBy]: hasId() ? this.model[this.identifyBy] : input, 
+                [this.identifyBy]: hasId() ? this.model[this.identifyBy] : input,
                 [this.displayBy]: input
             };
 

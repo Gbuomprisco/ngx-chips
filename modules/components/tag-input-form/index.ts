@@ -1,1 +1,1 @@
-export * from './tag-input-form.component';
+export { TagInputForm } from './tag-input-form.component';

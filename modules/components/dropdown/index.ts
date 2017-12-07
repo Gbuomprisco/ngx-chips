@@ -1,1 +1,1 @@
-export * from './tag-input-dropdown.component';
+export { TagInputDropdown } from './tag-input-dropdown.component';

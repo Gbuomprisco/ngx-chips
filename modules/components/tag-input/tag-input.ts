@@ -34,27 +34,19 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/first';
 
 // ng2-tag-input
-import {
-    TagInputAccessor,
-    TagModel,
-    listen,
-    constants
-} from '../../core';
+import { TagInputAccessor, TagModel } from '../../core/accessor';
+import { listen } from '../../core/helpers/listen';
+import * as constants from '../../core/constants';
 
-import {
-    DragProvider,
-    DraggedTag,
-    OptionsProvider,
-    TagInputOptions
-} from '../../core/providers';
+import { DragProvider, DraggedTag } from '../../core/providers/drag-provider';
+import { OptionsProvider } from '../../core/providers/options-provider';
 
-import {
-    TagInputForm,
-    TagInputDropdown,
-    TagComponent
-} from '../../components';
+import { TagInputForm } from '../tag-input-form/tag-input-form.component';
+import { TagInputDropdown } from '../dropdown/tag-input-dropdown.component';
+import { TagComponent } from '../tag/tag.component';
 
 import { animations } from './animations';
+import { TagInputOptions } from '../../defaults';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -423,11 +415,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public animationMetadata: { value: string, params: object };
 
-    constructor(private readonly renderer: Renderer2, 
+    constructor(private readonly renderer: Renderer2,
                 public readonly dragProvider: DragProvider) {
         super();
     }
-    
+
     /**
      * @name ngAfterViewInit
      */
@@ -617,7 +609,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public setInputValue(value: string): void {
         const control = this.getControl();
-        
+
         // update form value with the transformed item
         control.setValue(value);
     }
@@ -714,7 +706,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         event.stopPropagation();
 
         const item = { zone: this.dragZone, tag, index } as DraggedTag;
-        
+
         this.dragProvider.setSender(this);
         this.dragProvider.setDraggedItem(event, item);
         this.dragProvider.setState({dragging: true, index});
@@ -742,9 +734,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (item.zone !== this.dragZone) {
             return;
         }
-        
+
         this.dragProvider.onTagDropped(item.tag, item.index, index);
-    
+
         event.preventDefault();
         event.stopPropagation();
     }
@@ -821,13 +813,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name moveToTag
-     * @param item 
-     * @param direction 
+     * @param item
+     * @param direction
      */
     private moveToTag(item: TagModel, direction: string): void {
         const isLast = this.tags.last.model === item;
         const isFirst = this.tags.first.model === item;
-        const stopSwitch = (direction === constants.NEXT && isLast) || 
+        const stopSwitch = (direction === constants.NEXT && isLast) ||
             (direction === constants.PREV && isFirst);
 
         if (stopSwitch) {
@@ -849,7 +841,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     private getTagIndex(item: TagModel): number {
         const tags = this.tags.toArray();
 
-        return tags.findIndex(tag => tag.model === item);        
+        return tags.findIndex(tag => tag.model === item);
     }
 
     /**
@@ -891,7 +883,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     private addItem(fromAutocomplete = false, item: TagModel, index?: number): void {
         const model = this.getItemDisplay(item);
-        
+
         /**
          * @name reset
          */
@@ -924,7 +916,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
          */
         const subscribeFn = (tag: TagModel): void => {
             this.appendTag(tag, index);
-            
+
             // emit event
             this.onAdd.emit(tag);
 
