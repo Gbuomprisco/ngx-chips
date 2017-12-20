@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, COMPOSITION_BUFFER_MODE } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Ng2DropdownModule } from 'ng2-material-dropdown';
 import { HighlightPipe } from './core/pipes/highlight.pipe';
@@ -40,7 +40,8 @@ const optionsProvider = new OptionsProvider();
         TagRipple
     ],
     providers: [
-        DragProvider
+        DragProvider,
+        { provide: COMPOSITION_BUFFER_MODE, useValue: false },
     ]
 })
 export class TagInputModule {
