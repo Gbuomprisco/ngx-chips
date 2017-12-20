@@ -239,6 +239,7 @@ export class TagInputDropdown {
      * @name show
      */
     public show = (): void => {
+        const maxItemsReached = this.tagInput.items.length === this.tagInput.maxItems;
         const value = this.getFormValue();
         const hasMinimumText = value.trim().length >= this.minimumTextLength;
         const position = this.calculatePosition();
@@ -256,6 +257,10 @@ export class TagInputDropdown {
         }
 
         if (!this.showDropdownIfEmpty && !value) {
+            return this.dropdown.hide();
+        }
+
+        if (maxItemsReached) {
             return this.dropdown.hide();
         }
 
