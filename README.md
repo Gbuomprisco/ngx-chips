@@ -4,9 +4,9 @@ This is a component for Angular >= 4. Design and API are blandly inspired by Ang
 
 [![NPM](https://nodei.co/npm/ngx-chips.png?downloads=true&stars=true)](https://nodei.co/npm/ngx-chips/)
 
-## [Demo](https://angular-mfppay.stackblitz.io/){:target="_blank"}
+## [Demo](https://angular-mfppay.stackblitz.io/)
 
-Check out [the live demo](https://angular-mfppay.stackblitz.io/){:target="_blank"}.
+Check out [the live demo](https://angular-mfppay.stackblitz.io/).
 
 
 ## Getting Started
