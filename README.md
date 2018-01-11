@@ -4,9 +4,9 @@ This is a component for Angular >= 4. Design and API are blandly inspired by Ang
 
 [![NPM](https://nodei.co/npm/ngx-chips.png?downloads=true&stars=true)](https://nodei.co/npm/ngx-chips/)
 
-## [Demo](http://www.buompris.co/ng2-tag-input/)
+## [Demo](https://angular-mfppay.stackblitz.io/)
 
-Check out [the live demo](http://www.buompris.co/ng2-tag-input/).
+Check out [the live demo](https://angular-mfppay.stackblitz.io/).
 
 
 ## Getting Started

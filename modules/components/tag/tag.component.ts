@@ -255,6 +255,41 @@ export class TagComponent {
     }
 
     /**
+     * @name disableEditMode
+     * @param $event
+     */
+    public disableEditMode($event?: KeyboardEvent): void {
+        const classList = this.element.nativeElement.classList;
+        const input = this.getContentEditableText();
+
+        this.editing = false;
+        classList.remove('tag--editing');
+
+        if (!input) {
+            this.setContentEditableText(this.model);
+            return;
+        }
+
+        this.storeNewValue(input);
+        this.cdRef.detectChanges();
+
+        if ($event) {
+            $event.preventDefault();
+        }
+    }
+
+    /**
+     * @name isDeleteIconVisible
+     * @returns {boolean}
+     */
+    public isDeleteIconVisible(): boolean {
+        return !this.readonly &&
+            !this.disabled &&
+            this.removable &&
+            !this.editing;
+    }
+
+    /**
      * @name getContentEditableText
      * @returns {string}
      */
@@ -283,30 +318,6 @@ export class TagComponent {
         classList.add('tag--editing');
 
         this.editing = true;
-    }
-
-    /**
-     * @name disableEditMode
-     * @param $event
-     */
-    private disableEditMode($event?: KeyboardEvent): void {
-        const classList = this.element.nativeElement.classList;
-        const input = this.getContentEditableText();
-
-        this.editing = false;
-        classList.remove('tag--editing');
-
-        if (!input) {
-            this.setContentEditableText(this.model);
-            return;
-        }
-
-        this.storeNewValue(input);
-        this.cdRef.detectChanges();
-
-        if ($event) {
-            $event.preventDefault();
-        }
     }
 
     /**
@@ -345,16 +356,5 @@ export class TagComponent {
      */
     private getContentEditable(): HTMLInputElement {
         return this.element.nativeElement.querySelector('[contenteditable]');
-    }
-
-    /**
-     * @name isDeleteIconVisible
-     * @returns {boolean}
-     */
-    private isDeleteIconVisible(): boolean {
-        return !this.readonly &&
-                !this.disabled &&
-                this.removable &&
-                !this.editing;
     }
 }
