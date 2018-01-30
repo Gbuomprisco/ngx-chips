@@ -27,11 +27,8 @@ import {
 
 // rx
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/first';
+import { of } from 'rxjs/observable/of';
+import { debounceTime, filter, map, first } from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor, TagModel } from '../../core/accessor';
@@ -482,8 +479,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         const subscribeFn = (model: TagModel) => this.removeItem(model, index);
 
         this.onRemoving ?
-            this.onRemoving(tag)
-                .first()
+            this.onRemoving(tag).pipe(first())
                 .subscribe(subscribeFn) : subscribeFn(tag);
     }
 
@@ -502,8 +498,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         }
 
         this.onAdding ?
-            this.onAdding(tag)
-                .first()
+            this.onAdding(tag).pipe(first())
                 .subscribe(subscribeFn) : subscribeFn(tag);
     }
 
@@ -928,14 +923,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.dropdown.showDropdownIfEmpty ? this.dropdown.show() : undefined;
         };
 
-        Observable
-            .of(model)
-            .first()
-            .filter(() => model.trim() !== '')
-            .map(() => item)
-            .map(this.createTag)
-            .filter(validationFilter)
-            .subscribe(subscribeFn, undefined, reset);
+        of(model).pipe(
+            first(),
+            filter(() => model.trim() !== ''),
+            map(() => item),
+            map(this.createTag),
+            filter(validationFilter)
+        ).subscribe(subscribeFn, undefined, reset);
     }
 
     /**
@@ -1003,8 +997,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     private setUpTextChangeSubscriber(): void {
         this.inputForm.form
             .valueChanges
-            .debounceTime(this.onTextChangeDebounce)
-            .map(() => this.formValue)
+            .pipe(
+                debounceTime(this.onTextChangeDebounce),
+                map(() => this.formValue)
+            )
             .subscribe((value: string) => this.onTextChange.emit(value));
     }
 
@@ -1018,7 +1014,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         this.inputForm
             .onBlur
-            .filter(filterFn)
+            .pipe(filter(filterFn))
             .subscribe(() => {
                 if (this.addOnBlur) {
                     this.onAddingRequested(false, this.formValue);

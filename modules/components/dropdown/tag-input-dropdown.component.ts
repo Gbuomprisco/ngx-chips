@@ -14,10 +14,7 @@ import {
 
 // rx
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/debounceTime';
+import { map, filter, first, debounceTime } from 'rxjs/operators';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { OptionsProvider } from '../../core/providers/options-provider';
@@ -174,14 +171,16 @@ export class TagInputDropdown {
         this.tagInput
             .onTextChange
             .asObservable()
-            .debounceTime(DEBOUNCE_TIME)
-            .filter((value: string) => {
-                if (KEEP_OPEN === false) {
-                    return value.length > 0;
-                }
+            .pipe(
+                debounceTime(DEBOUNCE_TIME),
+                filter((value: string) => {
+                    if (KEEP_OPEN === false) {
+                        return value.length > 0;
+                    }
 
-                return true;
-            })
+                    return true;
+                })
+            )
             .subscribe(this.show);
     }
 
@@ -415,7 +414,7 @@ export class TagInputDropdown {
         };
 
         this.autocompleteObservable(text)
-            .first()
+            .pipe(first())
             .subscribe(subscribeFn, () => this.setLoadingState(false));
     }
 
