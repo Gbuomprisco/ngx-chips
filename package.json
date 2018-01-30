@@ -1,11 +1,11 @@
 {
   "name": "ngx-chips",
-  "version": "1.6.3-rc.0",
+  "version": "1.6.3-rc.3",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
     "postrelease": "rm -rf dist",
-    "build": "ng-packagr && mkdir ./dist/dist && cp ./dist/bundles/ngx-chips.umd.js ./dist/dist/ngx-chips.bundle.js",
+    "build": "ng-packagr -p package.json && mkdir ./dist/dist && cp -R ./modules/core/styles ./dist/core/styles && cp ./dist/bundles/ngx-chips.umd.js ./dist/dist/ngx-chips.bundle.js",
     "server": "webpack-dev-server --config webpack.demo.js --inline --colors --progress --port 3010 --content-base demo",
     "start": "npm run server",
     "test": "karma start karma.conf.js",

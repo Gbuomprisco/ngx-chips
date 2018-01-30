@@ -81,31 +81,26 @@ export class TagComponent {
 
     /**
      * @name onSelect
-     * @type {EventEmitter<TagModel>}
      */
     @Output() public onSelect: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name onRemove
-     * @type {EventEmitter<TagModel>}
      */
     @Output() public onRemove: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name onBlur
-     * @type {EventEmitter<TagModel>}
      */
     @Output() public onBlur: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name onKeyDown
-     * @type {EventEmitter<any>}
      */
     @Output() public onKeyDown: EventEmitter<any> = new EventEmitter<any>();
 
     /**
      * @name onTagEdited
-     * @type {EventEmitter<any>}
      */
     @Output() public onTagEdited: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
@@ -118,19 +113,16 @@ export class TagComponent {
 
     /**
      * @name editing
-     * @type {boolean}
      */
     public editing = false;
 
     /**
      * @name moving
-     * @type {boolean}
      */
     @HostBinding('class.moving') public moving: boolean;
 
     /**
      * @name rippleState
-     * @type {string}
      */
     public rippleState = 'none';
 
@@ -235,7 +227,6 @@ export class TagComponent {
     /**
      * @name getDisplayValue
      * @param item
-     * @returns {string}
      */
     public getDisplayValue(item: TagModel): string {
         return typeof item === 'string' ? item : item[this.displayBy];
@@ -245,7 +236,6 @@ export class TagComponent {
      * @desc returns whether the ripple is visible or not
      * only works in Chrome
      * @name isRippleVisible
-     * @returns {boolean}
      */
     public get isRippleVisible(): boolean {
         return !this.readonly &&
@@ -280,7 +270,6 @@ export class TagComponent {
 
     /**
      * @name isDeleteIconVisible
-     * @returns {boolean}
      */
     public isDeleteIconVisible(): boolean {
         return !this.readonly &&
@@ -291,7 +280,6 @@ export class TagComponent {
 
     /**
      * @name getContentEditableText
-     * @returns {string}
      */
     private getContentEditableText(): string {
         const input = this.getContentEditable();

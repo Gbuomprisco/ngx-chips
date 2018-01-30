@@ -10,7 +10,6 @@ export class HighlightPipe implements PipeTransform {
      * @name transform
      * @param value {string}
      * @param arg {string}
-     * @return {string}
      */
     public transform(value: string, arg: string): string {
         if (!arg.trim()) {

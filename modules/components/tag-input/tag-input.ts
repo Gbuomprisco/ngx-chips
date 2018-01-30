@@ -68,74 +68,63 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
-     * @type {Array}
      */
     @Input() public separatorKeys: string[] = new defaults().separatorKeys;
 
     /**
      * @name separatorKeyCodes
      * @desc keyboard key codes with which a user can separate items
-     * @type {Array}
      */
     @Input() public separatorKeyCodes: number[] = new defaults().separatorKeyCodes;
 
     /**
      * @name placeholder
      * @desc the placeholder of the input text
-     * @type {string}
      */
     @Input() public placeholder: string = new defaults().placeholder;
 
     /**
      * @name secondaryPlaceholder
      * @desc placeholder to appear when the input is empty
-     * @type {string}
      */
     @Input() public secondaryPlaceholder: string = new defaults().secondaryPlaceholder;
 
     /**
      * @name maxItems
      * @desc maximum number of items that can be added
-     * @type {number}
      */
     @Input() public maxItems: number = new defaults().maxItems;
 
     /**
      * @name validators
      * @desc array of Validators that are used to validate the tag before it gets appended to the list
-     * @type {Validators[]}
      */
     @Input() public validators: ValidatorFn[] = new defaults().validators;
 
     /**
      * @name asyncValidators
      * @desc array of AsyncValidator that are used to validate the tag before it gets appended to the list
-     * @type {Array}
      */
     @Input() public asyncValidators: AsyncValidatorFn[] = new defaults().asyncValidators;
 
     /**
     * - if set to true, it will only possible to add items from the autocomplete
     * @name onlyFromAutocomplete
-    * @type {Boolean}
     */
     @Input() public onlyFromAutocomplete = new defaults().onlyFromAutocomplete;
 
 	/**
      * @name errorMessages
-     * @type {Map<string, string>}
      */
     @Input() public errorMessages: { [key: string]: string } = new defaults().errorMessages;
 
     /**
      * @name theme
-     * @type {string}
      */
     @Input() public theme: string = new defaults().theme;
 
     /**
      * @name onTextChangeDebounce
-     * @type {number}
      */
     @Input() public onTextChangeDebounce = new defaults().onTextChangeDebounce;
 
@@ -180,38 +169,32 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name blinkIfDupe
-     * @type {boolean}
      */
     @Input() public blinkIfDupe = new defaults().blinkIfDupe;
 
     /**
      * @name removable
-     * @type {boolean}
      */
     @Input() public removable = new defaults().removable;
 
     /**
      * @name editable
-     * @type {boolean}
      */
     @Input() public editable: boolean = new defaults().editable;
 
     /**
      * @name allowDupes
-     * @type {boolean}
      */
     @Input() public allowDupes = new defaults().allowDupes;
 
     /**
      * @description if set to true, the newly added tags will be added as strings, and not objects
      * @name modelAsStrings
-     * @type {boolean}
      */
     @Input() public modelAsStrings = new defaults().modelAsStrings;
 
     /**
      * @name trimTags
-     * @type {boolean}
      */
     @Input() public trimTags = new defaults().trimTags;
 
@@ -224,38 +207,32 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name ripple
-     * @type {boolean}
      */
     @Input() public ripple: boolean = new defaults().ripple;
 
     /**
      * @name tabindex
      * @desc pass through the specified tabindex to the input
-     * @type {string}
      */
     @Input() public tabindex: string = new defaults().tabIndex;
 
     /**
      * @name disable
-     * @type {boolean}
      */
     @Input() public disable: boolean = new defaults().disable;
 
     /**
      * @name dragZone
-     * @type {string}
      */
     @Input() public dragZone: string = new defaults().dragZone;
 
     /**
      * @name onRemoving
-     * @type {() => Observable<void>}
      */
     @Input() public onRemoving = new defaults().onRemoving;
 
     /**
      * @name onAdding
-     * @type {() => Observable<void>}
      */
     @Input() public onAdding = new defaults().onAdding;
 
@@ -267,63 +244,54 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name onAdd
      * @desc event emitted when adding a new item
-     * @type {EventEmitter<string>}
      */
     @Output() public onAdd = new EventEmitter<TagModel>();
 
     /**
      * @name onRemove
      * @desc event emitted when removing an existing item
-     * @type {EventEmitter<string>}
      */
     @Output() public onRemove = new EventEmitter<TagModel>();
 
     /**
      * @name onSelect
      * @desc event emitted when selecting an item
-     * @type {EventEmitter<string>}
      */
     @Output() public onSelect = new EventEmitter<TagModel>();
 
     /**
      * @name onFocus
      * @desc event emitted when the input is focused
-     * @type {EventEmitter<string>}
      */
     @Output() public onFocus = new EventEmitter<string>();
 
     /**
      * @name onFocus
      * @desc event emitted when the input is blurred
-     * @type {EventEmitter<string>}
      */
     @Output() public onBlur = new EventEmitter<string>();
 
     /**
      * @name onTextChange
      * @desc event emitted when the input value changes
-     * @type {EventEmitter<string>}
      */
     @Output() public onTextChange = new EventEmitter<TagModel>();
 
     /**
      * - output triggered when text is pasted in the form
      * @name onPaste
-     * @type {EventEmitter<TagModel>}
      */
     @Output() public onPaste = new EventEmitter<string>();
 
     /**
      * - output triggered when tag entered is not valid
      * @name onValidationError
-     * @type {EventEmitter<string>}
      */
     @Output() public onValidationError = new EventEmitter<TagModel>();
 
     /**
      * - output triggered when tag is edited
      * @name onTagEdited
-     * @type {EventEmitter<TagModel>}
      */
     @Output() public onTagEdited = new EventEmitter<TagModel>();
 
@@ -335,26 +303,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name template
      * @desc reference to the template if provided by the user
-     * @type {TemplateRef}
      */
     @ContentChildren(TemplateRef, { descendants: false }) public templates: QueryList<TemplateRef<any>>;
 
 	/**
      * @name inputForm
-     * @type {TagInputForm}
      */
     @ViewChild(TagInputForm) public inputForm: TagInputForm;
 
     /**
      * @name selectedTag
      * @desc reference to the current selected tag
-     * @type {String}
      */
     public selectedTag: TagModel | undefined;
 
     /**
      * @name isLoading
-     * @type {boolean}
      */
     public isLoading = false;
 
@@ -376,7 +340,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name listeners
      * @desc array of events that get fired using @fireEvents
-     * @type []
      */
     private listeners = {
         [constants.KEYDOWN]: <{ (fun): any }[]>[],
@@ -386,21 +349,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @description emitter for the 2-way data binding inputText value
      * @name inputTextChange
-     * @type {EventEmitter}
      */
     @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
 
     /**
      * @description private variable to bind get/set
      * @name inputTextValue
-     * @type {string}
      */
     public inputTextValue = '';
 
     /**
      * @desc removes the tab index if it is set - it will be passed through to the input
      * @name tabindexAttr
-     * @type {string}
      */
     @HostBinding('attr.tabindex')
     public get tabindexAttr(): string {
@@ -520,7 +480,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name createTag
      * @param model
-     * @returns {{}}
      */
     public createTag = (model: TagModel): TagModel => {
         const trim = (val: TagModel, key: string): TagModel => {
@@ -600,7 +559,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name setInputValue
      * @param value
-     * @returns {string}
      */
     public setInputValue(value: string): void {
         const control = this.getControl();
@@ -611,7 +569,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name getControl
-     * @returns {FormControl}
      */
     private getControl(): FormControl {
         return <FormControl>this.inputForm.value;
@@ -646,7 +603,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name hasErrors
-     * @returns {boolean}
      */
     public hasErrors(): boolean {
         return this.inputForm && this.inputForm.hasErrors();
@@ -654,7 +610,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name isInputFocused
-     * @returns {boolean}
      */
     public isInputFocused(): boolean {
         return this.inputForm && this.inputForm.isInputFocused();
@@ -675,7 +630,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
 	/**
      * @name maxItemsReached
-     * @returns {boolean}
      */
     public get maxItemsReached(): boolean {
         return this.maxItems !== undefined &&
@@ -684,7 +638,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name formValue
-     * @return {any}
      */
     public get formValue(): string {
         const form = this.inputForm.value;
@@ -759,7 +712,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name trackBy
      * @param item
-     * @returns {string}
      */
     public trackBy(item: TagModel): string {
         return item[this.identifyBy];
@@ -893,7 +845,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         /**
          * @name validationFilter
          * @param tag
-         * @return {boolean}
          */
         const validationFilter = (tag: TagModel): boolean => {
             const isValid = this.isTagValid(tag, fromAutocomplete) && this.inputForm.form.valid;
@@ -1028,7 +979,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name findDupe
      * @param tag
      * @param isFromAutocomplete
-     * @return {undefined|TagModel}
      */
     private findDupe(tag: TagModel, isFromAutocomplete: boolean): TagModel | undefined {
         const identifyBy = isFromAutocomplete ? this.dropdown.identifyBy : this.identifyBy;

@@ -37,26 +37,22 @@ export class TagInputDropdown {
     /**
      * @name menuTemplate
      * @desc reference to the template if provided by the user
-     * @type {TemplateRef}
      */
     @ContentChildren(TemplateRef) public templates: QueryList<TemplateRef<any>>;
 
     /**
      * @name offset
-     * @type {string}
      */
     @Input() public offset: string = new defaults().offset;
 
     /**
      * @name focusFirstElement
-     * @type {boolean}
      */
     @Input() public focusFirstElement = new defaults().focusFirstElement;
 
     /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
-     * @type {boolean}
      */
     @Input() public showDropdownIfEmpty = new defaults().showDropdownIfEmpty;
 
@@ -96,21 +92,18 @@ export class TagInputDropdown {
 
     /**
      * @name appendToBody
-     * @type {boolean}
      */
     @Input() public appendToBody = new defaults().appendToBody;
 
     /**
      * @name keepOpen
      * @description option to leave dropdown open when adding a new item
-     * @type {boolean}
      */
     @Input() public keepOpen = new defaults().keepOpen;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
-     * @type {TagModel[]}
      */
     public items: TagModel[] = [];
 
@@ -121,8 +114,6 @@ export class TagInputDropdown {
 
     /**
      * @name _autocompleteItems
-     * @type {Array}
-     * @private
      */
     private _autocompleteItems: TagModel[] = [];
 
@@ -137,7 +128,6 @@ export class TagInputDropdown {
     /**
      * @name autocompleteItems
      * @desc array of items that will populate the autocomplete
-     * @type {Array<string>}
      */
     @Input() public get autocompleteItems(): TagModel[] {
         const items = this._autocompleteItems;
@@ -195,7 +185,6 @@ export class TagInputDropdown {
 
     /**
      * @name isVisible
-     * @returns {boolean}
      */
     public get isVisible(): boolean {
         return this.dropdown.menu.state.menuState.isVisible;
@@ -203,7 +192,6 @@ export class TagInputDropdown {
 
     /**
      * @name onHide
-     * @returns {EventEmitter<Ng2Dropdown>}
      */
     public onHide(): EventEmitter<Ng2Dropdown> {
         return this.dropdown.onHide;
@@ -211,7 +199,6 @@ export class TagInputDropdown {
 
     /**
      * @name onItemClicked
-     * @returns {EventEmitter<string>}
      */
     public onItemClicked(): EventEmitter<string> {
         return this.dropdown.onItemClicked;
@@ -219,7 +206,6 @@ export class TagInputDropdown {
 
     /**
      * @name selectedItem
-     * @returns {Ng2MenuItem}
      */
     public get selectedItem(): Ng2MenuItem {
         return this.dropdown.menu.state.dropdownState.selectedItem;
@@ -227,7 +213,6 @@ export class TagInputDropdown {
 
     /**
      * @name state
-     * @returns {DropdownStateService}
      */
     public get state(): any {
         return this.dropdown.menu.state;
@@ -325,7 +310,6 @@ export class TagInputDropdown {
     /**
      * @name createTagModel
      * @param item
-     * @return {TagModel}
      */
     private createTagModel(item: Ng2MenuItem): TagModel {
         const display = typeof item.value === 'string' ? item.value : item.value[this.displayBy];
@@ -341,7 +325,6 @@ export class TagInputDropdown {
     /**
      *
      * @param value {string}
-     * @returns {any}
      */
     private getMatchingItems(value: string): TagModel[] {
         if (!value && !this.showDropdownIfEmpty) {
@@ -421,7 +404,6 @@ export class TagInputDropdown {
     /**
      * @name setLoadingState
      * @param state
-     * @return {TagInputDropdown}
      */
     private setLoadingState(state: boolean): TagInputDropdown {
         this.tagInput.isLoading = state;
