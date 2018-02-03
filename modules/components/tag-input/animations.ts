@@ -10,7 +10,6 @@ import {
 
 /**
  * @name animations
- * @return {AnimationTriggerMetadata[]}
  */
 export const animations = [
     trigger('animation', [
