@@ -3,9 +3,8 @@ import {Component} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/filter';
+import { of } from 'rxjs/observable/of';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
     selector: 'app',
@@ -46,11 +45,11 @@ export class Home {
         const url = `https://api.github.com/search/repositories?q=${text}`;
         return this.http
             .get(url)
-            .map(data => data.json().items.map(item => item.full_name));
+            .pipe(map(data => data.json().items.map(item => item.full_name)));
     };
 
     public requestAutocompleteItemsFake = (text: string): Observable<string[]> => {
-        return Observable.of([
+        return of([
             'item1', 'item2', 'item3'
         ]);
     };
@@ -94,7 +93,7 @@ export class Home {
 
     public transform(value: string): Observable<object> {
         const item = {display: `@${value}`, value: `@${value}`};
-        return Observable.of(item);
+        return of(item);
     }
 
     private startsWithAt(control: FormControl) {
@@ -123,7 +122,7 @@ export class Home {
             const result: any = isNaN(value) ? {
                 isNan: true
             } : null;
-  
+
             setTimeout(() => {
                 resolve(result);
             }, 1);
@@ -145,22 +144,19 @@ export class Home {
 
     public onAdding(tag): Observable<any> {
         const confirm = window.confirm('Do you really want to add this tag?');
-        return Observable
-            .of(tag)
-            .filter(() => confirm);
+        return of(tag)
+            .pipe(filter(() => confirm));
     }
 
     public onRemoving(tag): Observable<any> {
         const confirm = window.confirm('Do you really want to remove this tag?');
-        return Observable
-            .of(tag)
-            .filter(() => confirm);
+        return of(tag)
+            .pipe(filter(() => confirm));
     }
 
     public asyncOnAdding(tag): Observable<any> {
         const confirm = window.confirm('Do you really want to add this tag?');
-        return Observable
-            .of(tag)
-            .filter(() => confirm);
+        return of(tag)
+            .pipe(filter(() => confirm));
     }
 }

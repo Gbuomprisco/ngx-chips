@@ -2,7 +2,11 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Input } from '@angular/core';
 import { OptionsProvider } from './providers/options-provider';
 
-export type TagModel = string | {[key: string]: any};
+export class TagModelClass {
+    [key: string]: any;
+}
+
+export type TagModel = string | TagModelClass;
 
 export function isObject(obj: any): boolean {
     return obj === Object(obj);
@@ -15,13 +19,11 @@ export class TagInputAccessor implements ControlValueAccessor {
 
     /**
      * @name displayBy
-     * @type {string}
      */
     @Input() public displayBy: string = OptionsProvider.defaults.tagInput.displayBy;
 
     /**
      * @name identifyBy
-     * @type {string}
      */
     @Input() public identifyBy: string = OptionsProvider.defaults.tagInput.identifyBy;
 
@@ -53,7 +55,6 @@ export class TagInputAccessor implements ControlValueAccessor {
     /**
      * @name getItemValue
      * @param item
-     * @return {TagModel}
      */
     public getItemValue(item: TagModel): string {
         return isObject(item) ? item[this.identifyBy] : item;
@@ -62,7 +63,6 @@ export class TagInputAccessor implements ControlValueAccessor {
     /**
      * @name getItemDisplay
      * @param item
-     * @return {TagModel}
      */
     public getItemDisplay(item: TagModel): string {
         return isObject(item) ? item[this.displayBy] : item;
@@ -71,7 +71,6 @@ export class TagInputAccessor implements ControlValueAccessor {
     /**
      * @name getItemsWithout
      * @param index
-     * @return {TagModel[]}
      */
     protected getItemsWithout(index: number): TagModel[] {
         return this.items.filter((item, position) => position !== index);

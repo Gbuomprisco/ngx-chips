@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs/Observable';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 
-import { SECONDARY_PLACEHOLDER, PLACEHOLDER } from './core/constants';
+import { SECONDARY_PLACEHOLDER, PLACEHOLDER } from './core/constants/index';
 import { TagInputDropdown } from './components/dropdown/tag-input-dropdown.component';
-import { TagModel } from './core';
+import { TagModel } from './core/accessor';
 
 export interface TagInputOptions {
     separatorKeys: string[];

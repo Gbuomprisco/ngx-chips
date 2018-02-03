@@ -9,31 +9,26 @@ import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn 
 export class TagInputForm {
     /**
      * @name onSubmit
-     * @type {EventEmitter}
      */
     @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
 
     /**
      * @name onBlur
-     * @type {EventEmitter}
      */
     @Output() public onBlur: EventEmitter<any> = new EventEmitter();
 
     /**
      * @name onFocus
-     * @type {EventEmitter}
      */
     @Output() public onFocus: EventEmitter<any> = new EventEmitter();
 
     /**
      * @name onKeyup
-     * @type {EventEmitter}
      */
     @Output() public onKeyup: EventEmitter<any> = new EventEmitter();
 
     /**
      * @name onKeydown
-     * @type {EventEmitter}
      */
     @Output() public onKeydown: EventEmitter<any> = new EventEmitter();
 
@@ -41,32 +36,27 @@ export class TagInputForm {
 
     /**
      * @name placeholder
-     * @type {string}
      */
     @Input() public placeholder: string;
 
     /**
      * @name validators
-     * @type {ValidatorFn[]}
      */
     @Input() public validators: ValidatorFn[] = [];
 
     /**
      * @name asyncValidators
      * @desc array of AsyncValidator that are used to validate the tag before it gets appended to the list
-     * @type {Array}
      */
     @Input() public asyncValidators: AsyncValidatorFn[] = [];
 
     /**
      * @name inputId
-     * @type {string}
      */
     @Input() public inputId: string;
 
     /**
      * @name inputClass
-     * @type {string}
      */
     @Input() public inputClass: string;
 
@@ -80,7 +70,6 @@ export class TagInputForm {
     /**
      * @name tabindex
      * @desc pass through the specified tabindex to the input
-     * @type {string}
      */
     @Input() public tabindex: string = '';
 
@@ -110,7 +99,6 @@ export class TagInputForm {
 
     /**
      * @name inputTextChange
-     * @type {EventEmitter}
      */
     @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
 
@@ -128,7 +116,6 @@ export class TagInputForm {
 
 	/**
      * @name value
-     * @returns {AbstractControl}
      */
     public get value(): AbstractControl | null {
         return this.form.get('item');
@@ -136,7 +123,6 @@ export class TagInputForm {
 
 	/**
      * @name isInputFocused
-     * @returns {boolean}
      */
     public isInputFocused(): boolean {
         return document.activeElement === this.input.nativeElement;
@@ -145,7 +131,6 @@ export class TagInputForm {
 	/**
      * @name getErrorMessages
      * @param messages
-     * @returns {string[]}
      */
     public getErrorMessages(messages): string[] {
         const value = this.value;
@@ -157,7 +142,6 @@ export class TagInputForm {
 
     /**
      * @name hasErrors
-     * @returns {boolean}
      */
     public hasErrors(): boolean {
         return this.form.dirty &&
@@ -181,7 +165,6 @@ export class TagInputForm {
 
 	/**
      * @name getElementPosition
-     * @returns {ClientRect}
      */
     public getElementPosition(): ClientRect {
         return this.input.nativeElement.getBoundingClientRect();

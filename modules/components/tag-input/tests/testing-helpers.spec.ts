@@ -9,10 +9,7 @@ import {
 } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
+import { of } from 'rxjs/observable/of';
 
 import { TagInputModule } from '../../../tag-input.module';
 
@@ -93,7 +90,7 @@ export class TagInputComponentWithTransformer {
 
     onAdding(value: string): Observable<object> {
         const item = {display: `prefix: ${value}`, value: `prefix: ${value}`};
-        return Observable.of(item);
+        return of(item);
     }
 }
 
@@ -112,7 +109,6 @@ export class TagInputComponentWithPlaceholder {
 export class TagInputComponentWithMaxItems {
     public items = getItems();
 }
-
 
 @Component({
     selector: 'test-app',
@@ -173,7 +169,7 @@ export class TagInputComponentWithAddOnBlur {
 
 @Component({
     selector: 'test-app',
-    template: `<tag-input [(ngModel)]="items" 
+    template: `<tag-input [(ngModel)]="items"
                           [onRemoving]="onRemoving"
                           [onAdding]="onAdding"></tag-input>`
 })
@@ -181,11 +177,11 @@ export class TagInputComponentWithHooks {
     public items = getItems();
 
     public onAdding(tag): Observable<any> {
-        return;
+        return of({});
     }
 
     public onRemoving(tag): Observable<any> {
-        return;
+        return of({});
     }
 }
 
@@ -212,4 +208,3 @@ const COMPONENTS = [
     exports: COMPONENTS
 })
 export class TestModule {}
-
