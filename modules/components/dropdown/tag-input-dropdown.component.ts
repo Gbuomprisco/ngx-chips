@@ -26,7 +26,8 @@ const defaults: Type<TagInputDropdownOptions> = forwardRef(() => OptionsProvider
 
 @Component({
     selector: 'tag-input-dropdown',
-    templateUrl: './tag-input-dropdown.template.html'
+    templateUrl: './tag-input-dropdown.template.html',
+    styleUrls: ['./tag-input-dropdown.scss']
 })
 export class TagInputDropdown {
     /**
@@ -296,7 +297,7 @@ export class TagInputDropdown {
      * @name calculatePosition
      */
     private calculatePosition(): ClientRect {
-        return this.tagInput.inputForm.getElementPosition();
+        return this.tagInput.getDroopdownStartPosition();
     }
 
     /**

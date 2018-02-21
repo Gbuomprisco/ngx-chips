@@ -4,3 +4,28 @@
 :host {
   display: block;
 }
+
+.ng2-tag-input {
+  width: 400px;
+  background: #ffffff;
+  border: solid 1px #cccccc;
+  margin: 5px 15px;
+  padding: 0;
+}
+
+.rectangle {
+  width: 2px;
+  height: 30px;
+  margin: 4px;
+  background-color: #359cbf;
+  display: inline;
+  position: absolute;
+}
+
+.ng2-tags-container {
+  margin: 3px 0  0 10px;
+
+  tag {
+    margin-left: 3px;
+  }
+}
