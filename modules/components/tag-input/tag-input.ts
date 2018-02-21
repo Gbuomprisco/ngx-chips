@@ -1,21 +1,21 @@
 // angular
 import {
-    Component,
-    forwardRef,
-    HostBinding,
-    Input,
-    Output,
-    EventEmitter,
-    Renderer2,
-    ViewChild,
-    ViewChildren,
-    ContentChildren,
-    ContentChild,
-    OnInit,
-    TemplateRef,
-    QueryList,
-    AfterViewInit,
-    Type
+  Component,
+  forwardRef,
+  HostBinding,
+  Input,
+  Output,
+  EventEmitter,
+  Renderer2,
+  ViewChild,
+  ViewChildren,
+  ContentChildren,
+  ContentChild,
+  OnInit,
+  TemplateRef,
+  QueryList,
+  AfterViewInit,
+  Type, ElementRef
 } from '@angular/core';
 
 import {
@@ -310,6 +310,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name inputForm
      */
     @ViewChild(TagInputForm) public inputForm: TagInputForm;
+
+  /**
+   * @name targetElement
+   */
+    @ViewChild('tagContainerCustom') public targetElement: ElementRef;
 
     /**
      * @name selectedTag
@@ -715,6 +720,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public trackBy(item: TagModel): string {
         return item[this.identifyBy];
+    }
+
+    public getDroopdownStartPosition() {
+      return this.targetElement.nativeElement.getBoundingClientRect();
     }
 
     /**
