@@ -71,7 +71,7 @@ export class DragProvider {
      * @param indexDragged
      * @param indexDropped
      */
-    public onTagDropped(tag: TagModel, indexDragged: number, indexDropped: number): void {
+    public onTagDropped(tag: TagModel, indexDragged: number, indexDropped?: number): void {
         this.onDragEnd();
 
         this.sender.onRemoveRequested(tag, indexDragged);

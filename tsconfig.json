@@ -47,7 +47,8 @@
         "useWebpackText": true
     },
     "angularCompilerOptions": {
-        "strictMetadataEmit": true
+        "strictMetadataEmit": true,
+	"fullTemplateCheck" : true
     },
     "files": [
         "modules/index.ts"
