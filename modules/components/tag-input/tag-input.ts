@@ -676,7 +676,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param event
      * @param index
      */
-    public onTagDropped(event: DragEvent, index: number): void {
+    public onTagDropped(event: DragEvent, index?: number): void {
         const item = this.dragProvider.getDraggedItem(event);
 
         if (item.zone !== this.dragZone) {
