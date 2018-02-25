@@ -18,14 +18,21 @@ Check out [the live demo](https://angular-mfppay.stackblitz.io/).
 
 ## Configuration
 
-Ensure you import the module:
+Ensure you import the module and the dependencies:
 
 ```javascript
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-   imports: [ TagInputModule, BrowserAnimationsModule, ...OtherModules ] // along with your other modules
+   imports: [
+       TagInputModule, 
+       BrowserAnimationsModule,
+       FormsModule,
+       ReactiveFormsModule
+       ...OtherModules 
+   ] // along with your other modules
 })
 export class AppModule {}
 ```
