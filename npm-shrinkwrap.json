@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.6.3",
+  "version": "1.6.3-rc.3",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {

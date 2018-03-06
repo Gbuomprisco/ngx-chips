@@ -393,8 +393,7 @@ export class TagInputDropdown {
                 this.dropdown.show(this.calculatePosition());
             } else if (!this.showDropdownIfEmpty && this.isVisible) {
                 this.dropdown.hide();
-            }
-            else if( !this.showDropdownIfEmpty ) {
+            } else if (!this.showDropdownIfEmpty) {
                 this.dropdown.hide();
             }
         };
