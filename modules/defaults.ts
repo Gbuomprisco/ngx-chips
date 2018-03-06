@@ -23,7 +23,7 @@ export interface TagInputOptions {
     hideForm: boolean;
     addOnBlur: boolean;
     addOnPaste: boolean;
-    pasteSplitPattern: string;
+    pasteSplitPattern: string | RegExp;
     blinkIfDupe: boolean;
     removable: boolean;
     editable: boolean;
