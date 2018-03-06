@@ -133,7 +133,7 @@ If set to `true`, will add an item when the form is blurred (defaults to `false`
 If set to `true`, will add items pasted into the form's input  (defaults to `false`)
 
 
-**`pasteSplitPattern`** - [**`?string`**]
+**`pasteSplitPattern`** - [**`?string | RegExp`**]
 
 Pattern used with the native method split() to separate patterns in the string pasted (defaults to `,`)
 
