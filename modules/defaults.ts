@@ -17,7 +17,7 @@ export interface TagInputOptions {
     errorMessages: { [key: string]: string; };
     theme: string;
     onTextChangeDebounce: number;
-    inputId: string;
+    inputId: string | null;
     inputClass: string;
     clearOnBlur: boolean;
     hideForm: boolean;
@@ -70,7 +70,7 @@ export const defaults = {
         errorMessages: {},
         theme: '',
         onTextChangeDebounce: 250,
-        inputId: '',
+        inputId: null,
         inputClass: '',
         clearOnBlur: false,
         hideForm: false,
