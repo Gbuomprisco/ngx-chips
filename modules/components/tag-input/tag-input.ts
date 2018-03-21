@@ -531,6 +531,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public handleKeydown(data: any): void {
         const event = data.event;
         const key = event.keyCode || event.which;
+        const shiftKey = event.shiftKey || false;
 
         switch (constants.KEY_PRESS_ACTIONS[key]) {
             case constants.ACTIONS_KEYS.DELETE:
@@ -546,7 +547,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 this.moveToTag(data.model, constants.NEXT);
                 break;
             case constants.ACTIONS_KEYS.TAB:
-                this.moveToTag(data.model, constants.NEXT);
+                if (shiftKey) {
+                    if (this.isFirstTag(data.model)) {
+                        return;
+                    }
+                    this.moveToTag(data.model, constants.PREV);
+
+                } else {
+                    if (this.isLastTag(data.model) && (this.disable || this.maxItemsReached)) {
+                        return;
+                    }
+                    this.moveToTag(data.model, constants.NEXT);
+
+                }
                 break;
             default:
                 return;
@@ -764,8 +777,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param direction
      */
     private moveToTag(item: TagModel, direction: string): void {
-        const isLast = this.tags.last.model === item;
-        const isFirst = this.tags.first.model === item;
+        const isLast = this.isLastTag(item);
+        const isFirst = this.isFirstTag(item);
         const stopSwitch = (direction === constants.NEXT && isLast) ||
             (direction === constants.PREV && isFirst);
 
@@ -779,6 +792,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         const tag = this.getTagAtIndex(index);
 
         return tag.select.call(tag);
+    }
+
+    /**
+     * @name isFirstTag
+     * @param item {TagModel}
+     */
+    private isFirstTag(item: TagModel): boolean {
+        return this.tags.first.model === item;
+    }
+
+    /**
+     * @name isLastTag
+     * @param item {TagModel}
+     */
+    private isLastTag(item: TagModel): boolean {
+        return this.tags.last.model === item;
     }
 
     /**
