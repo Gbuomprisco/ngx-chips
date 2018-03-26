@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn 
     styleUrls: [ './tag-input-form.style.scss' ],
     templateUrl: './tag-input-form.template.html'
 })
-export class TagInputForm {
+export class TagInputForm implements OnChanges {
     /**
      * @name onSubmit
      */
@@ -71,12 +71,12 @@ export class TagInputForm {
      * @name tabindex
      * @desc pass through the specified tabindex to the input
      */
-    @Input() public tabindex: string = '';
+    @Input() public tabindex = '';
 
     /**
      * @name disabled
      */
-    @Input() public disabled: boolean = false;
+    @Input() public disabled = false;
 
     /**
      * @name inputText
@@ -105,13 +105,23 @@ export class TagInputForm {
     /**
      * @name inputTextValue
      */
-    public inputTextValue: string = '';
+    public inputTextValue = '';
 
     public ngOnInit() {
         // creating form
         this.form = new FormGroup({
             item: new FormControl({value: '', disabled: this.disabled}, this.validators, this.asyncValidators)
         });
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.disabled && !changes.disabled.firstChange) {
+            if (changes.disabled.currentValue) {
+                this.form.controls['item'].disable();
+            } else {
+                this.form.controls['item'].enable();
+            }
+        }
     }
 
 	/**
