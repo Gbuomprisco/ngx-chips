@@ -47,7 +47,7 @@ import { TagInputOptions } from '../../defaults';
 
 // angular universal hacks
 /* tslint:disable-next-line */
-const DragEvent = (global as any).DragEvent;
+const DragEvent = (window as any).DragEvent;
 
 const CUSTOM_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
