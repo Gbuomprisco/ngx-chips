@@ -22,7 +22,7 @@
              (onSelect)="selectItem(item)"
              (onRemove)="onRemoveRequested(item, i)"
              (onKeyDown)="handleKeydown($event)"
-             (onTagEdited)="onTagEdited.emit($event)"
+             (onTagEdited)="updateEditedTag($event)"
              (onBlur)="onTagBlurred($event, i)"
              draggable="{{ editable }}"
 
@@ -31,7 +31,8 @@
              (dragenter)="dragZone ? onDragOver($event) : undefined"
              (dragover)="dragZone ? onDragOver($event, i) : undefined"
              (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
-
+             
+             [canAddTag]="isTagValid"
              [attr.tabindex]="0"
              [disabled]="disable"
              [@animation]="animationMetadata"

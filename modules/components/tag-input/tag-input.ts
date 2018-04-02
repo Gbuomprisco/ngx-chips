@@ -731,11 +731,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     }
 
     /**
+     * @name updateEditedTag
+     * @param tag
+     */
+    public updateEditedTag({tag, index}: {tag: TagModel, index: number}): void {
+        this.onTagEdited.emit(tag);
+    }
+
+    /**
      *
      * @param tag
      * @param isFromAutocomplete
      */
-    private isTagValid(tag: TagModel, fromAutocomplete = false): boolean {
+    public isTagValid = (tag: TagModel, fromAutocomplete = false): boolean => {
         const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
 
         if (selectedItem && !fromAutocomplete) {
