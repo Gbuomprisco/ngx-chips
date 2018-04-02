@@ -231,6 +231,7 @@ export class TagInputDropdown {
         const hasItems = items.length > 0;
         const isHidden = this.isVisible === false;
         const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
+        const isDisabled = this.tagInput.disable;
         const assertions = [];
 
         const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
@@ -240,11 +241,7 @@ export class TagInputDropdown {
             return this.getItemsFromObservable(value);
         }
 
-        if (!this.showDropdownIfEmpty && !value) {
-            return this.dropdown.hide();
-        }
-
-        if (maxItemsReached) {
+        if ((!this.showDropdownIfEmpty && !value) || maxItemsReached || isDisabled) {
             return this.dropdown.hide();
         }
 
