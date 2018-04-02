@@ -17,8 +17,8 @@ import { TagRipple } from '../tag/tag-ripple.component';
 
 // angular universal hacks
 /* tslint:disable-next-line */
-const KeyboardEvent = (global as any).KeyboardEvent;
-const MouseEvent = (global as any).MouseEvent;
+const KeyboardEvent = (window as any).KeyboardEvent;
+const MouseEvent = (window as any).MouseEvent;
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
