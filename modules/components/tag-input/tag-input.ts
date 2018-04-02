@@ -132,7 +132,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * - custom id assigned to the input
      * @name id
      */
-    @Input() public inputId: string = new defaults().inputId;
+    @Input() public inputId = new defaults().inputId;
 
     /**
      * - custom class assigned to the input
@@ -900,7 +900,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             }
 
             this.dropdown.hide();
-            this.dropdown.showDropdownIfEmpty ? this.dropdown.show() : undefined;
+
+            if (this.dropdown.showDropdownIfEmpty) {
+                this.dropdown.show();
+            }
         };
 
         of(model).pipe(
