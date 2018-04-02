@@ -534,6 +534,8 @@ describe('TagInputComponent', () => {
             component.setInputValue('New Item');
             component.inputForm.onBlur.emit();
 
+            tick(100);
+
             expect(component.items.length).toEqual(3);
 
             discardPeriodicTasks();
