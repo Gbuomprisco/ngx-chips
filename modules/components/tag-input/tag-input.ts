@@ -1018,7 +1018,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         this.inputForm
             .onBlur
-            .pipe(filter(filterFn))
+            .pipe(
+                debounceTime(100),
+                filter(filterFn)
+            )
             .subscribe(() => {
                 if (this.addOnBlur) {
                     this.onAddingRequested(false, this.formValue);
