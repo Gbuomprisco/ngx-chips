@@ -1048,8 +1048,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param data
      */
     private onPasteCallback = (data: ClipboardEvent): void => {
-        const text = data.clipboardData.getData('text/plain');
+        const getText = (): string => {
+            const isIE = window.hasOwnProperty('clipboardData');
+            const clipboardData = isIE ? (
+                (window as any).clipboardData
+            ) : data.clipboardData;
+            const type = isIE ? 'Text' : 'text/plain';
 
+            return clipboardData.getData(type) || '';
+        };
+
+        const text = getText();
         const requests = text
             .split(this.pasteSplitPattern)
             .map(item => this.onAddingRequested(false, this.createTag(item)));
