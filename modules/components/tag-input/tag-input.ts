@@ -448,18 +448,23 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param fromAutocomplete {boolean}
      * @param tag {TagModel}
      */
-    public onAddingRequested(fromAutocomplete: boolean, tag: TagModel, index?: number): void {
-        if (!tag) {
-            return;
-        }
+    public onAddingRequested(fromAutocomplete: boolean, tag: TagModel, index?: number): Promise<TagModel> {
+        return new Promise((resolve, reject) => {
+            if (!tag) {
+                return reject(tag);
+            }
 
-        const subscribeFn = (model: TagModel) => {
-            return this.addItem(fromAutocomplete, model, index);
-        }
+            const subscribeFn = (model: TagModel) => {
+                return this.addItem(fromAutocomplete, model, index)
+                .then(resolve)
+                .catch(reject);
+            };
 
-        this.onAdding ?
-            this.onAdding(tag).pipe(first())
-                .subscribe(subscribeFn) : subscribeFn(tag);
+            return this.onAdding ?
+                this.onAdding(tag)
+                    .pipe(first())
+                    .subscribe(subscribeFn) : subscribeFn(tag);
+        });
     }
 
     /**
@@ -865,62 +870,73 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param fromAutocomplete
      * @param item
      */
-    private addItem(fromAutocomplete = false, item: TagModel, index?: number): void {
-        const model = this.getItemDisplay(item);
+    private addItem(fromAutocomplete = false, item: TagModel, index?: number): Promise<TagModel> {
+        return new Promise((resolve, reject) => {
+            const model = this.getItemDisplay(item);
 
-        /**
-         * @name reset
-         */
-        const reset = (): void => {
-            // reset control and focus input
-            this.setInputValue('');
+            /**
+             * @name reset
+             */
+            const reset = (): void => {
+                // reset control and focus input
+                this.setInputValue('');
 
-            // focus input
-            this.focus(true, false);
-        };
+                // focus input
+                this.focus(true, false);
 
-        /**
-         * @name validationFilter
-         * @param tag
-         */
-        const validationFilter = (tag: TagModel): boolean => {
-            const isValid = this.isTagValid(tag, fromAutocomplete) && this.inputForm.form.valid;
+                resolve(model);
+            };
 
-            if (!isValid) {
-                this.onValidationError.emit(tag);
-            }
+            /**
+             * @name validationFilter
+             * @param tag
+             */
+            const validationFilter = (tag: TagModel): boolean => {
+                const isValid = this.isTagValid(tag, fromAutocomplete) && this.inputForm.form.valid;
 
-            return isValid;
-        };
+                if (!isValid) {
+                    this.onValidationError.emit(tag);
+                    reject(model);
+                }
 
-        /**
-         * @name subscribeFn
-         * @param tag
-         */
-        const subscribeFn = (tag: TagModel): void => {
-            this.appendTag(tag, index);
+                return isValid;
+            };
 
-            // emit event
-            this.onAdd.emit(tag);
+            /**
+             * @name subscribeFn
+             * @param tag
+             */
+            const subscribeFn = (tag: TagModel): void => {
+                this.appendTag(tag, index);
 
-            if (!this.dropdown) {
-                return;
-            }
+                // emit event
+                this.onAdd.emit(tag);
 
-            this.dropdown.hide();
+                if (!this.dropdown) {
+                    return;
+                }
 
-            if (this.dropdown.showDropdownIfEmpty) {
-                this.dropdown.show();
-            }
-        };
+                this.dropdown.hide();
 
-        of(model).pipe(
-            first(),
-            filter(() => model.trim() !== ''),
-            map(() => item),
-            map(this.createTag),
-            filter(validationFilter)
-        ).subscribe(subscribeFn, undefined, reset);
+                if (this.dropdown.showDropdownIfEmpty) {
+                    this.dropdown.show();
+                }
+            };
+
+            return of(model).pipe(
+                first(),
+                filter(() => {
+                    const isValid = model.trim() !== '';
+                    if (!isValid) {
+                        reject(model);
+                    }
+                    return isValid;
+                }),
+                map(() => item),
+                map(this.createTag),
+                filter(validationFilter)
+            ).subscribe(subscribeFn, undefined, reset);
+        });
     }
 
     /**
@@ -1034,13 +1050,19 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     private onPasteCallback = (data: ClipboardEvent): void => {
         const text = data.clipboardData.getData('text/plain');
 
-        text.split(this.pasteSplitPattern)
-            .map(item => this.createTag(item))
-            .forEach(item => this.onAddingRequested(false, item));
+        const requests = text
+            .split(this.pasteSplitPattern)
+            .map(item => this.onAddingRequested(false, this.createTag(item)));
 
-        this.onPaste.emit(text);
+        const resetInput = () => setTimeout(() => this.setInputValue(''), 0);
 
-        setTimeout(() => this.setInputValue(''), 0);
+        Promise
+            .all(requests)
+            .then(() => {
+                this.onPaste.emit(text);
+                resetInput();
+            })
+            .catch(resetInput);
     }
 
     /**

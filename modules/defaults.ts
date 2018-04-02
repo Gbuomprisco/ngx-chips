@@ -92,8 +92,8 @@ export const defaults = {
         displayBy: 'display',
         identifyBy: 'value',
         animationDuration: {
-            enter: "250ms",
-            leave: "150ms"
+            enter: '250ms',
+            leave: '150ms'
         }
     },
     dropdown: <TagInputDropdownOptions>{
