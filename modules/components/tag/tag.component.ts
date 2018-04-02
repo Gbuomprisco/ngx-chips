@@ -80,6 +80,11 @@ export class TagComponent {
     @Input() public disabled = false;
 
     /**
+     * @name canAddTag
+     */
+    @Input() public canAddTag: (tag: TagModel) => boolean;
+
+    /**
      * @name onSelect
      */
     @Output() public onSelect: EventEmitter<TagModel> = new EventEmitter<TagModel>();
@@ -212,7 +217,7 @@ export class TagComponent {
         // Checks if it is editable first before handeling the onBlurred event in order to prevent
         // a bug in IE where tags are still editable with onlyFromAutocomplete set to true
 		if (!this.editable) {
-			return;
+            return;
         }
 
         this.disableEditMode();
@@ -313,10 +318,10 @@ export class TagComponent {
      * @param input
      */
     private storeNewValue(input: string): void {
-        const exists = (model: TagModel) => {
-            return typeof model === 'string' ?
-                model === input :
-                model[this.displayBy] === input;
+        const exists = (tag: TagModel) => {
+            return typeof tag === 'string' ?
+            tag === input :
+            tag[this.displayBy] === input;
         };
 
         const hasId = () => {
@@ -334,9 +339,11 @@ export class TagComponent {
                 [this.displayBy]: input
             };
 
-        // emit output
-        this.model = model;
-        this.onTagEdited.emit(model);
+        if (this.canAddTag(model)) {
+            this.onTagEdited.emit({tag: model, index: this.index});
+        } else {
+            this.setContentEditableText(this.model);
+        }
     }
 
     /**
