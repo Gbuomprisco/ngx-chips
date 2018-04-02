@@ -449,15 +449,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag {TagModel}
      */
     public onAddingRequested(fromAutocomplete: boolean, tag: TagModel, index?: number): Promise<TagModel> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!tag) {
-                return reject(tag);
+                return resolve(tag);
             }
 
             const subscribeFn = (model: TagModel) => {
                 return this.addItem(fromAutocomplete, model, index)
-                .then(resolve)
-                .catch(reject);
+                .then(resolve);
             };
 
             return this.onAdding ?
@@ -871,7 +870,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param item
      */
     private addItem(fromAutocomplete = false, item: TagModel, index?: number): Promise<TagModel> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const model = this.getItemDisplay(item);
 
             /**
@@ -896,7 +895,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
                 if (!isValid) {
                     this.onValidationError.emit(tag);
-                    reject(model);
                 }
 
                 return isValid;
@@ -923,16 +921,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 }
             };
 
-            return of(model).pipe(
+            return of(item).pipe(
                 first(),
                 filter(() => {
                     const isValid = model.trim() !== '';
                     if (!isValid) {
-                        reject(model);
+                        resolve(model);
                     }
                     return isValid;
                 }),
-                map(() => item),
                 map(this.createTag),
                 filter(validationFilter)
             ).subscribe(subscribeFn, undefined, reset);
