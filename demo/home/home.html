@@ -106,7 +106,7 @@
         <div>
             <h3>Tags accepting only items from an autocomplete using an observable and showing dropdown without entering text</h3>
             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true">
-                <tag-input-dropdown 
+                <tag-input-dropdown
                         [showDropdownIfEmpty]="true"
                         [autocompleteObservable]="requestAutocompleteItemsFake">
                 </tag-input-dropdown>
@@ -155,7 +155,7 @@
             </tag-input>
         </div>
 
-        <div>
+        <div style="z-index: 1100; background: #fafafa">
             <h3>Input with custom item template and custom dropdown item template</h3>
             {{ itemsAsObjects | json }}
             <tag-input [(ngModel)]="itemsAsObjects"
@@ -164,7 +164,10 @@
                 <ng-template let-item="item">
                     tag: {{ item.name }}
                 </ng-template>
-                <tag-input-dropdown [autocompleteItems]="autocompleteItemsAsObjects"
+                <tag-input-dropdown
+                [autocompleteItems]="autocompleteItemsAsObjects"
+                                    [dynamicUpdate]="false"
+                                    [zIndex]="10000"
                                     [displayBy]="'value'"
                                     [identifyBy]="'id'">
                     <ng-template let-item="item" let-index="index">
