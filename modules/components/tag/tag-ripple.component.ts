@@ -1,13 +1,17 @@
 import {
     Component,
+    Input
+} from '@angular/core';
+
+
+import {
     animate,
     trigger,
     style,
     transition,
     keyframes,
-    state,
-    Input
-} from '@angular/core';
+    state
+} from '@angular/animations';
 
 @Component({
     selector: 'tag-ripple',
