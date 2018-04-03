@@ -62,9 +62,9 @@
         </div>
 
         <div>
-            <h3>Tags within an autocomplete component</h3>
+            <h3>Tags within an autocomplete component (clear on blur events)</h3>
             <tag-input [ngModel]="['@item']"
-                       [addOnBlur]="true"
+                       [addOnBlur]="false"
                        [clearOnBlur]="true">
                 <tag-input-dropdown [autocompleteItems]="autocompleteItems">
                 </tag-input-dropdown>
@@ -269,7 +269,9 @@
             Disable: <input type="checkbox" [(ngModel)]="disabled" />
 
             <tag-input [ngModel]="items"
-                       [disabled]="disabled">
+                       [disable]="disabled">
+                       <tag-input-dropdown [autocompleteItems]="autocompleteItems">
+                </tag-input-dropdown>
             </tag-input>
         </div>
 

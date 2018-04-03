@@ -17,8 +17,8 @@ import { TagRipple } from '../tag/tag-ripple.component';
 
 // angular universal hacks
 /* tslint:disable-next-line */
-const KeyboardEvent = (global as any).KeyboardEvent;
-const MouseEvent = (global as any).MouseEvent;
+const KeyboardEvent = (window as any).KeyboardEvent;
+const MouseEvent = (window as any).MouseEvent;
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
@@ -78,6 +78,11 @@ export class TagComponent {
      * @name disabled
      */
     @Input() public disabled = false;
+
+    /**
+     * @name canAddTag
+     */
+    @Input() public canAddTag: (tag: TagModel) => boolean;
 
     /**
      * @name onSelect
@@ -212,7 +217,7 @@ export class TagComponent {
         // Checks if it is editable first before handeling the onBlurred event in order to prevent
         // a bug in IE where tags are still editable with onlyFromAutocomplete set to true
 		if (!this.editable) {
-			return;
+            return;
         }
 
         this.disableEditMode();
@@ -313,10 +318,10 @@ export class TagComponent {
      * @param input
      */
     private storeNewValue(input: string): void {
-        const exists = (model: TagModel) => {
-            return typeof model === 'string' ?
-                model === input :
-                model[this.displayBy] === input;
+        const exists = (tag: TagModel) => {
+            return typeof tag === 'string' ?
+            tag === input :
+            tag[this.displayBy] === input;
         };
 
         const hasId = () => {
@@ -334,9 +339,11 @@ export class TagComponent {
                 [this.displayBy]: input
             };
 
-        // emit output
-        this.model = model;
-        this.onTagEdited.emit(model);
+        if (this.canAddTag(model)) {
+            this.onTagEdited.emit({tag: model, index: this.index});
+        } else {
+            this.setContentEditableText(this.model);
+        }
     }
 
     /**
