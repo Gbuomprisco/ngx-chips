@@ -28,7 +28,8 @@ import {
 // rx
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, filter, map, first, mapTo } from 'rxjs/operators';
+import { debounceTime, filter, map, first, mapTo,
+    withLatestFrom, startWith, distinctUntilChanged } from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor, TagModel } from '../../core/accessor';
@@ -372,6 +373,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public animationMetadata: { value: string, params: object };
 
+    public errors: string[] = [];
+
     constructor(private readonly renderer: Renderer2,
                 public readonly dragProvider: DragProvider) {
         super();
@@ -405,6 +408,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (this.hideForm) {
             this.inputForm.destroy();
         }
+
+        this.inputForm.form.statusChanges.pipe(
+            distinctUntilChanged(),
+            filter((status: string) => status !== 'PENDING')
+        ).subscribe(() => {
+            this.errors = this.inputForm.getErrorMessages(this.errorMessages);
+        });
     }
 
     /**
@@ -898,7 +908,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
              * @param tag
              */
             const validationFilter = (tag: TagModel): boolean => {
-                const isValid = this.isTagValid(tag, fromAutocomplete) && this.inputForm.form.valid;
+                const isValid = this.isTagValid(tag, fromAutocomplete);
 
                 if (!isValid) {
                     this.onValidationError.emit(tag);
@@ -929,7 +939,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             };
 
             return of(item).pipe(
-                first(),
                 filter(() => {
                     const isValid = model.trim() !== '';
                     if (!isValid) {
@@ -938,7 +947,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                     return isValid;
                 }),
                 map(this.createTag),
-                filter(validationFilter)
+                filter(validationFilter),
+                first()
             ).subscribe(subscribeFn, undefined, reset);
         });
     }

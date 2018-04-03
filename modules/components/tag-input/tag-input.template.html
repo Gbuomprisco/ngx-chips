@@ -31,7 +31,7 @@
              (dragenter)="dragZone ? onDragOver($event) : undefined"
              (dragover)="dragZone ? onDragOver($event, i) : undefined"
              (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
-             
+
              [canAddTag]="isTagValid"
              [attr.tabindex]="0"
              [disabled]="disable"
@@ -71,7 +71,7 @@
 
 <!-- ERRORS -->
 <div *ngIf="hasErrors()" class="error-messages {{ theme || '' }}">
-    <p *ngFor="let error of inputForm.getErrorMessages(errorMessages)" class="error-message">
+    <p *ngFor="let error of errors" class="error-message">
         <span>{{ error }}</span>
     </p>
 </div>

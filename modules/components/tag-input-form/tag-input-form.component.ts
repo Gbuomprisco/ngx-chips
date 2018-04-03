@@ -127,8 +127,8 @@ export class TagInputForm implements OnChanges {
 	/**
      * @name value
      */
-    public get value(): AbstractControl | null {
-        return this.form.get('item');
+    public get value(): FormControl {
+        return this.form.get('item') as FormControl;
     }
 
 	/**
@@ -142,21 +142,18 @@ export class TagInputForm implements OnChanges {
      * @name getErrorMessages
      * @param messages
      */
-    public getErrorMessages(messages): string[] {
-        const value = this.value;
-
-        return value ? Object.keys(messages)
-            .filter(err => value.hasError(err))
-            .map(err => messages[err]) : [];
+    public getErrorMessages(messages: {[key: string]: string}): string[] {
+        return Object.keys(messages)
+            .filter(err => this.value.hasError(err))
+            .map(err => messages[err]);
     }
 
     /**
      * @name hasErrors
      */
     public hasErrors(): boolean {
-        return this.form.dirty &&
-            this.form.value.item &&
-            this.form.invalid;
+        const { dirty, value, valid } = this.form;
+        return dirty && value.item && !valid;
     }
 
 	/**
@@ -201,6 +198,8 @@ export class TagInputForm implements OnChanges {
      * @name submit
      */
     public submit($event: any): void {
-        this.onSubmit.emit($event);
+        if (this.form.valid) {
+            this.onSubmit.emit($event);
+        }
     }
 }

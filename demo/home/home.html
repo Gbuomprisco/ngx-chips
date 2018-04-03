@@ -318,7 +318,9 @@
             <h3>Form using an async validator</h3>
             <tag-input [ngModel]="['item1']"
                        [errorMessages]="asyncErrorMessages"
+                       [addOnPaste]="true"
                        [asyncValidators]="asyncValidators">
+                       <tag-input-dropdown [autocompleteItems]="['1','2']"></tag-input-dropdown>
             </tag-input>
         </div>
 
