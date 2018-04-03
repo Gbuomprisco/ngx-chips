@@ -57,7 +57,7 @@ describe('TagInputComponent', () => {
 
     describe('Basic behaviours', () => {
         it('should have 2 tags set by ngModel', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = 
+            const fixture: ComponentFixture<BasicTagInputComponent> =
                 TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
 
@@ -75,7 +75,7 @@ describe('TagInputComponent', () => {
         }));
 
         it('should be "touched" on blur', fakeAsync(() => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = 
+            const fixture: ComponentFixture<BasicTagInputComponent> =
                 TestBed.createComponent(BasicTagInputComponent);
             const component = <TagInputComponent>getComponent(fixture);
             const onTouched = jasmine.createSpy('onTouched');
@@ -89,7 +89,7 @@ describe('TagInputComponent', () => {
 
     describe('when a new item is added', () => {
         it('should be added to the list of items and update its parent\'s model', fakeAsync(async () => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = 
+            const fixture: ComponentFixture<BasicTagInputComponent> =
                 TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
             const value = 'New Item';
@@ -147,7 +147,7 @@ describe('TagInputComponent', () => {
         });
 
         it('does not allow dupes', fakeAsync(async () => {
-            const fixture: ComponentFixture<BasicTagInputComponent> = 
+            const fixture: ComponentFixture<BasicTagInputComponent> =
                 TestBed.createComponent(BasicTagInputComponent);
             const component = getComponent(fixture);
 
@@ -228,14 +228,14 @@ describe('TagInputComponent', () => {
             tick();
 
             expect(component.inputForm.form.valid).toBe(false);
-            
+
             const valid = '@Abcde';
 
             // addItem element with > 3 chars with @
             component.setInputValue(valid);
 
             expect(component.inputForm.form.valid).toBe(true);
-            
+
             await component.onAddingRequested(false, valid);
             fixture.detectChanges();
             tick();
@@ -253,7 +253,7 @@ describe('TagInputComponent', () => {
 
             component.setInputValue(value);
             expect(component.inputForm.form.valid).toBe(false);
-            
+
             const invalid = '@J';
 
             component.setInputValue(invalid);
@@ -591,7 +591,7 @@ describe('TagInputComponent', () => {
             expect(component.items.length).toBe(3);
         }));
 
-        it('intercepts hook onRemoving and returns an observable', fakeAsync(() => {
+        it('intercepts hook onRemoving and returns an observable', fakeAsync(async () => {
             const component: TagInputComponent = getComponent(fixture);
             const subject = new Subject();
 
@@ -601,7 +601,7 @@ describe('TagInputComponent', () => {
 
             const tag = component.items[0];
 
-            component.onRemoveRequested(tag, 0);
+            await component.onRemoveRequested(tag, 0);
 
             expect(component.items.length).toBe(2);
 

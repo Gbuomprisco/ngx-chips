@@ -28,7 +28,7 @@ import {
 // rx
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, filter, map, first } from 'rxjs/operators';
+import { debounceTime, filter, map, first, mapTo } from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor, TagModel } from '../../core/accessor';
@@ -113,7 +113,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     */
     @Input() public onlyFromAutocomplete = new defaults().onlyFromAutocomplete;
 
-	/**
+    /**
      * @name errorMessages
      */
     @Input() public errorMessages: { [key: string]: string } = new defaults().errorMessages;
@@ -306,7 +306,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     @ContentChildren(TemplateRef, { descendants: false }) public templates: QueryList<TemplateRef<any>>;
 
-	/**
+    /**
      * @name inputForm
      */
     @ViewChild(TagInputForm) public inputForm: TagInputForm;
@@ -423,9 +423,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             console.warn(constants.MAX_ITEMS_WARNING);
         }
 
-	    // Setting editable to false to fix problem with tags in IE still being editable when
-	    // onlyFromAutocomplete is true
-		this.editable = this.onlyFromAutocomplete ? false : this.editable;
+        // Setting editable to false to fix problem with tags in IE still being editable when
+        // onlyFromAutocomplete is true
+        this.editable = this.onlyFromAutocomplete ? false : this.editable;
 
         this.setAnimationMetadata();
     }
@@ -435,12 +435,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag
      * @param index
      */
-    public onRemoveRequested(tag: TagModel, index: number): void {
-        const subscribeFn = (model: TagModel) => this.removeItem(model, index);
+    public onRemoveRequested(tag: TagModel, index: number): Promise<TagModel> {
+        return new Promise(resolve => {
+            const subscribeFn = (model: TagModel) => {
+                this.removeItem(model, index);
+                resolve(tag);
+            };
 
-        this.onRemoving ?
-            this.onRemoving(tag).pipe(first())
-                .subscribe(subscribeFn) : subscribeFn(tag);
+            this.onRemoving ?
+                this.onRemoving(tag)
+                    .pipe(first())
+                    .subscribe(subscribeFn) : subscribeFn(tag);
+        });
     }
 
     /**
@@ -455,8 +461,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             }
 
             const subscribeFn = (model: TagModel) => {
-                return this.addItem(fromAutocomplete, model, index)
-                .then(resolve);
+                return this
+                    .addItem(fromAutocomplete, model, index)
+                    .then(resolve);
             };
 
             return this.onAdding ?
@@ -555,14 +562,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                     if (this.isFirstTag(data.model)) {
                         return;
                     }
-                    this.moveToTag(data.model, constants.PREV);
 
+                    this.moveToTag(data.model, constants.PREV);
                 } else {
                     if (this.isLastTag(data.model) && (this.disable || this.maxItemsReached)) {
                         return;
                     }
-                    this.moveToTag(data.model, constants.NEXT);
 
+                    this.moveToTag(data.model, constants.NEXT);
                 }
                 break;
             default:
@@ -591,7 +598,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         return <FormControl>this.inputForm.value;
     }
 
-	/**
+    /**
      * @name focus
      * @param applyFocus
      * @param displayAutocomplete
@@ -609,7 +616,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         }
     }
 
-	/**
+    /**
      * @name blur
      */
     public blur(): void {
@@ -645,7 +652,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         return Boolean(template && template !== menuTemplate);
     }
 
-	/**
+    /**
      * @name maxItemsReached
      */
     public get maxItemsReached(): boolean {
@@ -728,9 +735,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name trackBy
-     * @param item
+     * @param items
      */
-    public trackBy(item: TagModel): string {
+    public trackBy(index: number, item: TagModel): string {
         return item[this.identifyBy];
     }
 
@@ -758,8 +765,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         // if so, give a visual cue and return false
         if (!this.allowDupes && dupe && this.blinkIfDupe) {
-            const model = this.tags.find(tag => {
-                return this.getItemValue(tag.model) === this.getItemValue(dupe);
+            const model = this.tags.find(item => {
+                return this.getItemValue(item.model) === this.getItemValue(dupe);
             });
 
             if (model) {
@@ -979,7 +986,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.inputForm.onKeydown.subscribe(event => {
             this.fireEvents('keydown', event);
 
-            if (event.key === 'Backspace' && this.formValue === '') {
+            if (event.key === 'Backspace' && this.formValue.trim() === '') {
                 event.preventDefault();
             }
         });
@@ -1003,9 +1010,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             .valueChanges
             .pipe(
                 debounceTime(this.onTextChangeDebounce),
-                map(() => this.formValue)
+                mapTo(this.formValue)
             )
-            .subscribe((value: string) => this.onTextChange.emit(value));
+            .subscribe((value: string) => {
+                this.onTextChange.emit(value);
+            });
     }
 
     /**
@@ -1013,7 +1022,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     private setUpOnBlurSubscriber(): void {
         const filterFn = (): boolean => {
-            return !(this.dropdown && this.dropdown.isVisible) && !!this.formValue;
+            const isVisible = this.dropdown && this.dropdown.isVisible;
+            return !isVisible && !!this.formValue;
         };
 
         this.inputForm
@@ -1023,11 +1033,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 filter(filterFn)
             )
             .subscribe(() => {
+                const reset = () => this.setInputValue('');
+
                 if (this.addOnBlur) {
-                    this.onAddingRequested(false, this.formValue);
+                    return this
+                        .onAddingRequested(false, this.formValue)
+                        .then(reset);
                 }
 
-                this.setInputValue('');
+                reset();
             });
     }
 
@@ -1048,10 +1062,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param data
      */
     private onPasteCallback = (data: ClipboardEvent): void => {
+        interface IEWindow extends Window {
+            clipboardData: DataTransfer;
+        }
+
         const getText = (): string => {
-            const isIE = window.hasOwnProperty('clipboardData');
+            const isIE = Boolean((window as IEWindow).clipboardData);
             const clipboardData = isIE ? (
-                (window as any).clipboardData
+                (window as IEWindow).clipboardData
             ) : data.clipboardData;
             const type = isIE ? 'Text' : 'text/plain';
 

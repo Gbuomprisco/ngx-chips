@@ -42,7 +42,7 @@ You can find all the mixin's possible values here.
 The theme's name will be attached to the .ng2-tag-input class. In this way, we can combine the selectors, and define the new theme:
 
 ```scss
-/deep/ .ng2-tag-input.foundation-theme {
+:ng-deep .ng2-tag-input.foundation-theme {
     @include tag-input-theme($foundation-theme);
 }
 ```
@@ -79,17 +79,17 @@ $foundation-icon-theme: (
 );
 
 // apply theme to the container
-/deep/ .ng2-tag-input.foundation-theme {
+:ng-deep .ng2-tag-input.foundation-theme {
     @include tag-input-theme($foundation-theme);
 }
 
 // apply theme to the tags
-/deep/ .ng2-tag-input.foundation-theme tag {
+:ng-deep .ng2-tag-input.foundation-theme tag {
     @include tag-theme($foundation-tag-theme);
 }
 
 // apply theme to the delete icon
-/deep/ .ng2-tag-input.foundation-theme tag delete-icon {
+:ng-deep .ng2-tag-input.foundation-theme tag delete-icon {
     @include icon-theme($foundation-icon-theme);
 }
 ```
