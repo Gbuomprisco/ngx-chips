@@ -1,10 +1,12 @@
+import { FormControl } from '@angular/forms';
 import {
     fakeAsync,
     ComponentFixture,
     async,
     tick,
     TestBed,
-    discardPeriodicTasks
+    discardPeriodicTasks,
+    flushMicrotasks
 } from '@angular/core/testing';
 
 import { By } from '@angular/platform-browser';
@@ -45,7 +47,7 @@ describe('TagInputComponent', () => {
         TestBed.compileComponents();
     }));
 
-    function getComponent(fixture) {
+    function getComponent(fixture): TagInputComponent {
         fixture.detectChanges();
         tick();
 
@@ -130,35 +132,40 @@ describe('TagInputComponent', () => {
                 TestBed.createComponent(TagInputComponentWithOutputs);
             const itemName = 'New Item';
 
-            fakeAsync(async () => {
+            fakeAsync(async (done: DoneFn) => {
                 const component = getComponent(fixture);
+                const control = component.inputForm.form.get('item') as FormControl;
 
-                component.inputForm.form.get('item').setValue(itemName);
+                control.setValue(itemName);
 
                 component.onAdd.subscribe(item => {
                     expect(item).toEqual(itemName);
+                    done();
                 });
 
-                await component.onAddingRequested();
+                await component.onAddingRequested(false, itemName);
                 tick();
-
                 discardPeriodicTasks();
             });
         });
 
-        it('does not allow dupes', fakeAsync(async () => {
-            const fixture: ComponentFixture<BasicTagInputComponent> =
-                TestBed.createComponent(BasicTagInputComponent);
-            const component = getComponent(fixture);
+        it('does not allow dupes', () => {
+             const fixture: ComponentFixture<BasicTagInputComponent> =
+                    TestBed.createComponent(BasicTagInputComponent);
+            return fakeAsync(async () => {
+                const component = getComponent(fixture);
+                const item = 'Javascript';
 
-            component.inputForm.form.get('item').setValue('Javascript');
-            await component.onAddingRequested();
-            expect(component.items.length).toEqual(2);
+                component.setInputValue(item);
+                await component.onAddingRequested(false, item);
 
-            tick(1000);
+                tick();
+                fixture.detectChanges();
 
-            discardPeriodicTasks();
-        }));
+                expect(component.items.length).toEqual(2);
+                discardPeriodicTasks();
+            });
+        });
     });
 
     describe('when an item is removed', () => {
@@ -491,23 +498,26 @@ describe('TagInputComponent', () => {
             discardPeriodicTasks();
         }));
 
-        it('does not let add item if onlyFromAutocomplete is set to true', fakeAsync(async () => {
+        it('does not let add item if onlyFromAutocomplete is set to true', () => {
             const fixture: ComponentFixture<TagInputComponentWithOnlyAutocomplete> =
-                TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
-            const component = getComponent(fixture);
-            const value = 'item';
+                    TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
 
-            component.setInputValue(value);
-            await component.onAddingRequested(false, value);
-            expect(component.items.length).toEqual(2);
+            return fakeAsync(async () => {
+                const component = getComponent(fixture);
+                const value = 'item';
 
-            component.setInputValue(value);
+                component.setInputValue(value);
+                await component.onAddingRequested(false, value);
+                expect(component.items.length).toEqual(2);
 
-            await component.onAddingRequested(true, value);
-            expect(component.items.length).toEqual(3);
+                tick();
 
-            discardPeriodicTasks();
-        }));
+                component.setInputValue(value);
+
+                await component.onAddingRequested(true, value);
+                expect(component.items.length).toEqual(3);
+            })
+        });
     });
 
     describe('model as strings', () => {

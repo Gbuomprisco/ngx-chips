@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
     selector: 'tag-input-form',
@@ -108,9 +108,10 @@ export class TagInputForm implements OnChanges {
     public inputTextValue = '';
 
     public ngOnInit() {
+        const validators = [...this.validators, Validators.required];
         // creating form
         this.form = new FormGroup({
-            item: new FormControl({value: '', disabled: this.disabled}, this.validators, this.asyncValidators)
+            item: new FormControl({value: '', disabled: this.disabled}, validators, this.asyncValidators)
         });
     }
 
