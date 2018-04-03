@@ -99,7 +99,7 @@ describe('TagInputComponent', () => {
             component.setInputValue(value);
             expect(component.inputForm.form.valid).toEqual(true);
 
-            await component.onAddingRequested(false, value);
+            await component.onAddingRequested(false, value).catch();
 
             tick();
             fixture.detectChanges();
@@ -117,7 +117,7 @@ describe('TagInputComponent', () => {
             const value = 'New Item';
             component.setInputValue(value);
 
-            await component.onAddingRequested(false, value);
+            await component.onAddingRequested(false, value).catch(() => {});
 
             fixture.detectChanges();
 
@@ -229,7 +229,7 @@ describe('TagInputComponent', () => {
 
             // addItem element with > 3 chars without @
             component.setInputValue('Abcde');
-            await component.onAddingRequested(false, invalid);
+            await component.onAddingRequested(false, invalid).catch(() => {});
 
             fixture.detectChanges();
             tick();
