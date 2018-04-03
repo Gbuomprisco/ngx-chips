@@ -102,6 +102,16 @@ export class TagInputDropdown {
     @Input() public keepOpen = new defaults().keepOpen;
 
     /**
+     * @name dynamicUpdate
+     */
+    @Input() public dynamicUpdate = new defaults().dynamicUpdate;
+
+    /**
+    * @name zIndex
+     */
+    @Input() public zIndex = new defaults().zIndex;
+
+    /**
      * list of items that match the current value of the input (for autocomplete)
      * @name items
      */

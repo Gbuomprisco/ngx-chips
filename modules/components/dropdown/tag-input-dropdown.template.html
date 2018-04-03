@@ -1,5 +1,6 @@
-<ng2-dropdown>
+<ng2-dropdown [dynamicUpdate]="dynamicUpdate">
     <ng2-dropdown-menu [focusFirstElement]="focusFirstElement"
+                       [zIndex]="zIndex"
                        [appendToBody]="appendToBody"
                        [offset]="offset">
         <ng2-menu-item *ngFor="let item of items; let index = index; let last = last"

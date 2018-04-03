@@ -381,7 +381,13 @@ of the input text, the second value corresponds to the value of each autocomplet
 
 If set to `false`, the dropdown will not be appended to the body, but will remain in its parent element. Useful when using the components inside popups or dropdowns. Defaults to `true`.
 
+**`dynamicUpdate`** - [**`?boolean`**]
 
+If set to `false`, the dropdown will not try to set the position according to its position in the page, but will be fixed. Defaults to `true`.
+
+**`zIndex`** - [**`?number`**]
+
+Manually set the zIndex of the dropdown. Defaults to `100`.
 
 ---
 

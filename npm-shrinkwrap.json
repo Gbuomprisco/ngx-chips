@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.6.7",
+  "version": "1.7.4",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -6822,9 +6822,9 @@
       }
     },
     "ng2-material-dropdown": {
-      "version": "0.8.2",
-      "resolved": "https://registry.npmjs.org/ng2-material-dropdown/-/ng2-material-dropdown-0.8.2.tgz",
-      "integrity": "sha512-hqFCMe241aCEfRYpvtfNvqv4gTQj4Jv85m3Vr9QwTF5ACpgxWlITpEpVJlFNlFUwub35IbaCYoVN1QhtIh9Utw=="
+      "version": "0.9.1",
+      "resolved": "https://registry.npmjs.org/ng2-material-dropdown/-/ng2-material-dropdown-0.9.1.tgz",
+      "integrity": "sha512-KIG9lSwrn7W6jWimJFRU0gDOaTrjqvnR5iJO07nXKVIoQf/05blxtHAwtvdFqDGLfdeVDzjPClhFemo7c5KqVQ=="
     },
     "no-case": {
       "version": "2.3.1",
