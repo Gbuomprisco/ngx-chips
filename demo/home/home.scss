@@ -23,15 +23,15 @@ $foundation-icon-theme: (
     transition: all 0.35s
 );
 
-/deep/ .ng2-tag-input.foundation-theme {
+:ng-deep .ng2-tag-input.foundation-theme {
     @include tag-input-theme($foundation-theme);
 }
 
-/deep/ .ng2-tag-input.foundation-theme tag {
+:ng-deep .ng2-tag-input.foundation-theme tag {
     @include tag-theme($foundation-tag-theme);
 }
 
-/deep/ .ng2-tag-input.foundation-theme tag delete-icon {
+:ng-deep .ng2-tag-input.foundation-theme tag delete-icon {
     @include icon-theme($foundation-icon-theme);
 }
 
