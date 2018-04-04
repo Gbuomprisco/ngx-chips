@@ -378,6 +378,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     public errors: string[] = [];
 
+    public isProgressBarVisible$: Observable<boolean>;
+
     constructor(private readonly renderer: Renderer2,
                 public readonly dragProvider: DragProvider) {
         super();
@@ -407,16 +409,24 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.setUpOnPasteListener();
         }
 
-        // if hideForm is set to true, remove the input
-        if (this.hideForm) {
-            this.inputForm.destroy();
-        }
+        const statusChanges$ = this.inputForm.form.statusChanges;
 
-        this.inputForm.form.statusChanges.pipe(
+        statusChanges$.pipe(
             filter((status: string) => status !== 'PENDING')
         ).subscribe(() => {
             this.errors = this.inputForm.getErrorMessages(this.errorMessages);
         });
+
+        this.isProgressBarVisible$ = statusChanges$.pipe(
+            map((status: string) => {
+                return status === 'PENDING' || this.isLoading;
+            })
+        );
+
+        // if hideForm is set to true, remove the input
+        if (this.hideForm) {
+            this.inputForm.destroy();
+        }
     }
 
     /**

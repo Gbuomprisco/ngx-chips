@@ -108,10 +108,9 @@ export class TagInputForm implements OnChanges {
     public inputTextValue = '';
 
     public ngOnInit() {
-        const validators = [...this.validators, Validators.required];
         // creating form
         this.form = new FormGroup({
-            item: new FormControl({value: '', disabled: this.disabled}, validators, this.asyncValidators)
+            item: new FormControl({value: '', disabled: this.disabled}, this.validators, this.asyncValidators)
         });
     }
 

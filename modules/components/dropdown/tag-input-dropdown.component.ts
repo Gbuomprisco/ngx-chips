@@ -310,8 +310,13 @@ export class TagInputDropdown {
      * @name requestAdding
      * @param item {Ng2MenuItem}
      */
-    private requestAdding = (item: Ng2MenuItem): void => {
-        this.tagInput.onAddingRequested(true, this.createTagModel(item));
+    private requestAdding = async (item: Ng2MenuItem) => {
+        try {
+            const tag = this.createTagModel(item);
+            await this.tagInput.onAddingRequested(true, tag);
+        } catch {
+            return;
+        }
     }
 
     /**
