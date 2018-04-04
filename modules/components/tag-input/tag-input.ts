@@ -28,7 +28,10 @@ import {
 // rx
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { debounceTime, filter, map, first, mapTo } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { debounceTime, filter, map, first, mapTo, takeWhile,
+     startWith, mergeMap, last, tap
+} from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor, TagModel } from '../../core/accessor';
@@ -44,6 +47,7 @@ import { TagComponent } from '../tag/tag.component';
 
 import { animations } from './animations';
 import { TagInputOptions } from '../../defaults';
+import { Subscription } from 'rxjs/Subscription';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -372,6 +376,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public animationMetadata: { value: string, params: object };
 
+    public errors: string[] = [];
+
     constructor(private readonly renderer: Renderer2,
                 public readonly dragProvider: DragProvider) {
         super();
@@ -405,6 +411,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         if (this.hideForm) {
             this.inputForm.destroy();
         }
+
+        this.inputForm.form.statusChanges.pipe(
+            filter((status: string) => status !== 'PENDING')
+        ).subscribe(() => {
+            this.errors = this.inputForm.getErrorMessages(this.errorMessages);
+        });
     }
 
     /**
@@ -455,21 +467,18 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag {TagModel}
      */
     public onAddingRequested(fromAutocomplete: boolean, tag: TagModel, index?: number): Promise<TagModel> {
-        return new Promise((resolve) => {
-            if (!tag) {
-                return resolve(tag);
-            }
-
+        return new Promise((resolve, reject) => {
             const subscribeFn = (model: TagModel) => {
                 return this
                     .addItem(fromAutocomplete, model, index)
-                    .then(resolve);
+                    .then(resolve)
+                    .catch(reject);
             };
 
             return this.onAdding ?
                 this.onAdding(tag)
                     .pipe(first())
-                    .subscribe(subscribeFn) : subscribeFn(tag);
+                    .subscribe(subscribeFn, reject) : subscribeFn(tag);
         });
     }
 
@@ -584,11 +593,13 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name setInputValue
      * @param value
      */
-    public setInputValue(value: string): void {
+    public setInputValue(value: string, emitEvent = true): void {
         const control = this.getControl();
 
         // update form value with the transformed item
-        control.setValue(value);
+        control.setValue(value, {
+            emitEvent
+        });
     }
 
     /**
@@ -877,9 +888,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param item
      */
     private addItem(fromAutocomplete = false, item: TagModel, index?: number): Promise<TagModel> {
-        return new Promise((resolve) => {
-            const model = this.getItemDisplay(item);
+        const model = this.getItemDisplay(item);
+        const tag = this.createTag(item);
 
+        return new Promise((resolve, reject) => {
             /**
              * @name reset
              */
@@ -893,25 +905,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 resolve(model);
             };
 
-            /**
-             * @name validationFilter
-             * @param tag
-             */
-            const validationFilter = (tag: TagModel): boolean => {
-                const isValid = this.isTagValid(tag, fromAutocomplete) && this.inputForm.form.valid;
-
-                if (!isValid) {
-                    this.onValidationError.emit(tag);
-                }
-
-                return isValid;
-            };
-
-            /**
-             * @name subscribeFn
-             * @param tag
-             */
-            const subscribeFn = (tag: TagModel): void => {
+            const appendItem = (): void => {
                 this.appendTag(tag, index);
 
                 // emit event
@@ -928,18 +922,40 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 }
             };
 
-            return of(item).pipe(
-                first(),
-                filter(() => {
-                    const isValid = model.trim() !== '';
-                    if (!isValid) {
-                        resolve(model);
-                    }
-                    return isValid;
-                }),
-                map(this.createTag),
-                filter(validationFilter)
-            ).subscribe(subscribeFn, undefined, reset);
+            const status = this.inputForm.form.status;
+            const isTagValid = this.isTagValid(tag, fromAutocomplete);
+
+            const onValidationError = () => {
+                this.onValidationError.emit(tag);
+                return reject();
+            };
+
+            if (status === 'VALID' && isTagValid) {
+                appendItem();
+                return reset();
+            }
+
+            if (status === 'INVALID' || !isTagValid) {
+                return onValidationError();
+            }
+
+            if (status === 'PENDING') {
+                const statusUpdate$ = this.inputForm.form.statusChanges;
+
+                return statusUpdate$
+                    .pipe(
+                        filter(statusUpdate => statusUpdate !== 'PENDING'),
+                        first()
+                    )
+                    .subscribe((statusUpdate) => {
+                        if (statusUpdate === 'VALID' && isTagValid) {
+                            appendItem();
+                            resolve();
+                        } else {
+                            onValidationError();
+                        }
+                });
+            }
         });
     }
 
@@ -954,7 +970,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
             if (hasKeyCode || hasKey) {
                 $event.preventDefault();
-                this.onAddingRequested(false, this.formValue);
+                this.onAddingRequested(false, this.formValue)
+                    .catch(() => {});
             }
         };
 
@@ -995,11 +1012,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name setUpOnPasteListener
      */
-    private setUpOnPasteListener(): void {
+    private setUpOnPasteListener() {
         const input = this.inputForm.input.nativeElement;
 
         // attach listener to input
-        this.renderer.listen(input, 'paste', this.onPasteCallback);
+        this.renderer.listen(input, 'paste', (event) => {
+            this.onPasteCallback(event);
+
+            event.preventDefault();
+            return true;
+        });
     }
 
     /**
@@ -1061,7 +1083,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name onPasteCallback
      * @param data
      */
-    private onPasteCallback = (data: ClipboardEvent): void => {
+    private onPasteCallback = async (data: ClipboardEvent) => {
         interface IEWindow extends Window {
             clipboardData: DataTransfer;
         }
@@ -1077,19 +1099,22 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         };
 
         const text = getText();
+
         const requests = text
             .split(this.pasteSplitPattern)
-            .map(item => this.onAddingRequested(false, this.createTag(item)));
+            .map(item => {
+                const tag = this.createTag(item);
+                this.setInputValue(tag[this.displayBy]);
+                return this.onAddingRequested(false, tag);
+            });
 
-        const resetInput = () => setTimeout(() => this.setInputValue(''), 0);
+        const resetInput = () => setTimeout(() => this.setInputValue(''), 50);
 
-        Promise
-            .all(requests)
-            .then(() => {
-                this.onPaste.emit(text);
-                resetInput();
-            })
-            .catch(resetInput);
+        Promise.all(requests).then(() => {
+            this.onPaste.emit(text);
+            resetInput();
+       })
+       .catch(resetInput);
     }
 
     /**
