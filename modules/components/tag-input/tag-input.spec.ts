@@ -219,7 +219,7 @@ describe('TagInputComponent', () => {
             component.setInputValue(value);
             expect(component.inputForm.form.valid).toBe(false);
 
-            await component.onAddingRequested(false, value);
+            await component.onAddingRequested(false, value).catch(() => {});
             fixture.detectChanges();
             tick();
 
