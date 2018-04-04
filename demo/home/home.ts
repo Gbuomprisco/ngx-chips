@@ -125,7 +125,7 @@ export class Home {
 
             setTimeout(() => {
                 resolve(result);
-            }, 1);
+            }, 500);
         });
     }
 
