@@ -599,6 +599,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         event.preventDefault();
     }
 
+    public async onFormSubmit() {
+        try {
+            await this.onAddingRequested(false, this.formValue);
+        } catch {
+            return;
+        }
+    }
+
     /**
      * @name setInputValue
      * @param value
@@ -1071,7 +1079,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 if (this.addOnBlur) {
                     return this
                         .onAddingRequested(false, this.formValue)
-                        .then(reset);
+                        .then(reset)
+                        .catch(reset);
                 }
 
                 reset();
