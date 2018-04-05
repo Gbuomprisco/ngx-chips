@@ -48,7 +48,7 @@
         </tag>
 
         <tag-input-form
-            (onSubmit)="onAddingRequested(false, formValue)"
+            (onSubmit)="onFormSubmit()"
             (onBlur)="blur()"
             (click)="dropdown ? dropdown.show() : undefined"
             (onKeydown)="fireEvents('keydown', $event)"
