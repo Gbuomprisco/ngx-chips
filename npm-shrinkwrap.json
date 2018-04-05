@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.7.5",
+  "version": "1.7.7",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -6822,9 +6822,9 @@
       }
     },
     "ng2-material-dropdown": {
-      "version": "0.9.1",
-      "resolved": "https://registry.npmjs.org/ng2-material-dropdown/-/ng2-material-dropdown-0.9.1.tgz",
-      "integrity": "sha512-KIG9lSwrn7W6jWimJFRU0gDOaTrjqvnR5iJO07nXKVIoQf/05blxtHAwtvdFqDGLfdeVDzjPClhFemo7c5KqVQ=="
+      "version": "0.9.4-beta2",
+      "resolved": "https://registry.npmjs.org/ng2-material-dropdown/-/ng2-material-dropdown-0.9.4-beta2.tgz",
+      "integrity": "sha512-xI4/ppjlemZx5fzqx2l+K+g5NAzCe76TG5E6DNAmas1D2TEyODIDk1e8+uC+jts7JWefhxdSAPkINUWQsl+DuA=="
     },
     "no-case": {
       "version": "2.3.1",
@@ -9965,7 +9965,7 @@
         "detect-node": "2.0.3",
         "hpack.js": "2.1.6",
         "obuf": "1.1.2",
-        "readable-stream": "2.3.5",
+        "readable-stream": "2.3.6",
         "safe-buffer": "5.0.1",
         "wbuf": "1.7.3"
       },
@@ -9992,9 +9992,9 @@
           "dev": true
         },
         "readable-stream": {
-          "version": "2.3.5",
-          "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.5.tgz",
-          "integrity": "sha512-tK0yDhrkygt/knjowCUiWP9YdV7c5R+8cR0r/kt9ZhBU906Fs6RpQJCEilamRJj1Nx2rWI6LkW9gKqjTkshhEw==",
+          "version": "2.3.6",
+          "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.6.tgz",
+          "integrity": "sha512-tQtKA9WIAhBF3+VLAseyMqZeBjW0AHJoxOtYqSUZNJxauErmLbVm2FW1y+J/YA9dUrAC39ITejlZWhVIwawkKw==",
           "dev": true,
           "requires": {
             "core-util-is": "1.0.2",
@@ -10002,7 +10002,7 @@
             "isarray": "1.0.0",
             "process-nextick-args": "2.0.0",
             "safe-buffer": "5.1.1",
-            "string_decoder": "1.0.3",
+            "string_decoder": "1.1.1",
             "util-deprecate": "1.0.2"
           },
           "dependencies": {
@@ -10015,9 +10015,9 @@
           }
         },
         "string_decoder": {
-          "version": "1.0.3",
-          "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.0.3.tgz",
-          "integrity": "sha512-4AH6Z5fzNNBcH+6XDMfA/BTt87skxqJlO0lAh3Dker5zThcAxG6mKz+iGu308UKoPPQ8Dcqx/4JhujzltRa+hQ==",
+          "version": "1.1.1",
+          "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz",
+          "integrity": "sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==",
           "dev": true,
           "requires": {
             "safe-buffer": "5.1.1"
