@@ -64,9 +64,8 @@
         <div>
             <h3>Tags within an autocomplete component (clear on blur events)</h3>
             <tag-input [ngModel]="['@item']"
-                       [addOnBlur]="false"
                        [clearOnBlur]="true">
-                <tag-input-dropdown [autocompleteItems]="autocompleteItems">
+                <tag-input-dropdown [focusFirstElement]="true" [autocompleteItems]="autocompleteItems">
                 </tag-input-dropdown>
             </tag-input>
         </div>
