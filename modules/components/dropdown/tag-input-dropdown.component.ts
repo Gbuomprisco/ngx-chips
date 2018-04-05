@@ -160,7 +160,9 @@ export class TagInputDropdown {
      * @name ngOnInit
      */
     public ngOnInit(): void {
-        this.onItemClicked().subscribe(this.requestAdding);
+        this.onItemClicked().subscribe((item: Ng2MenuItem) => {
+            this.requestAdding(item);
+        });
 
         // reset itemsMatching array when the dropdown is hidden
         this.onHide().subscribe(this.resetItems);
@@ -190,7 +192,7 @@ export class TagInputDropdown {
     public updatePosition(): void {
         const position = this.tagInput.inputForm.getElementPosition();
 
-        this.dropdown.menu.updatePosition(position);
+        this.dropdown.menu.updatePosition(position, this.dynamicUpdate);
     }
 
     /**
@@ -277,7 +279,7 @@ export class TagInputDropdown {
      */
     @HostListener('window:scroll')
     public scrollListener(): void {
-        if (!this.isVisible) {
+        if (!this.isVisible || !this.dynamicUpdate) {
             return;
         }
 
@@ -311,12 +313,8 @@ export class TagInputDropdown {
      * @param item {Ng2MenuItem}
      */
     private requestAdding = async (item: Ng2MenuItem) => {
-        try {
-            const tag = this.createTagModel(item);
-            await this.tagInput.onAddingRequested(true, tag);
-        } catch {
-            return;
-        }
+        const tag = this.createTagModel(item);
+        await this.tagInput.onAddingRequested(true, tag).catch(() => {});
     }
 
     /**
@@ -346,7 +344,7 @@ export class TagInputDropdown {
         const dupesAllowed = this.tagInput.allowDupes;
 
         return this.autocompleteItems.filter((item: TagModel) => {
-            const hasValue: boolean = dupesAllowed ? false : this.tagInput.tags.some(tag => {
+            const hasValue = dupesAllowed ? false : this.tagInput.tags.some(tag => {
                 const identifyBy = this.tagInput.identifyBy;
                 const model = typeof tag.model === 'string' ? tag.model : tag.model[identifyBy];
 
