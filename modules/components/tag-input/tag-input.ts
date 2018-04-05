@@ -777,8 +777,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     public isTagValid = (tag: TagModel, fromAutocomplete = false): boolean => {
         const selectedItem = this.dropdown ? this.dropdown.selectedItem : undefined;
+        const value = this.getItemDisplay(tag).trim();
 
-        if (selectedItem && !fromAutocomplete) {
+        if (selectedItem && !fromAutocomplete || !value) {
             return false;
         }
 
