@@ -907,8 +907,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param item
      */
     private addItem(fromAutocomplete = false, item: TagModel, index?: number): Promise<TagModel> {
-        const model = this.getItemDisplay(item);
+        const display = this.getItemDisplay(item);
         const tag = this.createTag(item);
+
+        if (fromAutocomplete) {
+            this.setInputValue(display);
+        }
 
         return new Promise((resolve, reject) => {
             /**
@@ -921,7 +925,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 // focus input
                 this.focus(true, false);
 
-                resolve(model);
+                resolve(display);
             };
 
             const appendItem = (): void => {
@@ -955,6 +959,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             }
 
             if (status === 'INVALID' || !isTagValid) {
+                reset();
                 return onValidationError();
             }
 
@@ -1050,11 +1055,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.inputForm.form
             .valueChanges
             .pipe(
-                debounceTime(this.onTextChangeDebounce),
-                mapTo(this.formValue)
+                debounceTime(this.onTextChangeDebounce)
             )
-            .subscribe((value: string) => {
-                this.onTextChange.emit(value);
+            .subscribe((value: {item: string}) => {
+                this.onTextChange.emit(value.item);
             });
     }
 
