@@ -28,7 +28,7 @@ export class Home {
 
     itemsAsObjects = [{id: 0, name: 'Angular', readonly: true}, {id: 1, name: 'React'}];
 
-    autocompleteItems = ['Item1', 'item2', 'item3'];
+    autocompleteItems = ['Javascript', 'Typescript', 'Rust', 'Go'];
 
     autocompleteItemsAsObjects = [
         {value: 'Item1', id: 0, extra: 0},
