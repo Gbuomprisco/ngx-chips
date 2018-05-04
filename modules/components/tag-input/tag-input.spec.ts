@@ -11,10 +11,10 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { TagModel } from 'core';
+import { TagModel } from '../../core';
 import { TagInputComponent } from './tag-input';
 
 import {
@@ -516,7 +516,7 @@ describe('TagInputComponent', () => {
 
                 await component.onAddingRequested(true, value);
                 expect(component.items.length).toEqual(3);
-            })
+            });
         });
     });
 

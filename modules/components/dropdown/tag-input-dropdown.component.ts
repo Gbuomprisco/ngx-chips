@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 
 // rx
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map, filter, first, debounceTime } from 'rxjs/operators';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
