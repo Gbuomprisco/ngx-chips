@@ -26,9 +26,9 @@ import {
 } from '@angular/forms';
 
 // rx
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { debounceTime, filter, map, first, mapTo, takeWhile,
      startWith, mergeMap, last, tap
 } from 'rxjs/operators';
@@ -47,7 +47,7 @@ import { TagComponent } from '../tag/tag.component';
 
 import { animations } from './animations';
 import { TagInputOptions } from '../../defaults';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 // angular universal hacks
 /* tslint:disable-next-line */

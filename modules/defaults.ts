@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 
 import { SECONDARY_PLACEHOLDER, PLACEHOLDER } from './core/constants/index';
