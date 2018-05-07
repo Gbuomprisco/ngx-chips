@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
@@ -107,7 +107,7 @@
       }
     },
     "whitelistedNonPeerDependencies": [
-        "ng2-material-dropdown"
+      "ng2-material-dropdown"
     ]
   }
 }
