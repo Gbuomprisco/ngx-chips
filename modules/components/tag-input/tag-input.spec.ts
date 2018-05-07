@@ -11,10 +11,10 @@ import {
 
 import { By } from '@angular/platform-browser';
 import { BrowserModule } from '@angular/platform-browser';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { TagModel } from 'core';
+import { TagModel } from '../../core';
 import { TagInputComponent } from './tag-input';
 
 import {
@@ -516,7 +516,7 @@ describe('TagInputComponent', () => {
 
                 await component.onAddingRequested(true, value);
                 expect(component.items.length).toEqual(3);
-            })
+            });
         });
     });
 
@@ -583,41 +583,45 @@ describe('TagInputComponent', () => {
             fixture = TestBed.createComponent(TagInputComponentWithHooks);
         });
 
-        it('intercepts hook onAdding and returns an observable', fakeAsync(async () => {
-            const component: TagInputComponent = getComponent(fixture);
-            const subject = new Subject();
-            const tag = component.createTag('tag');
+        it('intercepts hook onAdding and returns an observable', () => {
+            fakeAsync(async () => {
+                const component: TagInputComponent = getComponent(fixture);
+                const subject = new Subject();
+                const tag = component.createTag('tag');
 
-            component.onAdding = () => {
-                return subject;
-            };
+                component.onAdding = () => {
+                    return subject;
+                };
 
-            await component.onAddingRequested(false, tag);
+                await component.onAddingRequested(false, tag);
 
-            expect(component.items.length).toBe(2);
+                expect(component.items.length).toBe(2);
 
-            subject.next(tag);
+                subject.next(tag);
 
-            expect(component.items.length).toBe(3);
-        }));
+                expect(component.items.length).toBe(3);
+            });
+        });
 
-        it('intercepts hook onRemoving and returns an observable', fakeAsync(async () => {
-            const component: TagInputComponent = getComponent(fixture);
-            const subject = new Subject();
+        it('intercepts hook onRemoving and returns an observable', () => {
+            fakeAsync(async () => {
+                const component: TagInputComponent = getComponent(fixture);
+                const subject = new Subject();
 
-            component.onRemoving = () => {
-                return subject;
-            };
+                component.onRemoving = () => {
+                    return subject;
+                };
 
-            const tag = component.items[0];
+                const tag = component.items[0];
 
-            await component.onRemoveRequested(tag, 0);
+                await component.onRemoveRequested(tag, 0);
 
-            expect(component.items.length).toBe(2);
+                expect(component.items.length).toBe(2);
 
-            subject.next(tag);
+                subject.next(tag);
 
-            expect(component.items.length).toBe(1);
-        }));
+                expect(component.items.length).toBe(1);
+            });
+        }
     });
 });
