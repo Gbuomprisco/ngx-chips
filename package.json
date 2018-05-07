@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "1.8.3",
+  "version": "1.9.0",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
@@ -99,11 +99,15 @@
   "homepage": "https://github.com/Gbuomprisco/ngx-chips",
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
     "lib": {
       "entryFile": "modules/index.ts",
       "externals": {
         "ng2-material-dropdown": "ng2-material-dropdown"
       }
-    }
+    },
+    "whitelistedNonPeerDependencies": [
+        "ng2-material-dropdown"
+    ]
   }
 }
