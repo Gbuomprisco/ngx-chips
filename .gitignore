@@ -12,3 +12,4 @@ factories
 *.metadata.json
 .idea
 .vscode
+yarn.lock
