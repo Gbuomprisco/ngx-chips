@@ -73,7 +73,8 @@
     "zone.js": "0.8.26"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.10.0"
+    "ng2-material-dropdown": "0.10.0",
+    "rxjs-compat": "^6.2.1"
   },
   "peerDependencies": {
     "@angular/animations": "^6.0.0",
