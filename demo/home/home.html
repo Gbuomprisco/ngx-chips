@@ -264,7 +264,7 @@
         <div>
             <h3>Input with two-way data binding for its input text</h3>
 
-            <input [(ngModel)]="inputText" />
+            <input [(ngModel)]="inputText" (keyup.enter)="insertInputTag()"/>
 
             <tag-input [(ngModel)]="items" [(inputText)]="inputText"></tag-input>
         </div>

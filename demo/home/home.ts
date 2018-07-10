@@ -158,4 +158,12 @@ export class Home {
         return of(tag)
             .pipe(filter(() => confirm));
     }
+
+    public insertInputTag(): void {
+        if (this.inputText) {
+            this.items.push(this.inputText);
+
+            this.inputText = '';
+        }
+    }
 }
