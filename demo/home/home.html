@@ -10,7 +10,7 @@
 
         <div>
             <h3>Partially editable input with two items as objects</h3>
-        <tag-input [(ngModel)]="itemsAsObjects"
+            <tag-input [(ngModel)]="itemsAsObjects"
                        [identifyBy]="'id'"
                        [displayBy]="'name'"></tag-input>
         </div>
@@ -52,8 +52,8 @@
             <tag-input [ngModel]="['@item']"
                        [errorMessages]="errorMessages"
                        [validators]="validators">
-                       <tag-input-dropdown [autocompleteItems]="['@item$', 'item']">
-                    </tag-input-dropdown>
+                <tag-input-dropdown [autocompleteItems]="['@item$', 'item']">
+                </tag-input-dropdown>
             </tag-input>
         </div>
 
@@ -97,8 +97,8 @@
                        [secondaryPlaceholder]="'Search in Github'"
                        [onlyFromAutocomplete]="true">
                 <tag-input-dropdown
-                        [autocompleteObservable]="requestAutocompleteItems"
-                        [minimumTextLength]="0">
+                    [autocompleteObservable]="requestAutocompleteItems"
+                    [minimumTextLength]="0">
                     <ng-template let-item="item" let-index="index">
                         {{ item.display }}
                     </ng-template>
@@ -110,8 +110,8 @@
             <h3>Tags accepting only items from an autocomplete using an observable and showing dropdown without entering text</h3>
             <tag-input [ngModel]="items" [onlyFromAutocomplete]="true">
                 <tag-input-dropdown
-                        [showDropdownIfEmpty]="true"
-                        [autocompleteObservable]="requestAutocompleteItemsFake">
+                    [showDropdownIfEmpty]="true"
+                    [autocompleteObservable]="requestAutocompleteItemsFake">
                 </tag-input-dropdown>
             </tag-input>
         </div>
@@ -136,7 +136,7 @@
                        [inputClass]="'myinput'"
                        [inputId]="'myinputId'"
                        [separatorKeyCodes]="[32, 188]"
-                     >
+            >
             </tag-input>
         </div>
 
@@ -168,11 +168,11 @@
                     tag: {{ item.name }}
                 </ng-template>
                 <tag-input-dropdown
-                [autocompleteItems]="autocompleteItemsAsObjects"
-                                    [dynamicUpdate]="false"
-                                    [zIndex]="10000"
-                                    [displayBy]="'value'"
-                                    [identifyBy]="'id'">
+                    [autocompleteItems]="autocompleteItemsAsObjects"
+                    [dynamicUpdate]="false"
+                    [zIndex]="10000"
+                    [displayBy]="'value'"
+                    [identifyBy]="'id'">
                     <ng-template let-item="item" let-index="index">
                         dropdown: {{ item.value }}
                     </ng-template>
@@ -276,7 +276,7 @@
 
             <tag-input [ngModel]="items"
                        [disable]="disabled">
-                       <tag-input-dropdown [autocompleteItems]="autocompleteItems">
+                <tag-input-dropdown [autocompleteItems]="autocompleteItems">
                 </tag-input-dropdown>
             </tag-input>
         </div>
@@ -323,7 +323,7 @@
                        [errorMessages]="asyncErrorMessages"
                        [addOnPaste]="true"
                        [asyncValidators]="asyncValidators">
-                       <tag-input-dropdown [autocompleteItems]="['1','2']"></tag-input-dropdown>
+                <tag-input-dropdown [autocompleteItems]="['1','2']"></tag-input-dropdown>
             </tag-input>
         </div>
 

@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { filter, map } from 'rxjs/operators';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Http, Response} from '@angular/http';
+import {filter, map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 @Component({
     selector: 'app',
