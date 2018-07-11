@@ -104,9 +104,12 @@ export class TagInputForm implements OnInit, OnChanges {
         this.inputTextChange.emit(text);
     }
 
-    private readonly item: FormControl = new FormControl({value: '', disabled: this.disabled}, this.validators, this.asyncValidators);
+    private readonly item: FormControl = new FormControl({value: '', disabled: this.disabled});
 
     ngOnInit() {
+        this.item.setValidators(this.validators);
+        this.item.setAsyncValidators(this.asyncValidators);
+
         // creating form
         this.form = new FormGroup({
             item: this.item
