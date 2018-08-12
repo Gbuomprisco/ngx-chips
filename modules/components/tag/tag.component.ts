@@ -335,8 +335,9 @@ export class TagComponent {
 
         const model = typeof this.model === 'string' ? input :
             {
+                index: this.index,
                 [this.identifyBy]: hasId() ? this.model[this.identifyBy] : input,
-                [this.displayBy]: input
+                [this.displayBy]: input,
             };
 
         if (this.canAddTag(model)) {
