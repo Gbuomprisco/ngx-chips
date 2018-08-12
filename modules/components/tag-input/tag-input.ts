@@ -47,7 +47,6 @@ import { TagComponent } from '../tag/tag.component';
 
 import { animations } from './animations';
 import { TagInputOptions } from '../../defaults';
-import { Subscription } from 'rxjs';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -808,16 +807,16 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         const assertions = [
             // 1. there must be no dupe OR dupes are allowed
-            !dupe || this.allowDupes === true,
+            !dupe || this.allowDupes,
 
             // 2. check max items has not been reached
-            this.maxItemsReached === false,
+            !this.maxItemsReached,
 
             // 3. check item comes from autocomplete or onlyFromAutocomplete is false
-            ((isFromAutocomplete) || this.onlyFromAutocomplete === false)
+            ((isFromAutocomplete) || !this.onlyFromAutocomplete)
         ];
 
-        return assertions.filter(item => item).length === assertions.length;
+        return assertions.filter(Boolean).length === assertions.length;
     }
 
     /**
@@ -911,7 +910,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         const tag = this.createTag(item);
 
         if (fromAutocomplete) {
-            this.setInputValue(display);
+            this.setInputValue(this.getItemValue(item, true));
         }
 
         return new Promise((resolve, reject) => {
