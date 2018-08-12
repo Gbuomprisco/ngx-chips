@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, Output, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 
 @Component({
     selector: 'tag-input-form',
-    styleUrls: [ './tag-input-form.style.scss' ],
+    styleUrls: ['./tag-input-form.style.scss'],
     templateUrl: './tag-input-form.template.html'
 })
-export class TagInputForm implements OnChanges {
+export class TagInputForm implements OnInit, OnChanges {
     /**
      * @name onSubmit
      */
@@ -31,6 +31,11 @@ export class TagInputForm implements OnChanges {
      * @name onKeydown
      */
     @Output() public onKeydown: EventEmitter<any> = new EventEmitter();
+
+    /**
+     * @name inputTextChange
+     */
+    @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
 
     // inputs
 
@@ -61,13 +66,6 @@ export class TagInputForm implements OnChanges {
     @Input() public inputClass: string;
 
     /**
-     * @name inputText
-     */
-    @Input() public get inputText(): string {
-        return this.inputTextValue;
-    }
-
-    /**
      * @name tabindex
      * @desc pass through the specified tabindex to the input
      */
@@ -77,15 +75,6 @@ export class TagInputForm implements OnChanges {
      * @name disabled
      */
     @Input() public disabled = false;
-
-    /**
-     * @name inputText
-     * @param text {string}
-     */
-    public set inputText(text: string) {
-        this.inputTextValue = text;
-        this.inputTextChange.emit(text);
-    }
 
     /**
      * @name input
@@ -98,19 +87,32 @@ export class TagInputForm implements OnChanges {
     public form: FormGroup;
 
     /**
-     * @name inputTextChange
+     * @name inputText
      */
-    @Output() public inputTextChange: EventEmitter<string> = new EventEmitter();
+    @Input()
+    public get inputText(): string {
+        return this.item.value;
+    }
 
     /**
-     * @name inputTextValue
+     * @name inputText
+     * @param text {string}
      */
-    public inputTextValue = '';
+    public set inputText(text: string) {
+        this.item.setValue(text);
 
-    public ngOnInit() {
+        this.inputTextChange.emit(text);
+    }
+
+    private readonly item: FormControl = new FormControl({value: '', disabled: this.disabled});
+
+    ngOnInit() {
+        this.item.setValidators(this.validators);
+        this.item.setAsyncValidators(this.asyncValidators);
+
         // creating form
         this.form = new FormGroup({
-            item: new FormControl({value: '', disabled: this.disabled}, this.validators, this.asyncValidators)
+            item: this.item
         });
     }
 
@@ -124,25 +126,25 @@ export class TagInputForm implements OnChanges {
         }
     }
 
-	/**
+    /**
      * @name value
      */
     public get value(): FormControl {
         return this.form.get('item') as FormControl;
     }
 
-	/**
+    /**
      * @name isInputFocused
      */
     public isInputFocused(): boolean {
         return document.activeElement === this.input.nativeElement;
     }
 
-	/**
+    /**
      * @name getErrorMessages
      * @param messages
      */
-    public getErrorMessages(messages: {[key: string]: string}): string[] {
+    public getErrorMessages(messages: { [key: string]: string }): string[] {
         return Object.keys(messages)
             .filter(err => this.value.hasError(err))
             .map(err => messages[err]);
@@ -152,11 +154,11 @@ export class TagInputForm implements OnChanges {
      * @name hasErrors
      */
     public hasErrors(): boolean {
-        const { dirty, value, valid } = this.form;
+        const {dirty, value, valid} = this.form;
         return dirty && value.item && !valid;
     }
 
-	/**
+    /**
      * @name focus
      */
     public focus(): void {
@@ -170,7 +172,7 @@ export class TagInputForm implements OnChanges {
         this.input.nativeElement.blur();
     }
 
-	/**
+    /**
      * @name getElementPosition
      */
     public getElementPosition(): ClientRect {
@@ -191,13 +193,29 @@ export class TagInputForm implements OnChanges {
      * @param $event
      */
     public onKeyDown($event) {
+        this.inputText = this.value.value;
+        if ($event.key === 'Enter') {
+            this.submit($event);
+
+            this.inputText = '';
+        }
         return this.onKeydown.emit($event);
+    }
+
+    /**
+     * @name onKeyUp
+     * @param $event
+     */
+    public onKeyUp($event) {
+        this.inputText = this.value.value;
+        return this.onKeyup.emit($event);
     }
 
     /**
      * @name submit
      */
     public submit($event: any): void {
+        $event.preventDefault();
         if (this.form.valid) {
             this.onSubmit.emit($event);
         }

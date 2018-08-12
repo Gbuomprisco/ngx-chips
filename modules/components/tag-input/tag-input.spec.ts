@@ -1,36 +1,27 @@
-import { FormControl } from '@angular/forms';
-import {
-    fakeAsync,
-    ComponentFixture,
-    async,
-    tick,
-    TestBed,
-    discardPeriodicTasks,
-    flushMicrotasks
-} from '@angular/core/testing';
+import {FormControl} from '@angular/forms';
+import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
-import { By } from '@angular/platform-browser';
-import { BrowserModule } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {By} from '@angular/platform-browser';
+import {Subject} from 'rxjs';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import { TagModel } from '../../core';
-import { TagInputComponent } from './tag-input';
+import {TagModel} from '../../core';
+import {TagInputComponent} from './tag-input';
 
 import {
     BasicTagInputComponent,
-    TagInputComponentWithOutputs,
-    TagInputComponentWithValidation,
-    TagInputComponentWithTransformer,
-    TagInputComponentWithPlaceholder,
-    TagInputComponentWithMaxItems,
-    TagInputComponentWithTemplate,
-    TagInputComponentWithAutocomplete,
-    TagInputComponentWithOnlyAutocomplete,
-    TestModule,
-    TagInputComponentWithModelAsStrings,
     TagInputComponentWithAddOnBlur,
-    TagInputComponentWithHooks
+    TagInputComponentWithAutocomplete,
+    TagInputComponentWithHooks,
+    TagInputComponentWithMaxItems,
+    TagInputComponentWithModelAsStrings,
+    TagInputComponentWithOnlyAutocomplete,
+    TagInputComponentWithOutputs,
+    TagInputComponentWithPlaceholder,
+    TagInputComponentWithTemplate,
+    TagInputComponentWithTransformer,
+    TagInputComponentWithValidation,
+    TestModule
 } from './tests/testing-helpers.spec';
 
 describe('TagInputComponent', () => {
@@ -39,7 +30,7 @@ describe('TagInputComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [],
-            imports: [ BrowserAnimationsModule, TestModule ]
+            imports: [BrowserAnimationsModule, TestModule]
         });
     });
 
@@ -150,8 +141,8 @@ describe('TagInputComponent', () => {
         });
 
         it('does not allow dupes', () => {
-             const fixture: ComponentFixture<BasicTagInputComponent> =
-                    TestBed.createComponent(BasicTagInputComponent);
+            const fixture: ComponentFixture<BasicTagInputComponent> =
+                TestBed.createComponent(BasicTagInputComponent);
             return fakeAsync(async () => {
                 const component = getComponent(fixture);
                 const item = 'Javascript';
@@ -286,7 +277,7 @@ describe('TagInputComponent', () => {
             fixture.detectChanges();
             tick();
 
-            expect(component.items[ 2 ]).toEqual(match({ display: 'prefix: @', value: 'prefix: @' }));
+            expect(component.items[2]).toEqual(match({display: 'prefix: @', value: 'prefix: @'}));
             expect(component.items.length).toEqual(3);
 
             discardPeriodicTasks();
@@ -299,7 +290,7 @@ describe('TagInputComponent', () => {
             fixture: ComponentFixture<BasicTagInputComponent>,
             component;
 
-        keyDown[ 'keyCode' ] = 37;
+        keyDown['keyCode'] = 37;
 
         beforeEach(() => {
             fixture = TestBed.createComponent(BasicTagInputComponent);
@@ -318,13 +309,13 @@ describe('TagInputComponent', () => {
             expect(component.selectedTag).toEqual('Typescript');
 
             // press tab and focus input again
-            keyDown[ 'keyCode' ] = 9;
+            keyDown['keyCode'] = 9;
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
             expect(component.selectedTag).toEqual(undefined);
             expect(component.inputForm.isInputFocused()).toEqual(true);
 
-            keyDown[ 'keyCode' ] = 8;
+            keyDown['keyCode'] = 8;
             // then starts from back again
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
@@ -341,7 +332,7 @@ describe('TagInputComponent', () => {
 
         it('it navigates back and forth between tags', fakeAsync(() => {
             component = getComponent(fixture);
-            keyDown[ 'keyCode' ] = 37;
+            keyDown['keyCode'] = 37;
 
             // press left arrow
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
@@ -354,12 +345,12 @@ describe('TagInputComponent', () => {
             expect(component.selectedTag).toEqual('Javascript');
 
             // press right arrow
-            keyDown[ 'keyCode' ] = 39;
+            keyDown['keyCode'] = 39;
             component.tags.first.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual('Typescript');
 
             // press tab -> focuses input
-            keyDown[ 'keyCode' ] = 9;
+            keyDown['keyCode'] = 9;
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
             expect(component.selectedTag).toEqual(undefined);
@@ -370,7 +361,7 @@ describe('TagInputComponent', () => {
 
         it('it focuses input when pressing tab', fakeAsync(() => {
             component = getComponent(fixture);
-            keyUp[ 'keyCode' ] = 9;
+            keyUp['keyCode'] = 9;
 
             // press left arrow
             component.tags.first.element.nativeElement.dispatchEvent(keyDown);
@@ -404,7 +395,7 @@ describe('TagInputComponent', () => {
 
     describe('when using the autocomplete', () => {
         let keyUp: Event = new Event('keyUp');
-        keyUp[ 'keyCode' ] = 73;
+        keyUp['keyCode'] = 73;
 
         it('adds an autocomplete to the template', fakeAsync(() => {
             const fixture: ComponentFixture<TagInputComponentWithAutocomplete> =
@@ -500,7 +491,7 @@ describe('TagInputComponent', () => {
 
         it('does not let add item if onlyFromAutocomplete is set to true', () => {
             const fixture: ComponentFixture<TagInputComponentWithOnlyAutocomplete> =
-                    TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
+                TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
 
             return fakeAsync(async () => {
                 const component = getComponent(fixture);
@@ -553,7 +544,7 @@ describe('TagInputComponent', () => {
 
         it('should not add an item on blur if the dropdown is visible', fakeAsync(() => {
             let keyUp: Event = new Event('keyUp');
-            keyUp[ 'keyCode' ] = 73;
+            keyUp['keyCode'] = 73;
 
             const fixture: ComponentFixture<TagInputComponentWithAddOnBlur> =
                 TestBed.createComponent(TagInputComponentWithAddOnBlur);
@@ -622,6 +613,6 @@ describe('TagInputComponent', () => {
 
                 expect(component.items.length).toBe(1);
             });
-        }
+        });
     });
 });
