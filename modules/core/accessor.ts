@@ -1,7 +1,7 @@
-import {ControlValueAccessor} from '@angular/forms';
-import {Input} from '@angular/core';
-import {OptionsProvider} from './providers/options-provider';
-import {TagInputDropdown} from '../../modules/components/dropdown/tag-input-dropdown.component';
+import { ControlValueAccessor } from '@angular/forms';
+import { Input } from '@angular/core';
+import { OptionsProvider } from './providers/options-provider';
+import { TagInputDropdown } from '../components/dropdown/tag-input-dropdown.component';
 
 export class TagModelClass {
     [key: string]: any;
@@ -32,7 +32,7 @@ export class TagInputAccessor implements ControlValueAccessor {
 
     public get items(): TagModel[] {
         return this._items;
-    };
+    }
 
     public set items(items: TagModel[]) {
         this._items = items;
