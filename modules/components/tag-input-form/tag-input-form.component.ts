@@ -137,7 +137,8 @@ export class TagInputForm implements OnInit, OnChanges {
      * @name isInputFocused
      */
     public isInputFocused(): boolean {
-        return document.activeElement === this.input.nativeElement;
+        const doc = typeof document !== 'undefined' ? document : undefined;
+        return doc ? doc.activeElement === this.input.nativeElement : false;
     }
 
     /**

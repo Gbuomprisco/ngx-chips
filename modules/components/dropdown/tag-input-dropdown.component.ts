@@ -297,8 +297,10 @@ export class TagInputDropdown {
     /**
      * @name getFormValue
      */
-    private getFormValue(): string {
-        return this.tagInput.formValue.trim();
+    private getFormValue(): string | number | undefined {
+        const value = this.tagInput.formValue;
+        const isString = typeof value === 'string';
+        return isString ? value.trim() : value;
     }
 
     /**

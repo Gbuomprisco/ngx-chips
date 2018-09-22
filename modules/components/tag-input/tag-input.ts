@@ -27,11 +27,7 @@ import {
 
 // rx
 import { Observable } from 'rxjs';
-import { of } from 'rxjs';
-import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, first, mapTo, takeWhile,
-     startWith, mergeMap, last, tap
-} from 'rxjs/operators';
+import { debounceTime, filter, map, first} from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor, TagModel } from '../../core/accessor';
@@ -569,12 +565,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                     this.onRemoveRequested(this.selectedTag, index);
                 }
                 break;
+
             case constants.ACTIONS_KEYS.SWITCH_PREV:
                 this.moveToTag(data.model, constants.PREV);
                 break;
+
             case constants.ACTIONS_KEYS.SWITCH_NEXT:
                 this.moveToTag(data.model, constants.NEXT);
                 break;
+
             case constants.ACTIONS_KEYS.TAB:
                 if (shiftKey) {
                     if (this.isFirstTag(data.model)) {
@@ -590,6 +589,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                     this.moveToTag(data.model, constants.NEXT);
                 }
                 break;
+
             default:
                 return;
         }
@@ -614,16 +614,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         const control = this.getControl();
 
         // update form value with the transformed item
-        control.setValue(value, {
-            emitEvent
-        });
+        control.setValue(value, { emitEvent });
     }
 
     /**
      * @name getControl
      */
     private getControl(): FormControl {
-        return <FormControl>this.inputForm.value;
+        return this.inputForm.value as FormControl;
     }
 
     /**
@@ -731,7 +729,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public onTagDropped(event: DragEvent, index?: number): void {
         const item = this.dragProvider.getDraggedItem(event);
 
-        if (item.zone !== this.dragZone) {
+        if (!item || item.zone !== this.dragZone) {
             return;
         }
 
