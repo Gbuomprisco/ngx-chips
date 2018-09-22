@@ -14,7 +14,7 @@ import {
 
 import { TagModel } from '../../core/accessor';
 import { TagRipple } from '../tag/tag-ripple.component';
-import { EventLike } from 'modules/core/helpers/event-like';
+import { EventLike } from '../../core/helpers/event-like';
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
