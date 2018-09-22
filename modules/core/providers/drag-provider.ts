@@ -43,10 +43,14 @@ export class DragProvider {
      * @name getDraggedItem
      * @param event
      */
-    public getDraggedItem(event: DragEvent): DraggedTag {
+    public getDraggedItem(event: DragEvent): DraggedTag | undefined {
         const data = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
 
-        return JSON.parse(data) as DraggedTag;
+        try {
+            return JSON.parse(data) as DraggedTag;
+        } catch {
+            return;
+        }
     }
 
     /**

@@ -14,11 +14,7 @@ import {
 
 import { TagModel } from '../../core/accessor';
 import { TagRipple } from '../tag/tag-ripple.component';
-
-// angular universal hacks
-/* tslint:disable-next-line */
-const KeyboardEvent = (window as any).KeyboardEvent;
-const MouseEvent = (window as any).MouseEvent;
+import { EventLike } from 'modules/core/helpers/event-like';
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
@@ -29,92 +25,107 @@ const navigator = typeof window !== 'undefined' ? window.navigator : {
 const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 @Component({
-    selector: 'tag',
-    templateUrl: './tag.template.html',
-    styleUrls: [ './tag-component.style.scss' ]
+    selector: "tag",
+    templateUrl: "./tag.template.html",
+    styleUrls: ["./tag-component.style.scss"]
 })
 export class TagComponent {
     /**
      * @name model {TagModel}
      */
-    @Input() public model: TagModel;
+    @Input()
+    public model: TagModel;
 
     /**
      * @name removable {boolean}
      */
-    @Input() public removable: boolean;
+    @Input()
+    public removable: boolean;
 
     /**
      * @name editable {boolean}
      */
-    @Input() public editable: boolean;
+    @Input()
+    public editable: boolean;
 
     /**
      * @name template {TemplateRef<any>}
      */
-    @Input() public template: TemplateRef<any>;
+    @Input()
+    public template: TemplateRef<any>;
 
     /**
      * @name displayBy {string}
      */
-    @Input() public displayBy: string;
+    @Input()
+    public displayBy: string;
 
     /**
      * @name identifyBy {string}
      */
-    @Input() public identifyBy: string;
+    @Input()
+    public identifyBy: string;
 
     /**
      * @name index {number}
      */
-    @Input() public index: number;
+    @Input()
+    public index: number;
 
     /**
      * @name hasRipple
      */
-    @Input() public hasRipple: boolean;
+    @Input()
+    public hasRipple: boolean;
 
     /**
      * @name disabled
      */
-    @Input() public disabled = false;
+    @Input()
+    public disabled = false;
 
     /**
      * @name canAddTag
      */
-    @Input() public canAddTag: (tag: TagModel) => boolean;
+    @Input()
+    public canAddTag: (tag: TagModel) => boolean;
 
     /**
      * @name onSelect
      */
-    @Output() public onSelect: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+    @Output()
+    public onSelect: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name onRemove
      */
-    @Output() public onRemove: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+    @Output()
+    public onRemove: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name onBlur
      */
-    @Output() public onBlur: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+    @Output()
+    public onBlur: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name onKeyDown
      */
-    @Output() public onKeyDown: EventEmitter<any> = new EventEmitter<any>();
+    @Output()
+    public onKeyDown: EventEmitter<any> = new EventEmitter<any>();
 
     /**
      * @name onTagEdited
      */
-    @Output() public onTagEdited: EventEmitter<TagModel> = new EventEmitter<TagModel>();
+    @Output()
+    public onTagEdited: EventEmitter<TagModel> = new EventEmitter<TagModel>();
 
     /**
      * @name readonly {boolean}
      */
     public get readonly(): boolean {
-        return typeof this.model !== 'string' && this.model.readonly === true;
-    };
+        return typeof this.model !== "string" && this.model.readonly === true;
+    }
 
     /**
      * @name editing
@@ -124,21 +135,25 @@ export class TagComponent {
     /**
      * @name moving
      */
-    @HostBinding('class.moving') public moving: boolean;
+    @HostBinding("class.moving")
+    public moving: boolean;
 
     /**
      * @name rippleState
      */
-    public rippleState = 'none';
+    public rippleState = "none";
 
     /**
      * @name ripple {TagRipple}
      */
-    @ViewChild(TagRipple) public ripple: TagRipple;
+    @ViewChild(TagRipple)
+    public ripple: TagRipple;
 
-    constructor(public element: ElementRef,
-                public renderer: Renderer2,
-                private cdRef: ChangeDetectorRef) {}
+    constructor(
+        public element: ElementRef,
+        public renderer: Renderer2,
+        private cdRef: ChangeDetectorRef
+    ) {}
 
     /**
      * @name select
@@ -180,14 +195,15 @@ export class TagComponent {
      * @name keydown
      * @param event
      */
-    @HostListener('keydown', ['$event'])
-    public keydown(event: KeyboardEvent): void {
+    @HostListener("keydown", ["$event"])
+    public keydown(event: EventLike): void {
         if (this.editing) {
-            event.keyCode === 13 ? this.disableEditMode(event) : undefined;
-            return;
+            if (event.keyCode === 13) {
+                return this.disableEditMode(event)
+            }
         }
 
-        this.onKeyDown.emit({event, model: this.model});
+        this.onKeyDown.emit({ event, model: this.model });
     }
 
     /**
@@ -195,9 +211,9 @@ export class TagComponent {
      */
     public blink(): void {
         const classList = this.element.nativeElement.classList;
-        classList.add('blink');
+        classList.add("blink");
 
-        setTimeout(() => classList.remove('blink'), 50);
+        setTimeout(() => classList.remove("blink"), 50);
     }
 
     /**
@@ -205,7 +221,7 @@ export class TagComponent {
      */
     public toggleEditMode(): void {
         if (this.editable) {
-            this.editing ? undefined : this.activateEditMode();
+            return this.editing ? undefined : this.activateEditMode();
         }
     }
 
@@ -216,15 +232,17 @@ export class TagComponent {
     public onBlurred(event: any): void {
         // Checks if it is editable first before handeling the onBlurred event in order to prevent
         // a bug in IE where tags are still editable with onlyFromAutocomplete set to true
-		if (!this.editable) {
+        if (!this.editable) {
             return;
         }
 
         this.disableEditMode();
 
         const value: string = event.target.innerText;
-        const result = typeof this.model === 'string' ? value :
-            {...this.model, [this.displayBy]: value};
+        const result =
+            typeof this.model === "string"
+                ? value
+                : { ...this.model, [this.displayBy]: value };
 
         this.onBlur.emit(result);
     }
@@ -234,7 +252,7 @@ export class TagComponent {
      * @param item
      */
     public getDisplayValue(item: TagModel): string {
-        return typeof item === 'string' ? item : item[this.displayBy];
+        return typeof item === "string" ? item : item[this.displayBy];
     }
 
     /**
@@ -243,22 +261,19 @@ export class TagComponent {
      * @name isRippleVisible
      */
     public get isRippleVisible(): boolean {
-        return !this.readonly &&
-            !this.editing &&
-            isChrome &&
-            this.hasRipple;
+        return !this.readonly && !this.editing && isChrome && this.hasRipple;
     }
 
     /**
      * @name disableEditMode
      * @param $event
      */
-    public disableEditMode($event?: KeyboardEvent): void {
+    public disableEditMode($event?: EventLike): void {
         const classList = this.element.nativeElement.classList;
         const input = this.getContentEditableText();
 
         this.editing = false;
-        classList.remove('tag--editing');
+        classList.remove("tag--editing");
 
         if (!input) {
             this.setContentEditableText(this.model);
@@ -277,10 +292,9 @@ export class TagComponent {
      * @name isDeleteIconVisible
      */
     public isDeleteIconVisible(): boolean {
-        return !this.readonly &&
-            !this.disabled &&
-            this.removable &&
-            !this.editing;
+        return (
+            !this.readonly && !this.disabled && this.removable && !this.editing
+        );
     }
 
     /**
@@ -289,7 +303,7 @@ export class TagComponent {
     private getContentEditableText(): string {
         const input = this.getContentEditable();
 
-        return input ? input.innerText.trim() : '';
+        return input ? input.innerText.trim() : "";
     }
 
     /**
@@ -319,9 +333,9 @@ export class TagComponent {
      */
     private storeNewValue(input: string): void {
         const exists = (tag: TagModel) => {
-            return typeof tag === 'string' ?
-            tag === input :
-            tag[this.displayBy] === input;
+            return typeof tag === 'string'
+                ? tag === input
+                : tag[this.displayBy] === input;
         };
 
         const hasId = () => {
@@ -333,15 +347,19 @@ export class TagComponent {
             return;
         }
 
-        const model = typeof this.model === 'string' ? input :
-            {
-                index: this.index,
-                [this.identifyBy]: hasId() ? this.model[this.identifyBy] : input,
-                [this.displayBy]: input,
-            };
+        const model =
+            typeof this.model === 'string'
+                ? input
+                : {
+                      index: this.index,
+                      [this.identifyBy]: hasId()
+                          ? this.model[this.identifyBy]
+                          : input,
+                      [this.displayBy]: input
+                  };
 
         if (this.canAddTag(model)) {
-            this.onTagEdited.emit({tag: model, index: this.index});
+            this.onTagEdited.emit({ tag: model, index: this.index });
         } else {
             this.setContentEditableText(this.model);
         }
