@@ -244,7 +244,6 @@ export class TagInputDropdown {
         const isHidden = this.isVisible === false;
         const showDropdownIfEmpty = this.showDropdownIfEmpty && hasItems && !value;
         const isDisabled = this.tagInput.disable;
-        const assertions = [];
 
         const shouldShow = isHidden && ((hasItems && hasMinimumText) || showDropdownIfEmpty);
         const shouldHide = this.isVisible && !hasItems;
@@ -297,10 +296,9 @@ export class TagInputDropdown {
     /**
      * @name getFormValue
      */
-    private getFormValue(): string | number | undefined {
-        const value = this.tagInput.formValue;
-        const isString = typeof value === 'string';
-        return isString ? value.trim() : value;
+    private getFormValue(): string {
+        const formValue = this.tagInput.formValue;
+        return formValue ? formValue.toString().trim() : '';
     }
 
     /**
