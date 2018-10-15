@@ -24,7 +24,6 @@ import {
     TagInputComponentEditable,
     TestModule
 } from './tests/testing-helpers.spec';
-import { componentNeedsResolution } from '@angular/core/src/metadata/resource_loading';
 
 describe('TagInputComponent', () => {
     const match = jasmine.objectContaining;
