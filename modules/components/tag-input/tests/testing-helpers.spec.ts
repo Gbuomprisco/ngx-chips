@@ -185,6 +185,15 @@ export class TagInputComponentWithHooks {
     }
 }
 
+@Component({
+    selector: 'test-app',
+    template: `<tag-input [(ngModel)]="items"
+                          [editable]="true"></tag-input>`
+})
+export class TagInputComponentEditable {
+    public items = getItems();
+}
+
 const COMPONENTS = [
     BasicTagInputComponent,
     TagInputComponentWithPlaceholder,
@@ -199,7 +208,8 @@ const COMPONENTS = [
     TagInputComponentCustomTagsAsObjects,
     TagInputComponentWithModelAsStrings,
     TagInputComponentWithAddOnBlur,
-    TagInputComponentWithHooks
+    TagInputComponentWithHooks,
+    TagInputComponentEditable
 ];
 
 @NgModule({
