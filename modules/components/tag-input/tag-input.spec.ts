@@ -619,8 +619,7 @@ describe('TagInputComponent', () => {
     });
 
     describe('when editing an editable tag', () => {
-        let keyUp: Event = new Event('keyup'),
-            keyDown: Event = new Event('keydown'),
+        let keyDown: Event = new Event('keydown'),
             fixture: ComponentFixture<TagInputComponentEditable>,
             component;
 
@@ -641,10 +640,12 @@ describe('TagInputComponent', () => {
             component.tags.first.onKeyDown
                 .subscribe(event => fail('Key event: ' + event.event.keyCode + ' passed to tag-input'));
 
-            expect(component.tags.first.element.nativeElement.classList.contains('tag--editing')).toEqual(true);
-
             // press left arrow key
             keyDown['keyCode'] = 37;
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
+            // press right arrow key
+            keyDown['keyCode'] = 39;
             component.tags.first.element.nativeElement.dispatchEvent(keyDown);
 
             // press backspace
