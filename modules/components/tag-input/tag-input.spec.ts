@@ -626,7 +626,7 @@ describe('TagInputComponent', () => {
             fixture = TestBed.createComponent(TagInputComponentEditable);
         });
 
-        it('it does not switch tags upon arrow or backspace keydown events', fakeAsync(() => {
+        it('does not switch tags upon arrow or backspace keydown events', fakeAsync(() => {
             component = getComponent(fixture);
 
             // selected tag is undefined
@@ -658,5 +658,24 @@ describe('TagInputComponent', () => {
             discardPeriodicTasks();
         }));
 
+        it('disables edit mode upon enter keydown event', fakeAsync(() => {
+            component = getComponent(fixture);
+
+            // selected tag is undefined
+            expect(component.selectedTag).toEqual(undefined);
+
+            // enable editing mode
+            component.tags.first.toggleEditMode();
+
+            // press enter
+            keyDown['keyCode'] = 13;
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
+            expect(component.tags.first.editing).toEqual(false);
+
+            expect(component.items.length).toEqual(2);
+
+            discardPeriodicTasks();
+        }));
     });
 });
