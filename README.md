@@ -113,7 +113,7 @@ Custom class assigned to the input
 If set to true, it will clear the form's text on blur events
 
 
-**`hideForm`** - [**`?number`**]
+**`hideForm`** - [**`?boolean`**]
 
 If set to true, will remove the form from the component
 
