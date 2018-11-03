@@ -470,12 +470,14 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name onAddingRequested
      * @param fromAutocomplete {boolean}
      * @param tag {TagModel}
+     * @param index? {number}
+     * @param giveupFocus? {boolean}
      */
-    public onAddingRequested(fromAutocomplete: boolean, tag: TagModel, index?: number): Promise<TagModel> {
+    public onAddingRequested(fromAutocomplete: boolean, tag: TagModel, index?: number, giveupFocus?: boolean): Promise<TagModel> {
         return new Promise((resolve, reject) => {
             const subscribeFn = (model: TagModel) => {
                 return this
-                    .addItem(fromAutocomplete, model, index)
+                    .addItem(fromAutocomplete, model, index, giveupFocus)
                     .then(resolve)
                     .catch(reject);
             };
@@ -900,10 +902,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name addItem
      * @desc adds the current text model to the items array
-     * @param fromAutocomplete
-     * @param item
+     * @param fromAutocomplete {boolean}
+     * @param item {TagModel}
+     * @param index? {number}
+     * @param giveupFocus? {boolean}
      */
-    private addItem(fromAutocomplete = false, item: TagModel, index?: number): Promise<TagModel> {
+    private addItem(fromAutocomplete = false, item: TagModel, index?: number, giveupFocus?: boolean): Promise<TagModel> {
         const display = this.getItemDisplay(item);
         const tag = this.createTag(item);
 
@@ -919,8 +923,12 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                 // reset control and focus input
                 this.setInputValue('');
 
-                // focus input
-                this.focus(true, false);
+                if (giveupFocus) {
+                    this.focus(false, false);
+                } else {
+                    // focus input
+                    this.focus(true, false);
+                }
 
                 resolve(display);
             };
@@ -1081,7 +1089,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
                 if (this.addOnBlur) {
                     return this
-                        .onAddingRequested(false, this.formValue)
+                        .onAddingRequested(false, this.formValue, undefined, true)
                         .then(reset)
                         .catch(reset);
                 }
