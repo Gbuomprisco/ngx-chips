@@ -21,6 +21,7 @@ import {
     TagInputComponentWithTemplate,
     TagInputComponentWithTransformer,
     TagInputComponentWithValidation,
+    TagInputComponentEditable,
     TestModule
 } from './tests/testing-helpers.spec';
 
@@ -614,5 +615,67 @@ describe('TagInputComponent', () => {
                 expect(component.items.length).toBe(1);
             });
         });
+    });
+
+    describe('when editing an editable tag', () => {
+        let keyDown: Event = new Event('keydown'),
+            fixture: ComponentFixture<TagInputComponentEditable>,
+            component;
+
+        beforeEach(() => {
+            fixture = TestBed.createComponent(TagInputComponentEditable);
+        });
+
+        it('does not switch tags upon arrow or backspace keydown events', fakeAsync(() => {
+            component = getComponent(fixture);
+
+            // selected tag is undefined
+            expect(component.selectedTag).toEqual(undefined);
+
+            // enable editing mode
+            component.tags.first.toggleEditMode();
+
+            // when in editing mode, Left/right arrow keys and backspace should not be passed to the tag-input.
+            component.tags.first.onKeyDown
+                .subscribe(event => fail('Key event: ' + event.event.keyCode + ' passed to tag-input'));
+
+            // press left arrow key
+            keyDown['keyCode'] = 37;
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
+            // press right arrow key
+            keyDown['keyCode'] = 39;
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
+            // press backspace
+            keyDown['keyCode'] = 8;
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
+            expect(component.tags.first.editing).toEqual(true);
+
+            expect(component.items.length).toEqual(2);
+
+            discardPeriodicTasks();
+        }));
+
+        it('disables edit mode upon enter keydown event', fakeAsync(() => {
+            component = getComponent(fixture);
+
+            // selected tag is undefined
+            expect(component.selectedTag).toEqual(undefined);
+
+            // enable editing mode
+            component.tags.first.toggleEditMode();
+
+            // press enter
+            keyDown['keyCode'] = 13;
+            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+
+            expect(component.tags.first.editing).toEqual(false);
+
+            expect(component.items.length).toEqual(2);
+
+            discardPeriodicTasks();
+        }));
     });
 });
