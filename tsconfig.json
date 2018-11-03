@@ -47,6 +47,7 @@
         "useWebpackText": true
     },
     "angularCompilerOptions": {
+        "enableResourceInlining": true,
         "strictMetadataEmit": true
     },
     "files": [
