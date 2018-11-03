@@ -199,11 +199,11 @@ export class TagComponent {
     public keydown(event: EventLike): void {
         if (this.editing) {
             if (event.keyCode === 13) {
-                return this.disableEditMode(event)
+                return this.disableEditMode(event);
             }
+        } else {
+            this.onKeyDown.emit({ event, model: this.model });
         }
-
-        this.onKeyDown.emit({ event, model: this.model });
     }
 
     /**
