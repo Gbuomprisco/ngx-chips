@@ -85,6 +85,12 @@ export class TagComponent {
     public disabled = false;
 
     /**
+     * @name disabled
+     */
+    @Input()
+    public copyable = false;
+
+    /**
      * @name canAddTag
      */
     @Input()
@@ -262,6 +268,14 @@ export class TagComponent {
      */
     public get isRippleVisible(): boolean {
         return !this.readonly && !this.editing && isChrome && this.hasRipple;
+    }
+
+    /**
+     * @desc returns whether the tag is the document's active element
+     * @name isFocused
+     */
+    public isFocused(): boolean {
+        return document.activeElement == this.element.nativeElement;
     }
 
     /**

@@ -12,6 +12,7 @@ import {
     ContentChildren,
     ContentChild,
     OnInit,
+    OnDestroy,
     TemplateRef,
     QueryList,
     AfterViewInit,
@@ -63,7 +64,7 @@ const defaults: Type<TagInputOptions> = forwardRef(() => OptionsProvider.default
     templateUrl: './tag-input.template.html',
     animations
 })
-export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit {
+export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit, OnDestroy {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -180,6 +181,11 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name editable
      */
     @Input() public editable: boolean = new defaults().editable;
+
+    /**
+     * @name copyable
+     */
+    @Input() public copyable: boolean = new defaults().copyable;
 
     /**
      * @name allowDupes
@@ -345,6 +351,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         [constants.KEYUP]: <{ (fun): any }[]>[]
     };
 
+    private copyListener: ((e: ClipboardEvent) => void) | undefined;
+
     /**
      * @description emitter for the 2-way data binding inputText value
      * @name inputTextChange
@@ -404,6 +412,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.setUpOnPasteListener();
         }
 
+        if (this.copyable) {
+            this.setUpCopyListeners();
+        }
+
         const statusChanges$ = this.inputForm.form.statusChanges;
 
         statusChanges$.pipe(
@@ -445,6 +457,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.editable = this.onlyFromAutocomplete ? false : this.editable;
 
         this.setAnimationMetadata();
+    }
+
+    /**
+     * @name ngOnInit
+     */
+    public ngOnDestroy(): void {
+        // remove copy listeners if defined
+        if (this.copyListener) {
+            document.removeEventListener('copy', this.copyListener);
+            this.copyListener = undefined;
+        }
     }
 
     /**
@@ -1053,6 +1076,25 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             event.preventDefault();
             return true;
         });
+    }
+
+    private setUpCopyListeners() {
+        this.copyListener = (event: ClipboardEvent) => {
+
+            if (this.selectedTag) {
+                const tagComponent = this.tags.find(tag => tag.model === this.selectedTag);
+
+                if (tagComponent && tagComponent.isFocused()) {
+                    const text = this.getItemDisplay(this.selectedTag);
+                    event.clipboardData.setData('text/plain', text);
+
+                    event.preventDefault();
+                }
+            }
+        };
+
+        document.removeEventListener('copy', this.copyListener);
+        document.addEventListener('copy', this.copyListener);
     }
 
     /**

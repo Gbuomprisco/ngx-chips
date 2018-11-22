@@ -152,6 +152,10 @@ If set to `false`, it will not be possible to remove tags (defaults to `true`)
 
 If set to `true`, it will be possible to edit the display value of the tags (defaults to `false`)
 
+**`copyable`** - [**`?boolean`**]
+
+If set to `true`, it will be possible to copy the currently selected and focused tag to the clipboard, through a `copy` event (defaults to `false`)
+
 
 **`allowDupes`** - [**`?boolean`**]
 

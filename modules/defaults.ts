@@ -27,6 +27,7 @@ export interface TagInputOptions {
     blinkIfDupe: boolean;
     removable: boolean;
     editable: boolean;
+    copyable: boolean;
     allowDupes: boolean;
     modelAsStrings: boolean;
     trimTags: boolean;
@@ -82,6 +83,7 @@ export const defaults = {
         blinkIfDupe: true,
         removable: true,
         editable: false,
+        copyable: false,
         allowDupes: false,
         modelAsStrings: false,
         trimTags: true,
