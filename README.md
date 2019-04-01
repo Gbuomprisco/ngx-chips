@@ -323,7 +323,7 @@ TagInputDropdownComponent is a proxy between `ngx-chips` and `ng2-material-dropd
 **`autocompleteObservable`** - [**`(text: string) => Observable<Response>`**]
 
 A function that takes a string (current input value) and returns an Observable (ex. `http.get()`) with an array of items wit the same structure as `autocompleteItems` (see below). Make sure you retain the scope of your class or function when using this property.
-It can be used to popuplate the autocomplete with items coming from an async request.
+It can be used to populate the autocomplete with items coming from an async request.
 
 
 **`showDropdownIfEmpty`** - [**`?boolean`**]
