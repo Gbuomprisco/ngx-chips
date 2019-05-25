@@ -43,18 +43,18 @@ export class TagInputDropdown {
     /**
      * @name offset
      */
-    @Input() public offset: string = new defaults().offset;
+    @Input() public offset: string = defaults().offset;
 
     /**
      * @name focusFirstElement
      */
-    @Input() public focusFirstElement = new defaults().focusFirstElement;
+    @Input() public focusFirstElement = defaults().focusFirstElement;
 
     /**
      * - show autocomplete dropdown if the value of input is empty
      * @name showDropdownIfEmpty
      */
-    @Input() public showDropdownIfEmpty = new defaults().showDropdownIfEmpty;
+    @Input() public showDropdownIfEmpty = defaults().showDropdownIfEmpty;
 
     /**
      * @description observable passed as input which populates the autocomplete items
@@ -66,50 +66,50 @@ export class TagInputDropdown {
      * - desc minimum text length in order to display the autocomplete dropdown
      * @name minimumTextLength
      */
-    @Input() public minimumTextLength = new defaults().minimumTextLength;
+    @Input() public minimumTextLength = defaults().minimumTextLength;
 
     /**
      * - number of items to display in the autocomplete dropdown
      * @name limitItemsTo
      */
-    @Input() public limitItemsTo: number = new defaults().limitItemsTo;
+    @Input() public limitItemsTo: number = defaults().limitItemsTo;
 
     /**
      * @name displayBy
      */
-    @Input() public displayBy = new defaults().displayBy;
+    @Input() public displayBy = defaults().displayBy;
 
     /**
      * @name identifyBy
      */
-    @Input() public identifyBy = new defaults().identifyBy;
+    @Input() public identifyBy = defaults().identifyBy;
 
     /**
      * @description a function a developer can use to implement custom matching for the autocomplete
      * @name matchingFn
      */
-    @Input() public matchingFn: (value: string, target: TagModel) => boolean = new defaults().matchingFn;
+    @Input() public matchingFn: (value: string, target: TagModel) => boolean = defaults().matchingFn;
 
     /**
      * @name appendToBody
      */
-    @Input() public appendToBody = new defaults().appendToBody;
+    @Input() public appendToBody = defaults().appendToBody;
 
     /**
      * @name keepOpen
      * @description option to leave dropdown open when adding a new item
      */
-    @Input() public keepOpen = new defaults().keepOpen;
+    @Input() public keepOpen = defaults().keepOpen;
 
     /**
      * @name dynamicUpdate
      */
-    @Input() public dynamicUpdate = new defaults().dynamicUpdate;
+    @Input() public dynamicUpdate = defaults().dynamicUpdate;
 
     /**
     * @name zIndex
      */
-    @Input() public zIndex = new defaults().zIndex;
+    @Input() public zIndex = defaults().zIndex;
 
     /**
      * list of items that match the current value of the input (for autocomplete)
