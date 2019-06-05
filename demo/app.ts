@@ -1,13 +1,12 @@
-import { animations } from './../modules/components/tag-input/animations';
+
 import { NgModule } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import {BrowserModule} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-
 import { TagInputModule } from '../modules';
 import { Home } from './home/home';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 TagInputModule.withDefaults({
@@ -21,14 +20,16 @@ TagInputModule.withDefaults({
         BrowserModule,
         BrowserAnimationsModule,
         CommonModule,
-        HttpModule,
+        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         TagInputModule
     ],
-    declarations: [ Home ],
-    bootstrap: [ Home ],
-    entryComponents: [ Home ]
+    declarations: [Home],
+    bootstrap: [Home],
+    entryComponents: [Home]
 })
-export class AppModule {}
-platformBrowserDynamic().bootstrapModule(AppModule);
+export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+    .catch(err => console.log(err))

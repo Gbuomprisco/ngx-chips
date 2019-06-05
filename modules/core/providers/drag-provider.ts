@@ -12,9 +12,9 @@ export declare interface DraggedTag {
 import { DRAG_AND_DROP_KEY } from '../../core/constants';
 
 export declare interface State {
-    dragging: boolean,
-    dropping: boolean,
-    index: number | undefined
+    dragging: boolean;
+    dropping: boolean;
+    index: number | undefined;
 }
 
 export declare type StateProperty = keyof State;
@@ -36,7 +36,9 @@ export class DragProvider {
      * @param tag
      */
     public setDraggedItem(event: DragEvent, tag: DraggedTag): void {
-        event.dataTransfer.setData(DRAG_AND_DROP_KEY, JSON.stringify(tag));
+        if (event && event.dataTransfer) {
+            event.dataTransfer.setData(DRAG_AND_DROP_KEY, JSON.stringify(tag));
+        }
     }
 
     /**
@@ -44,12 +46,13 @@ export class DragProvider {
      * @param event
      */
     public getDraggedItem(event: DragEvent): DraggedTag | undefined {
-        const data = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
-
-        try {
-            return JSON.parse(data) as DraggedTag;
-        } catch {
-            return;
+        if (event && event.dataTransfer) {
+            const data = event.dataTransfer.getData(DRAG_AND_DROP_KEY);
+            try {
+                return JSON.parse(data) as DraggedTag;
+            } catch {
+                return;
+            }
         }
     }
 
@@ -86,8 +89,8 @@ export class DragProvider {
      * @name setState
      * @param state
      */
-    public setState(state: {[K in StateProperty]?: State[K]}): void {
-        this.state = {...this.state, ...state};
+    public setState(state: { [K in StateProperty]?: State[K] }): void {
+        this.state = { ...this.state, ...state };
     }
 
     /**

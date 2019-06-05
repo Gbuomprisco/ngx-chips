@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {AsyncValidatorFn, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 @Component({
     selector: 'tag-input-form',
@@ -79,7 +79,7 @@ export class TagInputForm implements OnInit, OnChanges {
     /**
      * @name input
      */
-    @ViewChild('input') public input;
+    @ViewChild('input', { static: false }) public input;
 
     /**
      * @name form
@@ -104,7 +104,7 @@ export class TagInputForm implements OnInit, OnChanges {
         this.inputTextChange.emit(text);
     }
 
-    private readonly item: FormControl = new FormControl({value: '', disabled: this.disabled});
+    private readonly item: FormControl = new FormControl({ value: '', disabled: this.disabled });
 
     ngOnInit() {
         this.item.setValidators(this.validators);
@@ -155,7 +155,7 @@ export class TagInputForm implements OnInit, OnChanges {
      * @name hasErrors
      */
     public hasErrors(): boolean {
-        const {dirty, value, valid} = this.form;
+        const { dirty, value, valid } = this.form;
         return dirty && value.item && !valid;
     }
 

@@ -15,7 +15,7 @@ export interface TagInputOptions {
     asyncValidators: AsyncValidatorFn[];
     onlyFromAutocomplete: boolean;
     errorMessages: { [key: string]: string; };
-    theme: string;
+    theme: '';
     onTextChangeDebounce: number;
     inputId: string | null;
     inputClass: string;
