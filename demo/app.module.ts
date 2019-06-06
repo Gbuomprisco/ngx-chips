@@ -1,6 +1,5 @@
 
 import { NgModule } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TagInputModule } from '../modules';
@@ -30,6 +29,3 @@ TagInputModule.withDefaults({
     entryComponents: [Home]
 })
 export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-    .catch(err => console.log(err));
