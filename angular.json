@@ -71,7 +71,10 @@
             "karmaConfig": "karma.conf.js",
             "assets": [ ],
             "styles": [],
-            "scripts": []
+            "scripts": [],
+            "codeCoverageExclude": [
+              "!/modules/"
+          ]
           }
         },
         "lint": {
