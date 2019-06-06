@@ -47,6 +47,10 @@ describe('TagInputComponent', () => {
         tick();
 
         const component = fixture.debugElement.query(By.directive(TagInputComponent)).componentInstance as TagInputComponent;
+        component.ngAfterViewInit();
+
+        fixture.detectChanges();
+        tick();
         return component;
     }
 
@@ -304,6 +308,7 @@ describe('TagInputComponent', () => {
             // selected tag is undefined
             expect(component.selectedTag).toEqual(undefined);
 
+            keyDown['keyCode'] = 8;
             // press backspace
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
@@ -363,15 +368,15 @@ describe('TagInputComponent', () => {
 
         it('it focuses input when pressing tab', fakeAsync(() => {
             component = getComponent(fixture);
-            keyUp['keyCode'] = 9;
+            keyDown['keyCode'] = 37;
 
             // press left arrow
-            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+            component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
-            tick();
             // selected tag is the last one
             expect(component.selectedTag).toEqual('Typescript');
 
+            keyDown['keyCode'] = 9;
             // press tab -> focuses input
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(undefined);
