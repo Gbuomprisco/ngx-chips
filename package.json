@@ -8,8 +8,8 @@
     "build": "ng-packagr -p package.json && mkdirp ./dist/dist && ncp ./modules/core/styles ./dist/core/styles && ncp ./dist/bundles/ngx-chips.umd.js ./dist/dist/ngx-chips.bundle.js",
     "server": "ng serve --port 3010",
     "start": "npm run server",
-    "test": "ng test --browsers=ChromeHeadless --watch=false",
-    "codecov": "ng test --code-coverage --browsers=ChromeHeadless --watch=false"
+    "test": "ng test modules --browsers=ChromeHeadless --watch=false",
+    "codecov": "ng test modules --code-coverage --browsers=ChromeHeadless --watch=false"
   },
   "author": {
     "name": "Giancarlo Buomprisco",
