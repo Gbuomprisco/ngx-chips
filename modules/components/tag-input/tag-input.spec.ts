@@ -46,7 +46,8 @@ describe('TagInputComponent', () => {
         fixture.detectChanges();
         tick();
 
-        const component = fixture.debugElement.query(By.directive(TagInputComponent)).componentInstance as TagInputComponent;
+        const component = fixture.debugElement.query(By.directive(TagInputComponent))
+            .componentInstance as TagInputComponent;
         component.ngAfterViewInit();
 
         fixture.detectChanges();
