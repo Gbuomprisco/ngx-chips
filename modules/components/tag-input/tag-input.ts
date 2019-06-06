@@ -14,8 +14,7 @@ import {
     OnInit,
     TemplateRef,
     QueryList,
-    AfterViewInit,
-    Type
+    AfterViewInit
 } from '@angular/core';
 
 import {
@@ -41,7 +40,7 @@ import { TagComponent } from '../tag/tag.component';
 
 import { animations } from './animations';
 import { defaults } from '../../defaults';
-import { TagInputDropdown } from './../dropdown/index';
+import { TagInputDropdown } from '../dropdown/tag-input-dropdown.component';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -52,9 +51,6 @@ const CUSTOM_ACCESSOR = {
     useExisting: forwardRef(() => TagInputComponent),
     multi: true
 };
-
-// const defaults: Type<TagInputOptions> = forwardRef(() => OptionsProvider.defaults.tagInput);
-
 @Component({
     selector: 'tag-input',
     providers: [CUSTOM_ACCESSOR],
@@ -296,7 +292,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name dropdown
      */
-    // @ContentChild(forwardRef(() => TagInputDropdown), {static: true}) dropdown: TagInputDropdown
+    // @ContentChild(forwardRef(() => TagInputDropdown), {static: true}) dropdown: TagInputDropdown;
     @ContentChild(TagInputDropdown, { static: false }) public dropdown: TagInputDropdown;
     /**
      * @name template

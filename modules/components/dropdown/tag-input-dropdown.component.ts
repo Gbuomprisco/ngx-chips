@@ -2,13 +2,11 @@ import {
     Component,
     ContentChildren,
     EventEmitter,
-    forwardRef,
     HostListener,
     Injector,
     Input,
     QueryList,
     TemplateRef,
-    Type,
     ViewChild,
 } from '@angular/core';
 
@@ -17,9 +15,9 @@ import { Observable } from 'rxjs';
 import { filter, first, debounceTime } from 'rxjs/operators';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { TagInputComponent } from '../tag-input/tag-input';
 import { defaults } from '../../defaults';
 import { TagModel } from '../../core/accessor';
+import { TagInputComponent } from '../tag-input/tag-input';
 
 
 @Component({
