@@ -1,12 +1,12 @@
-import {FormControl} from '@angular/forms';
-import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import {By} from '@angular/platform-browser';
-import {Subject} from 'rxjs';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {TagModel} from '../../core';
-import {TagInputComponent} from './tag-input';
+import { TagModel } from '../../core';
+import { TagInputComponent } from './tag-input';
 
 import {
     BasicTagInputComponent,
@@ -46,7 +46,13 @@ describe('TagInputComponent', () => {
         fixture.detectChanges();
         tick();
 
-        return fixture.debugElement.query(By.directive(TagInputComponent)).componentInstance;
+        const component = fixture.debugElement.query(By.directive(TagInputComponent))
+            .componentInstance as TagInputComponent;
+        component.ngAfterViewInit();
+
+        fixture.detectChanges();
+        tick();
+        return component;
     }
 
     describe('Basic behaviours', () => {
@@ -109,7 +115,7 @@ describe('TagInputComponent', () => {
             const value = 'New Item';
             component.setInputValue(value);
 
-            await component.onAddingRequested(false, value).catch(() => {});
+            await component.onAddingRequested(false, value).catch(() => { });
 
             fixture.detectChanges();
 
@@ -211,7 +217,7 @@ describe('TagInputComponent', () => {
             component.setInputValue(value);
             expect(component.inputForm.form.valid).toBe(false);
 
-            await component.onAddingRequested(false, value).catch(() => {});
+            await component.onAddingRequested(false, value).catch(() => { });
             fixture.detectChanges();
             tick();
 
@@ -221,7 +227,7 @@ describe('TagInputComponent', () => {
 
             // addItem element with > 3 chars without @
             component.setInputValue('Abcde');
-            await component.onAddingRequested(false, invalid).catch(() => {});
+            await component.onAddingRequested(false, invalid).catch(() => { });
 
             fixture.detectChanges();
             tick();
@@ -278,7 +284,7 @@ describe('TagInputComponent', () => {
             fixture.detectChanges();
             tick();
 
-            expect(component.items[2]).toEqual(match({display: 'prefix: @', value: 'prefix: @'}));
+            expect(component.items[2]).toEqual(match({ display: 'prefix: @', value: 'prefix: @' }));
             expect(component.items.length).toEqual(3);
 
             discardPeriodicTasks();
@@ -303,6 +309,7 @@ describe('TagInputComponent', () => {
             // selected tag is undefined
             expect(component.selectedTag).toEqual(undefined);
 
+            keyDown['keyCode'] = 8;
             // press backspace
             component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
@@ -362,14 +369,15 @@ describe('TagInputComponent', () => {
 
         it('it focuses input when pressing tab', fakeAsync(() => {
             component = getComponent(fixture);
-            keyUp['keyCode'] = 9;
+            keyDown['keyCode'] = 37;
 
             // press left arrow
-            component.tags.first.element.nativeElement.dispatchEvent(keyDown);
+            component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
             // selected tag is the last one
             expect(component.selectedTag).toEqual('Typescript');
 
+            keyDown['keyCode'] = 9;
             // press tab -> focuses input
             component.tags.last.element.nativeElement.dispatchEvent(keyDown);
             expect(component.selectedTag).toEqual(undefined);
@@ -473,14 +481,14 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             expect(component.dropdown).toBeDefined();
-
+            component.dropdown.ngAfterviewInit();
             // press 'i'
             component.setInputValue('i');
             component.dropdown.show();
             fixture.detectChanges();
-            tick();
 
             const dropdown = component.dropdown.dropdown;
+            tick();
             const item = dropdown.menu.items.first;
             dropdown.menu.state.dropdownState.onItemClicked.emit(item);
 
@@ -518,7 +526,7 @@ describe('TagInputComponent', () => {
                 TestBed.createComponent(TagInputComponentWithModelAsStrings);
 
             const component: TagInputComponent = getComponent(fixture);
-            component.appendTag({display: 'Tag', value: 'Tag'});
+            component.appendTag({ display: 'Tag', value: 'Tag' });
 
             expect(component.items[2]).toEqual('Tag');
 

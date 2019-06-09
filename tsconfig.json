@@ -1,71 +1,22 @@
 {
-    "compilerOptions": {
-        "removeComments": true,
-        "noImplicitAny": false,
-        "noEmitOnError": true,
-        "strictNullChecks": true,
-        "module": "es2015",
-        "outDir": "dist",
-        "target": "es5",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "stripInternal": true,
-        "declaration": true,
-        "sourceMap": true,
-        "inlineSources": false,
-        "skipLibCheck": true,
-        "moduleResolution": "node",
-        "rootDir": "",
-        "baseUrl": "",
-        "types": [
-            "node",
-            "jasmine"
-        ],
-        "lib": [
-            "dom",
-            "es2015"
-        ],
-        "paths": {
-            "modules": ["modules"],
-            "core": ["modules/core"],
-            "components": ["modules/components"],
-
-            "helpers": ["modules/core/helpers"],
-            "styles": ["modules/core/styles"],
-            "pipes": ["modules/core/pipes"],
-
-            "tag-input": ["modules/components/tag-input"],
-            "dropdown": ["modules/components/dropdown"],
-            "icon": ["modules/components/icon"],
-            "tag": ["modules/components/tag"],
-            "tag-input-form": ["modules/components/tag-input-form"]
-        },
-        "suppressImplicitAnyIndexErrors": true
-    },
-    "awesomeTypescriptLoaderOptions": {
-        "forkChecker": true,
-        "useWebpackText": true
-    },
-    "angularCompilerOptions": {
-        "enableResourceInlining": true,
-        "strictMetadataEmit": true
-    },
-    "files": [
-        "modules/index.ts"
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
     ],
-    "include": [
-        "modules"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "**/tests",
-        "**/*-ngfactory.ts",
-        "**/*.spec.ts"
-    ],
-    "compileOnSave": false,
-    "buildOnSave": false,
-    "atom": {
-        "rewriteTsconfig": false
-    }
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  }
 }

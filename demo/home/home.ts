@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-
+import { HttpClient } from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {Http, Response} from '@angular/http';
 import {filter, map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 
@@ -13,7 +12,7 @@ import {Observable, of} from 'rxjs';
 export class Home {
     form: FormGroup;
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
         this.form = new FormBuilder().group({
             chips: [['chip'], []]
         });
@@ -40,18 +39,18 @@ export class Home {
     dragAndDropObjects = [{display: 'Javascript', value: 'Javascript'}, {display: 'Typescript', value: 'Typescript'}];
     dragAndDropStrings = ['CoffeScript', 'Scala.js'];
 
-    public requestAutocompleteItems = (text: string): Observable<Response> => {
+    public requestAutocompleteItems = (text: string): Observable<any> => {
         const url = `https://api.github.com/search/repositories?q=${text}`;
         return this.http
-            .get(url)
-            .pipe(map(data => data.json().items.map(item => item.full_name)));
-    };
+            .get<any>(url)
+            .pipe(map(items => items.map(item => item.full_name)));
+    }
 
     public requestAutocompleteItemsFake = (text: string): Observable<string[]> => {
         return of([
             'item1', 'item2', 'item3'
         ]);
-    };
+    }
 
     public options = {
         readonly: undefined,

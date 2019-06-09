@@ -20,7 +20,7 @@ export const animations = [
             opacity: 0
         })),
         transition(':enter', [
-            animate("{{ enter }}", keyframes([
+            animate('{{ enter }}', keyframes([
                 style({opacity: 0, offset: 0, transform: 'translate(0px, 20px)'}),
                 style({opacity: 0.3, offset: 0.3, transform: 'translate(0px, -10px)'}),
                 style({opacity: 0.5, offset: 0.5, transform: 'translate(0px, 0px)'}),
@@ -29,7 +29,7 @@ export const animations = [
             ]))
         ]),
         transition(':leave', [
-            animate("{{ leave }}", keyframes([
+            animate('{{ leave }}', keyframes([
                 style({opacity: 1, transform: 'translateX(0)', offset: 0}),
                 style({opacity: 1, transform: 'translateX(-15px)', offset: 0.7}),
                 style({opacity: 0, transform: 'translateX(100%)', offset: 1.0})

@@ -1,50 +1,48 @@
-<!-- CONTAINER -->
-
-<div ngClass="ng2-tag-input {{ theme || '' }}"
-     (click)="focus(true, false)"
-     [attr.tabindex]="-1"
-
-     (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
-     (dragenter)="dragZone ? onDragOver($event) : undefined"
-     (dragover)="dragZone ? onDragOver($event) : undefined"
-     (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
-
-     [class.ng2-tag-input--dropping]="isDropping()"
-     [class.ng2-tag-input--disabled]="disable"
-     [class.ng2-tag-input--loading]="isLoading"
-     [class.ng2-tag-input--invalid]="hasErrors()"
-     [class.ng2-tag-input--focused]="isInputFocused()">
+<div
+    [ngClass]="theme"
+    class="ng2-tag-input"
+    (click)="focus(true, false)"
+    [attr.tabindex]="-1"
+    (drop)="dragZone ? onTagDropped($event, undefined) : undefined"
+    (dragenter)="dragZone ? onDragOver($event) : undefined"
+    (dragover)="dragZone ? onDragOver($event) : undefined"
+    (dragend)="dragZone ? dragProvider.onDragEnd() : undefined"
+    [class.ng2-tag-input--dropping]="isDropping()"
+    [class.ng2-tag-input--disabled]="disable"
+    [class.ng2-tag-input--loading]="isLoading"
+    [class.ng2-tag-input--invalid]="hasErrors()"
+    [class.ng2-tag-input--focused]="isInputFocused()"
+>
 
     <!-- TAGS -->
     <div class="ng2-tags-container">
-        <tag *ngFor="let item of items; let i = index; trackBy: trackBy"
-
-             (onSelect)="selectItem(item)"
-             (onRemove)="onRemoveRequested(item, i)"
-             (onKeyDown)="handleKeydown($event)"
-             (onTagEdited)="updateEditedTag($event)"
-             (onBlur)="onTagBlurred($event, i)"
-             draggable="{{ editable }}"
-
-             (dragstart)="dragZone ? onDragStarted($event, item, i) : undefined"
-             (drop)="dragZone ? onTagDropped($event, i) : undefined"
-             (dragenter)="dragZone ? onDragOver($event) : undefined"
-             (dragover)="dragZone ? onDragOver($event, i) : undefined"
-             (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
-
-             [canAddTag]="isTagValid"
-             [attr.tabindex]="0"
-             [disabled]="disable"
-             [@animation]="animationMetadata"
-             [hasRipple]="ripple"
-             [index]="i"
-             [removable]="removable"
-             [editable]="editable"
-             [displayBy]="displayBy"
-             [identifyBy]="identifyBy"
-             [template]="!!hasCustomTemplate() ? templates.first : undefined"
-             [draggable]="dragZone"
-             [model]="item">
+        <tag
+            *ngFor="let item of items; let i = index; trackBy: trackBy"
+            (onSelect)="selectItem(item)"
+            (onRemove)="onRemoveRequested(item, i)"
+            (onKeyDown)="handleKeydown($event)"
+            (onTagEdited)="updateEditedTag($event)"
+            (onBlur)="onTagBlurred($event, i)"
+            draggable="{{ editable }}"
+            (dragstart)="dragZone ? onDragStarted($event, item, i) : undefined"
+            (drop)="dragZone ? onTagDropped($event, i) : undefined"
+            (dragenter)="dragZone ? onDragOver($event) : undefined"
+            (dragover)="dragZone ? onDragOver($event, i) : undefined"
+            (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
+            [canAddTag]="isTagValid"
+            [attr.tabindex]="0"
+            [disabled]="disable"
+            [@animation]="animationMetadata"
+            [hasRipple]="ripple"
+            [index]="i"
+            [removable]="removable"
+            [editable]="editable"
+            [displayBy]="displayBy"
+            [identifyBy]="identifyBy"
+            [template]="!!hasCustomTemplate() ? templates.first : undefined"
+            [draggable]="dragZone"
+            [model]="item"
+        >
         </tag>
 
         <tag-input-form
@@ -53,7 +51,6 @@
             (click)="dropdown ? dropdown.show() : undefined"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
-
             [(inputText)]="inputText"
             [disabled]="disable"
             [validators]="validators"
@@ -62,18 +59,28 @@
             [placeholder]="items.length ? placeholder : secondaryPlaceholder"
             [inputClass]="inputClass"
             [inputId]="inputId"
-            [tabindex]="tabindex">
+            [tabindex]="tabindex"
+        >
         </tag-input-form>
     </div>
 
-    <div class="progress-bar" *ngIf="isProgressBarVisible$ | async"></div>
+    <div
+        class="progress-bar"
+        *ngIf="isProgressBarVisible$ | async"
+    ></div>
 </div>
 
 <!-- ERRORS -->
-<div *ngIf="hasErrors()" class="error-messages {{ theme || '' }}">
-    <p *ngFor="let error of errors" class="error-message">
+<div
+    *ngIf="hasErrors()"
+    [ngClass]="theme"
+    class="error-messages"
+>
+    <p
+        *ngFor="let error of errors"
+        class="error-message"
+    >
         <span>{{ error }}</span>
     </p>
 </div>
-
 <ng-content></ng-content>

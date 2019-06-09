@@ -7,7 +7,7 @@ export type Options = {
     dropdown?: {
         [P in keyof TagInputDropdownOptions]?: TagInputDropdownOptions[P];
     }
-}
+};
 
 export class OptionsProvider {
     public static defaults = defaults;
