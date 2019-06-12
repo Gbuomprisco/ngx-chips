@@ -481,7 +481,7 @@ describe('TagInputComponent', () => {
             const component = getComponent(fixture);
 
             expect(component.dropdown).toBeDefined();
-            component.dropdown.ngAfterviewInit();
+            component.dropdown.ngAfterViewInit();
             // press 'i'
             component.setInputValue('i');
             component.dropdown.show();
