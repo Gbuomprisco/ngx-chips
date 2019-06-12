@@ -8,6 +8,7 @@ import {
     QueryList,
     TemplateRef,
     ViewChild,
+    AfterViewInit,
 } from '@angular/core';
 
 // rx
@@ -24,7 +25,8 @@ import { TagInputComponent } from '../tag-input/tag-input';
     selector: 'tag-input-dropdown',
     templateUrl: './tag-input-dropdown.template.html'
 })
-export class TagInputDropdown {
+export class TagInputDropdown implements AfterViewInit {
+
     /**
      * @name dropdown
      */
@@ -155,7 +157,7 @@ export class TagInputDropdown {
     /**
      * @name ngAfterviewInit
      */
-    public ngAfterviewInit(): void {
+    ngAfterViewInit(): void {
         this.onItemClicked().subscribe((item: Ng2MenuItem) => {
             this.requestAdding(item);
         });
