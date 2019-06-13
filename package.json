@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
