@@ -50,7 +50,7 @@ The theme's name will be attached to the .ng2-tag-input class. In this way, we c
 #### Example theme
 
 ```scss
-@import "../../modules/components/styles/core/_core.scss";
+@import "~node_modules/ngx-chips/core/styles/core/_core.scss";
 
 $foundation-primary: #1779ba;
 $foundation-primary-dark: darken($foundation-primary, 10%);
@@ -79,17 +79,17 @@ $foundation-icon-theme: (
 );
 
 // apply theme to the container
-:ng-deep .ng2-tag-input.foundation-theme {
+::ng-deep tag-input .ng2-tag-input.foundation-theme {
     @include tag-input-theme($foundation-theme);
 }
 
 // apply theme to the tags
-:ng-deep .ng2-tag-input.foundation-theme tag {
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag {
     @include tag-theme($foundation-tag-theme);
 }
 
 // apply theme to the delete icon
-:ng-deep .ng2-tag-input.foundation-theme tag delete-icon {
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon {
     @include icon-theme($foundation-icon-theme);
 }
 ```
