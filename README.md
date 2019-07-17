@@ -11,7 +11,7 @@ Check out [the live demo](https://angular-mfppay.stackblitz.io/).
 
 ## Getting Started
 
-    npm install ngx-chips --save // OR
+    npm i ngx-chips // OR
     yarn add ngx-chips
 
 **Notice**: the latest version on NPM may not reflect the branch `master`. Open an issue and tag me if you need it to be published.
