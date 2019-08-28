@@ -15,6 +15,7 @@ import {
 import { TagModel } from '../../core/accessor';
 import { TagRipple } from '../tag/tag-ripple.component';
 import { EventLike } from '../../core/helpers/event-like';
+import { KeyDownEvent } from '../../core/helpers/keydown-event';
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
@@ -112,7 +113,7 @@ export class TagComponent {
      * @name onKeyDown
      */
     @Output()
-    public onKeyDown: EventEmitter<any> = new EventEmitter<any>();
+    public onKeyDown: EventEmitter<KeyDownEvent> = new EventEmitter<KeyDownEvent>();
 
     /**
      * @name onTagEdited
@@ -196,7 +197,7 @@ export class TagComponent {
      * @param event
      */
     @HostListener('keydown', ['$event'])
-    public keydown(event: EventLike): void {
+    public keydown(event: KeyboardEvent): void {
         if (this.editing) {
             if (event.keyCode === 13) {
                 return this.disableEditMode(event);
@@ -300,7 +301,7 @@ export class TagComponent {
     /**
      * @name getContentEditableText
      */
-    private getContentEditableText(): string {
+    protected getContentEditableText(): string {
         const input = this.getContentEditable();
 
         return input ? input.innerText.trim() : '';
@@ -310,7 +311,7 @@ export class TagComponent {
      * @name setContentEditableText
      * @param model
      */
-    private setContentEditableText(model: TagModel) {
+    protected setContentEditableText(model: TagModel) {
         const input = this.getContentEditable();
         const value = this.getDisplayValue(model);
 
@@ -320,7 +321,7 @@ export class TagComponent {
     /**
      * @name
      */
-    private activateEditMode(): void {
+    protected activateEditMode(): void {
         const classList = this.element.nativeElement.classList;
         classList.add('tag--editing');
 
@@ -331,7 +332,7 @@ export class TagComponent {
      * @name storeNewValue
      * @param input
      */
-    private storeNewValue(input: string): void {
+    protected storeNewValue(input: string): void {
         const exists = (tag: TagModel) => {
             return typeof tag === 'string'
                 ? tag === input
@@ -368,7 +369,7 @@ export class TagComponent {
     /**
      * @name getContentEditable
      */
-    private getContentEditable(): HTMLInputElement {
+    protected getContentEditable(): HTMLInputElement {
         return this.element.nativeElement.querySelector('[contenteditable]');
     }
 }
