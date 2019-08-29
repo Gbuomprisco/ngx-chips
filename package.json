@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
@@ -49,7 +49,7 @@
     "zone.js": "~0.9.1"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.10.1"
+    "ng2-material-dropdown": "0.10.2"
   },
   "peerDependencies": {
     "@angular/animations": "^8.0.0",
