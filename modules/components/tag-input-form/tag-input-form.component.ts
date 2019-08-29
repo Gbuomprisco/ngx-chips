@@ -198,10 +198,9 @@ export class TagInputForm implements OnInit, OnChanges {
         this.inputText = this.value.value;
         if ($event.key === 'Enter') {
             this.submit($event);
-
-            this.inputText = '';
+        } else {
+          return this.onKeydown.emit($event);
         }
-        return this.onKeydown.emit($event);
     }
 
     /**
@@ -218,8 +217,6 @@ export class TagInputForm implements OnInit, OnChanges {
      */
     public submit($event: Event): void {
         $event.preventDefault();
-        if (this.form.valid) {
-            this.onSubmit.emit($event);
-        }
+        this.onSubmit.emit($event);
     }
 }
