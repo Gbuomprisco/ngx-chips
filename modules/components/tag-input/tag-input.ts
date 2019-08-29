@@ -976,9 +976,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
                     .subscribe((statusUpdate) => {
                         if (statusUpdate === 'VALID' && isTagValid) {
                             appendItem();
-                            resolve();
+                            return reset();
                         } else {
-                            onValidationError();
+                            reset();
+                            return onValidationError();
                         }
                     });
             }
@@ -1029,8 +1030,6 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      */
     private setUpInputKeydownListeners(): void {
         this.inputForm.onKeydown.subscribe(event => {
-            this.fireEvents('keydown', event);
-
             if (event.key === 'Backspace' && this.formValue.trim() === '') {
                 event.preventDefault();
             }
