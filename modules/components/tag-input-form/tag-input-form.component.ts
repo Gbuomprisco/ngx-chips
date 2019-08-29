@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { KeyDownEvent } from '../../core/helpers/keydown-event';
 
 @Component({
     selector: 'tag-input-form',
@@ -10,27 +11,27 @@ export class TagInputForm implements OnInit, OnChanges {
     /**
      * @name onSubmit
      */
-    @Output() public onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() public onSubmit: EventEmitter<Event> = new EventEmitter();
 
     /**
      * @name onBlur
      */
-    @Output() public onBlur: EventEmitter<any> = new EventEmitter();
+    @Output() public onBlur: EventEmitter<FocusEvent> = new EventEmitter();
 
     /**
      * @name onFocus
      */
-    @Output() public onFocus: EventEmitter<any> = new EventEmitter();
+    @Output() public onFocus: EventEmitter<FocusEvent> = new EventEmitter();
 
     /**
      * @name onKeyup
      */
-    @Output() public onKeyup: EventEmitter<any> = new EventEmitter();
+    @Output() public onKeyup: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     /**
      * @name onKeydown
      */
-    @Output() public onKeydown: EventEmitter<any> = new EventEmitter();
+    @Output() public onKeydown: EventEmitter<KeyboardEvent> = new EventEmitter();
 
     /**
      * @name inputTextChange
@@ -104,9 +105,9 @@ export class TagInputForm implements OnInit, OnChanges {
         this.inputTextChange.emit(text);
     }
 
-    private readonly item: FormControl = new FormControl({ value: '', disabled: this.disabled });
+    protected readonly item: FormControl = new FormControl({ value: '', disabled: this.disabled });
 
-    ngOnInit() {
+    public ngOnInit(): void {
         this.item.setValidators(this.validators);
         this.item.setAsyncValidators(this.asyncValidators);
 
@@ -116,7 +117,7 @@ export class TagInputForm implements OnInit, OnChanges {
         });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(changes: SimpleChanges): void {
         if (changes.disabled && !changes.disabled.firstChange) {
             if (changes.disabled.currentValue) {
                 this.form.controls['item'].disable();
@@ -193,7 +194,7 @@ export class TagInputForm implements OnInit, OnChanges {
      * @name onKeyDown
      * @param $event
      */
-    public onKeyDown($event) {
+    public onKeyDown($event: KeyboardEvent) {
         this.inputText = this.value.value;
         if ($event.key === 'Enter') {
             this.submit($event);
@@ -206,7 +207,7 @@ export class TagInputForm implements OnInit, OnChanges {
      * @name onKeyUp
      * @param $event
      */
-    public onKeyUp($event) {
+    public onKeyUp($event: KeyboardEvent) {
         this.inputText = this.value.value;
         return this.onKeyup.emit($event);
     }
@@ -214,7 +215,7 @@ export class TagInputForm implements OnInit, OnChanges {
     /**
      * @name submit
      */
-    public submit($event: any): void {
+    public submit($event: Event): void {
         $event.preventDefault();
         this.onSubmit.emit($event);
     }
