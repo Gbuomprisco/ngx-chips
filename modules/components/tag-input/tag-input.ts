@@ -880,7 +880,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @param tag {TagModel}
      * @param index {number}
      */
-    private removeItem(tag: TagModel, index: number): void {
+    public removeItem(tag: TagModel, index: number): void {
         this.items = this.getItemsWithout(index);
 
         // if the removed tag was selected, set it as undefined
