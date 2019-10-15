@@ -1,6 +1,6 @@
 {
   "name": "ngx-chips",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
@@ -18,17 +18,17 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.800.0",
-    "@angular/animations": "^8.0.0",
-    "@angular/cli": "^8.0.0",
-    "@angular/common": "^8.0.0",
-    "@angular/compiler": "^8.0.0",
-    "@angular/compiler-cli": "^8.0.0",
-    "@angular/core": "^8.0.0",
-    "@angular/forms": "^8.0.0",
-    "@angular/language-service": "~8.0.0",
-    "@angular/platform-browser": "^8.0.0",
-    "@angular/platform-browser-dynamic": "^8.0.0",
+    "@angular-devkit/build-angular": "~0.803.9",
+    "@angular/animations": "^8.2.11",
+    "@angular/cli": "^8.2.11",
+    "@angular/common": "^8.2.11",
+    "@angular/compiler": "^8.2.11",
+    "@angular/compiler-cli": "^8.2.11",
+    "@angular/core": "^8.2.11",
+    "@angular/forms": "^8.2.11",
+    "@angular/language-service": "~8.2.11",
+    "@angular/platform-browser": "^8.2.11",
+    "@angular/platform-browser-dynamic": "^8.2.11",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
@@ -45,18 +45,17 @@
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",
     "tslint": "^5.17.0",
-    "typescript": "3.4.5",
+    "typescript": "^3.5.2",
     "zone.js": "~0.9.1"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.10.1"
+    "ng2-material-dropdown": "0.11.0"
   },
   "peerDependencies": {
     "@angular/animations": "^8.0.0",
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0",
-    "@angular/forms": "^8.0.0",
-    "rxjs": "~6.4.0"
+    "@angular/forms": "^8.0.0"
   },
   "keywords": [
     "angular tag input",
@@ -85,5 +84,12 @@
     "whitelistedNonPeerDependencies": [
       "ng2-material-dropdown"
     ]
+  },
+  "bit": {
+    "env": {
+      "compiler": "bit.envs/compilers/angular@0.2.0"
+    },
+    "componentsDefaultDirectory": "components/{name}",
+    "packageManager": "npm"
   }
 }
