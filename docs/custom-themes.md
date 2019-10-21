@@ -24,7 +24,7 @@ In order to get the mixins to style the component, you should first import them:
 @import "~node_modules/ngx-chips/core/styles/core/_core.scss";
 ```
 
-In order to understand what to define in your theme - [check out the sass mixins](https://github.com/gbuomprisco/ng2-tag-input/blob/master/modules/components/styles/core/_mixins.scss)
+In order to understand what to define in your theme - [check out the sass mixins](https://github.com/gbuomprisco/ng2-tag-input/blob/master/modules/core/styles/core/_mixins.scss)
 
 #### Defining a theme
 
