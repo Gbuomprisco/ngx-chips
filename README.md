@@ -577,8 +577,8 @@ Set up some methods that will run when its relative event is fired.
 ```
 
 
-#### Readonly
-If readonly is passed to the tag-input, it won't be possible to select, add and remove items.
+~~#### Readonly
+If readonly is passed to the tag-input, it won't be possible to select, add and remove items.~~ [REMOVED]
 
 ```html
 <tag-input [ngModel]="['Javascript', 'Typescript']" [readonly]="true"></tag-input>
