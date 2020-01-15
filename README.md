@@ -387,7 +387,7 @@ If set to `false`, the dropdown will not try to set the position according to it
 
 **`zIndex`** - [**`?number`**]
 
-Manually set the zIndex of the dropdown. Defaults to `100`.
+Manually set the zIndex of the dropdown. Defaults to `1000`.
 
 ---
 
