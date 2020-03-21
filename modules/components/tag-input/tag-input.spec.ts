@@ -1,4 +1,3 @@
-import { FormControl } from '@angular/forms';
 import {
   async,
   ComponentFixture,
@@ -7,16 +6,18 @@ import {
   TestBed,
   tick
 } from '@angular/core/testing';
-
+import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { defaults } from 'modules/defaults';
+import { of } from 'rxjs';
 
 import { TagModel } from '../../core';
 import { TagInputComponent } from './tag-input';
-
 import {
   BasicTagInputComponent,
+  TagInputComponentEditable,
   TagInputComponentWithAddOnBlur,
   TagInputComponentWithAutocomplete,
   TagInputComponentWithHooks,
@@ -28,7 +29,6 @@ import {
   TagInputComponentWithTemplate,
   TagInputComponentWithTransformer,
   TagInputComponentWithValidation,
-  TagInputComponentEditable,
   TestModule
 } from './tests/testing-helpers.spec';
 
@@ -139,47 +139,42 @@ describe('TagInputComponent', () => {
       discardPeriodicTasks();
     }));
 
-    it('emits the event onAdd', () => {
+    it('emits the event onAdd', fakeAsync(async () => {
       const fixture: ComponentFixture<
         TagInputComponentWithOutputs
       > = TestBed.createComponent(TagInputComponentWithOutputs);
       const itemName = 'New Item';
+      const component = getComponent(fixture);
+      const control = component.inputForm.form.get('item') as FormControl;
 
-      fakeAsync(async (done: DoneFn) => {
-        const component = getComponent(fixture);
-        const control = component.inputForm.form.get('item') as FormControl;
+      control.setValue(itemName);
 
-        control.setValue(itemName);
-
-        component.onAdd.subscribe(item => {
-          expect(item).toEqual(itemName);
-          done();
-        });
-
-        await component.onAddingRequested(false, itemName);
-        tick();
-        discardPeriodicTasks();
+      component.onAdd.subscribe(item => {
+        expect(item.value).toEqual(itemName);
       });
-    });
 
-    it('does not allow dupes', () => {
+      await component.onAddingRequested(false, itemName);
+      tick();
+      discardPeriodicTasks();
+    }));
+
+    it('does not allow dupes', fakeAsync(async () => {
       const fixture: ComponentFixture<
         BasicTagInputComponent
       > = TestBed.createComponent(BasicTagInputComponent);
-      return fakeAsync(async () => {
-        const component = getComponent(fixture);
-        const item = 'Javascript';
+      const component = getComponent(fixture);
+      const item = 'Javascript';
 
-        component.setInputValue(item);
-        await component.onAddingRequested(false, item);
+      component.setInputValue(item);
+      await component.onAddingRequested(false, item);
 
-        tick();
-        fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
 
-        expect(component.items.length).toEqual(2);
-        discardPeriodicTasks();
-      });
-    });
+      expect(component.items.length).toEqual(2);
+      tick(defaults.tagInput.onTextChangeDebounce);
+      discardPeriodicTasks();
+    }));
   });
 
   describe('when an item is removed', () => {
@@ -524,12 +519,10 @@ describe('TagInputComponent', () => {
       discardPeriodicTasks();
     }));
 
-    it('does not let add item if onlyFromAutocomplete is set to true', () => {
-      const fixture: ComponentFixture<
-        TagInputComponentWithOnlyAutocomplete
-      > = TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
-
-      return fakeAsync(async () => {
+    it('does not let add item if onlyFromAutocomplete is set to true', fakeAsync(async () => {
+        const fixture: ComponentFixture<
+          TagInputComponentWithOnlyAutocomplete
+        > = TestBed.createComponent(TagInputComponentWithOnlyAutocomplete);
         const component = getComponent(fixture);
         const value = 'item';
 
@@ -543,8 +536,8 @@ describe('TagInputComponent', () => {
 
         await component.onAddingRequested(true, value);
         expect(component.items.length).toEqual(3);
-      });
-    });
+        tick(defaults.tagInput.onTextChangeDebounce * 2);
+    }));
   });
 
   describe('model as strings', () => {
@@ -613,46 +606,35 @@ describe('TagInputComponent', () => {
       fixture = TestBed.createComponent(TagInputComponentWithHooks);
     });
 
-    it('intercepts hook onAdding and returns an observable', () => {
-      fakeAsync(async () => {
-        const component: TagInputComponent = getComponent(fixture);
-        const subject = new Subject();
-        const tag = component.createTag('tag');
+    it('intercepts hook onAdding and returns an observable', fakeAsync(async () => {
+      const component: TagInputComponent = getComponent(fixture);
+      const tag = component.createTag('tag');
 
-        component.onAdding = () => {
-          return subject;
-        };
+      component.onAdding = (tag: TagModel) => {
+        return of(tag);
+      };
 
-        await component.onAddingRequested(false, tag);
+      expect(component.items.length).toBe(2);
 
-        expect(component.items.length).toBe(2);
+      await component.onAddingRequested(false, tag);
 
-        subject.next(tag);
+      expect(component.items.length).toBe(3);
+    }));
 
-        expect(component.items.length).toBe(3);
-      });
-    });
+    it('intercepts hook onRemoving and returns an observable', fakeAsync(async () => {
+      const component: TagInputComponent = getComponent(fixture);
+      const tag = component.items[0];
 
-    it('intercepts hook onRemoving and returns an observable', () => {
-      fakeAsync(async () => {
-        const component: TagInputComponent = getComponent(fixture);
-        const subject = new Subject();
+      component.onRemoving = (tag: TagModel) => {
+        return of(tag);
+      };
 
-        component.onRemoving = () => {
-          return subject;
-        };
+      expect(component.items.length).toBe(2);
 
-        const tag = component.items[0];
+      await component.onRemoveRequested(tag, 0);
 
-        await component.onRemoveRequested(tag, 0);
-
-        expect(component.items.length).toBe(2);
-
-        subject.next(tag);
-
-        expect(component.items.length).toBe(1);
-      });
-    });
+      expect(component.items.length).toBe(1);
+    }));
   });
 
   describe('when editing an editable tag', () => {
