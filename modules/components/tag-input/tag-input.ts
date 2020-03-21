@@ -1,46 +1,37 @@
 // angular
 import {
-    Component,
-    forwardRef,
-    HostBinding,
-    Input,
-    Output,
-    EventEmitter,
-    Renderer2,
-    ViewChild,
-    ViewChildren,
-    ContentChildren,
-    ContentChild,
-    OnInit,
-    TemplateRef,
-    QueryList,
-    AfterViewInit
+  AfterViewInit,
+  Component,
+  ContentChild,
+  ContentChildren,
+  EventEmitter,
+  forwardRef,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+  ViewChildren
 } from '@angular/core';
-
-import {
-    AsyncValidatorFn,
-    FormControl,
-    NG_VALUE_ACCESSOR,
-    ValidatorFn
-} from '@angular/forms';
+import { AsyncValidatorFn, FormControl, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 
 // rx
 import { Observable } from 'rxjs';
-import { debounceTime, filter, map, first } from 'rxjs/operators';
+import { debounceTime, filter, first, map } from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor, TagModel } from '../../core/accessor';
-import { listen } from '../../core/helpers/listen';
 import * as constants from '../../core/constants';
-
-import { DragProvider, DraggedTag } from '../../core/providers/drag-provider';
-
-import { TagInputForm } from '../tag-input-form/tag-input-form.component';
-import { TagComponent } from '../tag/tag.component';
-
-import { animations } from './animations';
+import { listen } from '../../core/helpers/listen';
+import { DraggedTag, DragProvider } from '../../core/providers/drag-provider';
 import { defaults } from '../../defaults';
 import { TagInputDropdown } from '../dropdown/tag-input-dropdown.component';
+import { TagInputForm } from '../tag-input-form/tag-input-form.component';
+import { TagComponent } from '../tag/tag.component';
+import { animations } from './animations';
 
 // angular universal hacks
 /* tslint:disable-next-line */
@@ -293,7 +284,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name dropdown
      */
     // @ContentChild(forwardRef(() => TagInputDropdown), {static: true}) dropdown: TagInputDropdown;
-    @ContentChild(TagInputDropdown, { static: false }) public dropdown: TagInputDropdown;
+    @ContentChild(TagInputDropdown) public dropdown: TagInputDropdown;
     /**
      * @name template
      * @desc reference to the template if provided by the user
@@ -303,7 +294,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name inputForm
      */
-    @ViewChild(TagInputForm, { static: false }) public inputForm: TagInputForm;
+    @ViewChild(TagInputForm) public inputForm: TagInputForm;
 
     /**
      * @name selectedTag
@@ -1116,9 +1107,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         }
 
         const getText = (): string => {
-            const isIE = Boolean((window as IEWindow).clipboardData);
+            const isIE = Boolean((window as unknown as IEWindow).clipboardData);
             const clipboardData = isIE ? (
-                (window as IEWindow).clipboardData
+                (window as unknown as IEWindow).clipboardData
             ) : data.clipboardData;
             const type = isIE ? 'Text' : 'text/plain';
             return clipboardData === null ? '' : clipboardData.getData(type) || '';

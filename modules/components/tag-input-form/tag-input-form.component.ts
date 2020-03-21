@@ -79,7 +79,7 @@ export class TagInputForm implements OnInit, OnChanges {
     /**
      * @name input
      */
-    @ViewChild('input', { static: false }) public input;
+    @ViewChild('input') public input;
 
     /**
      * @name form
