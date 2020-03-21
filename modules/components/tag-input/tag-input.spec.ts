@@ -610,8 +610,8 @@ describe('TagInputComponent', () => {
       const component: TagInputComponent = getComponent(fixture);
       const tag = component.createTag('tag');
 
-      component.onAdding = (tag: TagModel) => {
-        return of(tag);
+      component.onAdding = (tagToAdd: TagModel) => {
+        return of(tagToAdd);
       };
 
       expect(component.items.length).toBe(2);
@@ -625,8 +625,8 @@ describe('TagInputComponent', () => {
       const component: TagInputComponent = getComponent(fixture);
       const tag = component.items[0];
 
-      component.onRemoving = (tag: TagModel) => {
-        return of(tag);
+      component.onRemoving = (tagToRemove: TagModel) => {
+        return of(tagToRemove);
       };
 
       expect(component.items.length).toBe(2);

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ContentChildren,
   EventEmitter,
@@ -7,17 +8,16 @@ import {
   Input,
   QueryList,
   TemplateRef,
-  ViewChild,
-  AfterViewInit
+  ViewChild
 } from '@angular/core';
 
+import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 // rx
 import { Observable } from 'rxjs';
-import { filter, first, debounceTime } from 'rxjs/operators';
+import { debounceTime, filter, first } from 'rxjs/operators';
 
-import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
-import { defaults } from '../../defaults';
 import { TagModel } from '../../core/accessor';
+import { defaults } from '../../defaults';
 import { TagInputComponent } from '../tag-input/tag-input';
 
 @Component({
@@ -267,7 +267,7 @@ export class TagInputDropdown implements AfterViewInit {
     } else if (shouldHide) {
       this.hide();
     }
-  };
+  }
 
   /**
    * @name hide
@@ -319,7 +319,7 @@ export class TagInputDropdown implements AfterViewInit {
   private requestAdding = async (item: Ng2MenuItem) => {
     const tag = this.createTagModel(item);
     await this.tagInput.onAddingRequested(true, tag).catch(() => {});
-  };
+  }
 
   /**
    * @name createTagModel
@@ -376,7 +376,7 @@ export class TagInputDropdown implements AfterViewInit {
    */
   private resetItems = (): void => {
     this.items = [];
-  };
+  }
 
   /**
    * @name populateItems
@@ -420,7 +420,7 @@ export class TagInputDropdown implements AfterViewInit {
     this.autocompleteObservable(text)
       .pipe(first())
       .subscribe(subscribeFn, () => this.setLoadingState(false));
-  };
+  }
 
   /**
    * @name setLoadingState
