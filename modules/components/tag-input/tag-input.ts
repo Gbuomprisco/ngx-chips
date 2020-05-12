@@ -1116,9 +1116,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         }
 
         const getText = (): string => {
-            const isIE = Boolean((window as IEWindow).clipboardData);
+            const isIE = Boolean((window as unknown as IEWindow).clipboardData);
             const clipboardData = isIE ? (
-                (window as IEWindow).clipboardData
+                (window as unknown  as IEWindow).clipboardData
             ) : data.clipboardData;
             const type = isIE ? 'Text' : 'text/plain';
             return clipboardData === null ? '' : clipboardData.getData(type) || '';
