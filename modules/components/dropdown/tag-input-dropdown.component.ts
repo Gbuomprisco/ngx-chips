@@ -28,7 +28,7 @@ export class TagInputDropdown implements AfterViewInit {
   /**
    * @name dropdown
    */
-  @ViewChild(Ng2Dropdown, { static: false }) public dropdown: Ng2Dropdown;
+  @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
 
   /**
    * @name menuTemplate

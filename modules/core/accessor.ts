@@ -1,5 +1,5 @@
 import { ControlValueAccessor } from '@angular/forms';
-import { Input } from '@angular/core';
+import { Input, Directive } from '@angular/core';
 import { OptionsProvider } from './providers/options-provider';
 import { TagInputDropdown } from '../components/dropdown/tag-input-dropdown.component';
 
@@ -13,6 +13,7 @@ export function isObject(obj: any): boolean {
     return obj === Object(obj);
 }
 
+@Directive()
 export class TagInputAccessor implements ControlValueAccessor {
     private _items: TagModel[] = [];
     private _onTouchedCallback: () => void;
