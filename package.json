@@ -9,7 +9,8 @@
     "server": "ng serve --port 3010",
     "start": "npm run server",
     "test": "ng test modules --browsers=ChromeHeadless --watch=false",
-    "codecov": "ng test modules --code-coverage --browsers=ChromeHeadless --watch=false"
+    "codecov": "ng test modules --code-coverage --browsers=ChromeHeadless --watch=false",
+    "ng": "ng"
   },
   "author": {
     "name": "Giancarlo Buomprisco",
@@ -18,44 +19,45 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.9",
-    "@angular/animations": "^8.2.11",
-    "@angular/cli": "^8.2.11",
-    "@angular/common": "^8.2.11",
-    "@angular/compiler": "^8.2.11",
-    "@angular/compiler-cli": "^8.2.11",
-    "@angular/core": "^8.2.11",
-    "@angular/forms": "^8.2.11",
-    "@angular/language-service": "~8.2.11",
-    "@angular/platform-browser": "^8.2.11",
-    "@angular/platform-browser-dynamic": "^8.2.11",
+    "@angular-devkit/build-angular": "~0.1000.5",
+    "@angular/animations": "~10.0.6",
+    "@angular/cli": "~10.0.5",
+    "@angular/common": "~10.0.6",
+    "@angular/compiler": "~10.0.6",
+    "@angular/compiler-cli": "~10.0.6",
+    "@angular/core": "~10.0.6",
+    "@angular/forms": "~10.0.6",
+    "@angular/language-service": "~10.0.6",
+    "@angular/platform-browser": "^10.0.6",
+    "@angular/platform-browser-dynamic": "^10.0.6",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^12.11.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^4.1.0",
+    "karma": "^5.1.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "ng-packagr": "^5.2.0",
-    "protractor": "~5.4.0",
-    "rxjs": "~6.4.0",
-    "tslint": "^5.17.0",
-    "typescript": "^3.5.2",
-    "zone.js": "~0.9.1"
+    "ng-packagr": "^10.0.3",
+    "protractor": "~7.0.0",
+    "rxjs": "~6.6.2",
+    "tslint": "~6.1.0",
+    "typescript": "~3.9.5",
+    "zone.js": "~0.10.3"
   },
   "dependencies": {
     "ng2-material-dropdown": "0.11.0"
   },
   "peerDependencies": {
-    "@angular/animations": "^8.0.0",
-    "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
-    "@angular/forms": "^8.0.0"
+    "@angular/animations": "~10.0.6",
+    "@angular/common": "~10.0.6",
+    "@angular/core": "~10.0.6",
+    "@angular/forms": "~10.0.6",
+    "@angular/compiler": "~10.0.6"
   },
   "keywords": [
     "angular tag input",
@@ -76,10 +78,7 @@
   "ngPackage": {
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
     "lib": {
-      "entryFile": "modules/index.ts",
-      "externals": {
-        "ng2-material-dropdown": "ng2-material-dropdown"
-      }
+      "entryFile": "modules/index.ts"
     },
     "whitelistedNonPeerDependencies": [
       "ng2-material-dropdown"
