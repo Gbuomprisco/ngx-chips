@@ -653,7 +653,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name hasErrors
      */
     public hasErrors(): boolean {
-        return !!this.inputForm && this.inputForm.hasErrors();
+        return !!this.inputForm && !!this.inputForm.hasErrors();
     }
 
     /**
