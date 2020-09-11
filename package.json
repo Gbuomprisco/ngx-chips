@@ -1,11 +1,11 @@
 {
-  "name": "ngx-chips",
-  "version": "2.1.0",
+  "name": "ngx-chips-angular",
+  "version": "2.1.1",
   "description": "Tag Input component for Angular",
   "scripts": {
     "release": "npm run build && npm publish dist",
     "postrelease": "rm -rf dist",
-    "build": "ng-packagr -p package.json && mkdirp ./dist/dist && ncp ./modules/core/styles ./dist/core/styles && ncp ./dist/bundles/ngx-chips.umd.js ./dist/dist/ngx-chips.bundle.js",
+    "build": "ng-packagr -p package.json && mkdirp ./dist/dist && ncp ./modules/core/styles ./dist/core/styles && ncp ./dist/bundles/ngx-chips-angular.umd.js ./dist/dist/ngx-chips-angular.bundle.js",
     "server": "ng serve --port 3010",
     "start": "npm run server",
     "test": "ng test modules --browsers=ChromeHeadless --watch=false",
@@ -20,16 +20,16 @@
   "license": "MIT",
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.5",
-    "@angular/animations": "~10.0.6",
+    "@angular/animations": "~10.1.1",
     "@angular/cli": "~10.0.5",
-    "@angular/common": "~10.0.6",
-    "@angular/compiler": "~10.0.6",
-    "@angular/compiler-cli": "~10.0.6",
-    "@angular/core": "~10.0.6",
-    "@angular/forms": "~10.0.6",
-    "@angular/language-service": "~10.0.6",
-    "@angular/platform-browser": "^10.0.6",
-    "@angular/platform-browser-dynamic": "^10.0.6",
+    "@angular/common": "~10.1.1",
+    "@angular/compiler": "~10.1.1",
+    "@angular/compiler-cli": "~10.1.1",
+    "@angular/core": "~10.1.1",
+    "@angular/forms": "~10.1.1",
+    "@angular/language-service": "~10.1.1",
+    "@angular/platform-browser": "^10.1.1",
+    "@angular/platform-browser-dynamic": "^10.1.1",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
@@ -53,11 +53,11 @@
     "ng2-material-dropdown": "0.11.0"
   },
   "peerDependencies": {
-    "@angular/animations": "~10.0.6",
-    "@angular/common": "~10.0.6",
-    "@angular/core": "~10.0.6",
-    "@angular/forms": "~10.0.6",
-    "@angular/compiler": "~10.0.6"
+    "@angular/animations": "~10.1.1",
+    "@angular/common": "~10.1.1",
+    "@angular/core": "~10.1.1",
+    "@angular/forms": "~10.1.1",
+    "@angular/compiler": "~10.1.1"
   },
   "keywords": [
     "angular tag input",
