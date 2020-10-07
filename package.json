@@ -45,13 +45,14 @@
     "protractor": "~5.4.0",
     "rxjs": "~6.6.3",
     "tslint": "^5.17.0",
-    "typescript": "^3.5.2",
     "zone.js": "~0.9.1"
   },
   "dependencies": {
+    "typescript": "3.9.7",
     "ng2-material-dropdown": "0.11.0"
   },
   "peerDependencies": {
+    "tslib": "^1.10.0"
   },
   "keywords": [
     "angular tag input",
