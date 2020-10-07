@@ -52,10 +52,6 @@
     "ng2-material-dropdown": "0.11.0"
   },
   "peerDependencies": {
-    "@angular/animations": "^8.0.0",
-    "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
-    "@angular/forms": "^8.0.0"
   },
   "keywords": [
     "angular tag input",
