@@ -146,7 +146,7 @@ export class TagComponent {
     /**
      * @name ripple {TagRipple}
      */
-    @ViewChild(TagRipple, { static: false })
+    @ViewChild(TagRipple)
     public ripple: TagRipple;
 
     constructor(
