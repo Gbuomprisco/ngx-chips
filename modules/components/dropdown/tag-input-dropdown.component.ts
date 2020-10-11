@@ -13,7 +13,7 @@ import {
 
 // rx
 import { Observable } from 'rxjs';
-import { filter, first, debounceTime } from 'rxjs/operators';
+import { filter, first, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { defaults } from '../../defaults';
@@ -28,7 +28,7 @@ export class TagInputDropdown implements AfterViewInit {
   /**
    * @name dropdown
    */
-  @ViewChild(Ng2Dropdown, { static: false }) public dropdown: Ng2Dropdown;
+  @ViewChild(Ng2Dropdown) public dropdown: Ng2Dropdown;
 
   /**
    * @name menuTemplate
@@ -172,6 +172,7 @@ export class TagInputDropdown implements AfterViewInit {
     this.tagInput.onTextChange
       .asObservable()
       .pipe(
+        distinctUntilChanged(),
         debounceTime(DEBOUNCE_TIME),
         filter((value: string) => {
           if (KEEP_OPEN === false) {
