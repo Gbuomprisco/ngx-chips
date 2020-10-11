@@ -3,7 +3,7 @@ dist: trusty
 sudo: required
 node_js:
   - "10"
-  - "11"
+  - "12"
 
 before_install:
  - export CHROME_BIN=/usr/bin/google-chrome
@@ -11,11 +11,7 @@ before_install:
  - sh -e /etc/init.d/xvfb start
 
 addons:
-  apt:
-    sources:
-     - google-chrome
-    packages:
-     - google-chrome-stable
+  chrome: stable
 
 script:
   - npm test

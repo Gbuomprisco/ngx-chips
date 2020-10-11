@@ -293,7 +293,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name dropdown
      */
     // @ContentChild(forwardRef(() => TagInputDropdown), {static: true}) dropdown: TagInputDropdown;
-    @ContentChild(TagInputDropdown, { static: false }) public dropdown: TagInputDropdown;
+    @ContentChild(TagInputDropdown) public dropdown: TagInputDropdown;
     /**
      * @name template
      * @desc reference to the template if provided by the user
@@ -303,7 +303,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     /**
      * @name inputForm
      */
-    @ViewChild(TagInputForm, { static: false }) public inputForm: TagInputForm;
+    @ViewChild(TagInputForm) public inputForm: TagInputForm;
 
     /**
      * @name selectedTag
@@ -1116,9 +1116,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         }
 
         const getText = (): string => {
-            const isIE = Boolean((window as IEWindow).clipboardData);
+            const isIE = Boolean((window as IEWindow & typeof globalThis).clipboardData);
             const clipboardData = isIE ? (
-                (window as IEWindow).clipboardData
+                (window as IEWindow & typeof globalThis).clipboardData
             ) : data.clipboardData;
             const type = isIE ? 'Text' : 'text/plain';
             return clipboardData === null ? '' : clipboardData.getData(type) || '';
