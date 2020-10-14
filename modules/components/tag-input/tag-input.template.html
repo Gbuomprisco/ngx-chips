@@ -51,7 +51,7 @@
             (click)="dropdown ? dropdown.show() : undefined"
             (onKeydown)="fireEvents('keydown', $event)"
             (onKeyup)="fireEvents('keyup', $event)"
-            [(inputText)]="inputText"
+            [inputText]="inputText"
             [disabled]="disable"
             [validators]="validators"
             [asyncValidators]="asyncValidators"
