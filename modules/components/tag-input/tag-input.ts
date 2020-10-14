@@ -44,7 +44,7 @@ import { TagInputDropdown } from '../dropdown/tag-input-dropdown.component';
 
 // angular universal hacks
 /* tslint:disable-next-line */
-const DragEvent = (window as any).DragEvent;
+const DragEvent = typeof window !== 'undefined' && (window as any).DragEvent;
 
 const CUSTOM_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
