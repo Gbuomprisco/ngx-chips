@@ -50,14 +50,14 @@
     "zone.js": "~0.10.3"
   },
   "dependencies": {
-    "ng2-material-dropdown": "0.11.0"
+    "ng2-material-dropdown": ">=0.11.0"
   },
   "peerDependencies": {
-    "@angular/animations": "^10.1.5",
-    "@angular/common": "^10.1.5",
-    "@angular/core": "^10.1.5",
-    "@angular/forms": "^10.1.5",
-    "@angular/compiler": "^10.1.5"
+    "@angular/animations": ">=10.1.5",
+    "@angular/common": ">=10.1.5",
+    "@angular/core": ">=10.1.5",
+    "@angular/forms": ">=10.1.5",
+    "@angular/compiler": ">=10.1.5"
   },
   "keywords": [
     "angular tag input",
