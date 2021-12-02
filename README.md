@@ -8,6 +8,7 @@ This is a component for Angular >= 4. Design and API are blandly inspired by Ang
 
 Check out [the live demo](https://angular-mfppay.stackblitz.io/).
 
+**NB**: This repository is currently unmaintained. Please fork or use Angular Material's chips module, it got better.
 
 ## Getting Started
 
