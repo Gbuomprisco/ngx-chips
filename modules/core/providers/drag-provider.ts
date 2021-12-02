@@ -1,5 +1,5 @@
 import { TagInputComponent } from '../../components/tag-input/tag-input';
-import { TagModel } from '../accessor';
+import { TagModel } from '../tag-model';
 
 import { Injectable } from '@angular/core';
 

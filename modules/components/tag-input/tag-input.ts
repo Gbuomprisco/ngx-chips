@@ -25,11 +25,12 @@ import {
 } from '@angular/forms';
 
 // rx
-import { Observable } from 'rxjs';
-import { debounceTime, filter, map, first } from 'rxjs/operators';
+import { Observable, debounceTime, filter, map, first } from 'rxjs';
 
 // ng2-tag-input
-import { TagInputAccessor, TagModel } from '../../core/accessor';
+import { TagInputAccessor } from '../../core/accessor';
+import { TagModel } from '../../core/tag-model';
+
 import { listen } from '../../core/helpers/listen';
 import * as constants from '../../core/constants';
 
@@ -42,15 +43,12 @@ import { animations } from './animations';
 import { defaults } from '../../defaults';
 import { TagInputDropdown } from '../dropdown/tag-input-dropdown.component';
 
-// angular universal hacks
-/* tslint:disable-next-line */
-const DragEvent = typeof window !== 'undefined' && (window as any).DragEvent;
-
 const CUSTOM_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => TagInputComponent),
     multi: true
 };
+
 @Component({
     selector: 'tag-input',
     providers: [CUSTOM_ACCESSOR],
@@ -769,7 +767,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name updateEditedTag
      * @param tag
      */
-    public updateEditedTag({ tag, index }: { tag: TagModel, index: number }): void {
+    public updateEditedTag(tag: TagModel): void {
         this.onTagEdited.emit(tag);
     }
 

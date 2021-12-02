@@ -2,12 +2,7 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Input, Directive } from '@angular/core';
 import { OptionsProvider } from './providers/options-provider';
 import { TagInputDropdown } from '../components/dropdown/tag-input-dropdown.component';
-
-export class TagModelClass {
-    [key: string]: any;
-}
-
-export type TagModel = string | TagModelClass;
+import { TagModel } from './tag-model';
 
 export function isObject(obj: any): boolean {
     return obj === Object(obj);

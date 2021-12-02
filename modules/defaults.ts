@@ -3,7 +3,7 @@ import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 
 import { SECONDARY_PLACEHOLDER, PLACEHOLDER } from './core/constants/index';
 import { TagInputDropdown } from './components/dropdown/tag-input-dropdown.component';
-import { TagModel } from './core/accessor';
+import { TagModel } from './core/tag-model';
 
 export interface TagInputOptions {
     separatorKeys: string[];

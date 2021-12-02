@@ -17,8 +17,8 @@ import { filter, first, debounceTime, distinctUntilChanged } from 'rxjs/operator
 
 import { Ng2Dropdown, Ng2MenuItem } from 'ng2-material-dropdown';
 import { defaults } from '../../defaults';
-import { TagModel } from '../../core/accessor';
 import { TagInputComponent } from '../tag-input/tag-input';
+import {TagModel} from '../../core/tag-model';
 
 @Component({
   selector: 'tag-input-dropdown',
@@ -211,7 +211,7 @@ export class TagInputDropdown implements AfterViewInit {
   /**
    * @name onItemClicked
    */
-  public onItemClicked(): EventEmitter<string> {
+  public onItemClicked() {
     return this.dropdown.onItemClicked;
   }
 

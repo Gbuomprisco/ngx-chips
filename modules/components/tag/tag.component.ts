@@ -12,9 +12,8 @@ import {
     Renderer2
 } from '@angular/core';
 
-import { TagModel } from '../../core/accessor';
+import { TagModel } from '../../core/tag-model';
 import { TagRipple } from '../tag/tag-ripple.component';
-import { EventLike } from '../../core/helpers/event-like';
 
 // mocking navigator
 const navigator = typeof window !== 'undefined' ? window.navigator : {
@@ -196,7 +195,7 @@ export class TagComponent {
      * @param event
      */
     @HostListener('keydown', ['$event'])
-    public keydown(event: EventLike): void {
+    public keydown(event: KeyboardEvent): void {
         if (this.editing) {
             if (event.keyCode === 13) {
                 return this.disableEditMode(event);
@@ -268,7 +267,7 @@ export class TagComponent {
      * @name disableEditMode
      * @param $event
      */
-    public disableEditMode($event?: EventLike): void {
+    public disableEditMode($event?: Event): void {
         const classList = this.element.nativeElement.classList;
         const input = this.getContentEditableText();
 
