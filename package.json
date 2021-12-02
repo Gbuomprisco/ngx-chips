@@ -19,6 +19,7 @@
   "contributors": [],
   "license": "MIT",
   "devDependencies": {
+    "@angular-devkit/build-angular": "^13.0.4",
     "@angular/animations": "^13.0.3",
     "@angular/cli": "^13.0.4",
     "@angular/common": "^13.0.3",
@@ -49,7 +50,6 @@
     "zone.js": "~0.11.4"
   },
   "dependencies": {
-    "@angular-devkit/build-angular": "^13.0.4",
     "ng2-material-dropdown": ">=1.0.0"
   },
   "peerDependencies": {
