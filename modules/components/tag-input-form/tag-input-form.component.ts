@@ -94,14 +94,18 @@ export class TagInputForm implements OnInit, OnChanges {
         return this.item.value;
     }
 
+    private _inputText: string;
+
     /**
      * @name inputText
      * @param text {string}
      */
     public set inputText(text: string) {
-        this.item.setValue(text);
-
-        this.inputTextChange.emit(text);
+        if ( this._inputText != text ) {
+            this._inputText = text;
+            this.item.setValue(text);
+            this.inputTextChange.emit(text);
+        }
     }
 
     private readonly item: FormControl = new FormControl({ value: '', disabled: this.disabled });
@@ -194,7 +198,6 @@ export class TagInputForm implements OnInit, OnChanges {
      * @param $event
      */
     public onKeyDown($event) {
-        this.inputText = this.value.value;
         if ($event.key === 'Enter') {
             this.submit($event);
         } else {
@@ -217,5 +220,6 @@ export class TagInputForm implements OnInit, OnChanges {
     public submit($event: any): void {
         $event.preventDefault();
         this.onSubmit.emit($event);
+        this.form.reset();
     }
 }
