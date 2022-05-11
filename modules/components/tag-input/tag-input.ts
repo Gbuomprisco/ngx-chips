@@ -25,7 +25,8 @@ import {
 } from '@angular/forms';
 
 // rx
-import { Observable, debounceTime, filter, map, first } from 'rxjs';
+import { Observable } from 'rxjs';
+import { debounceTime, filter, map, first } from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor } from '../../core/accessor';
