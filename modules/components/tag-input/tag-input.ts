@@ -267,7 +267,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name onTextChange
      * @desc event emitted when the input value changes
      */
-    @Output() public onTextChange = new EventEmitter<TagModel>();
+    @Output() public onTextChange = new EventEmitter<string>();
 
     /**
      * - output triggered when text is pasted in the form
