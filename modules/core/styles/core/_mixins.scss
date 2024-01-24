@@ -117,6 +117,12 @@
         border: map-get($theme, 'border-editing');
         cursor: text;
     }
+
+    &.tag--selected {
+        background: map-get($theme, 'background-focused');
+        color: map-get($theme, 'color-focused');
+        box-shadow: map-get($theme, 'box-shadow');
+    }
 }
 
 @mixin tag-input-form-theme($theme) {

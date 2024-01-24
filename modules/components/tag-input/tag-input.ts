@@ -12,6 +12,7 @@ import {
     ContentChildren,
     ContentChild,
     OnInit,
+    OnDestroy,
     TemplateRef,
     QueryList,
     AfterViewInit
@@ -25,7 +26,8 @@ import {
 } from '@angular/forms';
 
 // rx
-import { Observable, debounceTime, filter, map, first } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map, debounceTime, filter, first } from 'rxjs/operators';
 
 // ng2-tag-input
 import { TagInputAccessor } from '../../core/accessor';
@@ -56,7 +58,7 @@ const CUSTOM_ACCESSOR = {
     templateUrl: './tag-input.template.html',
     animations
 })
-export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit {
+export class TagInputComponent extends TagInputAccessor implements OnInit, AfterViewInit, OnDestroy {
     /**
      * @name separatorKeys
      * @desc keyboard keys with which a user can separate items
@@ -175,6 +177,21 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     @Input() public editable: boolean = defaults.tagInput.editable;
 
     /**
+     * @name copyable
+     */
+    @Input() public copyable: boolean = defaults.tagInput.copyable;
+
+    /**
+     * @name joinSeparator
+     */
+    @Input() public joinSeparator: string = defaults.tagInput.joinSeparator;
+
+    /**
+     * @name multipleSelect
+     */
+    @Input() public multipleSelect: boolean = defaults.tagInput.multipleSelect;
+
+    /**
      * @name allowDupes
      */
     @Input() public allowDupes = defaults.tagInput.allowDupes;
@@ -249,7 +266,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
      * @name onSelect
      * @desc event emitted when selecting an item
      */
-    @Output() public onSelect = new EventEmitter<TagModel>();
+    @Output() public onSelect = new EventEmitter<TagModel[]>();
 
     /**
      * @name onFocus
@@ -305,9 +322,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
     /**
      * @name selectedTag
-     * @desc reference to the current selected tag
+     * @desc reference to the current selected tags
      */
-    public selectedTag: TagModel | undefined;
+    public selectedTags: TagModel[] | undefined = [];
 
     /**
      * @name isLoading
@@ -337,6 +354,8 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         [constants.KEYDOWN]: <{ (fun): any }[]>[],
         [constants.KEYUP]: <{ (fun): any }[]>[]
     };
+
+    private copyListener: ((e: ClipboardEvent) => void) | undefined;
 
     /**
      * @description emitter for the 2-way data binding inputText value
@@ -397,6 +416,10 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             this.setUpOnPasteListener();
         }
 
+        if (this.copyable) {
+            this.setUpCopyListeners();
+        }
+
         const statusChanges$ = this.inputForm.form.statusChanges;
 
         statusChanges$.pipe(
@@ -438,6 +461,17 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.editable = this.onlyFromAutocomplete ? false : this.editable;
 
         this.setAnimationMetadata();
+    }
+
+    /**
+     * @name ngOnDestroy
+     */
+    public ngOnDestroy(): void {
+        // remove copy listeners if defined
+        if (this.copyListener) {
+            document.removeEventListener('copy', this.copyListener);
+            this.copyListener = undefined;
+        }
     }
 
     /**
@@ -499,6 +533,15 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     }
 
     /**
+     * @name isInSelection
+     * @desc checks if the item is in current selection
+     * @param item
+     */
+    public isInSelection(item: TagModel | undefined): boolean {
+        return !!(this.selectedTags.length && this.selectedTags.includes(item));
+    }
+
+    /**
      * @name createTag
      * @param model
      */
@@ -523,14 +566,55 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
     public selectItem(item: TagModel | undefined, emit = true): void {
         const isReadonly = item && typeof item !== 'string' && item.readonly;
 
-        if (isReadonly || this.selectedTag === item) {
+        if (isReadonly) {
             return;
         }
 
-        this.selectedTag = item;
+        if (!!item) {
+            if (!this.multipleSelect) {
+                if (!this.selectedTags.includes(item)) {
+                this.selectedTags = [item];
+                if (emit) {
+                    this.onSelect.emit(this.selectedTags);
+                }
+                }
+            } else {
+                const event = window.event as MouseEvent;
+                if (this.isInSelection(item)) {
+                if (event && (event.ctrlKey || event.metaKey)) {
+                    if (this.selectedTags.length > 1) {
+                    // remove from selection
+                    this.selectedTags = this.selectedTags.filter(tag => tag != item);
 
-        if (emit) {
-            this.onSelect.emit(item);
+                    // then select the first tag in the selection
+                    const tagComponent = this.tags.filter(tag => tag.model == this.selectedTags[0])[0];
+                    tagComponent.focus();
+                    } else {
+                    // select only this
+                    this.selectedTags = [item];
+                    }
+                } else if (event && event.shiftKey) {
+                    // select range
+                    this.selectedTags = this.selectRange(item);
+                } else {
+                    // select only this
+                    this.selectedTags = [item];
+                }
+                } else {
+                if (event && (event.ctrlKey || event.metaKey)) {
+                    // add to selection
+                    this.selectedTags.push(item);
+                } else if (event && event.shiftKey) {
+                    // select range
+                    this.selectedTags = this.selectRange(item);
+                } else {
+                    // select only this
+                    this.selectedTags = [item];
+                }
+                }
+            }
+        } else {
+            this.selectedTags = [];
         }
     }
 
@@ -556,9 +640,9 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
 
         switch (constants.KEY_PRESS_ACTIONS[key]) {
             case constants.ACTIONS_KEYS.DELETE:
-                if (this.selectedTag && this.removable) {
-                    const index = this.items.indexOf(this.selectedTag);
-                    this.onRemoveRequested(this.selectedTag, index);
+                if (this.selectedTags.length === 1 && this.removable) {
+                    const index = this.items.indexOf(this.selectedTags[0]);
+                    this.onRemoveRequested(this.selectedTags[0], index);
                 }
                 break;
 
@@ -813,6 +897,32 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         return assertions.filter(Boolean).length === assertions.length;
     }
 
+    public isAnySelectedFocused(): boolean {
+        if (!this.tags || !this.tags.length || !this.selectedTags || !this.selectedTags.length) {
+            return false;
+        }
+
+        const tagComponents = this.tags.filter(tag => this.selectedTags.includes(tag.model));
+        return !!(tagComponents.length && tagComponents.some(tag => tag.isFocused()));
+    }
+
+    private selectRange(item: TagModel): TagModel[] {
+        const indices = this.selectedTags.map(tag => this.items.indexOf(tag));
+        const min = Math.min(...indices);
+        const max = Math.max(...indices);
+        const selectedIndex = this.items.indexOf(item);
+
+        let start = min;
+        let end = selectedIndex;
+        if (selectedIndex < min) {
+            start = selectedIndex;
+            end = max;
+        }
+
+        const slice = this.items.slice(start, (end + 1));
+        return slice;
+    }
+
     /**
      * @name moveToTag
      * @param item
@@ -882,7 +992,7 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
         this.items = this.getItemsWithout(index);
 
         // if the removed tag was selected, set it as undefined
-        if (this.selectedTag === tag) {
+        if (this.selectedTags.length === 1 && this.selectedTags[0] === tag) {
             this.selectItem(undefined, false);
         }
 
@@ -1047,6 +1157,20 @@ export class TagInputComponent extends TagInputAccessor implements OnInit, After
             event.preventDefault();
             return true;
         });
+    }
+
+    private setUpCopyListeners() {
+        this.copyListener = (event: ClipboardEvent) => {
+            if (this.isAnySelectedFocused()) {
+                const text = this.selectedTags.map(tag => this.getItemDisplay(tag)).join(this.joinSeparator);
+                event.clipboardData.setData('text/plain', text);
+
+                event.preventDefault();
+            }
+        };
+
+        document.removeEventListener('copy', this.copyListener);
+        document.addEventListener('copy', this.copyListener);
     }
 
     /**
