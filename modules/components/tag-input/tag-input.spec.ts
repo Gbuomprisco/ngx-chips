@@ -219,7 +219,7 @@ describe('TagInputComponent', () => {
       component = getComponent(fixture);
       component.removeItem(tagName, 0);
 
-      expect(component.selectedTag).toBe(undefined);
+      expect(component.selectedTags.length).toBe(0);
     }));
   });
 
@@ -328,33 +328,33 @@ describe('TagInputComponent', () => {
       component = getComponent(fixture);
 
       // selected tag is undefined
-      expect(component.selectedTag).toEqual(undefined);
+      expect(component.selectedTags.length).toEqual(0);
 
       keyDown['keyCode'] = 8;
       // press backspace
       component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
       // selected tag is the last one
-      expect(component.selectedTag).toEqual('Typescript');
+      expect(component.selectedTags[0]).toEqual('Typescript');
 
       // press tab and focus input again
       keyDown['keyCode'] = 9;
       component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
-      expect(component.selectedTag).toEqual(undefined);
+      expect(component.selectedTags.length).toEqual(0);
       expect(component.inputForm.isInputFocused()).toEqual(true);
 
       keyDown['keyCode'] = 8;
       // then starts from back again
       component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
-      expect(component.selectedTag).toEqual('Typescript');
+      expect(component.selectedTags[0]).toEqual('Typescript');
 
       // it removes current selected tag when pressing delete
       component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
       expect(component.items.length).toEqual(1);
-      expect(component.selectedTag).toBe(undefined);
+      expect(component.selectedTags.length).toBe(0);
 
       discardPeriodicTasks();
     }));
@@ -367,22 +367,22 @@ describe('TagInputComponent', () => {
       component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
       // selected tag is the last one
-      expect(component.selectedTag).toEqual('Typescript');
+      expect(component.selectedTags[0]).toEqual('Typescript');
 
       // press left arrow
       component.tags.last.element.nativeElement.dispatchEvent(keyDown);
-      expect(component.selectedTag).toEqual('Javascript');
+      expect(component.selectedTags[0]).toEqual('Javascript');
 
       // press right arrow
       keyDown['keyCode'] = 39;
       component.tags.first.element.nativeElement.dispatchEvent(keyDown);
-      expect(component.selectedTag).toEqual('Typescript');
+      expect(component.selectedTags[0]).toEqual('Typescript');
 
       // press tab -> focuses input
       keyDown['keyCode'] = 9;
       component.tags.last.element.nativeElement.dispatchEvent(keyDown);
 
-      expect(component.selectedTag).toEqual(undefined);
+      expect(component.selectedTags.length).toEqual(0);
       expect(component.inputForm.isInputFocused()).toEqual(true);
 
       discardPeriodicTasks();
@@ -396,12 +396,12 @@ describe('TagInputComponent', () => {
       component.inputForm.input.nativeElement.dispatchEvent(keyDown);
 
       // selected tag is the last one
-      expect(component.selectedTag).toEqual('Typescript');
+      expect(component.selectedTags[0]).toEqual('Typescript');
 
       keyDown['keyCode'] = 9;
       // press tab -> focuses input
       component.tags.last.element.nativeElement.dispatchEvent(keyDown);
-      expect(component.selectedTag).toEqual(undefined);
+      expect(component.selectedTags.length).toEqual(0);
 
       expect(component.inputForm.isInputFocused()).toEqual(true);
 
@@ -668,7 +668,7 @@ describe('TagInputComponent', () => {
       component = getComponent(fixture);
 
       // selected tag is undefined
-      expect(component.selectedTag).toEqual(undefined);
+      expect(component.selectedTags.length).toEqual(0);
 
       // enable editing mode
       component.tags.first.toggleEditMode();
@@ -701,7 +701,7 @@ describe('TagInputComponent', () => {
       component = getComponent(fixture);
 
       // selected tag is undefined
-      expect(component.selectedTag).toEqual(undefined);
+      expect(component.selectedTags.length).toEqual(0);
 
       // enable editing mode
       component.tags.first.toggleEditMode();

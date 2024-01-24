@@ -8,8 +8,7 @@ import {
     FormControl
 } from '@angular/forms';
 
-import { Observable } from 'rxjs';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { TagInputModule } from '../../../tag-input.module';
 

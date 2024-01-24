@@ -3,6 +3,7 @@ export { constants };
 
 export { listen } from './helpers/index';
 export { HighlightPipe } from './pipes/index';
-export { TagModel, isObject, TagInputAccessor } from './accessor';
+export { isObject, TagInputAccessor } from './accessor';
+export { TagModel } from './tag-model';
 export { DraggedTag, State, StateProperty, DragProvider, Options, OptionsProvider } from './providers/index';
 export * from './pipes';

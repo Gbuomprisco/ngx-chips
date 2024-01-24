@@ -18,6 +18,7 @@
     <div class="ng2-tags-container">
         <tag
             *ngFor="let item of items; let i = index; trackBy: trackBy"
+            class="ng2-tag"
             (onSelect)="selectItem(item)"
             (onRemove)="onRemoveRequested(item, i)"
             (onKeyDown)="handleKeydown($event)"
@@ -31,6 +32,7 @@
             (dragleave)="dragZone ? dragProvider.onDragEnd() : undefined"
             [canAddTag]="isTagValid"
             [attr.tabindex]="0"
+            [class.tag--selected]="isAnySelectedFocused() && isInSelection(item)"
             [disabled]="disable"
             [@animation]="animationMetadata"
             [hasRipple]="ripple"
